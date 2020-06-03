@@ -10,6 +10,7 @@ services:
     ports:
       - "56733:80"
     volumes:
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! WORK FFS
       - /app:/var/www
     #volumes:
       #- type: volume
@@ -24,7 +25,9 @@ services:
 
 #Starts the mysql server    
   db:
-    build: ./docker/db
+    # TO be implemented later
+    #build: ./docker/db
+    image: mysql:8.0.20
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
@@ -41,8 +44,3 @@ services:
       # Opens port 3306 on the container
       - '3306'
       # Where our data will be persisted
-    volumes:
-      - my-db:/var/lib/mysql
-# Names our volume
-volumes:
-  my-db:
