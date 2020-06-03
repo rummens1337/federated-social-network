@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Blueprint
+
+from web.api import api_central_blueprints, api_data_blueprint
 
 app = Flask(__name__)
 
@@ -11,6 +13,13 @@ def test_page():
     print('got', request.args)
     return render_template('test.html', data=list(request.args.items()))
 
-def run(port: int):
+def run(port: int, server_type: str):
+    if server_type == 'central':
+        api_central_blueprints(app)
+    elif server_type == 'data':
+        api_data_blueprint(app)
+    else:
+        raise ValueError('Server type not supported.')
+    print(app.url_map)
     app.run(host='0.0.0.0', port=port)
 
