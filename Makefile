@@ -1,5 +1,6 @@
 # Starts all docker containers as described in the docker-compose.yml file
 run:
+	docker-compose build
 	docker-compose up --remove-orphans
 
 # If a container is built, it won't rebuild the container.

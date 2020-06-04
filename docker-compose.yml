@@ -11,6 +11,8 @@ services:
     restart: always
     ports:
       - "56733:80"
+    volumes:
+      - "./app:/var/www/apache-flask/app/"
 
 #Starts the mysql server    
   db:
