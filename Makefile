@@ -7,14 +7,20 @@ run:
 run-fast:
 	docker-compose up --no-recreate
 
+
 # Stop all running containers
 stop:
 	docker ps -a -q | ( while read ID; do docker stop $$ID; done )
 
-# !! Remove all existing containers: USE WITH CARE !!
+# !! Stop & Remove all existing containers: USE WITH CARE !!
 rm:
+	docker ps -a -q | ( while read ID; do docker stop $$ID; done )
 	docker ps -a -q | ( while read ID; do docker rm $$ID; done )
 
 # Check all container statusses
 check:
 	docker container ls -a -s --no-trunc
+	
+rm-images:
+	docker ps -a -q | ( while read ID; do docker stop $$ID; done )
+	docker images -a -q | ( while read ID; do docker rmi -f $$ID; done )
