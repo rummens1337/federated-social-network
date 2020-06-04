@@ -1,8 +1,21 @@
 import json
 
-from flask import Blueprint, request
+from flask import Blueprint, request, Flask, render_template, request
+from web.api import api_central_blueprints, api_data_blueprint
 
 blueprint = Blueprint('central_user', __name__)
+
+app = Flask(__name__)
+
+def run(port: int, server_type: str):
+    if server_type == 'central':
+        api_central_blueprints(app)
+    elif server_type == 'data':
+        api_data_blueprint(app)
+    else:
+        raise ValueError('Server type not supported.')
+    print(app.url_map)
+    app.run(host='0.0.0.0', port=port)
 
 
 @blueprint.route('/address')
