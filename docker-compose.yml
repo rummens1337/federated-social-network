@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+
+#Starts the nginx server and python 3.6
+  apache:
+    # will build ./docker/web/Dockerfile
+    build: 
+      context: ./
+      dockerfile: ./docker/apache/Dockerfile
+    restart: always
+    links:
+      - mysql
+      - phpmyadmin
+    ports:
+      - "55100:80"
+    volumes:
+      - "./app:/var/www/apache-flask/app/"
+
+#Starts the mysql server    
+  mysql:
+    # TO be implemented later
+    build: ./docker/mysql/8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'user'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'password'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '55101:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    # Gives the phpmyadmin container access to the mysql container
+    links:
+      - mysql
+    environment:
+      # Links the mysql database hosted on port 3306 inside the container to phpmyadmin
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    restart: always
+    # Acccessible on port 55102 on host
+    ports:
+      - 55102:80
+    volumes:
+      - /sessions
