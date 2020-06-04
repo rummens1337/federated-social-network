@@ -6,6 +6,7 @@ from app import app
 
 @app.route('/')
 @app.route('/index')
+@app.route('/login')
 def index():
     return render_template('login.html')
 
@@ -13,6 +14,6 @@ def index():
 def about():
     return render_template('about.html')
 
-
-
-
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
