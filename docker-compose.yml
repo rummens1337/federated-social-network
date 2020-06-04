@@ -9,13 +9,16 @@ services:
       context: ./
       dockerfile: ./docker/apache/Dockerfile
     restart: always
+    links:
+      - mysql
+      - phpmyadmin
     ports:
-      - "56733:80"
+      - "55100:80"
     volumes:
       - "./app:/var/www/apache-flask/app/"
 
 #Starts the mysql server    
-  db:
+  mysql:
     # TO be implemented later
     build: ./docker/mysql/8.0
     restart: always
@@ -29,8 +32,25 @@ services:
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '3306:3306'
+      - '55101:3306'
     expose:
       # Opens port 3306 on the container
       - '3306'
       # Where our data will be persisted
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    # Gives the phpmyadmin container access to the mysql container
+    links:
+      - mysql
+    environment:
+      # Links the mysql database hosted on port 3306 inside the container to phpmyadmin
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    restart: always
+    # Acccessible on port 55102 on host
+    ports:
+      - 55102:80
+    volumes:
+      - /sessions
