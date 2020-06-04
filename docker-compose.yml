@@ -3,26 +3,6 @@ version: '3'
 services:
 
 #Starts the nginx server and python 3.6
-  # web:
-  #   # will build ./docker/web/Dockerfile
-  #   build: ./docker/web
-  #   restart: always
-  #   ports:
-  #     - "56733:80"
-  #   volumes:
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! WORK FFS
-      # - .:/var/www
-    #volumes:
-      #- type: volume
-        #source: app
-        #target: /data
-        #volume:
-          #nocopy: true
-      #- type: bind
-        #source: ./static
-        #target: /opt/app/static
-
-#Starts the nginx server and python 3.6
   apache:
     # will build ./docker/web/Dockerfile
     build: 
@@ -31,24 +11,11 @@ services:
     restart: always
     ports:
       - "56733:80"
-    # volumes:
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! WORK FFS
-      # - .:/var/www
-    #volumes:
-      #- type: volume
-        #source: app
-        #target: /data
-        #volume:
-          #nocopy: true
-      #- type: bind
-        #source: ./static
-        #target: /opt/app/static
 
 #Starts the mysql server    
   db:
     # TO be implemented later
-    #build: ./docker/db
-    image: mysql:8.0.20
+    build: ./docker/mysql/8.0
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
