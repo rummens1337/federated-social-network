@@ -2,20 +2,17 @@ version: '3'
 
 services:
 
-#Starts the nginx server and python 3.6
-  apache:
-    # will build ./docker/web/Dockerfile
-    build: 
+  web:
+    build:
       context: ./
-      dockerfile: ./docker/apache/Dockerfile
-    restart: always
-    links:
-      - mysql
-      - phpmyadmin
+      dockerfile: ./docker/flask/Dockerfile
     ports:
-      - "55100:80"
+      - "5000:5000"
     volumes:
-      - "./app:/var/www/apache-flask/app/"
+      - "./app:/var/www/flask/app"
+
+  redis:
+    image: "redis:alpine"
 
 #Starts the mysql server    
   mysql:
@@ -32,7 +29,7 @@ services:
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '55101:3306'
+      - '6000:3306'
     expose:
       # Opens port 3306 on the container
       - '3306'
@@ -40,7 +37,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: phpmyadmin_central
     # Gives the phpmyadmin container access to the mysql container
     links:
       - mysql
@@ -51,6 +48,6 @@ services:
     restart: always
     # Acccessible on port 55102 on host
     ports:
-      - 55102:80
+      - 7000:80
     volumes:
       - /sessions

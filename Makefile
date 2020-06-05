@@ -8,6 +8,8 @@ run:
 run-fast:
 	docker-compose up --no-recreate
 
+reload:
+	docker exec -ti apache sh -c "echo a && echo b"
 
 # Stop all running containers
 stop:

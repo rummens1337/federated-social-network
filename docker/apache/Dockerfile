@@ -40,6 +40,6 @@ RUN a2ensite apache-flask.conf
 
 EXPOSE 80
 
-WORKDIR /var/www/apache-flask
+WORKDIR /var/www/apache-flask/app
 
 CMD  /usr/sbin/apache2ctl -D FOREGROUND
