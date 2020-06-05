@@ -54,7 +54,13 @@ Give an example
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Production:
+
+```
+Remove the 'ENV FLASK_DEBUG 1' from ./docker/flask/Dockerfile 
+```
+
+Add additional notes about how to deploy this on a live system...
 
 ## Built With
 
