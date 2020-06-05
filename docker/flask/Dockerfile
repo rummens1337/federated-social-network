@@ -20,33 +20,23 @@ RUN apt-get update && apt-get install -y apache2 \
  && apt-get autoremove \
  && rm -rf /var/lib/apt/lists/*
 
-
+# Set the flask ENV variables
 ENV FLASK_APP run.py
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV FLASK_DEBUG 1
 
+# Create the app folder on the Container
+RUN mkdir -p /var/www/flask/app/ 
+
 # Copy over and install the requirements
-RUN mkdir -p /var/www/flask/app/
 COPY ./docker/flask/requirements.txt /var/www/flask/app/requirements.txt
 RUN pip install -r /var/www/flask/app/requirements.txt
 
-# Copy over the apache configuration file and enable the site
-# COPY ./docker/apache/apache-flask.conf /etc/apache2/sites-available/apache-flask.conf
-# RUN a2ensite apache-flask
-# RUN a2enmod headers
-
-# Copy over the wsgi file
-# COPY ./docker/apache/apache-flask.wsgi /var/www/apache-flask/apache-flask.wsgi
-
 COPY ./run.py /var/www/flask/run.py
 # COPY $HOST/app /var/www/apache-flask/app/
-
-# RUN a2dissite 000-default.conf
-# RUN a2ensite apache-flask.conf
 
 EXPOSE 80
 
 WORKDIR /var/www/flask
 
-# CMD  /usr/sbin/apache2ctl -D FOREGROUND
 CMD ["flask", "run"]
