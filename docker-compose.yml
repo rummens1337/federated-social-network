@@ -2,24 +2,6 @@ version: '3'
 
 services:
 
-#Starts the nginx server and python 3.6
-  # apache:
-  #   # will build ./docker/web/Dockerfile
-  #   build: 
-  #     context: ./
-  #     dockerfile: ./docker/apache/Dockerfile
-  #   restart: always
-  #   environment:
-  #     FLASK_DEBUG: 1
-  #     PYTHONUNBUFFERED: 1
-  #   links:
-  #     - mysql
-  #     - phpmyadmin
-  #   ports:
-  #     - "55200:80"
-  #   volumes:
-  #     - "./app:/var/www/apache-flask/app"
-
   web:
     build:
       context: ./
@@ -31,8 +13,6 @@ services:
 
   redis:
     image: "redis:alpine"
-  # volumes:
-  #   - "./app:/var/www/apache-flask/app"
 
 #Starts the mysql server    
   mysql:
@@ -49,7 +29,7 @@ services:
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '65120:3306'
+      - '6000:3306'
     expose:
       # Opens port 3306 on the container
       - '3306'
@@ -68,6 +48,6 @@ services:
     restart: always
     # Acccessible on port 55102 on host
     ports:
-      - 65100:80
+      - 7000:80
     volumes:
       - /sessions

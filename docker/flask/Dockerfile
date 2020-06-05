@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y apache2 \
 
 ENV FLASK_APP run.py
 ENV FLASK_RUN_HOST 0.0.0.0
+ENV FLASK_DEBUG 1
 
 # Copy over and install the requirements
 RUN mkdir -p /var/www/flask/app/
@@ -45,7 +46,7 @@ COPY ./run.py /var/www/flask/run.py
 
 EXPOSE 80
 
-WORKDIR /var/www/flask/app
+WORKDIR /var/www/flask
 
 # CMD  /usr/sbin/apache2ctl -D FOREGROUND
 CMD ["flask", "run"]
