@@ -17,6 +17,7 @@ $(function validateAccount() {
       }
 
     },
+
     submitHandler: function(form) {
       form.submit();
     }
