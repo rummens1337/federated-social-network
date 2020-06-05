@@ -8,6 +8,8 @@ services:
       dockerfile: ./docker/flask/Dockerfile
     ports:
       - "5000:5000"
+    depends_on:
+        - mysql
     volumes:
       - "./app:/var/www/flask/app"
 

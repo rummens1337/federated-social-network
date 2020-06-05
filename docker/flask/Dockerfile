@@ -9,12 +9,12 @@ FROM debian:latest
 # File Author / Maintainer
 MAINTAINER Carlos Tighe
 
-RUN apt-get update && apt-get install -y apache2 \
+RUN apt-get update && apt-get install -y \
     libapache2-mod-wsgi \
     build-essential \
-    python \
-    python-dev\
-    python-pip \
+    python3 \
+    python3-dev\
+    python3-pip \
     vim \
  && apt-get clean \
  && apt-get autoremove \
@@ -30,7 +30,7 @@ RUN mkdir -p /var/www/flask/app/
 
 # Copy over and install the requirements
 COPY ./docker/flask/requirements.txt /var/www/flask/app/requirements.txt
-RUN pip install -r /var/www/flask/app/requirements.txt
+RUN pip3 install -r /var/www/flask/app/requirements.txt
 
 COPY ./run.py /var/www/flask/run.py
 # COPY $HOST/app /var/www/apache-flask/app/
@@ -38,5 +38,6 @@ COPY ./run.py /var/www/flask/run.py
 EXPOSE 80
 
 WORKDIR /var/www/flask
+
 
 CMD ["flask", "run"]
