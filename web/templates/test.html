@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+{# comment example, add your head stuff header #}
+</head>
+<body>
+{# jinja stuff! check https://jinja.palletsprojects.com/en/2.11.x/ #}
+{% if data|length == 0 %}
+    <p>No params given!</p>
+{% else %}
+{% for d in data %}
+    <p>single stuff from data - {{ d }}</p>
+{% endfor %}
+{% endif %}
+</body>
+</html>

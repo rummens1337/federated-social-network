@@ -80,7 +80,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 * iDylanK#2368 Dylan Kieft @11013575
 * auke#7657 Auke Schuringa @1102346
 * flix123#5242 Felix Hoekstra @11330600
-* rummens#3150 Michel Rummens @mrummens
+* rummens#3150 Michel Rummens @13108093
 
 ## License
 
