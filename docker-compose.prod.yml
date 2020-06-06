@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  #Starts the apache server and python 3.6
+  apache:
+    # will build ./docker/web/Dockerfile
+    build: 
+      context: ./
+      dockerfile: ./docker/apache/Dockerfile
+    restart: always
+    depends_on:
+      - mysql
+    links:
+      - phpmyadmin
+    ports:
+      - "5000:80"
+    volumes: 
+      - ./app:/var/www/apache-flask/app/

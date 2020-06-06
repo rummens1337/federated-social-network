@@ -1,7 +1,12 @@
 # Starts all docker containers as described in the docker-compose.yml file
 run:
 	docker-compose build
-	docker-compose up --remove-orphans
+	docker-compose -f docker-compose.dev.yml -f docker-compose.yml up --remove-orphans
+
+# Starts all docker containers as described in the docker-compose.yml file as production
+run-prod:
+	docker-compose build
+	docker-compose -f docker-compose.prod.yml -f docker-compose.yml up --remove-orphans
 
 # If a container is built, it won't rebuild the container.
 # It also doesn't rebuild any new versions dependencies.
