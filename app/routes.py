@@ -9,14 +9,14 @@ from app import app
 #       Might be safer in the run.py
 #       However, setting the config 
 #       details there does not same to work.
-def sql():
-    app.config['MYSQL_DATABASE_USER'] = 'user'
-    app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
-    app.config['MYSQL_DATABASE_DB'] = 'db'
-    app.config['MYSQL_DATABASE_HOST'] = 'mysql'
-    return MySQL(app)
+# def sql():
+#     # app.config['MYSQL_DATABASE_USER'] = 'user'
+#     # app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+#     # app.config['MYSQL_DATABASE_DB'] = 'db'
+#     # app.config['MYSQL_DATABASE_HOST'] = 'mysql'
+#     return MySQL(app)
 
-mysql = sql()
+mysql = MySQL(app)
 
 @app.route('/')
 @app.route('/index')
