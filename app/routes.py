@@ -4,18 +4,6 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flaskext.mysql import MySQL
 from app import app
 
-
-# TODO: needs to be moved from here.
-#       Might be safer in the run.py
-#       However, setting the config 
-#       details there does not same to work.
-# def sql():
-#     # app.config['MYSQL_DATABASE_USER'] = 'user'
-#     # app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
-#     # app.config['MYSQL_DATABASE_DB'] = 'db'
-#     # app.config['MYSQL_DATABASE_HOST'] = 'mysql'
-#     return MySQL(app)
-
 mysql = MySQL(app)
 
 @app.route('/')
@@ -30,10 +18,13 @@ def about():
 # Test
 @app.route('/db')
 def db():
-    con = mysql.connect()
-    cursor = con.cursor()
-    cursor.execute("INSERT INTO test VALUES (1)")
-    con.commit()
-    con.close()
+    try: 
+        con = mysql.connect()
+        cursor = con.cursor()
+        cursor.execute("INSERT INTO test VALUES (1)")
+        con.commit()
+        con.close()
+    except Exception as e:
+	    return(str(e))
     return "db added"
 

@@ -10,7 +10,7 @@ FROM debian:latest
 MAINTAINER Carlos Tighe
 
 RUN apt-get update && apt-get install -y apache2 \
-    libapache2-mod-wsgi \
+    libapache2-mod-wsgi-py3 \
     build-essential \
     python3 \
     python3-dev\
@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y apache2 \
  && rm -rf /var/lib/apt/lists/*
 
 # Copy over and install the requirements
-COPY ./docker/apache/requirements.txt /var/www/apache-flask/app/requirements.txt
-RUN pip3 install -r /var/www/apache-flask/app/requirements.txt
+COPY ./docker/apache/requirements.txt /var/www/apache-flask/requirements.txt
+RUN pip3 install -r /var/www/apache-flask/requirements.txt
 
 # Copy over the apache configuration file and enable the site
 COPY ./docker/apache/apache-flask.conf /etc/apache2/sites-available/apache-flask.conf
@@ -33,6 +33,7 @@ RUN a2enmod headers
 COPY ./docker/apache/apache-flask.wsgi /var/www/apache-flask/apache-flask.wsgi
 
 COPY ./run.py /var/www/apache-flask/run.py
+COPY ./config.py /var/www/apache-flask/config.py
 # COPY $HOST/app /var/www/apache-flask/app/
 
 RUN a2dissite 000-default.conf

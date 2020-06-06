@@ -33,6 +33,7 @@ COPY ./docker/flask/requirements.txt /var/www/flask/app/requirements.txt
 RUN pip3 install -r /var/www/flask/app/requirements.txt
 
 COPY ./run.py /var/www/flask/run.py
+COPY config.py /var/www/flask/config.py
 # COPY $HOST/app /var/www/apache-flask/app/
 
 EXPOSE 80
