@@ -1,3 +1,9 @@
+TYPE = central
+PORT = $(port)
+
+export TYPE
+export PORT
+
 # Starts all docker containers as described in the docker-compose.yml file
 run:
 	docker-compose -f docker-compose.dev.yml -f docker-compose.yml up --remove-orphans --build
