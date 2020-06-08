@@ -40,8 +40,10 @@ EXPOSE 80
 
 WORKDIR /var/www/flask
 
-ARG TYPE=server
-ARG PORT=5000
+ARG TYPE
+ARG PORT
+ENV SERVER_TYPE $TYPE
+ENV PORT $PORT
 
-CMD python3 run.py -s $TYPE -p $PORT
+CMD python3 run.py 
 # CMD ["python3", "run.py", "-s", $TYPE, "-p", $PORT]

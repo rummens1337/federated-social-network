@@ -1,4 +1,4 @@
-TYPE = central
+TYPE = CENTRAL
 PORT = $(port)
 
 export TYPE

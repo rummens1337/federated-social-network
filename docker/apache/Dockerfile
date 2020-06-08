@@ -39,8 +39,8 @@ COPY ./config.py /var/www/apache-flask/config.py
 RUN a2dissite 000-default.conf
 RUN a2ensite apache-flask.conf
 
-ARG TYPE=central
-ENV SERVER_TYPE ${TYPE}
+ARG TYPE
+ENV SERVER_TYPE $TYPE
 
 EXPOSE 80
 

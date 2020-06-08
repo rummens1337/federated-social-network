@@ -8,6 +8,8 @@ services:
     build: 
       context: ./
       dockerfile: ./docker/apache/Dockerfile
+      args:
+        TYPE: ${TYPE}
     restart: always
     depends_on:
       - mysql

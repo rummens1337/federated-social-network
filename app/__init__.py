@@ -14,6 +14,6 @@ if os.environ['SERVER_TYPE'] == 'CENTRAL':
     register_central(app)
 elif os.environ['SERVER_TYPE'] == 'DATA':
     register_data(app)
-else:
+# else:
     # Loads central if not specified or wrong
-    register_central(app)
+    # register_central(app)
