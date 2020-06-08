@@ -6,11 +6,13 @@ from app import app
 
 @app.route('/')
 @app.route('/index')
-@app.route('/login')
+@app.route('/home')
 def index():
     return render_template('test3.html')
 
 @app.route('/about')
+@app.route('/?')
+@app.route('/help')
 def about():
     return render_template('about.html')
 
@@ -19,5 +21,10 @@ def signup():
     return render_template('signup.html')
 
 @app.route('/profile')
+@app.route('/me')
 def profile():
     return render_template('profile.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
