@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 
 from app.api import register_central, register_data
 from app.database import init_mysql
@@ -9,17 +10,8 @@ app.config.from_object('config')
 app.register_blueprint(main_routes, url_prefix='/')
 init_mysql(app)
 
-
-def run_base(port: int):
-    app.run(host='0.0.0.0', port=port)
-
-
-def run_central(*args):
+if os.environ['SERVER_TYPE'] == 'CENTRAL':
     register_central(app)
-    run_base(*args)
-
-
-def run_data():
+elif os.environ['SERVER_TYPE'] == 'DATA':
     register_data(app)
-    run_base(*args)
 

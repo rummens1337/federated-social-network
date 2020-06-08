@@ -1,17 +1,11 @@
 import argparse
-
-from app import run_central, run_data
+import os
 
 
 def main(server: str, port: int):
-    if server == 'central':
-        run_central(port)
-    elif server == 'data':
-        run_data(port)
-    elif server == 'base':
-        run_base(port)
-    else:
-        raise ValueError('Server type is not supported.')
+    os.environ['SERVER_TYPE'] = server.upper()
+    from app import app as application
+    application.run(host='0.0.0.0', port=port)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
