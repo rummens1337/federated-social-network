@@ -13,10 +13,10 @@ def main(server: str=None, port: int=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--server', type=str,
-                        required='SERVER_TYPE' in os.environ,
+                        required='FLASK_SERVER_TYPE' not in os.environ,
                         help='Server type. Can be \'central\' or \'data\'.')
-    parser.add_argument('-p', '--port', type=int, default=1337,
-                        help='Port to use. Default is 1337')
+    parser.add_argument('-p', '--port', type=int, default=5000,
+                        help='Port to use. Default is 5000.')
     args = parser.parse_args()
     main(args.server, args.port)
 
