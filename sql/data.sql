@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS posts (
+    post_id INTEGER NOT NULL AUTO_INCREMENT,
     body VARCHAR NOT NULL,
     title VARCHAR DEFAULT 0,
     profile_id INTEGER NOT NULL,
@@ -12,6 +13,7 @@ CREATE TABLE IF NOT EXISTS friends (
 );
 
 CREATE TABLE IF NOT EXISTS profiles (
+    profile_id INTEGER NOT NULL AUTO_INCREMENT,
     username VARCHAR NOT NULL,
     name VARCHAR NOT NULL,
     image_location VARCHAR DEFAULT 0,
