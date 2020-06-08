@@ -10,9 +10,9 @@ app.config.from_object('config')
 app.register_blueprint(main_routes, url_prefix='/')
 init_mysql(app)
 
-if os.environ['SERVER_TYPE'] == 'CENTRAL':
+if os.environ['FLASK_SERVER_TYPE'].upper() == 'CENTRAL':
     register_central(app)
-elif os.environ['SERVER_TYPE'] == 'DATA':
+elif os.environ['FLASK_SERVER_TYPE'].upper() == 'DATA':
     register_data(app)
 # else:
     # Loads central if not specified or wrong
