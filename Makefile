@@ -1,17 +1,18 @@
+# Get arguments 
 FLASK_SERVER_TYPE = $(type)
 FLASK_PORT = $(port)
 
-# FLASK_SERVER_TYPE = ${FLASK_SERVER_TYPE:-CENTRAL}
-# FLASK_PORT = ${FLASK_PORT:-5000}
+# Set the default flask port to 5000
+ifeq ($(FLASK_PORT),)
+FLASK_PORT = 5000
+endif
 
-# ifndef FLASK_SERVER_TYPE
-# FLASK_SERVER_TYPE = CENTRAL
-# endif
+# Set the default flask server type to central
+ifeq ($(FLASK_SERVER_TYPE),)
+FLASK_SERVER_TYPE = CENTRAL
+endif
 
-# ifndef FLASK_PORT
-# FLASK_PORT = 5000
-# endif
-
+# Variables used in dockerfiles
 export FLASK_SERVER_TYPE
 export FLASK_PORT
 
