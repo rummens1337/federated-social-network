@@ -33,17 +33,11 @@ COPY ./docker/flask/requirements.txt /var/www/flask/app/requirements.txt
 RUN pip3 install -r /var/www/flask/app/requirements.txt
 
 COPY ./run.py /var/www/flask/run.py
-COPY config.py /var/www/flask/config.py
 # COPY $HOST/app /var/www/apache-flask/app/
 
 EXPOSE 80
 
 WORKDIR /var/www/flask
 
-ARG FLASK_SERVER_TYPE
-ARG FLASK_PORT
-ENV FLASK_SERVER_TYPE $FLASK_SERVER_TYPE
-ENV FLASK_PORT $FLASK_PORT
 
-CMD python3 run.py 
-# CMD ["python3", "run.py", "-s", $TYPE, "-p", $PORT]
+CMD ["flask", "run"]

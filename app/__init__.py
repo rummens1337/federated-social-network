@@ -1,19 +1,6 @@
 from flask import Flask
-import os
-
-from app.api import register_central, register_data
-from app.database import init_mysql
-from app.main import blueprint as main_routes
 
 app = Flask(__name__)
-app.config.from_object('config')
-app.register_blueprint(main_routes, url_prefix='/')
-init_mysql(app)
+# app.config.from_object('config')
+from app import routes
 
-if os.environ['FLASK_SERVER_TYPE'].upper() == 'CENTRAL':
-    register_central(app)
-elif os.environ['FLASK_SERVER_TYPE'].upper() == 'DATA':
-    register_data(app)
-# else:
-    # Loads central if not specified or wrong
-    # register_central(app)
