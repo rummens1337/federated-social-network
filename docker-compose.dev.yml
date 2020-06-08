@@ -7,8 +7,8 @@ services:
         context: ./
         dockerfile: ./docker/flask/Dockerfile
         args:
-            PORT: ${PORT}
-            TYPE: ${TYPE}
+            FLASK_PORT: ${FLASK_PORT}
+            FLASK_SERVER_TYPE: ${FLASK_SERVER_TYPE}
     ports:
         - "5000:5000"
     depends_on:

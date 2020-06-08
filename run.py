@@ -16,5 +16,5 @@ if __name__ == '__main__':
     # args = parser.parse_args()
     # main(args.server, args.port)
     from app import app as application
-    application.run(host='0.0.0.0')
+    application.run(host='0.0.0.0', port=os.environ['PORT'])
 

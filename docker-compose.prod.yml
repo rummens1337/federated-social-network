@@ -9,7 +9,7 @@ services:
       context: ./
       dockerfile: ./docker/apache/Dockerfile
       args:
-        TYPE: ${TYPE}
+        FLASK_SERVER_TYPE: ${FLASK_SERVER_TYPE}
     restart: always
     depends_on:
       - mysql

@@ -1,8 +1,8 @@
-TYPE = CENTRAL
-PORT = $(port)
+FLASK_SERVER_TYPE = $(type)
+FLASK_PORT = $(port)
 
-export TYPE
-export PORT
+export FLASK_SERVER_TYPE
+export FLASK_PORT
 
 # Starts all docker containers as described in the docker-compose.yml file
 run:
