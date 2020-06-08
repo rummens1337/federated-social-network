@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+
+  web:
+    build:
+        context: ./
+        dockerfile: ./docker/flask/Dockerfile
+        args:
+            FLASK_PORT: ${FLASK_PORT}
+            FLASK_SERVER_TYPE: ${FLASK_SERVER_TYPE}
+    ports:
+        - "${FLASK_PORT}:${FLASK_PORT}"
+    depends_on:
+        - mysql
+    volumes:
+        - "./app:/var/www/flask/app"
+
+  redis:
+    image: "redis:alpine"

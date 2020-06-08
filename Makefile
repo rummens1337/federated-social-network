@@ -1,7 +1,28 @@
+# Get arguments 
+FLASK_SERVER_TYPE = $(type)
+FLASK_PORT = $(port)
+
+# Set the default flask port to 5000
+ifeq ($(FLASK_PORT),)
+FLASK_PORT = 5000
+endif
+
+# Set the default flask server type to central
+ifeq ($(FLASK_SERVER_TYPE),)
+FLASK_SERVER_TYPE = CENTRAL
+endif
+
+# Variables used in dockerfiles
+export FLASK_SERVER_TYPE
+export FLASK_PORT
+
 # Starts all docker containers as described in the docker-compose.yml file
 run:
-	docker-compose build
-	docker-compose up --remove-orphans
+	docker-compose -f docker-compose.dev.yml -f docker-compose.yml up --remove-orphans --build
+
+# Starts all docker containers as described in the docker-compose.yml file as production
+run-prod:
+	docker-compose -f docker-compose.prod.yml -f docker-compose.yml up --remove-orphans --build
 
 # If a container is built, it won't rebuild the container.
 # It also doesn't rebuild any new versions dependencies.
