@@ -16,6 +16,17 @@ endif
 export FLASK_SERVER_TYPE
 export FLASK_PORT
 
+# Check if config is created. If not abort.
+ifeq (,$(wildcard config.py))
+$(error config.py does not exist. Check installation instructions...)
+endif
+
+# Set the mysql data
+MYSQL_DATABASE_USER = $(shell echo $(shell sed -n -e "/MYSQL_DATABASE_USER/ s/.*\= *//p" "config.py"))
+MYSQL_DATABASE_PASSWORD = $(shell echo $(shell sed -n -e "/MYSQL_DATABASE_PASSWORD/ s/.*\= *//p" "config.py"))
+export MYSQL_DATABASE_USER
+export MYSQL_DATABASE_PASSWORD
+
 # Starts all docker containers as described in the docker-compose.yml file
 run:
 	docker-compose -f docker-compose.dev.yml -f docker-compose.yml up --remove-orphans --build

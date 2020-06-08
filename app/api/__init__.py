@@ -1,6 +1,7 @@
 from app.api.central.user import blueprint as central_user
 from app.api.data.user import blueprint as data_user
 from app.api.data.post import blueprint as data_post
+from app.api.data.friend import blueprint as data_friend
 
 
 def register_data(app):
