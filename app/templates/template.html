@@ -16,6 +16,8 @@
     background: #bbb;
   }
   </style>
+  {% block head %}
+      {% endblock %}
 </head>
 <body>
 
@@ -54,8 +56,6 @@
   </nav>
 
 {% block content %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>{% block title %}{% endblock %} - My Webpage</title>
     {% endblock %}
 
 </div>

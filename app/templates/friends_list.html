@@ -1,9 +1,9 @@
 {% extends "template.html" %}
 {% block title %}Index{% endblock %}
 {% block head %}
-	<link type="text/css"  rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}"/>
+	<link type="text/css"  rel="stylesheet" href="../static/css/help.css"/>
 {% endblock %}
-{% block content %}
+{% block content %}\
 <ul id='friend-list'>
   {% for friend in friend_list %}
   <li class='friend selected'>
