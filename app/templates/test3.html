@@ -1,9 +1,12 @@
-{% extends "test2.html" %}
+<!-- Here goes the html file the child is based on. For example: -->
+{% extends "template" %}
 {% block title %}Index{% endblock %}
 {% block head %}
-  {{ super() }}
+<!-- Here goes everyting that you want in the header. For example: -->
+<link type="text/css"  rel="stylesheet" href="../static/css/friend_list.css"/>
 {% endblock %}
 {% block content %}
+<!-- Here goes the "content of the child page. For example" -->
 <div class="col-xl-6">
 
   <h2>Create post</h2>
