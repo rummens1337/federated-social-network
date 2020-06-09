@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>{%block title%}{%endblock%} - FedNet</title>
+  <title>Test1 PSE</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -17,13 +17,13 @@
   }
   </style>
   {% block head %}
-  {% endblock %}
+      {% endblock %}
 </head>
 <body>
 
 
 
-<div class="page-wrapper" style="background-color:#364958;">
+<div class="page-wrapper">
 
   <div id="mySidenav" class="sidenav">
     <!-- <div class="button-side2" onclick="myFunction(this); closeNav()">
@@ -47,24 +47,28 @@
     <div id="b3" class="bar3"></div>
   </div>
 
-    <div class="container-fluid" id="main">
+<div class="container-fluid" id="main">
 
-      <nav class="nav-search container-fluid" id="search">
+  <nav class="nav-search container-fluid" id="search">
 
-        <form class="form-inline my-2 my-lg-0" style="padding-left:20px;">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </nav>
-    </div>
+    <form class="form-inline search my-2 my-lg-0" style="padding-left:20px;">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+  </nav>
+
+{% block content %}
+    {% endblock %}
+
+
+<footer class="jumbotron text-align">Footer</footer>
+</div>
 
   <!-- end page wrapper -->
-  {% block content %}
-      {% endblock %}
 </div>
 
 
 
 </body>
-<footer class="jumbotron text-align">Footer</footer>
 </html>
