@@ -1,8 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Sign up</title>
-        <link href="../static/css/login.css" rel="stylesheet" type="text/css">
+{% extends "template.html" %}
+    {% block title %}Signup{% endblock %}
+    {% block head %}
+      {{ super() }}
+    {% endblock %}
+    {% block content %}
+
+<!-- <!DOCTYPE html>
+<html lang="en"> -->
+    <!-- <head>
+        <! <title>Sign up</title> -->
+        <!-- <link href="../static/css/login.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
         <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -15,9 +22,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
         <script type="text/javascript" src="../static/javascript/login.js"></script>
-    </head>
+    </head> -->
 
-    <body class="login">
+    <!-- <body class="login"> -->
         <div class="container pt-3 bg-dark text-white rounded">
             <div class="row">
                 <div class="col-md-6 mx-auto">
@@ -74,4 +81,5 @@
                 </div>
             </div>
         </div>
-    </body>
+    <!-- </body> -->
+{%endblock%}
