@@ -17,13 +17,12 @@ sudo apt install git make docker.io docker-compose
 Make sure you are using Ubuntu 18.04 or higher to get the newest version of docker-compose.
 
 ### Installing
+> Note: This guide assumes you are using ubuntu. The steps for Windows and MacOS are similar but not the same.
+- Clone the git repository.
+- Go into the cloned directory `cd team-f/`
+- Copy the `config_examply.py` to `config.py` and configure the file using your editor.
+- Run `make run` 
 
-```
-Clone the repo...
-cd team-f
-make run
-
-```
 
 ## Aptional arguments
 ```
