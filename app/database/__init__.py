@@ -90,10 +90,7 @@ class TableLoader:
             The one returned value from the table.
         """
         kwargs['limit'] = 1
-        r = export(*args, **kwargs)[0]
-        if len(args) == 1:
-            return r[0]
-        return r
+        return self.export(*args, **kwargs)[0]
 
     def export(self, *args, order: str='rowid', order_direction: str='desc',
                limit: int=None, **kwargs):
