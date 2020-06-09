@@ -1,6 +1,7 @@
 from flask import Blueprint, request, Flask, render_template, request
 
 from app.api.utils import good_json_response, bad_json_response
+from app.database import users
 
 blueprint = Blueprint('central_user', __name__)
 
@@ -9,9 +10,14 @@ blueprint = Blueprint('central_user', __name__)
 def user():
     # TODO get list of usernames from database
     # dummy:
-    usernames = ['user1', 'user2', 'user3']
 
-    query = "SELECT username FROM users"
+    users.insert(username='user1', address='address1')
+    users.insert(username='user2', address='address2')
+    users.insert(username='user3', address='address3')
+    usernames = users.export('username')
+    users.delete(username='user1')
+    users.delete(username='user2')
+    users.delete(username='user3')
 
     if len(usernames) == 0:
         return bad_json_response('No usernames in the database.')

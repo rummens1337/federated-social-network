@@ -45,7 +45,5 @@ ARG FLASK_PORT
 ENV FLASK_SERVER_TYPE $FLASK_SERVER_TYPE
 ENV FLASK_PORT $FLASK_PORT
 
-ENV FLASK_APP app
-
-CMD flask run
+CMD python3 run.py 
 # CMD ["python3", "run.py", "-s", $TYPE, "-p", $PORT]
