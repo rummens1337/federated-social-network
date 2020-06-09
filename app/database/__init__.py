@@ -119,7 +119,8 @@ class TableLoader:
             [
                 ('another user', '20 Another Road'),
                 ('testuser1', '100 Davin Road'),
-                ('testuser2', 'The Internet')
+                ('testuser2', 'The Internet'),
+                ('testuser3', '100 Davin Road')
             ]
 
             Export the first two usernames and addresses ordered by username:
