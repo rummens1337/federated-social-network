@@ -20,7 +20,7 @@ Make sure you are using Ubuntu 18.04 or higher to get the newest version of dock
 > Note: This guide assumes you are using ubuntu. The steps for Windows and MacOS are similar but not the same.
 - Clone the git repository.
 - Go into the cloned directory `cd team-f/`
-- Copy the `config_examply.py` to `config.py` and configure the file using your editor.
+- Copy the `config-dist.py` to `config.py` and configure the file using your editor.
 - Run `make run` 
 
 
