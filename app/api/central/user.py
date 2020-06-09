@@ -19,6 +19,9 @@ def user():
     users.delete(username='user2')
     users.delete(username='user3')
 
+    # usernames = ['user1central', 'user2central']
+
+
     if len(usernames) == 0:
         return bad_json_response('No usernames in the database.')
 
@@ -104,8 +107,13 @@ def edit():
         pass
     if 'new_username' in request.form:
         # TODO replace username
+
         new_username = request.form['new_username']
         query = "UPDATE users SET username = " + new_username + "WHERE username = " + username
+
+    if 'address' in request.form:
+        # TODO replace address
+
         pass
 
     return good_json_response()
