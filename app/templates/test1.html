@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../javascript/test.js"></script>
   <style>
   .fakeimg {
     height: 200px;
@@ -19,7 +20,7 @@
 
 <div class="jumbotron text-center" style="margin-bottom:0">
   <h1>Federated Social Network</h1>
-  <p>Safely connect to other people!</p> 
+  <p>Safely connect to other people!</p>
 </div>
 
 <nav class="navbar sticky-top navbar-light bg-dark">
@@ -66,7 +67,7 @@
       <div class="fakeimg">Fake Profile Image</div>
       <p>Some sub profile text/status</p>
       <h3>Recent friends</h3>
-      <ul class="nav nav-pills flex-column">
+      <ul id="usernames" class="nav nav-pills flex-column">
         <li class="nav-item">
           <a class="nav-link active" href="#">Active</a>
         </li>
