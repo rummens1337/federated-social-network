@@ -111,6 +111,7 @@ class TableLoader:
             >>> user.export('username', 'address')
             [
                 ('testuser1', '100 Davin Road'),
+                ('testuser3', '100 Davin Road'),
                 ('testuser2', 'The Internet'),
                 ('another user', '20 Another Road')
             ]
@@ -130,6 +131,15 @@ class TableLoader:
             [
                 ('another user', '20 Another Road'),
                 ('testuser1', '100 Davin Road')
+            ]
+
+            Export all usernames living on the same address, 100 Davin Road,
+            ordered by username descending:
+            >>> user.export('username', order='username',
+                            order_direction='desc', address='100 Davin Road')
+            [
+                ('testuser1', '100 Davin Road'),
+                ('testuser3', '100 Davin Road')
             ]
 
         Args:

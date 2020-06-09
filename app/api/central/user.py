@@ -14,7 +14,7 @@ def user():
     users.insert(username='user1', address='address1')
     users.insert(username='user2', address='address2')
     users.insert(username='user3', address='address3')
-    usernames = users.export('username')
+    usernames = users.export('username', 'address')
     users.delete(username='user1')
     users.delete(username='user2')
     users.delete(username='user3')
