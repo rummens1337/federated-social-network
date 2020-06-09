@@ -61,6 +61,6 @@ def privacy():
 def server():
     return render_template('settingsServer.html')
 
-@app.route('/settings/password')
+@app.route('/password')
 def password():
     return render_template('password.html')
