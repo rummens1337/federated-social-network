@@ -157,12 +157,10 @@
 
 	#main
 	{
-		overflow: hidden;
 		float: right;
 		width: 800px;
 		padding: 3em 50px 5em 50px;
-		background: #FFF;
-		border-top: 6px solid #ffffff;
+		background: #CDCDCD;
 		text-align: center;
 	}
 
