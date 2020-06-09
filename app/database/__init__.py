@@ -232,7 +232,6 @@ class TableLoader:
 def init_mysql(app):
     # globally set mysql variable
     globals()['mysql'] = MySQL(app)
-    time.sleep(1) # needs some time apparently
     if server_type() == 'CENTRAL':
         sql_file = CENTRAL_SQL
         globals()['users'] = TableLoader('users')

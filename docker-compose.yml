@@ -27,6 +27,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin_central
+    restart: always
     # Gives the phpmyadmin container access to the mysql container
     links:
       - mysql
