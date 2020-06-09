@@ -11,6 +11,8 @@ def user():
     # dummy:
     usernames = ['user1', 'user2', 'user3']
 
+    query = "SELECT username FROM users"
+
     if len(usernames) == 0:
         return bad_json_response('No usernames in the database.')
 
@@ -32,6 +34,8 @@ def address():
     # dummy:
     address = '0.0.0.0'
 
+    query = "SELECT address FROM users WHERE username = " + username
+
     return good_json_response({
         'address': address
     })
@@ -45,6 +49,9 @@ def registered():
         return bad_json_response('Username should be given as parameter.')
 
     # TODO look if username exists in database
+
+    "SELECT address from users WHERE username = " + username
+    # TODO check length of result > 0
 
     return good_json_response({
         'registered': username == usnamecheck
@@ -60,6 +67,7 @@ def register():
         return bad_json_response('Invalid e-mail address.')
 
     # TODO insert entry for username and address in datatbase.
+    query = "INSERT INTO users (username, address) VALUES (" + username + ", " + address + ")"
 
     return good_json_response()
 
@@ -72,6 +80,8 @@ def delete():
 
     # TODO delete user
 
+    query = "DELETE FROM users WHERE username = " + username
+
     return good_json_response()
 
 
@@ -81,11 +91,15 @@ def edit():
 
     # TODO fail if user is not registered
 
+    if 'address' in request.form:
+        # TODO replace address
+        new_address = request.form['address']
+        query = "UPDATE users SET address = " + new_address + "WHERE username = " + username
+        pass
     if 'new_username' in request.form:
         # TODO replace username
-        pass
-    if 'address' in request.form:
-        # TODO replace address        
+        new_username = request.form['new_username']
+        query = "UPDATE users SET username = " + new_username + "WHERE username = " + username
         pass
 
     return good_json_response()
