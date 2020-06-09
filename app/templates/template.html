@@ -19,33 +19,55 @@
 </head>
 <body>
 
+
+
 <div class="page-wrapper">
+  
+  <div id="mySidenav" class="sidenav">
+    <!-- <div class="button-side2" onclick="myFunction(this); closeNav()">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div> -->
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Clients</a>
+    <a href="#">Contact</a>
+  </div>
 
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="#">About</a>
-  <a href="#">Services</a>
-  <a href="#">Clients</a>
-  <a href="#">Contact</a>
-  <a href="#">Settings</a>
+  <!-- <span class="button-side" onclick="openNav()">open</span> -->
 
-</div>
-<nav class="nav-search">
+  <div class="button-side" onclick="myFunction(this); toggleNav()">
+    <div id="b1" class="bar1"></div>
+    <div id="b2" class="bar2"></div>
+    <div id="b3" class="bar3"></div>
+  </div>
 
-<div class="container-fluid" id="main" style="margin-top:30px">
+<div class="container-fluid" id="main">
 
-  <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
-  </form>
-</nav>
-  <span class="btn-nav" onclick="openNav()">open</span>
+  <nav class="nav-search container-fluid" id="search">
+    
+    <form class="form-inline my-2 my-lg-0" style="padding-left:20px;">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </nav>
+
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+
 </div>
 
   <!-- end page wrapper -->
 </div>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
+<div class="jumbotron text-center" id="jumbotron">
   <p>Footer</p>
 </div>
 
