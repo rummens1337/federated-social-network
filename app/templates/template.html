@@ -31,10 +31,12 @@
       <div class="bar2"></div>
       <div class="bar3"></div>
     </div> -->
-    <a href="#">About</a>
-    <a href="#">Services</a>
-    <a href="#">Clients</a>
-    <a href="#">Contact</a>
+    <ul class="nav nav-pills flex-column">
+      <li class="nav-item active"><a class="nav-link" href="/index">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="/friend_list">Friends</a></li>
+      <li class="nav-item"><a class="nav-link" href="/settings">Settings</a></li>
+      <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+    </ul>
   </div>
 
   <!-- <span class="button-side" onclick="openNav()">open</span> -->
@@ -58,14 +60,14 @@
 {% block content %}
     {% endblock %}
 
+
+<footer class="jumbotron text-align">Footer</footer>
 </div>
 
   <!-- end page wrapper -->
 </div>
 
-<div class="jumbotron text-center" id="jumbotron">
-  <p>Footer</p>
-</div>
+
 
 </body>
 </html>
