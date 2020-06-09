@@ -6,7 +6,7 @@ body {
 .page-wrapper {
   min-height: 100vh;
   position:relative;
-
+  
 }
 
 .container-fluid {
@@ -17,11 +17,12 @@ body {
 }
 
 .nav-search {
-  width: 100%;
   background-color: #0b132b;
   padding-top: 10px;
   padding-bottom: 10px;
+  width: 100%;
 }
+
 
 /* The side navigation menu */
 .sidenav {
@@ -104,6 +105,8 @@ body {
   padding-bottom: 2.5rem;
 }
 
+
+
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
 @media screen and (max-width: 700px) {
   .sidebar {
@@ -113,7 +116,15 @@ body {
   }
   .sidebar a {float: left;}
   div.content {margin-left: 0;}
-
+  .btn-custom {
+    width: 70px;
+    font-size: 75%;
+  }
+  .search {
+      width: 40%;
+      /*font-size: 70%;*/
+    }
+  
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
@@ -122,6 +133,15 @@ body {
     text-align: center;
     float: none;
   }
+  .btn-custom {
+    width: 70px;
+    /*font-size: 70%;*/
+  }
+  .search {
+    width: 25%;
+    font-size: 60%;
+  }
+  
 }
 .jumbotron {
 	background-color: #0b132b;
@@ -135,12 +155,13 @@ body {
 }
 
 
-/*.navbar-custom {
+/*.navbar-custom { 
 	background-color: #0b132b;
 }*/
 
 .btn-custom {
 	background-color: #cdcdcd;
+  top: 0;
 }
 
 .btn-side {
