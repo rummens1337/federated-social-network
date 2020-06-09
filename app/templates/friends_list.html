@@ -1,0 +1,17 @@
+{% extends "test2.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+	<link type="text/css"  rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}"/>
+{% endblock %}
+{% block content %}
+<ul id='friend-list'>
+  {% for friend in friend_list %}
+  <li class='friend selected'>
+    <img src='https://i.imgur.com/nkN3Mv0.jpg' />
+    <div class='name'>
+      {{ friend.name.username }}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

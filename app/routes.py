@@ -28,3 +28,15 @@ def profile():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route('/friend_list')
+def friend_list():
+    friends = [
+        {
+            'name': {'username': ' Bas'}
+        },
+        {
+            'name': {'username': 'Felix'}
+        },
+    ]
+    return render_template('friends_list.html', friend_list = friends)
