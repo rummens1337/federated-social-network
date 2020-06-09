@@ -22,7 +22,7 @@
 
 
 <div class="page-wrapper">
-  
+
   <div id="mySidenav" class="sidenav">
     <!-- <div class="button-side2" onclick="myFunction(this); closeNav()">
       <div class="bar1"></div>
@@ -46,17 +46,13 @@
 <div class="container-fluid" id="main">
 
   <nav class="nav-search container-fluid" id="search">
-    
+
     <form class="form-inline my-2 my-lg-0" style="padding-left:20px;">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
     </form>
   </nav>
 
-{% block content %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>{% block title %}{% endblock %} - My Webpage</title>
-    {% endblock %}
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>{% block title %}{% endblock %} - My Webpage</title>
