@@ -8,7 +8,7 @@ from app import app
 @app.route('/index')
 @app.route('/home')
 def index():
-    return render_template('template.html')
+    return render_template('index.html')
 
 @app.route('/about')
 @app.route('/?')
@@ -33,10 +33,14 @@ def login():
 def friend_list():
     friends = [
         {
-            'name': {'username': ' Bas'}
+            'name': {'username': ' Bas'},
+            'photo': {'photo_url': "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"},
+            'profile': {'profile_url': "https://google.nl"}
         },
         {
-            'name': {'username': 'Felix'}
+            'name': {'username': 'Felix'},
+            'photo': {'photo_url': "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"},
+            'profile': {'profile_url': "https://google.nl"}
         },
     ]
     return render_template('friends_list.html', friend_list = friends)
@@ -57,6 +61,6 @@ def privacy():
 def server():
     return render_template('settingsServer.html')
 
-@app.route('/settings/password')
+@app.route('/password')
 def password():
     return render_template('password.html')

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>{%block title%}{%endblock%} - FedNet</title>
-  <meta charset="utf-8">
+  <title>{%block title%}{%endblock%} - FedNet</title>  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="../static/css/template.css">
@@ -17,15 +16,20 @@
   }
   </style>
   {% block head %}
-      {% endblock %}
+  {% endblock %}
 </head>
 <body>
 
 
 
 <div class="page-wrapper" style="background-color:#364958;">
-
+    <div class="content-wrap">
   <div id="mySidenav" class="sidenav">
+    <!-- <div class="button-side2" onclick="myFunction(this); closeNav()">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div> -->
     <ul class="nav nav-pills flex-column">
       <li class="nav-item active"><a class="nav-link" href="/index">Home</a></li>
       <li class="nav-item"><a class="nav-link" href="/friend_list">Friends</a></li>
@@ -42,23 +46,31 @@
     <div id="b3" class="bar3"></div>
   </div>
 
-<nav class="nav-search container-fluid" id="search">
+<div class="container-fluid" id="main">
 
-  <form class="form-inline my-2 my-lg-0" style="padding-left:20px;">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
-  </form>
-</nav>
+  <nav class="nav-search container-fluid" id="search">
 
+    <form class="form-inline search my-2 my-lg-0" style="padding-left:20px;">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
+    </form>
 
-  {% block content %}
-  {% endblock %}
+  </nav>
+
+{% block content %}
+    {% endblock %}
 
 
 </div>
-<footer class="jumbotron text-align">Footer</footer>
 
+<!-- end content wrap -->
+</div>
+<footer id="jumbotron" class="jumbotron text-align">Footer</footer>
 
   <!-- end page wrapper -->
+</div>
+
+
+
 </body>
 </html>
