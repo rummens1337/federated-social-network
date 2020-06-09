@@ -5,11 +5,13 @@ $(function (){
         type: 'GET',
         url: 'http://localhost:5000/api/user/',
 
-        success: function(usernames) {
+        success: function(info) {
             // alert(usernames)
+            obj = JSON.parse(info)
 
-            $usernames.append('<li>username: '+ usernames.usernames + '</li>');
-
+            for (i in obj.data.usernames) {
+                $usernames.append('<li>username: '+ obj.data.usernames[i] + '</li>');
+            }
         }
     });
 });
