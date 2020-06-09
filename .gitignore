@@ -1,3 +1,6 @@
+# Project specific
+config.py
+
 *~
 *.pyc
 __pycache__/
