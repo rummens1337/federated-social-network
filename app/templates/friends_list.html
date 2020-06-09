@@ -1,20 +1,21 @@
 {% extends "template.html" %}
 {% block title %}Friends{% endblock %}
 {% block head %}
-	<link type="text/css"  rel="stylesheet" href="../static/css/friend_list.css"/>
+    <link type="text/css"  rel="stylesheet" href="../static/css/friend_list.css"/>
 {% endblock %}
+
 {% block content %}
-<ul id='friend-list'>
-	<h1> Your friends:</h1>
-  {% for friend in friend_list %}
-	<a href={{ friend.profile.profile_url }}>
-	  <li class='friend selected'>
-	    <img src= {{ friend.photo.photo_url }} >
-	    <div class='name'>
-	      {{ friend.name.username }}
-	    </div>
-	  </li>
-	</a>
-  {% endfor %}
-</ul>
+    <ul id='friend-list'>
+    <h1> Your friends:</h1>
+    {% for friend in friend_list %}
+        <a href={{ friend.profile.profile_url }}>
+        <li class='friend selected'>
+        <img src= {{ friend.photo.photo_url }} >
+        <div class='name'>
+            {{ friend.name.username }}
+        </div>
+        </li>
+        </a>
+    {% endfor %}
+    </ul>
 {% endblock %}
