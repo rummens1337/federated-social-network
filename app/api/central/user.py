@@ -9,7 +9,7 @@ blueprint = Blueprint('central_user', __name__)
 def user():
     # TODO get list of usernames from database
     # dummy:
-    usernames = ['user1', 'user2', 'user3']
+    usernames = ['user1central', 'user2central']
 
     if len(usernames) == 0:
         return bad_json_response('No usernames in the database.')
@@ -85,7 +85,7 @@ def edit():
         # TODO replace username
         pass
     if 'address' in request.form:
-        # TODO replace address        
+        # TODO replace address
         pass
 
     return good_json_response()
