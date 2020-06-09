@@ -27,6 +27,27 @@ MYSQL_DATABASE_PASSWORD = $(shell echo $(shell sed -n -e "/MYSQL_DATABASE_PASSWO
 export MYSQL_DATABASE_USER
 export MYSQL_DATABASE_PASSWORD
 
+# Set tje project name to data or server so they can both run at the same time
+COMPOSE_PROJECT_NAME=${FLASK_SERVER_TYPE}
+export COMPOSE_PROJECT_NAME
+
+# Set data / central different ports
+PHPMYADMIN_PORT = 7000
+MYSQL_PORT=6000
+
+ifeq (${FLASK_SERVER_TYPE}, DATA)
+PHPMYADMIN_PORT = 7001
+MYSQL_PORT=6001
+endif
+
+ifeq (${FLASK_SERVER_TYPE}, data)
+PHPMYADMIN_PORT = 7001
+MYSQL_PORT=6001
+endif
+
+export MYSQL_PORT
+export PHPMYADMIN_PORT
+
 # Starts all docker containers as described in the docker-compose.yml file
 run:
 	docker-compose -f docker-compose.dev.yml -f docker-compose.yml up --remove-orphans --build

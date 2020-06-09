@@ -4,6 +4,7 @@ services:
 
   web:
     restart: always
+    container_name: web_${FLASK_SERVER_TYPE}
     build:
         context: ./
         dockerfile: ./docker/flask/Dockerfile
