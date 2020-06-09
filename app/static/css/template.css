@@ -6,7 +6,7 @@ body {
 .page-wrapper {
   min-height: 100vh;
   position:relative;
-  
+
 }
 
 .container-fluid {
@@ -113,7 +113,7 @@ body {
   }
   .sidebar a {float: left;}
   div.content {margin-left: 0;}
-  
+
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
@@ -135,7 +135,7 @@ body {
 }
 
 
-/*.navbar-custom { 
+/*.navbar-custom {
 	background-color: #0b132b;
 }*/
 
