@@ -3,6 +3,11 @@ body {
 	color: #cdcdcd;
 
 }
+.page-wrapper {
+  min-height: 100vh;
+  position:relative;
+  
+}
 
 .container-fluid {
   padding-right:0;
@@ -96,7 +101,7 @@ body {
 #main {
   transition: margin-left .5s;
   margin: 0;
-  /*padding: 20px;*/
+  padding-bottom: 2.5rem;
 }
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
@@ -108,6 +113,7 @@ body {
   }
   .sidebar a {float: left;}
   div.content {margin-left: 0;}
+  
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
@@ -120,9 +126,16 @@ body {
 .jumbotron {
 	background-color: #0b132b;
   text-align: center;
+  position: absolute;
+  bottom: 0;
+  height: 2.5rem;
+  width: 100%;
+  padding-top: 25px;
+  margin-bottom: 0px;
 }
 
-/*.navbar-custom {
+
+/*.navbar-custom { 
 	background-color: #0b132b;
 }*/
 
