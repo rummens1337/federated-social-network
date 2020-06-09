@@ -40,3 +40,23 @@ def friend_list():
         },
     ]
     return render_template('friends_list.html', friend_list = friends)
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
+@app.route('/settings/profile')
+def settingsProfile():
+    return render_template('settingsProfile.html')
+
+@app.route('/settings/privacy')
+def privacy():
+    return render_template('settingsPrivacy.html')
+
+@app.route('/settings/server')
+def server():
+    return render_template('settingsServer.html')
+
+@app.route('/settings/password')
+def password():
+    return render_template('password.html')
