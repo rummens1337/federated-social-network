@@ -2,14 +2,18 @@
 FLASK_SERVER_TYPE = $(type)
 FLASK_PORT = $(port)
 
-# Set the default flask port to 5000
-ifeq ($(FLASK_PORT),)
-FLASK_PORT = 5000
-endif
-
 # Set the default flask server type to central
 ifeq ($(FLASK_SERVER_TYPE),)
-FLASK_SERVER_TYPE = CENTRAL
+FLASK_SERVER_TYPE = central
+endif
+
+# Set the default flask port to 5000 if central server
+ifeq ($(FLASK_PORT),)
+FLASK_PORT = 5000
+# and to 9000 if data server
+ifeq ($(FLASK_SERVER_TYPE), data)
+FLASK_PORT = 9000
+endif
 endif
 
 # Variables used in dockerfiles
@@ -18,7 +22,7 @@ export FLASK_PORT
 
 # Check if config is created. If not abort.
 ifeq (,$(wildcard config.py))
-$(error config.py does not exist. Check installation instructions...)
+	$(error config.py does not exist. Check installation instructions...)
 endif
 
 # Set the mysql data
@@ -26,6 +30,27 @@ MYSQL_DATABASE_USER = $(shell echo $(shell sed -n -e "/MYSQL_DATABASE_USER/ s/.*
 MYSQL_DATABASE_PASSWORD = $(shell echo $(shell sed -n -e "/MYSQL_DATABASE_PASSWORD/ s/.*\= *//p" "config.py"))
 export MYSQL_DATABASE_USER
 export MYSQL_DATABASE_PASSWORD
+
+# Set tje project name to data or server so they can both run at the same time
+COMPOSE_PROJECT_NAME=${FLASK_SERVER_TYPE}
+export COMPOSE_PROJECT_NAME
+
+# Set data / central different ports
+PHPMYADMIN_PORT = 7000
+MYSQL_PORT=6000
+
+ifeq (${FLASK_SERVER_TYPE}, DATA)
+PHPMYADMIN_PORT = 7001
+MYSQL_PORT=6001
+endif
+
+ifeq (${FLASK_SERVER_TYPE}, data)
+PHPMYADMIN_PORT = 7001
+MYSQL_PORT=6001
+endif
+
+export MYSQL_PORT
+export PHPMYADMIN_PORT
 
 # Starts all docker containers as described in the docker-compose.yml file
 run:
