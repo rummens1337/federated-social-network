@@ -3,7 +3,7 @@
 // - method: the method to use ('GET'/'POST').
 // - url: the url to do the request to.
 // - func: the function to apply the JSON data to.
-function getJSON(method, url, func) {
+function requestJSON(method, url, func) {
     $.ajax({
         type: method,
         url: url,
