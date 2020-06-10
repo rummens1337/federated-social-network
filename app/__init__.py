@@ -11,13 +11,13 @@ app.config.from_object('config')
 init_mysql(app)
 
 from app.api import register_central, register_data
-from app.main import blueprint as main_routes
 from app.utils import server_type
 
-app.register_blueprint(main_routes, url_prefix='/')
-
 if server_type() == 'CENTRAL':
+    from app.api.central.main import blueprint as main_routes
     register_central(app)
 elif server_type() == 'DATA':
+    from app.api.data.main import blueprint as main_routes
     register_data(app)
 
+app.register_blueprint(main_routes, url_prefix='/')
