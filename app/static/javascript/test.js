@@ -6,6 +6,7 @@ $( document ).ready(function (){
     $.ajax({
         type: 'GET',
         url: 'http://localhost:9000/api/user/',
+        crossDomain: true,
 
         success: function(json) {
 

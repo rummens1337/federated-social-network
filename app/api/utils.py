@@ -1,4 +1,5 @@
 import json
+from flask import Response
 
 
 def bad_json_response(reason: str) -> str:
@@ -16,5 +17,7 @@ def good_json_response(data: dict=None) -> str:
     }
     if data is not None:
         response['data'] = data
-    return json.dumps(response)
-
+    
+    r = Response(json.dumps(response), mimetype='application/json')
+    r.headers['Access-Control-Allow-Origin'] = '*'
+    return r
