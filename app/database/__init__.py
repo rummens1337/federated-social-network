@@ -133,7 +133,7 @@ class TableLoader:
 
             Export all usernames living on the same address, 100 Davin Road,
             ordered by username descending:
-            >>> user.export('username', order='username',
+            >>> user.export('username', 'address', order='username',
                             order_direction='desc', address='100 Davin Road')
             [
                 ('testuser1', '100 Davin Road'),
@@ -238,11 +238,16 @@ def init_mysql(app):
     elif server_type() == 'DATA':
         sql_file = DATA_SQL
         globals()['users'] = TableLoader('users')
-        #globals()['friends'] = TableLoader('friends')
-        #globals()['profiles'] = TableLoader('profiles')
+        globals()['friends'] = TableLoader('friends')
+        globals()['posts'] = TableLoader('posts')
+        globals()['uploads'] = TableLoader('uploads')
     with cursor() as cur:
         with open(sql_file, 'r') as f:
-            cur.execute(f.read())
+            for q in f.read().split(';'):
+                q = q.strip()
+                if len(q) == 0:
+                    continue
+                cur.execute(q)
 
 
 def test_db():
