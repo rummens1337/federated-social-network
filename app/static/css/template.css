@@ -1,12 +1,12 @@
 body {
-	background-color: #3b3b3f;
+	background-color: #364958;
 	color: #cdcdcd;
 
 }
 .page-wrapper {
   min-height: 100vh;
   position:relative;
-  
+
 }
 
 .container-fluid {
@@ -124,7 +124,7 @@ body {
       width: 40%;
       /*font-size: 70%;*/
     }
-  
+
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
@@ -141,7 +141,7 @@ body {
     width: 25%;
     font-size: 60%;
   }
-  
+
 }
 .jumbotron {
 	background-color: #0b132b;
@@ -155,7 +155,7 @@ body {
 }
 
 
-/*.navbar-custom { 
+/*.navbar-custom {
 	background-color: #0b132b;
 }*/
 
