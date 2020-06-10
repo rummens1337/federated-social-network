@@ -2,14 +2,18 @@
 FLASK_SERVER_TYPE = $(type)
 FLASK_PORT = $(port)
 
-# Set the default flask port to 5000
-ifeq ($(FLASK_PORT),)
-FLASK_PORT = 5000
-endif
-
 # Set the default flask server type to central
 ifeq ($(FLASK_SERVER_TYPE),)
 FLASK_SERVER_TYPE = central
+endif
+
+# Set the default flask port to 5000 if central server
+ifeq ($(FLASK_PORT),)
+FLASK_PORT = 5000
+# and to 9000 if data server
+ifeq ($(FLASK_SERVER_TYPE), data)
+FLASK_PORT = 9000
+endif
 endif
 
 # Variables used in dockerfiles
@@ -18,7 +22,7 @@ export FLASK_PORT
 
 # Check if config is created. If not abort.
 ifeq (,$(wildcard config.py))
-$(error config.py does not exist. Check installation instructions...)
+	$(error config.py does not exist. Check installation instructions...)
 endif
 
 # Set the mysql data
