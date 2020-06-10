@@ -51,7 +51,13 @@ def settings():
 
 @app.route('/settings/profile')
 def settingsProfile():
-    return render_template('settingsProfile.html')
+    profile = {
+        'name': {'firstname': 'Coen', 'lastname': 'Nusse','username': 'Coen'},
+        'photo': {'photo_url': "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"},
+        'email': {'emailadress': "coennusse@live.nl"}
+        }
+
+    return render_template('settingsProfile.html', profile = profile)
 
 @app.route('/settings/privacy')
 def privacy():

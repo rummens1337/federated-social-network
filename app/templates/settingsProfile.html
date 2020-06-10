@@ -2,11 +2,11 @@
 {% block title %}Settings{% endblock %}
 {% block head %}
   <title>Settings</title>
-  <link href="../static/css/settings2.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="../static/css/settings3.css" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 {% block content %}
 <div>
-  <div id="page" class="container">
+  <div id="page" class="container bg-dark p-3">
     <div id="header">
       <div id="logo">
         <h1><a href="../index">Fedbook</a></h1>
@@ -27,15 +27,23 @@
       </div>
       <ul class="style1">
         <li>
-          <p><b>Full name</b></p>
-          <input type='text' class='input' value='Coen Nusse'> </input>
+          <img src= {{ profile.photo.photo_url }} >
+          <button type="submit" class="btn-primary">Edit</button>
+        </li>
+        <li>
+          <p><b>First name</b></p>
+          <input type='text' class='input' value= {{profile.name.firstname}}> </input>
+        </li>
+        <li>
+          <p><b>Last name</b></p>
+          <input type='text' class='input' value= {{profile.name.lastname}}> </input>
         </li>
         <li>
           <p><b>Username</b></p>
-          <input type='text' class='input' value='coen'> </input>
+          <input type='text' class='input' value= {{profile.name.username}}> </input>
         <li>
           <p><b>Email adress</b></p>
-          <input type='email' class='input' value='coennusse@live.nl'> </input>
+          <input type='email' class='input' value= {{profile.email.emailadress}}> </input>
         </li>
         <li>
           <p><b>Password</b></p>
