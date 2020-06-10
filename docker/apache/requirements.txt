@@ -1,2 +1,7 @@
 Flask
 flask-mysql
+pytest
+requests
+pytest-html
+
+
