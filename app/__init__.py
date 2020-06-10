@@ -1,7 +1,11 @@
-from flask import Flask
 import os
 
+from flask import Flask
+
 from app.database import init_mysql
+from app.log import init_logger
+
+init_logger()
 app = Flask(__name__)
 app.config.from_object('config')
 init_mysql(app)
