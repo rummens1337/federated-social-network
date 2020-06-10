@@ -22,7 +22,7 @@ export FLASK_PORT
 
 # Check if config is created. If not abort.
 ifeq (,$(wildcard config.py))
-	$(error config.py does not exist. Check installation instructions...)
+$(error config.py does not exist. Check installation instructions...)
 endif
 
 # Set the mysql data

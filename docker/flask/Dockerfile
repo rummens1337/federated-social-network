@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
  && rm -rf /var/lib/apt/lists/*
 
 # Set the flask ENV variables
-ENV FLASK_APP run.py
+ENV FLASK_APP app
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV FLASK_DEBUG 1
 
@@ -44,6 +44,7 @@ ARG FLASK_SERVER_TYPE
 ARG FLASK_PORT
 ENV FLASK_SERVER_TYPE $FLASK_SERVER_TYPE
 ENV FLASK_PORT $FLASK_PORT
+ENV FLASK_ENV development
 
-CMD python3 run.py 
+CMD python3 run.py
 # CMD ["python3", "run.py", "-s", $TYPE, "-p", $PORT]
