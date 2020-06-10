@@ -13,9 +13,7 @@ $( document ).ready(function (){
             // Uncomment for debugging.
             // alert(json)
 
-            obj = JSON.parse(json)
-
-            for (i in obj.data.usernames) {
+            for (i in json.data.usernames) {
                 $usernames.append('<li>username: '+ obj.data.usernames[i] + '</li>');
             }
         }
@@ -36,9 +34,7 @@ $( document ).ready(function (){
             // Uncomment for debugging.
             alert(json)
 
-            obj = JSON.parse(json)
-
-            for (i in obj.data.posts) {
+            for (i in json.data.posts) {
                 $usernames.append('<li>username: '+ obj.data.usernames[i] + '</li>');
             }
         }
