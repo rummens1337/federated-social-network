@@ -9,18 +9,16 @@
         <div id="header">
             <div id="logo">
             <h1><a href="index">Fedbook</a></h1>
-        </div>
-        <div id="menu">
-            <ul>
-                <h2 class='settings'> Settings</h2>
-                <li><a href="settings/profile" accesskey="1" title="">Profile</a></li>
-                <li><a href="settings/privacy" accesskey="2" title="">Privacy</a></li>
-                <li><a href="settings/server" accesskey="3" title="">Server</a></li>
-                <li><a href="password" accesskey="4" title="">Password</a></li>
-            </ul>
+            </div>
+            <div id="menu">
+                <ul>
+                    <h2 class='settings'> Settings</h2>
+                    <li><a href="settings/profile" accesskey="1" title="">Profile</a></li>
+                    <li><a href="settings/privacy" accesskey="2" title="">Privacy</a></li>
+                    <li><a href="settings/server" accesskey="3" title="">Server</a></li>
+                    <li><a href="password" accesskey="4" title="">Password</a></li>
+                </ul>
+            </div>
         </div>
     </div>
-{% endblock %}wo usernames and addresses ordered by username:
->>> user.export('username', 'address', order='username',
-                order_direction='desc', limit=2)
-[
+{% endblock %}
