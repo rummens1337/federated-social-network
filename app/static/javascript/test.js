@@ -1,57 +1,33 @@
 // GET or POST JSON from url and apply it to func.
 // Params:
-// - method: the method to use ('GET'/'POST').
+// - type: the request type to use ('GET'/'POST').
 // - url: the url to do the request to.
 // - func: the function to apply the JSON data to.
-function requestJSON(method, url, func) {
+function requestJSON(type, url, func) {
     $.ajax({
-        type: method,
+        type: type,
         url: url,
         crossDomain: true,
-        success: func(data)
+        success: func
     });
 }
 
-// Load usernames to recent friends list.
-$( document ).ready(function (){
-    $.ajax({
-        type: 'GET',
-        url: 'http://localhost:9000/api/user/',
-        crossDomain: true,
+var applyUsernames = function(json) {    
+    // Get usernames div.
+    var $usernames = $('#usernames');
 
-        success: function(json) {
+    for (i in json.data.usernames) {
+        $usernames.append('<li>username: '+ json.data.usernames[i] + '</li>');
+    }
+}
+$(document).ready(requestJSON('GET', 'http://localhost:9000/api/user/', applyUsernames));
 
-            // Uncomment for debugging.
-            // alert(json)
-            
-            // Get usernames div.
-            var $usernames = $('#usernames');
-
-            for (i in json.data.usernames) {
-                $usernames.append('<li>username: '+ obj.data.usernames[i] + '</li>');
-            }
-        }
-    });
-});
-
-// Load post_ids to recent posts list.
-$( document ).ready(function (){
-    $.ajax({
-        type: 'GET',
-        url: 'http://localhost:9000/api/user/posts?username=user1',
-
-        success: function(json) {
-
-            // Uncomment for debugging.
-            alert(json)
-            
-            // Get posts div.
-            var $usernames = $('#usernames');
-
-            for (i in json.data.posts) {
-                $usernames.append('<li>username: '+ obj.data.usernames[i] + '</li>');
-            }
-        }
-    });
-});
-
+var applyPosts = function(json) {
+    // Get posts div.
+    var $usernames = $('#posts');
+    alert(json)
+    for (i in json.data.posts) {
+        $usernames.append('<li>POST: '+ json.data.posts[i] + '</li>');
+    }
+}
+$(document).ready(requestJSON('GET', 'http://localhost:9000/api/user/posts?username=user1', applyPosts));
