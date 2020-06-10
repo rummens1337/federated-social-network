@@ -28,6 +28,7 @@ interact directly with the database.
 """
 import contextlib
 import os
+import re
 import time
 import typing
 
@@ -133,7 +134,7 @@ class TableLoader:
 
             Export all usernames living on the same address, 100 Davin Road,
             ordered by username descending:
-            >>> user.export('username', order='username',
+            >>> user.export('username', 'address', order='username',
                             order_direction='desc', address='100 Davin Road')
             [
                 ('testuser1', '100 Davin Road'),
@@ -232,17 +233,22 @@ class TableLoader:
 def init_mysql(app):
     # globally set mysql variable
     globals()['mysql'] = MySQL(app)
+    time.sleep(30)
     if server_type() == 'CENTRAL':
         sql_file = CENTRAL_SQL
-        globals()['users'] = TableLoader('users')
     elif server_type() == 'DATA':
         sql_file = DATA_SQL
-        globals()['users'] = TableLoader('users')
-        #globals()['friends'] = TableLoader('friends')
-        #globals()['profiles'] = TableLoader('profiles')
     with cursor() as cur:
         with open(sql_file, 'r') as f:
-            cur.execute(f.read())
+            for q in f.read().split(';'):
+                q = q.strip()
+                if len(q) == 0:
+                    continue
+                q += ';'
+                table = re.search(r'^[^\(]+?([a-zA-Z0-9]+)\s*\(', q).group(1)
+                print('Creating table {}.'.format(table), flush=True)
+                cur.execute(q)
+                globals()[table] = TableLoader(table)
 
 
 def test_db():
