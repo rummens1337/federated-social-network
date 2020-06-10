@@ -1,9 +1,14 @@
+// URL of data server ENDING WITH /
+var dataServer = 'http://localhost:9000/';
+
 // GET or POST JSON from url and apply it to func.
 // Params:
 // - type: the request type to use ('GET'/'POST').
-// - url: the url to do the request to.
+// - api: the api on the data server to do the request to.
 // - func: the function to apply the JSON data to.
-function requestJSON(type, url, func) {
+function requestJSON(type, api, func) {
+    url = dataServer + api;
+
     $.ajax({
         type: type,
         url: url,
@@ -20,7 +25,7 @@ var applyUsernames = function(json) {
         $usernames.append('<li>username: '+ json.data.usernames[i] + '</li>');
     }
 }
-$(document).ready(requestJSON('GET', 'http://localhost:9000/api/user/', applyUsernames));
+$(document).ready(requestJSON('GET', 'api/user/', applyUsernames));
 
 var applyPosts = function(json) {
     // Get posts div.
@@ -30,4 +35,4 @@ var applyPosts = function(json) {
         $usernames.append('<li>POST: '+ json.data.posts[i] + '</li>');
     }
 }
-$(document).ready(requestJSON('GET', 'http://localhost:9000/api/user/posts?username=user1', applyPosts));
+$(document).ready(requestJSON('GET', 'api/user/posts?username=user1', applyPosts));
