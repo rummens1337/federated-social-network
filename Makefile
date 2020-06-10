@@ -9,7 +9,7 @@ endif
 
 # Set the default flask server type to central
 ifeq ($(FLASK_SERVER_TYPE),)
-FLASK_SERVER_TYPE = CENTRAL
+FLASK_SERVER_TYPE = central
 endif
 
 # Variables used in dockerfiles
