@@ -42,8 +42,10 @@ RUN a2ensite apache-flask.conf
 ARG FLASK_SERVER_TYPE
 ENV FLASK_SERVER_TYPE $FLASK_SERVER_TYPE
 
+ENV FLASK_APP app
+
 EXPOSE 80
 
-WORKDIR /var/www/apache-flask/app
+WORKDIR /var/www/apache-flask/
 
 CMD  /usr/sbin/apache2ctl -D FOREGROUND
