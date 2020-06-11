@@ -41,7 +41,7 @@ def address():
 
     # TODO get address from database
     # dummy:
-    address = '0.0.0.0'
+    address = '0.0.0.0:9000'
 
     query = "SELECT address FROM users WHERE username = " + username
 

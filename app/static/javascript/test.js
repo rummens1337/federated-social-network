@@ -31,7 +31,6 @@ var getDataServer = function(req) {
 var applyUsernames = function(req) {
     // Get usernames div.
     var $usernames = $('#usernames');
-    alert(req.data.usernames)
 
     for (i in req.data.usernames) {
         $usernames.append('<li>username: '+ req.data.usernames[i] + '</li>');
@@ -48,7 +47,7 @@ var applyPosts = function(req) {
 };
 
 $(document).ready(function() {
-    // requestJSON('GET', centralServer + 'api/user/', getDataServer);
+    requestJSON('GET', centralServer + 'api/user/address?username=' + username, getDataServer);
     requestJSON('GET', dataServer + 'api/user/', applyUsernames);
     requestJSON('GET', dataServer + 'api/user/posts?username=' + username, applyPosts);
 });
