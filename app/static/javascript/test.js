@@ -1,4 +1,4 @@
-// URL of data server ENDING WITH /
+// URL of data server ENDING WITH
 var centralServer = 'http://localhost:5000/'
 var dataServer = 'http://localhost:9000/';
 
@@ -18,12 +18,13 @@ function requestJSON(type, url, func) {
 }
 
 // DIT WERKT NOG NIET
+// Get address of data server for this user from the central server.
 //var getDataServer = function(req) {
 //    dataServer = req.data.address;
 //}
 //$(document).ready(requestJSON('GET', centralServer + 'api/user/', getDataServer));
 
-var applyUsernames = function(req) {    
+var applyUsernames = function(req) {
     // Get usernames div.
     var $usernames = $('#usernames');
 
