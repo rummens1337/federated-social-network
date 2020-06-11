@@ -1,4 +1,6 @@
-// URL of servers ENDING WITH /
+// URL of servers ENDING WITH '/'
+// centralServer is hardcoded
+// dataServer is requested using function getDataServer
 var centralServer = 'http://localhost:5000/'
 var dataServer = 'http://localhost:9000/';
 
@@ -20,12 +22,12 @@ function requestJSON(type, url, func) {
     });
 }
 
-// DIT WERKT NOG NIET
+// DIT WERKT NOG NIET (toevoegen als central server werkt)
 // Get address of data server for this user from the central server.
 //var getDataServer = function(req) {
 //    dataServer = req.data.address;
-//}
-//$(document).ready(requestJSON('GET', centralServer + 'api/user/', getDataServer));
+//};
+//$(document).ready(requestJSON('GET', centralServer + 'api/address/', getDataServer));
 
 var applyUsernames = function(req) {
     // Get usernames div.
@@ -34,15 +36,15 @@ var applyUsernames = function(req) {
     for (i in req.data.usernames) {
         $usernames.append('<li>username: '+ req.data.usernames[i] + '</li>');
     }
-}
+};
 $(document).ready(requestJSON('GET', dataServer + 'api/user/', applyUsernames));
 
 var applyPosts = function(req) {
     // Get posts div.
-    var $usernames = $('#posts');
+    var $posts = $('#posts');
 
     for (i in req.data.posts) {
-        $usernames.append('<li>POST: '+ req.data.posts[i] + '</li>');
+        $posts.append('<li>POST: '+ req.data.posts[i] + '</li>');
     }
-}
+};
 $(document).ready(requestJSON('GET', dataServer + 'api/user/posts?username=' + username, applyPosts));
