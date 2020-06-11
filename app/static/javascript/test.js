@@ -1,6 +1,9 @@
-// URL of data server ENDING WITH
+// URL of servers ENDING WITH /
 var centralServer = 'http://localhost:5000/'
 var dataServer = 'http://localhost:9000/';
+
+// User variables.
+var username = 'user1';
 
 // GET or POST JSON from url and apply it to func.
 // Params:
@@ -42,4 +45,4 @@ var applyPosts = function(req) {
         $usernames.append('<li>POST: '+ req.data.posts[i] + '</li>');
     }
 }
-$(document).ready(requestJSON('GET', dataServer + 'api/user/posts?username=user1', applyPosts));
+$(document).ready(requestJSON('GET', dataServer + 'api/user/posts?username=' + username, applyPosts));
