@@ -75,8 +75,8 @@ def stop_logger():
 
 
 def compress_log(filepath: str, delete: bool=True):
-    with open(filepath, 'rb+') as f, lzma(filepath + '.xz', 'wb') as fz:
-        fw.write(mmap.mmap(f.fileno(), 0))
+    with open(filepath, 'rb+') as f, lzma.open(filepath + '.xz', 'wb') as fz:
+        fz.write(mmap.mmap(f.fileno(), 0))
     if delete:
         os.remove(filepath)
 
