@@ -1,0 +1,69 @@
+{% extends "template.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+<link type="text/css"  rel="stylesheet" href="{{ url_for('static', filename='./css/index.css') }}"/>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-xl-3">
+        <h2>Profile</h2>
+        <h5>Photo:</h5>
+        <div class="fakeimg">Fake Profile Image</div>
+        <p>Some sub profile text/status</p>
+        <h3>Recent friends</h3>
+        <ul class="nav nav-pills flex-column">
+
+        <li class="nav-item">
+        <a class="nav-link active" href="#">Active</a>
+        </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+        </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+        </li>
+
+        <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+        </ul>
+    </div>
+
+    <div class="col-xl-6">
+        <h2>Create post</h2>
+        <div class="form-group">
+            <label for="Textarea1">Write your post here</label>
+            <textarea class="form-control" id="Textarea1" rows="7" placeholder="Today I saw a great..."></textarea>
+        </div>
+        <br>
+
+        <h2>Recent posts</h2>
+        <h5>date of post</h5>
+        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+        <h2>Recent posts</h2>
+        <h5>date of post</h5>
+        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+        <h2>Recent posts</h2>
+        <h5>date of post</h5>
+        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+        <h2>Recent posts</h2>
+        <h5>date of post</h5>
+        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+        <h2>Recent posts</h2>
+        <h5>date of post</h5>
+        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+        <h2>Recent posts</h2>
+        <h5>date of post</h5>
+        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+        <h2>Recent posts</h2>
+        <h5>date of post</h5>
+        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+        <h2>Recent posts</h2>
+        <h5>date of post</h5>
+        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+    </div>
+</div>
+{% endblock %}

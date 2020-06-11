@@ -1,0 +1,49 @@
+{% extends "template.html" %}
+{% block title %}Settings{% endblock %}
+{% block head %}
+    <title>Settings</title>
+    <link href="../static/css/settings3.css" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+{% block content %}
+    <div id="page" class="container bg-dark p-3">
+        <div id="header">
+            <div id="logo">
+                <h1><a href="../index">Fedbook</a></h1>
+            </div>
+            <div id="menu">
+                <ul>
+                    <h2 class='settings'> Settings</h2>
+                    <li><a href="profile" accesskey="1" title="">Profile</a></li>
+                    <li class="current_page_item"><a href="privacy" accesskey="2" title="">Privacy</a></li>
+                    <li><a href="server" accesskey="3" title="">Server</a></li>
+                    <li><a href="../password" accesskey="4" title="">Password</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            <div class="title">
+                <h2>Personal info</h2>
+            </div>
+            <ul class="style1">
+                <li>
+                    <p><b>Full name</b></p>
+                    <input type='text' class='input' value='Coen Nusse'> </input>
+                </li>
+                <li>
+                    <p><b>Username</b></p>
+                    <input type='text' class='input' value='coen'> </input>
+                <li>
+                    <p><b>Email adress</b></p>
+                    <input type='email' class='input' value='coennusse@live.nl'> </input>
+                </li>
+                <li>
+                    <p><b>Password</b></p>
+                    <input type='password' class='input'> </input>
+                </li>
+                <div class="col-md-12 text-center ">
+                    <button type="submit" class="btn-primary btn-block">Update</button>
+                </div>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

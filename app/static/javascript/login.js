@@ -1,4 +1,4 @@
-$(function() {
+$(function validateAccount() {
   $("form[name='login']").validate({
     rules: {
       email: {
@@ -17,6 +17,7 @@ $(function() {
       }
 
     },
+
     submitHandler: function(form) {
       form.submit();
     }
@@ -24,7 +25,7 @@ $(function() {
 });
 
 $(function validatePassword() {
-  var validator = $("form[name='signup']").validate({
+  $("form[name='signup']").validate({
     rules: {
       username: "required",
       firstname: "required",

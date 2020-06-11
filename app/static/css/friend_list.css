@@ -1,0 +1,39 @@
+#friend-list {
+  display: block;
+  margin: 0;
+  padding: 10%;
+  /* width: 80%; */
+  height: 100%;
+  /* background: #EEE; */
+  list-style-type: none;
+}
+
+.friend {
+  /* width: 100%; */
+  height: 100px;
+  background: #364958;
+  border-bottom: 1px solid #cdcdcd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.friend:hover {
+  background-color: #52B77C;
+}
+
+.friend img {
+  height: 80%;
+  width: height;
+  border-radius: 30px;
+  border: 2px solid #cdcdcd;
+  object-fit: cover;
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
+.friend .name {
+  /* color: white; */
+  color: #cdcdcd;
+  font-size: 30px;
+}

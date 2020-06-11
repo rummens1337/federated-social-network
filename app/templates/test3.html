@@ -1,0 +1,22 @@
+<!-- Here goes the html file the child is based on. For example: -->
+{% extends "template" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+<!-- Here goes everyting that you want in the header. For example: -->
+<link type="text/css"  rel="stylesheet" href="../static/css/friend_list.css"/>
+{% endblock %}
+{% block content %}
+<!-- Here goes the "content of the child page. For example" -->
+<div class="col-xl-6">
+
+  <h2>Create post</h2>
+  <div class="form-group">
+    <label for="Textarea1">Write your post here</label>
+      <textarea class="form-control" id="Textarea1" rows="7" placeholder="Today I saw a great..."></textarea>
+  </div>
+  <br>
+  <h2>Recent posts</h2>
+  <h5>date of post</h5>
+  <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+</div>
+{% endblock %}

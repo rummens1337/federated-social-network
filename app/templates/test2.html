@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Test1 PSE</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/template.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../static/javascript/template.js"></script>
+  <style>
+  .fakeimg {
+    height: 200px;
+    background: #bbb;
+  }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
+</div>
+<nav class="nav-search">
+
+<div class="container-fluid" id="main" style="margin-top:30px">
+
+  <form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
+  </form>
+</nav>
+
+  <span class="btn-nav" onclick="openNav()">open</span>
+  <div class="row">
+    <div class="col-xl-3">
+
+      <h2>Profile</h2>
+      <h5>Photo:</h5>
+      <div class="fakeimg">Fake Profile Image</div>
+      <p>Some sub profile text/status</p>
+      <h3>Recent friends</h3>
+
+      <ul class="nav nav-pills flex-column">
+
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Active</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+
+      </ul>
+    </div>
+
+    {% block content %}
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+  </div>
+</div>
+
+  <!-- end page wrapper -->
+</div>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+  <p>Footer</p>
+</div>
+
+</body>
+</html>
