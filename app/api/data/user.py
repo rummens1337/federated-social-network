@@ -9,7 +9,7 @@ blueprint = Blueprint('data_user', __name__)
 def user():
     # TODO get list of usernames from database
     # dummy:
-    usernames = ['user1data']
+    usernames = ['Dataserver friend 1', 'Dataserver friend 2', 'Dataserver friend 3']
 
     if len(usernames) == 0:
         return bad_json_response('No usernames in the database.')

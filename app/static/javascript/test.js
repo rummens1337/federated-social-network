@@ -17,12 +17,15 @@ function requestJSON(type, api, func) {
     });
 }
 
-var applyUsernames = function(json) {    
+var applyUsernames = function(json) {
     // Get usernames div.
     var $usernames = $('#usernames');
 
     for (i in json.data.usernames) {
-        $usernames.append('<li>username: '+ json.data.usernames[i] + '</li>');
+        $usernames.append('<li class="nav-item"><a class="nav-link" href="#">'
+                            + json.data.usernames[i] +
+                            '</a></li>');
+
     }
 }
 $(document).ready(requestJSON('GET', 'api/user/', applyUsernames));
@@ -30,7 +33,7 @@ $(document).ready(requestJSON('GET', 'api/user/', applyUsernames));
 var applyPosts = function(json) {
     // Get posts div.
     var $usernames = $('#posts');
-    alert(json)
+    // alert(json)
     for (i in json.data.posts) {
         $usernames.append('<li>POST: '+ json.data.posts[i] + '</li>');
     }
