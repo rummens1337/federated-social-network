@@ -32,6 +32,7 @@ def posts():
     post_id = [11, 12, 13]
 
     # TODO return actual posts by post_ids
+    # dummy:
     posts = ["test1", "test2"]
 
     if post_id == []:

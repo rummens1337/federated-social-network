@@ -43,7 +43,7 @@ def address():
     # dummy:
     address = '0.0.0.0:9000'
 
-    query = "SELECT address FROM users WHERE username = " + username
+    #address = user.export_one('address', username=username)
 
     return good_json_response({
         'address': address
