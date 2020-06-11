@@ -1,13 +1,16 @@
-// URL of data server ENDING WITH /
+// URL of servers ENDING WITH /
+var centralServer = 'http://localhost:5000/'
 var dataServer = 'http://localhost:9000/';
+
+// User variables.
+var username = 'user1';
 
 // GET or POST JSON from url and apply it to func.
 // Params:
 // - type: the request type to use ('GET'/'POST').
-// - api: the api on the data server to do the request to.
+// - url: the url to do the request to.
 // - func: the function to apply the JSON data to.
-function requestJSON(type, api, func) {
-    url = dataServer + api;
+function requestJSON(type, url, func) {
 
     $.ajax({
         type: type,
@@ -17,26 +20,37 @@ function requestJSON(type, api, func) {
     });
 }
 
-var applyUsernames = function(json) {    
+// DIT WERKT NOG NIET
+// Get address of data server for this user from the central server.
+//var getDataServer = function(req) {
+//    dataServer = req.data.address;
+//}
+//$(document).ready(requestJSON('GET', centralServer + 'api/user/', getDataServer));
+
+var applyUsernames = function(req) {
     // Get usernames div.
     var $usernames = $('#usernames');
-    alert(json)
-    for (i in json.data.usernames) {
-        alert(json.data.usernames[i])
-        $usernames.append('<li>username: '+ json.data.usernames[i] + '</li>');
+
+    for (i in req.data.usernames) {
+        $usernames.append('<li>username: '+ req.data.usernames[i] + '</li>');
     }
 }
 
-var applyPosts = function(json) {
+var applyPosts = function(req) {
     // Get posts div.
     var $usernames = $('#posts');
-    alert(json)
-    for (i in json.data.posts) {
-        $usernames.append('<li>POST: '+ json.data.posts[i] + '</li>');
+
+    for (i in req.data.posts) {
+        $usernames.append('<li>POST: '+ req.data.posts[i] + '</li>');
     }
 }
+
 
 $(document).ready(function() {
     // requestJSON('GET', 'api/user/posts?username=user1', applyPosts)
-    requestJSON('GET', 'api/user/', applyUsernames)
+    // requestJSON('GET', dataServer, applyUsernames)
+    // requestJSON('GET', dataServer + 'api/user/posts?username=' + username, applyPosts);
+    requestJSON('GET', dataServer + 'api/user/', applyUsernames)
+    // requestJSON('GET', centralServer + 'api/user/', getDataServer)
 });
+

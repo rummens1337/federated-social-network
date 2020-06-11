@@ -8,8 +8,6 @@ blueprint = Blueprint('data_user', __name__)
 
 @blueprint.route('/')
 def user():
-    # TODO get list of usernames from database
-    # dummy:
     usernames = users.export('username')
 
     if len(usernames) == 0:
