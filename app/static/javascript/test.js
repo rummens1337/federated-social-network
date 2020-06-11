@@ -24,19 +24,18 @@ function requestJSON(type, url, func) {
 
 // DIT WERKT NOG NIET (toevoegen als central server werkt)
 // Get address of data server for this user from the central server.
-//var getDataServer = function(req) {
-//    dataServer = req.data.address;
-//};
-//$(document).ready(requestJSON('GET', centralServer + 'api/address/', getDataServer));
+var getDataServer = function(req) {
+    dataServer = req.data.address;
+};
 
 var applyUsernames = function(req) {
     // Get usernames div.
     var $usernames = $('#usernames');
+    alert(req.data.usernames)
 
     for (i in req.data.usernames) {
         $usernames.append('<li>username: '+ req.data.usernames[i] + '</li>');
     }
-
 }
 
 var applyPosts = function(req) {
@@ -44,14 +43,13 @@ var applyPosts = function(req) {
     var $posts = $('#posts');
 
     for (i in req.data.posts) {
-        $posts.append('<li>POST: '+ req.data.posts[i] + '</li>');
+        $posts.append('<div>POST: '+ req.data.posts[i] + '</div>');
     }
 }
 
-
 $(document).ready(function() {
-    requestJSON('GET', dataServer + 'api/user/', applyUsernames)
-    // requestJSON('GET', centralServer + 'api/user/', getDataServer)
-    requestJSON('GET', dataServer + 'api/user/posts?username=' + username, applyPosts)
+    // requestJSON('GET', centralServer + 'api/user/', getDataServer);
+    requestJSON('GET', dataServer + 'api/user/', applyUsernames);
+    requestJSON('GET', dataServer + 'api/user/posts?username=' + username, applyPosts);
 });
 
