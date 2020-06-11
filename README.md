@@ -22,7 +22,11 @@ Make sure you are using Ubuntu 18.04 or higher to get the newest version of dock
 - Go into the cloned directory `cd team-f/`
 - Copy (do not rename) the `config-dist.py` to `config.py` and configure the file.
 - Run `make run` 
+- In case make run fails, try to remove your docker containers and volumes using `make rm` and `make rm-images` 
 
+### Default settings
+- Central server, website on port 5000. Mysql on port 6000. Phpmyadmin port 7000.
+- Data server, website on port 9000. Mysql on port 6001. Phpmyadmin port 7001.
 
 ## Optional arguments
 ```
