@@ -20,12 +20,12 @@ function requestJSON(type, api, func) {
 var applyUsernames = function(json) {    
     // Get usernames div.
     var $usernames = $('#usernames');
-
+    alert(json)
     for (i in json.data.usernames) {
+        alert(json.data.usernames[i])
         $usernames.append('<li>username: '+ json.data.usernames[i] + '</li>');
     }
 }
-$(document).ready(requestJSON('GET', 'api/user/', applyUsernames));
 
 var applyPosts = function(json) {
     // Get posts div.
@@ -35,4 +35,8 @@ var applyPosts = function(json) {
         $usernames.append('<li>POST: '+ json.data.posts[i] + '</li>');
     }
 }
-$(document).ready(requestJSON('GET', 'api/user/posts?username=user1', applyPosts));
+
+$(document).ready(function() {
+    // requestJSON('GET', 'api/user/posts?username=user1', applyPosts)
+    requestJSON('GET', 'api/user/', applyUsernames)
+});
