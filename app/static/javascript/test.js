@@ -20,7 +20,7 @@ function requestJSON(type, url, func) {
         crossDomain: true,
         success: func
     });
-}
+};
 
 // DIT WERKT NOG NIET (toevoegen als central server werkt)
 // Get address of data server for this user from the central server.
@@ -36,7 +36,7 @@ var applyUsernames = function(req) {
     for (i in req.data.usernames) {
         $usernames.append('<li>username: '+ req.data.usernames[i] + '</li>');
     }
-}
+};
 
 var applyPosts = function(req) {
     // Get posts div.
@@ -45,7 +45,7 @@ var applyPosts = function(req) {
     for (i in req.data.posts) {
         $posts.append('<div>POST: '+ req.data.posts[i] + '</div>');
     }
-}
+};
 
 $(document).ready(function() {
     // requestJSON('GET', centralServer + 'api/user/', getDataServer);
