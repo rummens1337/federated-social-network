@@ -35,16 +35,22 @@
                 <div id="b2" class="bar2"></div>
                 <div id="b3" class="bar3"></div>
             </div>
+            
+            <div class="container-fluid" id="main">
+
             <nav class="nav-search container-fluid" id="search">
                 <form class="form-inline my-2 my-lg-0" style="padding-left:20px;">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </nav>
+            
             {% block content %}
             {% endblock %}
+
+            </div>
         </div>
           <!-- end page wrapper -->
-        <footer class="jumbotron text-align">Footer</footer>
+        <footer id='jumbotron' class="jumbotron text-align">Footer</footer>
     </body>
 </html>
