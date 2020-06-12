@@ -60,7 +60,7 @@ def save_file_data(filedata: typing.Union[typing.BinaryIO, bytes],
             f.write(buffer)
     return result
 
-if server_type() == 'data':
+if server_type() == 'DATA':
     from app.database import uploads
 
 
