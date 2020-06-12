@@ -6,21 +6,9 @@ from app.database import users
 blueprint = Blueprint('central_user', __name__)
 
 
-@blueprint.route('/')
+@blueprint.route('/', methods=['GET'])
 def user():
-    # TODO get list of usernames from database
-    # dummy:
-
-    users.insert(username='user1', address='address1')
-    users.insert(username='user2', address='address2')
-    users.insert(username='user3', address='address3')
     usernames = users.export('username', 'address')
-    users.delete(username='user1')
-    users.delete(username='user2')
-    users.delete(username='user3')
-
-    # usernames = ['user1central', 'user2central']
-
 
     if len(usernames) == 0:
         return bad_json_response('No usernames in the database.')
@@ -29,8 +17,18 @@ def user():
         'usernames': usernames
     })
 
+@blueprint.route('/createtestusers', methods=['GET'])
+def createtestusers():
+    # This function is used for testing.
+    # Insert users in central database with default address.
+    usernames = ['nick', 'auke']
+    address = '0.0.0.0:9000/'
+    for username in usernames:
+        users.insert(username=username, address=address)
+    return good_json_response()
 
-@blueprint.route('/address')
+
+@blueprint.route('/address', methods=['GET'])
 def address():
     username = request.form['username']
 
@@ -46,7 +44,7 @@ def address():
     })
 
 
-@blueprint.route('/registered')
+@blueprint.route('/registered', methods=['GET'])
 def registered():
     username = request.args.get('username')
 
