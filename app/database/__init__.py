@@ -283,12 +283,6 @@ class TableLoader:
         """
         with cursor() as cur:
             return len(self.export('rowid', limit=1, **kwargs)) != 0
-            #return cur.execute(
-            #    'SELECT EXISTS(SELECT * FROM ' + self._table +
-            #    ' WHERE ' + where(kwargs) + 
-            #    ')',
-            #    tuple(kwargs.values())
-            #)
 
     def delete(self, **kwargs):
         """Delete a row from the table in the database.
