@@ -16,6 +16,7 @@ def user():
     return good_json_response({
         'usernames': usernames
     })
+    # TODO error handling if query fails
 
 @blueprint.route('/createtestusers', methods=['GET'])
 def createtestusers():
@@ -26,6 +27,7 @@ def createtestusers():
     for username in usernames:
         users.insert(username=username, address=address)
     return good_json_response()
+    # TODO error handling if query fails
 
 
 @blueprint.route('/address', methods=['GET'])
@@ -36,12 +38,16 @@ def address():
         return bad_json_response('Username should be given as parameter.')
 
     # TODO fail if user is not registered
+    exists = users.exists()
+    
+    if exists:
+        address = users.export_one('address', username=username)
 
-    address = users.export_one('address', username=username)
-
-    return good_json_response({
-        'address': address
-    })
+        return good_json_response({
+            'address': address
+        })
+    else:
+        return bad_json_response()
 
 
 @blueprint.route('/registered', methods=['GET'])
@@ -52,11 +58,12 @@ def registered():
         return bad_json_response('Username should be given as parameter.')
 
     # TODO look if username exists in database
-    exists = users.exists()
+    exists = users.exists(username=username)
 
     return good_json_response({
         'registered': exists
     })
+    # TODO error handling if query fails
 
 
 @blueprint.route('/register', methods=['POST'])
@@ -70,6 +77,7 @@ def register():
     users.insert(username=username, address=address)
 
     return good_json_response()
+    # TODO error handling if query fails
 
 
 @blueprint.route('/delete', methods=['POST'])
@@ -81,6 +89,7 @@ def delete():
     users.delete(username=username)
 
     return good_json_response()
+    # TODO error handling if query fails
 
 
 @blueprint.route('/edit', methods=['POST'])
@@ -99,6 +108,7 @@ def edit():
         users.update()
 
     return good_json_response()
+    # TODO error handling if query fails
 
 __all__ = ('blueprint')
 
