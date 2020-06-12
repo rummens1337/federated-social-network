@@ -15,6 +15,6 @@ flake8:
   script:
   - flake8 --max-line-length=120 bild/*.py
   tags:
-    - flake8
+    - flake8TriggerPR
   only:
     - tags
