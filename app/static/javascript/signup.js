@@ -1,4 +1,4 @@
-$(function signup() {
+function sign_up() {
     $("form[name='signup']").validate({
       rules: {
         username: "required",
@@ -17,13 +17,24 @@ $(function signup() {
       messages: {
         confirmpassword: "Passwords don't match"
       },
-  
+
       submitHandler: function(form) {
-        //form.submit();
+        $.ajax({
+          data : $(form).serialize(),
+          type : 'POST',
+          url : '/api/user/register',
+          success : function(data) {
+            alert("succes");
+          },
+          error : function(data) {
+            alert("no")
+          }
+        })
       }
     });
-  });
+  }
 
-function signup() {
-    alert('..')
-}
+
+// function sign_up() {
+//     alert('..')
+// }
