@@ -21,3 +21,4 @@ elif server_type() == 'DATA':
     register_data(app)
 
 app.register_blueprint(main_routes, url_prefix='/')
+

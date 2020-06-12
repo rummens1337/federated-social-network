@@ -19,7 +19,6 @@ def user():
     # users.delete(username='user1')
     # users.delete(username='user1')
 
-
     # usernames = ['user1central', 'user2central']
 
 

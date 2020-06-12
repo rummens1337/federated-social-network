@@ -25,9 +25,9 @@ services:
       # Where our data will be persisted
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3306"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      interval: 3s
+      timeout: 1s
+      retries: 30
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

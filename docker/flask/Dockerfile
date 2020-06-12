@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
 # Set the flask ENV variables
 ENV FLASK_APP app
 ENV FLASK_RUN_HOST 0.0.0.0
-ENV FLASK_DEBUG 1
+ENV FLASK_DEBUG 0
 
 # Create the app folder on the Container
 RUN mkdir -p /var/www/flask/app/ 
