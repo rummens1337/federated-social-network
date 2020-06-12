@@ -37,17 +37,14 @@ def address():
     if username is None:
         return bad_json_response('Username should be given as parameter.')
 
-    # TODO fail if user is not registered
-    exists = users.exists()
-    
-    if exists:
+    if users.exists(username=username):
         address = users.export_one('address', username=username)
 
         return good_json_response({
             'address': address
         })
     else:
-        return bad_json_response()
+        return bad_json_response('Username does not exist in database.')
 
 
 @blueprint.route('/registered', methods=['GET'])
@@ -57,7 +54,6 @@ def registered():
     if username is None:
         return bad_json_response('Username should be given as parameter.')
 
-    # TODO look if username exists in database
     exists = users.exists(username=username)
 
     return good_json_response({
@@ -84,11 +80,11 @@ def register():
 def delete():
     username = request.form['username']
 
-    # TODO fail if user is not registered
-
-    users.delete(username=username)
-
-    return good_json_response()
+    if users.exists(username=username):
+        users.delete(username=username)
+        return good_json_response()
+    else:
+        return bad_json_response("Username does not exist in database.")
     # TODO error handling if query fails
 
 
