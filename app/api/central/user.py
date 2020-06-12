@@ -15,9 +15,9 @@ def user():
     users.insert(username='user2', address='address2')
     users.insert(username='user3', address='address3')
     usernames = users.export('username', 'address')
-    users.delete(username='user1')
-    users.delete(username='user2')
-    users.delete(username='user3')
+    # users.delete(username='user1')
+    # users.delete(username='user1')
+    # users.delete(username='user1')
 
     # usernames = ['user1central', 'user2central']
 
@@ -38,12 +38,14 @@ def address():
         return bad_json_response('Username should be given as parameter.')
 
     # TODO fail if user is not registered
+    # user = users.export('username', username=username)
 
     # TODO get address from database
-    # dummy:
-    address = '0.0.0.0:9000'
+    address = users.export('address', username=username)
 
     #address = user.export_one('address', username=username)
+
+    # query = "SELECT address FROM users WHERE username = " + username
 
     return good_json_response({
         'address': address
@@ -76,7 +78,8 @@ def register():
         return bad_json_response('Invalid e-mail address.')
 
     # TODO insert entry for username and address in datatbase.
-    query = "INSERT INTO users (username, address) VALUES (" + username + ", " + address + ")"
+    # query = "INSERT INTO users (username, address) VALUES (" + username + ", " + address + ")"
+    users.insert(username=username, address=address)
 
     return good_json_response()
 
@@ -88,8 +91,9 @@ def delete():
     # TODO fail if user is not registered
 
     # TODO delete user
+    users.delete(username=username)
 
-    query = "DELETE FROM users WHERE username = " + username
+    # query = "DELETE FROM users WHERE username = " + username
 
     return good_json_response()
 
@@ -119,4 +123,3 @@ def edit():
     return good_json_response()
 
 __all__ = ('blueprint')
-

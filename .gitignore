@@ -1,5 +1,6 @@
 # Project specific
 config.py
+logs/
 
 *~
 *.pyc
