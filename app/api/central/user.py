@@ -90,21 +90,21 @@ def delete():
 
 @blueprint.route('/edit', methods=['POST'])
 def edit():
-    username = request.form['username']
+    username = request.args.get('username')
 
-    # TODO fail if user is not registered
-
-    if 'new_address' in request.form:
-        new_address = request.form['new_address']
-        # TODO update in database
-        users.update()
-    if 'new_username' in request.form:
-        new_username = request.form['new_username']
-        # TODO update in database
-        users.update()
+    if users.exists(username=username):
+        if 'new_address' in request.form:
+            new_address = request.form['new_address']
+            if 'new_address' != '':
+                users.update({'address':new_address}, username=username)
+        if 'new_username' in request.form:
+            new_username = request.form['new_username']
+            if 'new_username' != '':
+                users.update({'username':new_username}, username=username)
+    else:
+        return bad_json_response('Username does not exist in database.')
 
     return good_json_response()
     # TODO error handling if query fails
 
 __all__ = ('blueprint')
-
