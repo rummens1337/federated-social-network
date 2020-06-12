@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
 # Set the flask ENV variables
 ENV FLASK_APP app
 ENV FLASK_RUN_HOST 0.0.0.0
-ENV FLASK_DEBUG 1
+ENV FLASK_DEBUG 0
 
 # Create the app folder on the Container
 RUN mkdir -p /var/www/flask/app/ 
@@ -45,6 +45,10 @@ ARG FLASK_PORT
 ENV FLASK_SERVER_TYPE $FLASK_SERVER_TYPE
 ENV FLASK_PORT $FLASK_PORT
 ENV FLASK_ENV development
+
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
 
 CMD python3 run.py
 # CMD ["python3", "run.py", "-s", $TYPE, "-p", $PORT]

@@ -29,7 +29,7 @@ def posts():
 
     # TODO lookup all post ids from a certain user and get the post_IDs
     # dummy:
-    post_id = users.export_one('id', username=username)
+    post_id = users.export_one('rowid', username=username)
 
     # TODO return actual posts by post_ids
     # posts = ["test1", "test2"]

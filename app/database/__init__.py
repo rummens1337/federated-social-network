@@ -27,6 +27,7 @@ interact directly with the database.
 >>>     cur.execute('my execution')
 """
 import contextlib
+import itertools
 import os
 import re
 import time
@@ -51,6 +52,13 @@ def cursor():
         cursor.close()
         con.commit()
         con.close()
+
+
+def where(data: dict, delimiter: str=' AND ') -> str:
+    return delimiter.join(
+        '{} = {}'.format(d[0], percent_type(d[1]))
+        for d in data.items()
+    )
 
 
 class TableLoader:
@@ -114,6 +122,15 @@ class TableLoader:
                 ('another user', '20 Another Road')
             ]
 
+            Export all usernames:
+            >>> user.export('username', 'address')
+            [
+                'testuser1',
+                'testuser3',
+                'testuser2',
+                'another user'
+            ]
+
             Export all usernames and addresses ordered by username:
             >>> user.export('username', 'address', order='username',
                             order_direction='desc')
@@ -154,10 +171,7 @@ class TableLoader:
                 'SELECT ' + ','.join(args) +
                 ' FROM ' + self._table +
                 (
-                    ' WHERE ' + ','.join(
-                        '{}={}'.format(d[0], percent_type(d[1]))
-                        for d in kwargs.items()
-                    )
+                    ' WHERE ' + where(kwargs)
                     if len(kwargs) > 0 else
                     ''
                 ) +
@@ -169,10 +183,10 @@ class TableLoader:
                 ),
                 tuple(kwargs.values())
             )
-            return [
+            return tuple(
                 d if len(d) > 1 else d[0]
                 for d in cur.fetchall()
-            ]
+            )
 
     def insert(self, **kwargs):
         """Insert data into the table in the database.
@@ -206,6 +220,70 @@ class TableLoader:
                 tuple(kwargs.values())
             )
 
+    def update(self, update: dict, **kwargs):
+        """Update a row in a table.
+
+        Note:
+            The formatting of the variables in this function is suboptimal and
+            might be changed later on. This is what it is for now.
+
+        Example:
+            Example calls are assuming an instance for table `user` for the
+            central server.
+
+            Change the address of a user with certain username. We check if the
+            user exists first, then confirm the change has been made (as
+            example):
+            >>> user.exists(username='testuser1', address='100 Davin Road')
+            True
+            >>> user.update({'address': 'My New Address'}, username='testuser1')
+            >>> user.exists(username='testuser1', address='100 Davin Road')
+            False
+            >>> user.exists(username='testuser1', address='My New Address')
+            True
+
+        Args:
+            update (dict): The dictionary of keys (str) and values (str, int)
+            of the changes that need to made to the selected row.
+            kwargs: The keys (str) and values (str, int) for the rows for which
+            the variables need to be updated with the data in dictionary update.
+        """
+        with cursor() as cur:
+            return cur.execute(
+                'UPDATE ' + self._table +
+                ' SET ' + where(update, ', ') +
+                ' WHERE ' + where(kwargs),
+                tuple(itertools.chain(update.values(), kwargs.values()))
+            )
+
+    def exists(self, **kwargs):
+        """Check if a row exists.
+
+        Example:
+            Example calls are assuming an instance for table `user` for the
+            central server.
+
+            Check if usernames in combincation with address or not in
+            combincation with address exists:
+            >>> user.exists(username='testuser1', address='100 Davin Road')
+            True
+            >>> user.exists(username='testuser1')
+            True
+            >>> user.exists(username='testuser1', address='Wrong Address')
+            False
+            >>> user.exists(username='non existing username')
+            False
+
+        Args:
+            kwargs: The keys (str) and values (str, int) for which it needs to
+            be checked if a row exists.
+
+        Returnes:
+            bool: Whether a row exists or not.
+        """
+        with cursor() as cur:
+            return len(self.export('rowid', limit=1, **kwargs)) != 0
+
     def delete(self, **kwargs):
         """Delete a row from the table in the database.
 
@@ -222,10 +300,7 @@ class TableLoader:
         with cursor() as cur:
             return cur.execute(
                 'DELETE FROM ' + self._table +
-                ' WHERE ' + ','.join(
-                    '{}={}'.format(d[0], percent_type(d[1]))
-                    for d in kwargs.items()
-                ),
+                ' WHERE ' + where(kwargs),
                 tuple(kwargs.values())
             )
 
