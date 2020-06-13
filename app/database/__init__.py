@@ -35,7 +35,8 @@ import typing
 
 from flaskext.mysql import MySQL
 
-from app.utils import server_type, percent_type
+from app.type import get_server_type, ServerType
+from app.utils import percent_type
 
 BASE_SQL = os.path.join('app', 'database', 'sql')
 CENTRAL_SQL = os.path.join(BASE_SQL, 'central.sql')
@@ -188,10 +189,14 @@ class TableLoader:
                 for d in cur.fetchall()
             )
 
-    def insert(self, **kwargs):
+    def insert(self, **kwargs, lastrowid=True):
         """Insert data into the table in the database.
 
         Args:
+            lastrowid (bool): Return last rowid or not, default is True. See
+            https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-lastrowid.html
+            for more information.
+
             kwargs: Every variable that needs to be set in the database for the
             table. For the data server the keys that can be added can be found
             in SQL file `app/database/sql/data.sql`, and the central server
@@ -208,10 +213,11 @@ class TableLoader:
             manually set. These are set automatically, just like the `rowid` key.
 
         Returns:
-            The return value of the database execution.
+            The rowid of the newly created row in the table, or the return value
+            of the execute function if returning the last rowid is disabled.
         """
         with cursor() as cur:
-            return cur.execute(
+            r = cur.execute(
                 'INSERT INTO {}({})'
                     .format(self._table, ','.join(kwargs.keys())) +
                 ' VALUES ({})'.format(','.join([
@@ -219,6 +225,9 @@ class TableLoader:
                 ])),
                 tuple(kwargs.values())
             )
+            if not lastrowid:
+                return r
+            return cur.lastrowid
 
     def update(self, update: dict, **kwargs):
         """Update a row in a table.
@@ -308,9 +317,9 @@ class TableLoader:
 def init_mysql(app):
     # globally set mysql variable
     globals()['mysql'] = MySQL(app)
-    if server_type() == 'CENTRAL':
+    if get_server_type() == ServerType.CENTRAL:
         sql_file = CENTRAL_SQL
-    elif server_type() == 'DATA':
+    elif get_server_type() == ServerType.DATA:
         sql_file = DATA_SQL
     with cursor() as cur:
         with open(sql_file, 'r') as f:
