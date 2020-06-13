@@ -65,7 +65,7 @@ def registered():
     # TODO check length of result > 0
 
     return good_json_response({
-        'registered': username == usnamecheck
+        'registered': 'true'
     })
 
 

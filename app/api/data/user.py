@@ -1,10 +1,12 @@
 from flask import Blueprint, request
+import requests
 
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 
 blueprint = Blueprint('data_user', __name__)
 
+central_server = "http://localhost:5000/api/"
 
 @blueprint.route('/')
 def user():
@@ -17,6 +19,14 @@ def user():
         'usernames': usernames
     })
 
+@blueprint.route('/exists')
+def exist():
+
+    # TODO: check with central server if user_exists
+    central_server + "user/regist"
+    return good_json_response({
+        'exists': True
+    })
 
 @blueprint.route('/posts')
 def posts():
@@ -32,12 +42,8 @@ def posts():
     post_id = users.export_one('rowid', username=username)
 
     # TODO return actual posts by post_ids
-<<<<<<< HEAD
     # dummy:
     posts = ["test1", "test2"]
-=======
-    # posts = ["test1", "test2"]
->>>>>>> master
 
     if len(post_id) == 0:
         return bad_json_response('User has no posts.')
@@ -125,4 +131,3 @@ def edit():
     return good_json_response()
 
 __all__ = ('blueprint')
-
