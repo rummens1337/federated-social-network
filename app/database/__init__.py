@@ -189,7 +189,7 @@ class TableLoader:
                 for d in cur.fetchall()
             )
 
-    def insert(self, **kwargs, lastrowid=True):
+    def insert(self, lastrowid=True, **kwargs):
         """Insert data into the table in the database.
 
         Args:
