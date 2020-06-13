@@ -45,7 +45,8 @@ $(function validatePassword() {
     },
 
     submitHandler: function(form) {
-      form.submit();
+      alert('..')
+      //form.submit();
     }
   });
 });

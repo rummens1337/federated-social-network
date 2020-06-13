@@ -6,21 +6,13 @@ from app.database import users
 blueprint = Blueprint('central_user', __name__)
 
 
-@blueprint.route('/')
+@blueprint.route('/', methods=['GET'])
 def user():
     # TODO get list of usernames from database
     # dummy:
 
-    users.insert(username='user1', address='address1')
-    users.insert(username='user2', address='address2')
-    users.insert(username='user3', address='address3')
+    users.insert(username='testuser', address='0.0.0.0:9000')
     usernames = users.export('username', 'address')
-    users.delete(username='user1')
-    users.delete(username='user2')
-    users.delete(username='user3')
-
-    # usernames = ['user1central', 'user2central']
-
 
     if len(usernames) == 0:
         return bad_json_response('No usernames in the database.')
@@ -30,27 +22,24 @@ def user():
     })
 
 
-@blueprint.route('/address')
+@blueprint.route('/address', methods=['GET'])
 def address():
     username = request.args.get('username')
+    print(username)
 
     if username is None:
         return bad_json_response('Username should be given as parameter.')
 
     # TODO fail if user is not registered
 
-    # TODO get address from database
-    # dummy:
-    address = '0.0.0.0:9000'
-
-    query = "SELECT address FROM users WHERE username = " + username
-
+    address = users.export_one('address', username=username)
+    
     return good_json_response({
         'address': address
     })
 
 
-@blueprint.route('/registered')
+@blueprint.route('/registered', methods=['GET'])
 def registered():
     username = request.args.get('username')
 
@@ -67,48 +56,47 @@ def registered():
     })
 
 
-@blueprint.route('/register', methods=['POST'])
+@blueprint.route('/register', methods=['POST', 'GET'])
 def register():
-    username = request.form['username']
-    address = request.form['address']
+    # username = request.form['username']
+    # address = request.form['address']
+    username = request.args.get('username')
+    address = request.args.get('address')
 
-    if '@' not in address:
-        return bad_json_response('Invalid e-mail address.')
-
-    # TODO insert entry for username and address in datatbase.
-    query = "INSERT INTO users (username, address) VALUES (" + username + ", " + address + ")"
+    users.insert(username=username, address=address)
 
     return good_json_response()
 
 
-@blueprint.route('/delete', methods=['POST'])
+@blueprint.route('/delete', methods=['POST', 'GET'])
 def delete():
-    username = request.form['username']
+    #username = request.form['username']
+    username = request.args.get('username')
 
     # TODO fail if user is not registered
 
-    # TODO delete user
-
-    query = "DELETE FROM users WHERE username = " + username
+    users.delete(username=username)
 
     return good_json_response()
 
 
-@blueprint.route('/edit', methods=['POST'])
+@blueprint.route('/edit', methods=['POST', 'GET'])
 def edit():
-    username = request.form['username']
+    #username = request.form['username']
+    username = request.args.get('username')
 
     # TODO fail if user is not registered
 
-    if 'address' in request.form:
+    if 'new_address' in request.form:
         # TODO replace address
-        new_address = request.form['address']
+        #new_address = request.form['address']
+        new_address=request.args.get('new_address')
         query = "UPDATE users SET address = " + new_address + "WHERE username = " + username
         pass
     if 'new_username' in request.form:
         # TODO replace username
-
-        new_username = request.form['new_username']
+        # new_username = request.form['new_username']
+        new_username = request.args.get('new_username')
         query = "UPDATE users SET username = " + new_username + "WHERE username = " + username
 
     if 'address' in request.form:
