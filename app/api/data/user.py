@@ -38,7 +38,7 @@ def add_post():
     if title is None:
         return bad_json_response('Title should be given as parameter.')
     if body is None:
-        return bad_json_response('Title should be given as parameter.')
+        return bad_json_response('Body should be given as parameter.')
 
     # check if user id exists
     user_id = users.export('rowid', username=username)
@@ -47,6 +47,31 @@ def add_post():
 
     # Insert post
     posts.insert(users_id=str(user_id[0]), body=body, title=title)
+
+    return good_json_response()
+
+@blueprint.route('/delete_post', methods=['POST'])
+def delete_post():
+    username = request.args.get('username')
+    post_id = request.args.get('post_id')
+
+
+    if username is None:
+        return bad_json_response('Username should be given as parameter.')
+    if post_id is None:
+        return bad_json_response('Post_id should be given as parameter.')
+
+    # check if user id exists
+    user_id = users.export('rowid', username=username)
+    if not user_id:
+        return bad_json_response('user not found')
+    # check if user id exists
+    post_title = posts.export('title', rowid=str(post_id))
+    if not post_id:
+        return bad_json_response('post not found')
+
+    # Delete post
+    posts.delete(rowid = str(post_id))
 
     return good_json_response()
 
@@ -65,7 +90,7 @@ def get_posts():
     # TODO fail if user is not registered
 
     # TODO get all posts of a user.
-    user_posts = posts.export('title', 'body', users_id = str(user_id[0]))
+    user_posts = posts.export('title', 'body', 'rowid', users_id = str(user_id[0]))
 
     if len(user_posts) == 0:
         return bad_json_response('User has no posts.')
