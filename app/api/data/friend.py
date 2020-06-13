@@ -31,6 +31,8 @@ def register():
     # register friendship in database
     friends.insert(users_id=str(user_id[0]), friend=friend_username)
 
+    # register friendship in database for friend
+
     return good_json_response({
         'usernames': user_id
     })
@@ -74,6 +76,8 @@ def delete():
 
     # register friendship in database
     friends.delete(rowid = str(friendship[0]))
+
+    # TODO: delete friendship for friend
 
     return good_json_response({
         'usernames': user_id

@@ -3,6 +3,7 @@ import requests
 
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
+from app.database import posts
 
 blueprint = Blueprint('data_user', __name__)
 
@@ -24,32 +25,53 @@ def exist():
 
     # TODO: check with central server if user_exists
     central_server + "user/regist"
-    return good_json_response({
-        'exists': True
-    })
+    return good_json_response()
 
-@blueprint.route('/posts')
-def posts():
+@blueprint.route('/add_post', methods=['POST'])
+def add_post():
+    username = request.args.get('username')
+    title = request.args.get('title')
+    body = request.args.get('body')
+
+    if username is None:
+        return bad_json_response('Username should be given as parameter.')
+    if title is None:
+        return bad_json_response('Title should be given as parameter.')
+    if body is None:
+        return bad_json_response('Title should be given as parameter.')
+
+    # check if user id exists
+    user_id = users.export('rowid', username=username)
+    if not user_id:
+        return bad_json_response('user not found')
+
+    # Insert post
+    posts.insert(users_id=str(user_id[0]), body=body, title=title)
+
+    return good_json_response()
+
+@blueprint.route('/get_posts')
+def get_posts():
     username = request.args.get('username')
 
     if username is None:
         return bad_json_response('Username should be given as parameter.')
 
+    # check if user id exists
+    user_id = users.export('rowid', username=username)
+    if not user_id:
+        return bad_json_response('user not found')
+
     # TODO fail if user is not registered
 
-    # TODO lookup all post ids from a certain user and get the post_IDs
-    # dummy:
-    post_id = users.export_one('rowid', username=username)
+    # TODO get all posts of a user.
+    user_posts = posts.export('title', 'body', users_id = str(user_id[0]))
 
-    # TODO return actual posts by post_ids
-    # dummy:
-    posts = ["test1", "test2"]
-
-    if len(post_id) == 0:
+    if len(user_posts) == 0:
         return bad_json_response('User has no posts.')
 
     return good_json_response({
-        'posts': posts
+        'posts': user_posts
     })
 
 
