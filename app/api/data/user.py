@@ -27,56 +27,8 @@ def exist():
     central_server + "user/regist"
     return good_json_response()
 
-@blueprint.route('/add_post', methods=['POST'])
-def add_post():
-    username = request.args.get('username')
-    title = request.args.get('title')
-    body = request.args.get('body')
-
-    if username is None:
-        return bad_json_response('Username should be given as parameter.')
-    if title is None:
-        return bad_json_response('Title should be given as parameter.')
-    if body is None:
-        return bad_json_response('Body should be given as parameter.')
-
-    # check if user id exists
-    user_id = users.export('rowid', username=username)
-    if not user_id:
-        return bad_json_response('user not found')
-
-    # Insert post
-    posts.insert(users_id=str(user_id[0]), body=body, title=title)
-
-    return good_json_response()
-
-@blueprint.route('/delete_post', methods=['POST'])
-def delete_post():
-    username = request.args.get('username')
-    post_id = request.args.get('post_id')
-
-
-    if username is None:
-        return bad_json_response('Username should be given as parameter.')
-    if post_id is None:
-        return bad_json_response('Post_id should be given as parameter.')
-
-    # check if user id exists
-    user_id = users.export('rowid', username=username)
-    if not user_id:
-        return bad_json_response('user not found')
-    # check if user id exists
-    post_title = posts.export('title', rowid=str(post_id))
-    if not post_id:
-        return bad_json_response('post not found')
-
-    # Delete post
-    posts.delete(rowid = str(post_id))
-
-    return good_json_response()
-
-@blueprint.route('/get_posts')
-def get_posts():
+@blueprint.route('/posts')
+def posts():
     username = request.args.get('username')
 
     if username is None:
