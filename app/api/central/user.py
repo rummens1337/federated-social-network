@@ -33,7 +33,7 @@ def address():
     # TODO fail if user is not registered
 
     address = users.export_one('address', username=username)
-    
+
     return good_json_response({
         'address': address
     })
