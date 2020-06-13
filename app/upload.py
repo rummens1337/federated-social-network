@@ -1,7 +1,8 @@
 import os
 import typing
 
-from app.utils import server_type, random_string
+from app.type import get_server_type, ServerType
+from app.utils import random_string
 
 BASE_UPLOADS_DIR = os.path.join('data', 'uploads')
 
@@ -23,7 +24,7 @@ def save_file_data(filedata: typing.Union[typing.BinaryIO, bytes],
         appended to the filename.
 
     Example:
-        The following two example show the differences in saving a file using a
+        The following two examples show the differences in saving a file using a
         filenames with the extension appended and using a filename without
         extension, but with extension given as argument.
 
@@ -60,7 +61,7 @@ def save_file_data(filedata: typing.Union[typing.BinaryIO, bytes],
             f.write(buffer)
     return result
 
-if server_type() == 'DATA':
+if get_server_type() == ServerType.DATA:
     from app.database import uploads
 
 
