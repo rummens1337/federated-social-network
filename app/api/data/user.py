@@ -24,7 +24,6 @@ def user():
 def exist():
 
     # TODO: check with central server if user_exists
-    central_server + "user/regist"
     return good_json_response()
 
 @blueprint.route('/add_post', methods=['POST'])
@@ -109,23 +108,33 @@ def details():
 
     # TODO fail if user is not registered
 
-    # TODO retrieve profile details (dummy)
-    # dummy:
-    location='Amsterdam'
-    image_url='www.google.com'
-    creation_date='01-06-2021'
-    study='biology'
-    username='ME'
-    name='creator name'
+    user_details = users.export('name', 'uploads_id', 'location', 'study', username=username)
+
+    if not user_details:
+        return bad_json_response("User not found")
+
+    # TODO: Get image url
+
+    # return good_json_response(user_details[0][1])
 
     return good_json_response({
         'username': username,
-        'name': name,
-        'image_url': image_url,
-        'creation_date': creation_date,
-        'location': location,
-        'study': study
+        'name': user_details[0][0],
+        'image_url': 'https://www.xolt.nl/wp-content/themes/fox/images/placeholder.jpg',
+        'creation_date': 'date',
+        'location': user_details[0][2],
+        'study': user_details[0][3]
     })
+
+
+    # return good_json_response({
+    #     'username': username,
+    #     'name': name,
+    #     'image_url': image_url,
+    #     'creation_date': creation_date,
+    #     'location': location,
+    #     'study': study
+    # })
 
 
 @blueprint.route('/register', methods=['POST'])
