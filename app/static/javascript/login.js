@@ -19,7 +19,17 @@ $(function validateAccount() {
     },
 
     submitHandler: function(form) {
-      form.submit();
+      $.ajax({
+        data : $(form).serialize(),
+        type : 'POST',
+        url : 'http://localhost:9000/api/user/login',
+        success : function(data) {
+          alert("Succes");
+        },
+        error : function(data) {
+          alert("Something went wrong")
+        },
+      })
     }
   });
 });

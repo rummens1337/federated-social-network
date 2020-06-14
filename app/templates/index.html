@@ -2,6 +2,8 @@
 {% block title %}Index{% endblock %}
 {% block head %}
 <link type="text/css"  rel="stylesheet" href="{{ url_for('static', filename='./css/index.css') }}"/>
+
+<script type="text/javascript" src="../static/javascript/post.js"></script>
 {% endblock %}
 {% block content %}
 
@@ -34,10 +36,22 @@
 
     <div id="posts" class="col-xl-6">
         <h2>Create post</h2>
-        <div class="form-group">
-            <label for="Textarea1">Write your post here</label>
-            <textarea class="form-control" id="Textarea1" rows="7" placeholder="Today I saw a great..."></textarea>
-        </div>
+        <form name="createpost">
+            <div class="form-group">
+                <textarea class="form-control" id="body" rows="1" placeholder="Title"></textarea>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" id="body" rows="7" placeholder="Today I saw a great..."></textarea>
+            </div>
+            <div class="form-group">
+                <input type ="file" name="file" multiple/>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn-primary btn-block" onclick="create_post();">Post</button>
+                </div>
+            </div>
+        </form>
         <br>
 
         <h2>Recent posts</h2>

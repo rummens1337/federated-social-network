@@ -1,6 +1,7 @@
 {% extends "template.html" %}
 {% block title %}Login{% endblock %}
 {% block head %}
+<script type="text/javascript" src="../static/javascript/login.js"></script>
     {{ super() }}
 {% endblock %}
 {% block content %}
@@ -27,7 +28,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12 text-center ">
-                                <button type="submit" class="btn-primary btn-block" onclick="validateAccount()">Login</button>
+                                <button type="submit" class="btn-primary btn-block" onclick="validateAccount();">Login</button>
                             </div>
                         </div>
 
