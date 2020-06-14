@@ -27,6 +27,7 @@ interact directly with the database.
 >>>     cur.execute('my execution')
 """
 import contextlib
+import itertools
 import os
 import re
 import time
@@ -34,7 +35,8 @@ import typing
 
 from flaskext.mysql import MySQL
 
-from app.utils import server_type, percent_type
+from app.type import get_server_type, ServerType
+from app.utils import percent_type
 
 BASE_SQL = os.path.join('app', 'database', 'sql')
 CENTRAL_SQL = os.path.join(BASE_SQL, 'central.sql')
@@ -51,6 +53,13 @@ def cursor():
         cursor.close()
         con.commit()
         con.close()
+
+
+def where(data: dict, delimiter: str=' AND ') -> str:
+    return delimiter.join(
+        '{} = {}'.format(d[0], percent_type(d[1]))
+        for d in data.items()
+    )
 
 
 class TableLoader:
@@ -117,6 +126,15 @@ class TableLoader:
                 ('another user', '20 Another Road')
             ]
 
+            Export all usernames:
+            >>> user.export('username', 'address')
+            [
+                'testuser1',
+                'testuser3',
+                'testuser2',
+                'another user'
+            ]
+
             Export all usernames and addresses ordered by username:
             >>> user.export('username', 'address', order='username',
                             order_direction='desc')
@@ -157,10 +175,7 @@ class TableLoader:
                 'SELECT ' + ','.join(args) +
                 ' FROM ' + self._table +
                 (
-                    ' WHERE ' + ','.join(
-                        '{}={}'.format(d[0], percent_type(d[1]))
-                        for d in kwargs.items()
-                    )
+                    ' WHERE ' + where(kwargs)
                     if len(kwargs) > 0 else
                     ''
                 ) +
@@ -172,15 +187,19 @@ class TableLoader:
                 ),
                 tuple(kwargs.values())
             )
-            return [
+            return tuple(
                 d if len(d) > 1 else d[0]
                 for d in cur.fetchall()
-            ]
+            )
 
-    def insert(self, **kwargs):
+    def insert(self, lastrowid=True, **kwargs):
         """Insert data into the table in the database.
 
         Args:
+            lastrowid (bool): Return last rowid or not, default is True. See
+            https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-lastrowid.html
+            for more information.
+
             kwargs: Every variable that needs to be set in the database for the
             table. For the data server the keys that can be added can be found
             in SQL file `app/database/sql/data.sql`, and the central server
@@ -197,10 +216,11 @@ class TableLoader:
             manually set. These are set automatically, just like the `id` key.
 
         Returns:
-            The return value of the database execution.
+            The rowid of the newly created row in the table, or the return value
+            of the execute function if returning the last rowid is disabled.
         """
         with cursor() as cur:
-            return cur.execute(
+            r = cur.execute(
                 'INSERT INTO {}({})'
                     .format(self._table, ','.join(kwargs.keys())) +
                 ' VALUES ({})'.format(','.join([
@@ -208,6 +228,73 @@ class TableLoader:
                 ])),
                 tuple(kwargs.values())
             )
+            if not lastrowid:
+                return r
+            return cur.lastrowid
+
+    def update(self, update: dict, **kwargs):
+        """Update a row in a table.
+
+        Note:
+            The formatting of the variables in this function is suboptimal and
+            might be changed later on. This is what it is for now.
+
+        Example:
+            Example calls are assuming an instance for table `user` for the
+            central server.
+
+            Change the address of a user with certain username. We check if the
+            user exists first, then confirm the change has been made (as
+            example):
+            >>> user.exists(username='testuser1', address='100 Davin Road')
+            True
+            >>> user.update({'address': 'My New Address'}, username='testuser1')
+            >>> user.exists(username='testuser1', address='100 Davin Road')
+            False
+            >>> user.exists(username='testuser1', address='My New Address')
+            True
+
+        Args:
+            update (dict): The dictionary of keys (str) and values (str, int)
+            of the changes that need to made to the selected row.
+            kwargs: The keys (str) and values (str, int) for the rows for which
+            the variables need to be updated with the data in dictionary update.
+        """
+        with cursor() as cur:
+            return cur.execute(
+                'UPDATE ' + self._table +
+                ' SET ' + where(update, ', ') +
+                ' WHERE ' + where(kwargs),
+                tuple(itertools.chain(update.values(), kwargs.values()))
+            )
+
+    def exists(self, **kwargs):
+        """Check if a row exists.
+
+        Example:
+            Example calls are assuming an instance for table `user` for the
+            central server.
+
+            Check if usernames in combincation with address or not in
+            combincation with address exists:
+            >>> user.exists(username='testuser1', address='100 Davin Road')
+            True
+            >>> user.exists(username='testuser1')
+            True
+            >>> user.exists(username='testuser1', address='Wrong Address')
+            False
+            >>> user.exists(username='non existing username')
+            False
+
+        Args:
+            kwargs: The keys (str) and values (str, int) for which it needs to
+            be checked if a row exists.
+
+        Returnes:
+            bool: Whether a row exists or not.
+        """
+        with cursor() as cur:
+            return len(self.export('rowid', limit=1, **kwargs)) != 0
 
     def delete(self, **kwargs):
         """Delete a row from the table in the database.
@@ -225,10 +312,7 @@ class TableLoader:
         with cursor() as cur:
             return cur.execute(
                 'DELETE FROM ' + self._table +
-                ' WHERE ' + ','.join(
-                    '{}={}'.format(d[0], percent_type(d[1]))
-                    for d in kwargs.items()
-                ),
+                ' WHERE ' + where(kwargs),
                 tuple(kwargs.values())
             )
 
@@ -236,9 +320,9 @@ class TableLoader:
 def init_mysql(app):
     # globally set mysql variable
     globals()['mysql'] = MySQL(app)
-    if server_type() == 'CENTRAL':
+    if get_server_type() == ServerType.CENTRAL:
         sql_file = CENTRAL_SQL
-    elif server_type() == 'DATA':
+    elif get_server_type() == ServerType.DATA:
         sql_file = DATA_SQL
     with cursor() as cur:
         with open(sql_file, 'r') as f:

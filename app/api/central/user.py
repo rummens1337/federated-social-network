@@ -13,6 +13,9 @@ def user():
 
     users.insert(username='testuser', address='0.0.0.0:9000')
     usernames = users.export('username', 'address')
+    # users.delete(username='user1')
+    # users.delete(username='user1')
+    # users.delete(username='user1')
 
     if len(usernames) == 0:
         return bad_json_response('No usernames in the database.')
@@ -31,8 +34,12 @@ def address():
         return bad_json_response('Username should be given as parameter.')
 
     # TODO fail if user is not registered
+    # user = users.export('username', username=username)
 
-    address = users.export_one('address', username=username)
+    # TODO get address from database
+    address = users.export('address', username=username)
+
+    # query = "SELECT address FROM users WHERE username = " + username
 
     return good_json_response({
         'address': address
@@ -65,6 +72,10 @@ def register():
 
     users.insert(username=username, address=address)
 
+    # TODO insert entry for username and address in datatbase.
+    # query = "INSERT INTO users (username, address) VALUES (" + username + ", " + address + ")"
+    users.insert(username=username, address=address)
+
     return good_json_response()
 
 
@@ -75,7 +86,10 @@ def delete():
 
     # TODO fail if user is not registered
 
+    # TODO delete user
     users.delete(username=username)
+
+    # query = "DELETE FROM users WHERE username = " + username
 
     return good_json_response()
 

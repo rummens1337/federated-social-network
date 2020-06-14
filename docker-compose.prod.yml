@@ -18,5 +18,3 @@ services:
       - phpmyadmin
     ports:
       - "${FLASK_PORT}:80"
-    volumes: 
-      - ./app:/var/www/apache-flask/app/

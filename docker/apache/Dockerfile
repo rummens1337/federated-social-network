@@ -34,7 +34,10 @@ COPY ./docker/apache/apache-flask.wsgi /var/www/apache-flask/apache-flask.wsgi
 
 COPY ./run.py /var/www/apache-flask/run.py
 COPY ./config.py /var/www/apache-flask/config.py
-# COPY $HOST/app /var/www/apache-flask/app/
+COPY ./app/ /var/www/apache-flask/app/
+RUN chown -R www-data:www-data /var/www/apache-flask/
+RUN chmod -R 755 /var/www/apache-flask/ 
+# 775 for upload folders!!
 
 RUN a2dissite 000-default.conf
 RUN a2ensite apache-flask.conf

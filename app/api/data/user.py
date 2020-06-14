@@ -29,12 +29,12 @@ def posts():
 
     # TODO lookup all post ids from a certain user and get the post_IDs
     # dummy:
-    post_id = [11, 12, 13]
+    post_id = users.export_one('rowid', username=username)
 
     # TODO return actual posts by post_ids
-    posts = ["test1", "test2"]
+    # posts = ["test1", "test2"]
 
-    if post_id == []:
+    if len(post_id) == 0:
         return bad_json_response('User has no posts.')
 
     return good_json_response({
