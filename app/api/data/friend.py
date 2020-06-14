@@ -9,6 +9,12 @@ blueprint = Blueprint('data_friend', __name__)
 
 central_server = "http://localhost:5000/api/"
 
+@blueprint.route('/check')
+def check():
+    #TODO: send request to central server to get address of the data server
+
+    #TODO: send request to data server to check if user exists
+
 @blueprint.route('/add', methods=['POST'])
 def register():
     # username = request.form['username']
