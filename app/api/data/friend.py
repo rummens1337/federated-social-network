@@ -24,8 +24,7 @@ def register():
         return bad_json_response('user not found')
 
     #check if friendship already exists
-    friendship = friends.export('rowid', users_id = str(user_id[0]), friend = friend_username)
-    if friendship:
+    if friends.exists(users_id = str(user_id[0]), friend = friend_username):
         return bad_json_response('friendship already exists')
 
     # register friendship in database

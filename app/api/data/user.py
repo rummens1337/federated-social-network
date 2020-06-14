@@ -22,7 +22,7 @@ def user():
 
 @blueprint.route('/exists')
 def exist():
-
+    username = request.args.get('username')
     # TODO: check with central server if user_exists
     return good_json_response()
 
@@ -77,16 +77,6 @@ def details():
         'location': user_details[0][2],
         'study': user_details[0][3]
     })
-
-
-    # return good_json_response({
-    #     'username': username,
-    #     'name': name,
-    #     'image_url': image_url,
-    #     'creation_date': creation_date,
-    #     'location': location,
-    #     'study': study
-    # })
 
 
 @blueprint.route('/register', methods=['POST'])
