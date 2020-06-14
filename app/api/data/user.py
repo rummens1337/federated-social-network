@@ -85,34 +85,6 @@ def user_posts():
     })
 
 
-@blueprint.route('/details')
-def details():
-    username = request.args.get('username')
-
-    if username is None:
-        return bad_json_response('Username should be given as parameter.')
-
-    # TODO fail if user is not registered
-
-    user_details = users.export('name', 'uploads_id', 'location', 'study', username=username)
-
-    if not user_details:
-        return bad_json_response("User not found")
-
-    # TODO: Get image url
-
-    # return good_json_response(user_details[0][1])
-
-    return good_json_response({
-        'username': username,
-        'name': user_details[0][0],
-        'image_url': 'https://www.xolt.nl/wp-content/themes/fox/images/placeholder.jpg',
-        'creation_date': 'date',
-        'location': user_details[0][2],
-        'study': user_details[0][3]
-    })
-
-
 @blueprint.route('/register', methods=['POST'])
 def register():
     username = request.form['username']
