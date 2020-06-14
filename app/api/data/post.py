@@ -8,11 +8,11 @@ blueprint = Blueprint('data_post', __name__)
 
 # TODO COMMENTS
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.route('/', strict_slashes=False)
 def post():
     # TODO user should be authenticated
 
-    post_id = request.form['post_id']
+    post_id = request.args.get('post_id')
 
     if post_id is None:
         return bad_json_response('post_id should be given as parameter.')
@@ -22,9 +22,6 @@ def post():
         return bad_json_response('post not found')
 
     post_db = posts.export('body', 'title', 'users_id', 'creation_date', 'last_edit_date', rowid=post_id)[0]
-
-    import logging
-    logging.debug(post_db[3])
 
     return good_json_response({
         'post_id': post_id,
