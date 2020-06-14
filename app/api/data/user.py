@@ -9,8 +9,41 @@ blueprint = Blueprint('data_user', __name__)
 
 central_server = "http://localhost:5000/api/"
 
-@blueprint.route('/')
+
+@blueprint.route('/', strict_slashes=False)
 def user():
+    user_id = request.args.get('user_id')
+
+    if user_id is None:
+        return bad_json_response('user_id should be given as parameter.')
+
+    # TODO fail if user is not authenticated
+
+    user_details = users.export(
+        'username', 'name', 'uploads_id', 
+        'location', 'study', 'creation_date', 
+        'last_edit_date', 
+        rowid=user_id
+    )
+
+    if not user_details:
+        return bad_json_response("User not found")
+
+    # TODO: Get image url
+
+    return good_json_response({
+        'username': user_details[0][0],
+        'name': user_details[0][1],
+        'image_url': 'https://www.xolt.nl/wp-content/themes/fox/images/placeholder.jpg',
+        'location': user_details[0][3],
+        'study': user_details[0][4],
+        'creation_date': str(user_details[0][5]),
+        'last_edit_date': str(user_details[0][6])
+    })
+
+
+@blueprint.route('/all')
+def users_all():
     usernames = users.export('username')
 
     if len(usernames) == 0:
@@ -20,28 +53,29 @@ def user():
         'usernames': usernames
     })
 
+
 @blueprint.route('/exists')
 def exist():
 
     # TODO: check with central server if user_exists
     return good_json_response()
 
-@blueprint.route('/posts')
-def posts():
-    username = request.args.get('username')
 
-    if username is None:
-        return bad_json_response('Username should be given as parameter.')
+@blueprint.route('/posts')
+def user_posts():
+    user_id = request.args.get('user_id')
+
+    if user_id is None:
+        return bad_json_response('user_id should be given as parameter.')
 
     # check if user id exists
-    user_id = users.export('rowid', username=username)
-    if not user_id:
+    if not users.exists(rowid=user_id):
         return bad_json_response('user not found')
 
-    # TODO fail if user is not registered
+    # TODO fail if user is not authenticated
 
     # TODO get all posts of a user.
-    user_posts = posts.export('title', 'body', 'rowid', users_id = str(user_id[0]))
+    user_posts = posts.export('title', 'body', users_id=user_id)
 
     if len(user_posts) == 0:
         return bad_json_response('User has no posts.')
@@ -49,44 +83,6 @@ def posts():
     return good_json_response({
         'posts': user_posts
     })
-
-
-@blueprint.route('/details')
-def details():
-    username = request.args.get('username')
-
-    if username is None:
-        return bad_json_response('Username should be given as parameter.')
-
-    # TODO fail if user is not registered
-
-    user_details = users.export('name', 'uploads_id', 'location', 'study', username=username)
-
-    if not user_details:
-        return bad_json_response("User not found")
-
-    # TODO: Get image url
-
-    # return good_json_response(user_details[0][1])
-
-    return good_json_response({
-        'username': username,
-        'name': user_details[0][0],
-        'image_url': 'https://www.xolt.nl/wp-content/themes/fox/images/placeholder.jpg',
-        'creation_date': 'date',
-        'location': user_details[0][2],
-        'study': user_details[0][3]
-    })
-
-
-    # return good_json_response({
-    #     'username': username,
-    #     'name': name,
-    #     'image_url': image_url,
-    #     'creation_date': creation_date,
-    #     'location': location,
-    #     'study': study
-    # })
 
 
 @blueprint.route('/register', methods=['POST'])
@@ -137,5 +133,6 @@ def edit():
         pass
 
     return good_json_response()
+
 
 __all__ = ('blueprint')
