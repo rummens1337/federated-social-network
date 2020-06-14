@@ -17,7 +17,7 @@ def post():
     if post_id is None:
         return bad_json_response('post_id should be given as parameter.')
 
-    post_db = posts.export('rowid', rowid=str(post_id))
+    post_db = posts.export('rowid', rowid=post_id)
     if not post_db:
         return bad_json_response('post not found')
 
@@ -57,7 +57,7 @@ def create():
         return bad_json_response('Body should be given as parameter.')
 
     # check if user id exists
-    if not users.export('rowid', rowid=user_id):
+    if not users.exists(rowid=user_id):
         return bad_json_response('user not found')
 
     # Insert post
@@ -81,15 +81,15 @@ def delete():
         return bad_json_response('Post_id should be given as parameter.')
 
     # check if user id exists
-    if not users.export('rowid', rowid=user_id):
-        return bad_json_response('user not found')
-    # check if user id exists
-    post_db = posts.export('rowid', rowid=str(post_id))
-    if not post_db:
-        return bad_json_response('post not found')
+    if not users.exists(rowid=user_id):
+        return bad_json_response('User not found')
+
+    # check if post id exists
+    if not posts.exists(rowid=post_id):
+        return bad_json_response('Post not found')
 
     # Delete post
-    posts.delete(rowid = str(post_id))
+    posts.delete(rowid = post_id)
 
     return good_json_response()
 
