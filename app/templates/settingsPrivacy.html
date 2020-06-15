@@ -2,7 +2,7 @@
 {% block title %}Settings{% endblock %}
 {% block head %}
     <title>Settings</title>
-    <link href="../static/css/setting.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../static/css/setting1.css" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -19,26 +19,47 @@
     </div>
     <div id="main" class="col-xl-8">
         <div class="title">
-            <h2>Personal info</h2>
+            <h2>Privacy settings</h2>
         </div>
         <ul class="style1">
             <li>
-                <p><b>Full name</b></p>
-                <input type='text' class='input' value='Coen Nusse'> </input>
+                <p><b>Who is able to see my posts?</b></p>
+                <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" name="optradio">Everyone
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio">Friends
+                    </label>
+                  </div>
+                  <div class="form-check disabled">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" name="optradio">Friends of friends
+                    </label>
+                  </div>
             </li>
             <li>
-                <p><b>Username</b></p>
-                <input type='text' class='input' value='coen'> </input>
-            <li>
-                <p><b>Email adress</b></p>
-                <input type='email' class='input' value='coennusse@live.nl'> </input>
-            </li>
-            <li>
-                <p><b>Password</b></p>
-                <input type='password' class='input'> </input>
+                <p><b>Who is able to see my profile picture?</b></p>
+                <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" name="optradio">Everyone
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" name="optradio">Friends
+                    </label>
+                  </div>
+                  <div class="form-check disabled">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" name="optradio">Friends of friends
+                    </label>
+                  </div>
             </li>
             <div class="col-md-12 text-center ">
-                <button type="submit" class="btn-primary btn-block">Update</button>
+                <button type="submit" class="btn-primary btn-block">Save</button>
             </div>
         </ul>
     </div>

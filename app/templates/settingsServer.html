@@ -2,7 +2,7 @@
 {% block title %}Settings{% endblock %}
 {% block head %}
     <title>Settings</title>
-    <link href="../static/css/setting.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../static/css/setting1.css" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -19,27 +19,32 @@
     </div>
     <div id="main" class="col-xl-8">
         <div class="title">
-            <h2>Personal info</h2>
+            <h2>Personal server</h2>
         </div>
         <ul class="style1">
             <li>
-                <p><b>Full name</b></p>
-                <input type='text' class='input' value='Coen Nusse'> </input>
+                <p><b>Hosted accounts:</b></p>
+                <p>coennusse <button class="btn-primary"> Delete</button></p>
+                <p><b>Requests:</b></p>
+                <p>Jan <button class="btn-primary"> Accept</button> <button class="btn-danger"> Decline</button></p>
             </li>
+        </ul>
+        <div class="title">
+            <h2>Active hosts</h2>
+        </div>
+        <ul class="style1">
             <li>
-                <p><b>Username</b></p>
-                <input type='text' class='input' value='coen'> </input>
-            <li>
-                <p><b>Email adress</b></p>
-                <input type='email' class='input' value='coennusse@live.nl'> </input>
+                <p>coennusse <button class="btn-danger"> Delete</button></p>
+                <p>Jan <button class="btn-danger"> Delete</button></p>
             </li>
+        </ul>
+        <div class="title">
+            <h2>Available hosts</h2>
+        </div>
+        <ul class="style1">
             <li>
-                <p><b>Password</b></p>
-                <input type='password' class='input'> </input>
+                <p>Jan <button class="btn-primary"> Request to host</button></p>
             </li>
-            <div class="col-md-12 text-center ">
-                <button type="submit" class="btn-primary btn-block">Update</button>
-            </div>
         </ul>
     </div>
 </div>
