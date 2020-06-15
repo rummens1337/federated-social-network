@@ -11,10 +11,11 @@ stages:
   - Test
 
 # Linting
-# flake8:
-#   stage: Static Analysis
-#   script:
-#   - flake8 --max-line-length=120 app/*.py
+flake8:
+  allow_failure: true
+  stage: Static Analysis
+  script:
+  - flake8 --max-line-length=120 app/*.py
 
 # Unit tests
 pytest:
