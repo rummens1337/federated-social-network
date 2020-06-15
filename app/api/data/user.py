@@ -4,6 +4,8 @@ import requests
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import posts
+from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity
+
 
 blueprint = Blueprint('data_user', __name__)
 
@@ -11,6 +13,7 @@ central_server = "http://localhost:5000/api/"
 
 
 @blueprint.route('/', strict_slashes=False)
+@jwt_required
 def user():
     user_id = request.args.get('user_id')
 
@@ -62,6 +65,7 @@ def exist():
 
 
 @blueprint.route('/posts')
+@jwt_required
 def user_posts():
     user_id = request.args.get('user_id')
 
@@ -85,6 +89,35 @@ def user_posts():
     })
 
 
+@blueprint.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+
+    if username is None:
+        return bad_json_response('username should be given as parameter.')
+
+    if password is None:
+        return bad_json_response('password should be given as parameter.')
+
+    # TODO fail if user is already authenticated
+    if not users.exists(username=username):
+        return bad_json_response("Login failed")
+
+    user = users.export('rowid', 'password', username=username)[0]
+
+    # TODO Safe string compare 
+    if user[1] != password:
+        return bad_json_response("Login failed2")
+
+    # Login success
+    access_token = create_access_token(identity=user[0])
+
+    return good_json_response({
+        'token' : access_token
+    })
+
+
 @blueprint.route('/register', methods=['POST'])
 def register():
     username = request.form['username']
@@ -102,6 +135,7 @@ def register():
 
 
 @blueprint.route('/delete', methods=['POST'])
+@jwt_required
 def delete():
     username = request.form['username']
 
@@ -113,6 +147,7 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
+@jwt_required
 def edit():
     username = request.form['username']
 

@@ -4,11 +4,13 @@ from flask import Flask
 
 from app.database import init_mysql
 from app.log import init_logger
+from flask_jwt_extended import JWTManager
 
 init_logger()
 app = Flask(__name__)
 app.config.from_object('config')
 init_mysql(app)
+jwt = JWTManager(app)
 
 from app.api import register_central, register_data
 from app.utils import server_type

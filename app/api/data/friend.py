@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 import requests
 
+from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import friends
@@ -10,6 +11,7 @@ blueprint = Blueprint('data_friend', __name__)
 central_server = "http://localhost:5000/api/"
 
 @blueprint.route('/add', methods=['POST'])
+@jwt_required
 def register():
     # username = request.form['username']
     # friend_username = request.form['friend_username']
@@ -37,6 +39,7 @@ def register():
     })
 
 @blueprint.route('/get_friends')
+@jwt_required
 def get_friends():
     username = request.args.get('username')
 
@@ -55,6 +58,7 @@ def get_friends():
     })
 
 @blueprint.route('/delete', methods=['POST'])
+@jwt_required
 def delete():
     # username = request.form['username']
     # friend_username = request.form['friend_username']
