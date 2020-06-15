@@ -1,38 +1,19 @@
-image: "python:3.7"
+image: docker:latest
 
-# Do before script
+variables:
+  DOCKER_DRIVER: overlay
+
+services:
+- docker:dind
+
 before_script:
-  - python --version
-  - pip install -r docker/flask/requirements.txt
+- docker info
+- apk update
+- apk upgrade
+- apk add python3 python-dev py-pip build-base
+- pip3 install docker-compose
 
-# Different stages
-stages:
-  - Static Analysis
-  - Test
-
-#
-# Static analysis
-#
-flake8:
-  allow_failure: true
-  stage: Static Analysis
+build:
+  stage: build
   script:
-  - flake8 --max-line-length=120 app/*.py
-
-pylint:
-  stage: Static Analysis
-  allow_failure: true
-  script:
-  - pylint -d C0301 app/*.py
-
-#
-# Test
-#
-pytest:
-  stage: Test
-  script:
-  - pwd
-  - ls -l
-  - export PYTHONPATH="$PYTHONPATH:."
-  - python -c "import sys;print(sys.path)"
-  - pytest
+  - docker-compose -f docker-compose.test.yml build
