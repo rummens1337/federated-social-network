@@ -31,6 +31,10 @@ def insert_friendship():
     if not user_id:
         return bad_json_response('user not found')
 
+    #check if friendship already exists
+    if friends.exists(users_id = str(user_id[0]), friend = friend_username):
+        return bad_json_response('friendship already exists')
+
     # register friendship in database
     friends.insert(users_id=str(user_id[0]), friend=friend_username)
 
@@ -57,24 +61,14 @@ def register():
     if jr != 'true':
         return bad_json_response('friend not found')
 
-    # check if user id exists
-    user_id = users.export('rowid', username=username)
-    if not user_id:
-        return bad_json_response('user not found')
-
-    #check if friendship already exists
-    if friends.exists(users_id = str(user_id[0]), friend = friend_username):
-        return bad_json_response('friendship already exists')
 
     # register friendship in database
-    response1 = requests.post(data_server + '/friend/insert_friendship?username=' + username + '&friend_username=' + friend_username)
     response1 = requests.post(friend_address + '/friend/insert_friendship?username=' + friend_username + '&friend_username=' + username)
-    # response1 = requests.post(data_server + "/insert_friendship", json={'username':username, 'friend_username': friend_username})
-    # response2 = requests.post(data_server + "/insert_friendship", json={'username':friend_username, 'friend_username': username})
+    if not response1.json()['success']:
+        return bad_json_response('could not reach friend')
+    response2 = requests.post(data_server + '/friend/insert_friendship?username=' + username + '&friend_username=' + friend_username)
 
-    # return good_json_response()
-    return response1.json()
-
+    return good_json_response()
 
 @blueprint.route('/get_friends')
 def get_friends():
