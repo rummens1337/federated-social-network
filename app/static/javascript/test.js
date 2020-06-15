@@ -1,7 +1,7 @@
 // URL of servers ENDING WITH '/'
 // centralServer is hardcoded
 // dataServer is requested using function getDataServer
-var centralServer = 'http://localhost:5000/'
+var centralServer = 'http://localhost:5000/';
 var dataServer = 'http://localhost:9000/';
 
 // User variables.

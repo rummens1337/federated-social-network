@@ -328,4 +328,3 @@ def init_mysql(app):
 def test_db():
     with cursor() as cur:
         cur.execute("INSERT INTO test VALUES (1)")
-
