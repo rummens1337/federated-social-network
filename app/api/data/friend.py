@@ -16,7 +16,7 @@ def check():
     #TODO: send request to central server to get address of the data server
 
     url = 'http://localhost:9000/api/friend/get_friends?username=' + username
-    r =requests.get(url).json()
+    r = requests.get(url).json()
     #TODO: send request to data server to check if user exists
 
     return good_json_response(r)
