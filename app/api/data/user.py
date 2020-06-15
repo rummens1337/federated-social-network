@@ -54,20 +54,21 @@ def users_all():
     })
 
 
-@blueprint.route('/exists')
-def exist():
+@blueprint.route('/registered')
+def registered():
     username = request.args.get('username')
-    # TODO: check with central server if user_exists
+
     if username is None:
-        return bad_json_response('Username should be given as parameter.')
+        return bad_json_response('user_id should be given as parameter.')
 
-    if not users.exists(username=username):
-        return bad_json_response('Username not found')
+    if not users.exists(username = username):
+        return good_json_response({
+            'registered': 'false'
+        })
 
-    # TODO send request to central to check if username also exists there
-    requests.get('http://localhost:5000/api/')
-
-    return good_json_response()
+    return good_json_response({
+                'registered': 'true'
+            })
 
 
 @blueprint.route('/posts')
