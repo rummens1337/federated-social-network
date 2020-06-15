@@ -65,7 +65,7 @@ def registered():
         return bad_json_response('Username not found (in data server)')
 
     # for testing purposes; Enter your own IP address instead of ipaddress
-    url = 'http://ipaddress/api/user/registered?username=' + username
+    url = 'http://ipaddress:5000/api/user/registered?username=' + username
     r = requests.get(url).json()
 
     return good_json_response(r)
