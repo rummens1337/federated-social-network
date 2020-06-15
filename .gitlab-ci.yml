@@ -3,7 +3,7 @@ image: "python:3.7"
 # Do before script
 before_script:
   - python --version
-  - pip install -r requirements.txt
+  - pip install -r docker/flask/requirements.txt
 
 # Different stages
 stages:
