@@ -12,7 +12,7 @@
         <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
         <script type="text/javascript" src="../static/javascript/dataHandler.js"></script>
         <script type="text/javascript" src="../static/javascript/template.js"></script>
-        <script type="text/javascript" src="../static/javascript/test.js"></script>
+        <!-- <script type="text/javascript" src="../static/javascript/test.js"></script> -->
         <style>
             .fakeimg {
               height: 200px;
@@ -39,18 +39,20 @@
             </div>
 
             <div class="container-fluid" id="main">
-                <nav class="nav-search container-fluid" id="search">
-                    <form name='search-form' class="form-inline my-2 my-lg-0" style="padding-left:20px;">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='search_input'>
-                        <button class="btn btn-custom my-2 my-sm-0" type="submit" onclick='search_func();'>Search</button>
-                    </form>
-                </nav>
 
-                {% block content %}
-                {% endblock %}
+            <nav class="nav-search container-fluid" id="search">
+                <form class="form-inline my-2 my-lg-0" style="padding-left:20px;">
+                    <input class="form-control mr-sm-2 input" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-custom my-2 my-sm-0 search-btn" type="submit">Search</button>
+                </form>
+            </nav>
+
+            {% block content %}
+            {% endblock %}
 
             </div>
-            <footer id='jumbotron' class="jumbotron text-align">Footer</footer>
+        <footer id='jumbotron' class="jumbotron text-align">Footer</footer>
         </div>
+          <!-- end page wrapper -->
     </body>
 </html>
