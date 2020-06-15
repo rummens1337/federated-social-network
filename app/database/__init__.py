@@ -294,7 +294,7 @@ class TableLoader:
             bool: Whether a row exists or not.
         """
         with cursor() as cur:
-            return len(self.export('rowid', limit=1, **kwargs)) != 0
+            return len(self.export('id', limit=1, **kwargs)) != 0
 
     def delete(self, **kwargs):
         """Delete a row from the table in the database.

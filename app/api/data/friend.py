@@ -29,7 +29,7 @@ def insert_friendship():
     friend_username = request.args.get('friend_username')
 
     # check if user id exists
-    user_id = users.export('rowid', username=username)
+    user_id = users.export('id', username=username)
     if not user_id:
         return bad_json_response('user not found')
 
@@ -79,7 +79,7 @@ def get_friends():
     username = request.args.get('username')
 
     # Check if user exists
-    user_id = users.export('rowid', username=username)
+    user_id = users.export('id', username=username)
     if not user_id:
         return bad_json_response('user not found')
 
@@ -103,17 +103,17 @@ def delete():
     # TODO: check if friend exists
 
     # check if user id exists
-    user_id = users.export('rowid', username=username)
+    user_id = users.export('id', username=username)
     if not user_id:
         return bad_json_response('user not found')
 
     #check if friendship already exists
-    friendship = friends.export('rowid', users_id = str(user_id[0]), friend = friend_username)
+    friendship = friends.export('id', users_id = str(user_id[0]), friend = friend_username)
     if not friendship:
         return bad_json_response('friendship does not exists')
 
     # register friendship in database
-    friends.delete(rowid = str(friendship[0]))
+    friends.delete(id = str(friendship[0]))
 
     # TODO: delete friendship for friend
 
