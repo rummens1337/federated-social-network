@@ -2,23 +2,22 @@
 {% block title %}Settings{% endblock %}
 {% block head %}
     <title>Settings</title>
-    <link href="../static/css/settings3.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../static/css/setting1.css" rel="stylesheet" type="text/css" media="all" />
+
+
 {% endblock %}
 {% block content %}
-    <div id="page" class="container bg-dark p-3">
-        <div id="header">
-            <div id="logo">
-            <h1><a href="index">Fedbook</a></h1>
-            </div>
-            <div id="menu">
-                <ul>
-                    <h2 class='settings'> Settings</h2>
-                    <li><a href="settings/profile" accesskey="1" title="">Profile</a></li>
-                    <li><a href="settings/privacy" accesskey="2" title="">Privacy</a></li>
-                    <li><a href="settings/server" accesskey="3" title="">Server</a></li>
-                    <li><a href="password" accesskey="4" title="">Password</a></li>
-                </ul>
-            </div>
+<div class="row" id="header">
+    <div class="col-xl-3" id="header">
+        <div id="menu">
+            <ul>
+                <h2 class='settings'> <a href="../settings"> Settings</a></h2>
+                <li><a href="settings/profile" accesskey="1" title="">Profile</a></li>
+                <li><a href="settings/privacy" accesskey="2" title="">Privacy</a></li>
+                <li><a href="settings/server" accesskey="3" title="">Server</a></li>
+                <li><a href="password" accesskey="4" title="">Password</a></li>
+            </ul>
         </div>
     </div>
+</div>
 {% endblock %}
