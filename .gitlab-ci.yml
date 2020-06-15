@@ -10,14 +10,24 @@ stages:
   - Static Analysis
   - Test
 
-# Linting
+#
+# Static analysis
+#
 flake8:
   allow_failure: true
   stage: Static Analysis
   script:
   - flake8 --max-line-length=120 app/*.py
 
-# Unit tests
+pylint:
+  stage: Static Analysis
+  allow_failure: true
+  script:
+  - pylint -d C0301 app/*.py
+
+#
+# Test
+#
 pytest:
   stage: Test
   script:
@@ -26,5 +36,3 @@ pytest:
   - export PYTHONPATH="$PYTHONPATH:."
   - python -c "import sys;print(sys.path)"
   - pytest
-
-# Trigger build
