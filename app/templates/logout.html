@@ -1,0 +1,12 @@
+
+
+{% extends "template.html" %}
+{% block title %}Logout{% endblock %}
+{% block head %}
+<script>
+    Cookies.remove('access_token_cookie');
+    window.location = "/";
+
+</script>
+    {{ super() }}
+{% endblock %}
