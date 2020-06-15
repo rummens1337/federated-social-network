@@ -7,7 +7,7 @@ services:
 - docker:dind
 
 before_script:
-- export DOCKER_HOST="${HOSTNAME}-docker"
+- echo "works??"
 - docker info
 - apk update
 - apk upgrade
@@ -17,5 +17,4 @@ before_script:
 build:  
   stage: build  
   script:
-  - export DOCKER_HOST="${HOSTNAME}-docker"
   - docker-compose -f docker-compose.test.yml build
