@@ -64,8 +64,9 @@ def registered():
     if not users.exists(username = username):
         return bad_json_response('Username not found (in data server)')
 
-    url = 'http://95.217.178.90/api/user/registered?username=' + username
-    r =requests.get(url).json()
+    # for testing purposes; Enter your own IP address instead of ipaddress
+    url = 'http://ipaddress/api/user/registered?username=' + username
+    r = requests.get(url).json()
 
     return good_json_response(r)
 
