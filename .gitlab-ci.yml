@@ -8,11 +8,22 @@ before_script:
 # Different stages
 stages:
   - Static Analysis
+  - Test
 
 # Linting
 flake8:
   stage: Static Analysis
   script:
   - flake8 --max-line-length=120 app/*.py
+
+# Unit tests
+pytest:
+  stage: Test
+  script:
+  - pwd
+  - ls -l
+  - export PYTHONPATH="$PYTHONPATH:."
+  - python -c "import sys;print(sys.path)"
+  - pytest
 
 # Trigger build
