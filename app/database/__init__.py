@@ -69,6 +69,9 @@ class TableLoader:
     def __init__(self, table: str):
         self._table = table
 
+    def exists(self, *args, **kwargs):
+        pass
+
     def export_one(self, *args, **kwargs) -> typing.Union[str, int]:
         """Export a single entry from the table.
 
@@ -76,7 +79,7 @@ class TableLoader:
             By default the first result from a search in the table is returned.
             In the case where there is only one matching row, this is not a
             problem, but in the case of multiple matching rows, the row with the
-            lowest `rowid`, the primary key, is returned. This is usually the row
+            lowest `id`, the primary key, is returned. This is usually the row
             that was created the earliest.
 
         Example:
@@ -102,13 +105,13 @@ class TableLoader:
         kwargs['limit'] = 1
         return self.export(*args, **kwargs)[0]
 
-    def export(self, *args, order: str='rowid', order_direction: str='desc',
+    def export(self, *args, order: str='id', order_direction: str='desc',
                limit: int=None, **kwargs):
         """Export one or more entries from the table.
 
         Note:
             By default the order in which the results are returned is descending
-            over the primary key, `rowid`, in the table.
+            over the primary key, `id`, in the table.
 
         Example:
             Example calls are assuming an instance for table `user` for the
@@ -205,12 +208,12 @@ class TableLoader:
             Note that all keys in the SQL files containing `NOT NULL` and not a
             `DEFAULT` value are requiered to be set. Others can be left empty.
 
-            The primary key `rowid` of the table should not be set. This is the
+            The primary key `id` of the table should not be set. This is the
             index of the row in the table itself and has on meaningful value
             outside of the SQL database.
 
             All keys that have a `DEFAULT CURRENT_TIMESTAMP` should not be
-            manually set. These are set automatically, just like the `rowid` key.
+            manually set. These are set automatically, just like the `id` key.
 
         Returns:
             The rowid of the newly created row in the table, or the return value

@@ -46,7 +46,7 @@ def createtestusers():
 
 @blueprint.route('/address', methods=['GET'])
 def address():
-    username = request.form['username']
+    username = request.args.get('username')
 
     if username is None:
         return bad_json_response('Username should be given as parameter.')
@@ -76,13 +76,14 @@ def registered():
     # TODO error handling if query fails
 
 
-@blueprint.route('/register', methods=['POST'])
+@blueprint.route('/register', methods=['POST', 'GET'])
 def register():
-    username = request.form['username']
-    address = request.form['address']
+    # username = request.form['username']
+    # address = request.form['address']
+    username = request.args.get('username')
+    address = request.args.get('address')
 
-    if '@' not in address:
-        return bad_json_response('Invalid e-mail address.')
+    users.insert(username=username, address=address)
 
     if not users.exists(username=username):
         users.insert(username=username, address=address)
@@ -97,9 +98,10 @@ def register():
     # TODO error handling if query fails
 
 
-@blueprint.route('/delete', methods=['POST'])
+@blueprint.route('/delete', methods=['POST', 'GET'])
 def delete():
-    username = request.form['username']
+    #username = request.form['username']
+    username = request.args.get('username')
 
     if users.exists(username=username):
         users.delete(username=username)
@@ -109,9 +111,25 @@ def delete():
     # TODO error handling if query fails
 
 
-@blueprint.route('/edit', methods=['POST'])
+@blueprint.route('/edit', methods=['POST', 'GET'])
 def edit():
-    username = request.args.get('username')
+    # TODO fail if user is not registered
+
+    if 'new_address' in request.form:
+        # TODO replace address
+        #new_address = request.form['address']
+        new_address=request.args.get('new_address')
+        query = "UPDATE users SET address = " + new_address + "WHERE username = " + username
+        pass
+    if 'new_username' in request.form:
+        # TODO replace username
+        # new_username = request.form['new_username']
+        new_username = request.args.get('new_username')
+        query = "UPDATE users SET username = " + new_username + "WHERE username = " + username
+
+    if 'address' in request.form:
+        # TODO replace address
+        pass
 
     if users.exists(username=username):
         if 'new_address' in request.form:

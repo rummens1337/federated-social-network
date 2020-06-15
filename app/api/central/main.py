@@ -77,5 +77,3 @@ def password():
 
 
 __all__ = ('blueprint')
-
-
