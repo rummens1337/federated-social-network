@@ -13,12 +13,12 @@ init_mysql(app)
 jwt = JWTManager(app)
 
 from app.api import register_central, register_data
-from app.utils import server_type
+from app.type import get_server_type, ServerType
 
-if server_type() == 'CENTRAL':
+if get_server_type() == ServerType.CENTRAL:
     from app.api.central.main import blueprint as main_routes
     register_central(app)
-elif server_type() == 'DATA':
+elif get_server_type() == ServerType.DATA:
     from app.api.data.main import blueprint as main_routes
     register_data(app)
 
