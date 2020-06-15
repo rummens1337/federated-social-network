@@ -79,6 +79,7 @@ VOLUME /var/lib/mysql
 RUN chmod 0444 /etc/mysql/my.cnf
 COPY config/ /etc/mysql/
 RUN chmod 0444 /etc/mysql/my.cnf
+RUN chmod 0444 /etc/mysql/conf.d/docker.cnf
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
