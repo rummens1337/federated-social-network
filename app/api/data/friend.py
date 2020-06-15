@@ -12,12 +12,14 @@ data_server = "http://localhost:9000/api"
 
 @blueprint.route('/check')
 def check():
+    username = request.args.get('username')
     #TODO: send request to central server to get address of the data server
 
-    r =requests.get('http://localhost:9000/api/friend/get_friends?username=user1')
+    url = 'http://localhost:9000/api/friend/get_friends?username=' + username
+    r =requests.get(url).json()
     #TODO: send request to data server to check if user exists
 
-    return good_json_response(r.json())
+    return good_json_response(r)
 
 @blueprint.route('/insert_friendship', methods=['POST'])
 def insert_friendship():
