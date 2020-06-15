@@ -3,5 +3,5 @@ flask-mysql
 pytest
 requests
 pytest-html
-
+flake8
 
