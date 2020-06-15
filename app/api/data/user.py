@@ -105,8 +105,11 @@ def register():
     image = request.files['file'].read()
 
     # TODO fail if user is already registered
+    if users.exists(username=username):
+        return bad_json_response('Username is already registered')
 
-    # TODO register user and save image
+    # TODO register user and save image | still todo save image
+    users.insert(username=username, location=location, study=study)
 
     return good_json_response()
 
@@ -115,32 +118,38 @@ def register():
 def delete():
     username = request.form['username']
 
-    # TODO fail if user is not registered
-
     # TODO delete user from database and remove static data
-
-    return good_json_response()
+    # remove static data? Think it is done.
+    if users.exists(username=username):
+        users.delete(username=username)
+        return good_json_response()
+    else:
+        return bad_json_response("Username is not registered.")
 
 
 @blueprint.route('/edit', methods=['POST'])
 def edit():
     username = request.form['username']
 
-    # TODO fail if user is not registered
-
-    if 'name' in request.form:
-        # TODO replace name in database
-        pass
-    if 'file' in request.files:
-        image_filename = request.files['file'].filename
-        image = request.files['file'].read()
-        # TODO replace image
-    if 'location' in request.form:
-        # TODO replace location in database
-        pass
-    if 'study' in request.form:
-        # TODO replace study in database
-        pass
+    if users.exists(username=username):
+        if 'new_name' in request.form:
+            new_name = request.form['new_name']
+            if 'name' != '':
+                users.update({'name':new_name}, username=username)
+        if 'file' in request.files:
+            image_filename = request.files['file'].filename
+            image = request.files['file'].read()
+            # TODO replace image
+        if 'new_location' in request.form:
+            new_location = request.form['new_location']
+            if 'new_location' != '':
+                users.update({'location':new_location}, username=username)
+        if 'new_study' in request.form:
+            new_study = request.form['new_study']
+            if 'new_study' != '':
+                users.update({'study':new_study}, username=username)
+    else:
+        return bad_json_response('Username does not exist in database.')
 
     return good_json_response()
 
