@@ -6,15 +6,16 @@ function create_post() {
       },
 
       submitHandler: function(form) {
-        var data = new FormData($(this));
+        // var data = new FormData($(this));
 
         $.ajax({
           data : FormData,
           // Gebruiken wanneer Frontend en backend dezelfde variabelen gebruiken.
-          // data : $(form).serialize(),
+          data : $(form).serialize() + '&username=' + encodeURIComponent("Test"),
           type : 'POST',
           url : 'http://localhost:9000/api/post/create',
           success : function(data) {
+            //TODO redirect/reload
             alert("Succes");
           },
           error : function(data) {
