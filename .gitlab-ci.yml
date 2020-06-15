@@ -30,6 +30,7 @@ before_script:
   - apk update
   - apk upgrade
   - apk add --no-cache docker-compose
+  - apk add make
 
   
 
