@@ -4,7 +4,103 @@
 	margin-bottom: 5%;
 	/*width: 100%;*/
 }
+a:active {
+  color:#52B77C;
+}
 
+#posts {
+  background-color: #52B77C;
+}
+.tab {
+  float: left;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  width: 30%;
+  height: 300px;
+}
+
+.tab button {
+  display: block;
+  background-color: inherit;
+  color: black;
+  padding: 22px 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  border: 1px solid #ccc;
+  width: 70%;
+  border-left: none;
+  height: 300px;
+}
+
+.post-input {
+  color: #0b132b;
+  border: 3px solid #52B77C;
+  border-radius: 5px;
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  box-sizing: border-box;
+  font: bold 16px 'Bitter', sans-serif;
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.post-input:hover {
+  background-color: #CDCDCD;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
+}
+
+.submit {
+  background-color: #DFF8EB;
+  color: #0b132b;
+  border: 3px solid #52B77C;
+  border-radius: 5px;
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  font: bold 16px 'Bitter', sans-serif;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+  outline: 1px solid;
+  /*outline-color: rgba(255, 255, 255, .5);*/
+  outline-offset: 0px;
+  text-shadow: none;
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.submit:hover {
+  border: 3px solid #DFF8EB;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
+  outline-color: rgba(255, 255, 255, 0);
+  outline-offset: 15px;
+  background-color: #011638;
+  color: #DFF8EB;
+  text-shadow: 1px 1px 2px #427388; 
+  
+}
 
 
 @media screen and (max-width: 700px) {
