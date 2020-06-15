@@ -59,16 +59,15 @@ def registered():
     username = request.args.get('username')
 
     if username is None:
-        return bad_json_response('user_id should be given as parameter.')
+        return bad_json_response('Username should be given as parameter.')
 
     if not users.exists(username = username):
-        return good_json_response({
-            'registered': 'false'
-        })
+        return bad_json_response('Username not found (in data server)')
 
-    return good_json_response({
-                'registered': 'true'
-            })
+    url = 'http://95.217.178.90/api/user/registered?username=' + username
+    r =requests.get(url).json()
+
+    return good_json_response(r)
 
 
 @blueprint.route('/posts')
