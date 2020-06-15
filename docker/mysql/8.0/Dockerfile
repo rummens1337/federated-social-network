@@ -76,7 +76,7 @@ RUN { \
 
 VOLUME /var/lib/mysql
 # Config files
-RUN chmod 0444 /etc/mysql/my.cnf
+RUN chmod 0444 config/my.cnf
 COPY config/ /etc/mysql/
 
 COPY docker-entrypoint.sh /usr/local/bin/
