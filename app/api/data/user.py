@@ -58,6 +58,15 @@ def users_all():
 def exist():
     username = request.args.get('username')
     # TODO: check with central server if user_exists
+    if username is None:
+        return bad_json_response('Username should be given as parameter.')
+
+    if not users.exists(username=username):
+        return bad_json_response('Username not found')
+
+    # TODO send request to central to check if username also exists there
+    requests.get('http://localhost:5000/api/')
+
     return good_json_response()
 
 
