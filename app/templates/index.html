@@ -94,15 +94,21 @@
                 <!-- Main title -->
                 <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-envelope fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Post something</h2>
                 <div class="w3-container"  style="background-color:#DFF8EB;">
-                    <div class="form-group">
-                        <input type="text" name="post" class="form-control" placeholder="Whatcha thinking bout">
-                        <div class="text-center" >
-                            <br>
-                            <button class="w3-text-grey btn btn-lg btn-outline mb1 black" type="Post"  >Post</button>
-                            <!-- <button class="btn btn-primary mb1 bg-olive">Button</button -->
+                    <form name="createpost">
+                        <div class="form-group">
+                            <input type="text" id="title" class="form-control" placeholder="Title your post here!">
                         </div>
-                    </div>
-
+                        <div class="form-group">
+                            <textarea id="body" class="form-control" placeholder="Whatcha thinking bout" rows="2" style="resize: none;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="text-center" >
+                                <br>
+                                <button class="w3-text-grey btn btn-lg btn-outline mb1 black" type="submit" onclick="create_post();" >Post</button>
+                                <!-- <button class="btn btn-primary mb1 bg-olive">Button</button -->
+                            </div>
+                        </div>
+                    </form>
 
                 </div>
             </div>
