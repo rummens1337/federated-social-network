@@ -4,7 +4,7 @@ import requests
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import posts
-from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 
 
 blueprint = Blueprint('data_user', __name__)
@@ -26,7 +26,7 @@ def user():
         'username', 'name', 'uploads_id',
         'location', 'study', 'creation_date',
         'last_edit_date',
-        rowid=user_id
+        id=user_id
     )
 
     if not user_details:
@@ -83,7 +83,7 @@ def user_posts():
         return bad_json_response('user_id should be given as parameter.')
 
     # check if user id exists
-    if not users.exists(rowid=user_id):
+    if not users.exists(id=user_id):
         return bad_json_response('user not found')
 
     # TODO fail if user is not authenticated
@@ -114,7 +114,7 @@ def login():
     if not users.exists(username=username):
         return bad_json_response("Login failed")
 
-    user = users.export('rowid', 'password', username=username)[0]
+    user = users.export('id', 'password', username=username)[0]
 
     # TODO Safe string compare 
     if user[1] != password:

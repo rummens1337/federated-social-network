@@ -15,7 +15,10 @@ function requestJSON(type, url, data=null, success=null, error=null) {
         url: url,
         data: data,
         crossDomain: true,
-        success: success,
+        success: function(req) {
+            if (req.hasOwnProperty("data")) success(req);
+            else error(req);
+        },
         error: error
     });
 };
