@@ -22,11 +22,17 @@ def user():
 def createtestusers():
     # This function is used for testing.
     # Insert users in central database with default address.
-    usernames = ['nick', 'auke']
+    usernames = ['nick', 'auke', 'testuser']
     address = '0.0.0.0:9000/'
+    added_usernames = []
     for username in usernames:
-        users.insert(username=username, address=address)
-    return good_json_response()
+        if not users.exists(username=username):
+            users.insert(username=username, address=address)
+            added_usernames.append(username)
+    return good_json_response({
+        'added_users': added_usernames,
+        'address': address
+    })
     # TODO error handling if query fails
 
 
@@ -67,7 +73,10 @@ def register():
     username = request.form['username']
     address = request.form['address']
 
-    users.insert(username=username, address=address)
+    if not users.exists(username=username):
+        users.insert(username=username, address=address)
+    else:
+        return bad_json_response("User already exists in database.")
 
     return good_json_response({
         'username': username,
