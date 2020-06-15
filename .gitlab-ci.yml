@@ -14,7 +14,7 @@ before_script:
 - apk add python3 python-dev py-pip build-base
 - pip3 install docker-compose
 
-build:
+build: 
   stage: build
   script:
   - export DOCKER_HOST="${HOSTNAME}-docker"
