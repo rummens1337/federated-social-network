@@ -15,7 +15,7 @@ before_script:
 - pip3 install docker-compose
 
 build:  
-  stage: build
+  stage: build 
   script:
   - export DOCKER_HOST="${HOSTNAME}-docker"
   - docker-compose -f docker-compose.test.yml build
