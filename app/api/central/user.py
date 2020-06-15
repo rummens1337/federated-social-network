@@ -67,12 +67,12 @@ def register():
     username = request.form['username']
     address = request.form['address']
 
-    if '@' not in address:
-        return bad_json_response('Invalid e-mail address.')
-
     users.insert(username=username, address=address)
 
-    return good_json_response()
+    return good_json_response({
+        'username': username,
+        'address': address
+    })
     # TODO error handling if query fails
 
 
