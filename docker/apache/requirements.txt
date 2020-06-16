@@ -3,5 +3,4 @@ flask-mysql
 pytest
 requests
 pytest-html
-
-
+flask-jwt-extended

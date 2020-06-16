@@ -22,25 +22,12 @@ def user():
 def createtestusers():
     # This function is used for testing.
     # Insert users in central database with default address.
-
     usernames = ['nick', 'auke', 'testuser']
     address = '0.0.0.0:9000/'
-    added_usernames = []
     for username in usernames:
         if not users.exists(username=username):
             users.insert(username=username, address=address)
-            added_usernames.append(username)
-    return good_json_response({
-        'added_users': added_usernames,
-        'address': address
-    })
-
-    # usernames = ['nick', 'auke']
-    # address = '0.0.0.0:9000/'
-    # for username in usernames:
-    #     users.insert(username=username, address=address)
-    # return good_json_response()
-
+    return good_json_response()
     # TODO error handling if query fails
 
 
@@ -48,7 +35,7 @@ def createtestusers():
 def address():
     username = request.args.get('username')
 
-    if username is None:
+    if username is None or username == '':
         return bad_json_response('Username should be given as parameter.')
 
     if users.exists(username=username):
@@ -76,32 +63,23 @@ def registered():
     # TODO error handling if query fails
 
 
-@blueprint.route('/register', methods=['POST', 'GET'])
+@blueprint.route('/register', methods=['POST'])
 def register():
-    # username = request.form['username']
-    # address = request.form['address']
-    username = request.args.get('username')
-    address = request.args.get('address')
-
-    users.insert(username=username, address=address)
+    username = request.form['username']
+    address = request.form['address']
 
     if not users.exists(username=username):
         users.insert(username=username, address=address)
     else:
-        return bad_json_response("User already exists in database.")
+        return bad_json_response("Username already exists in database.")
 
-    return good_json_response({
-        'username': username,
-        'address': address
-    })
-
+    return good_json_response()
     # TODO error handling if query fails
 
 
-@blueprint.route('/delete', methods=['POST', 'GET'])
+@blueprint.route('/delete', methods=['POST'])
 def delete():
-    #username = request.form['username']
-    username = request.args.get('username')
+    username = request.form['username']
 
     if users.exists(username=username):
         users.delete(username=username)
@@ -111,25 +89,9 @@ def delete():
     # TODO error handling if query fails
 
 
-@blueprint.route('/edit', methods=['POST', 'GET'])
+@blueprint.route('/edit', methods=['POST'])
 def edit():
-    # TODO fail if user is not registered
-
-    if 'new_address' in request.form:
-        # TODO replace address
-        #new_address = request.form['address']
-        new_address=request.args.get('new_address')
-        query = "UPDATE users SET address = " + new_address + "WHERE username = " + username
-        pass
-    if 'new_username' in request.form:
-        # TODO replace username
-        # new_username = request.form['new_username']
-        new_username = request.args.get('new_username')
-        query = "UPDATE users SET username = " + new_username + "WHERE username = " + username
-
-    if 'address' in request.form:
-        # TODO replace address
-        pass
+    username = request.args.get('username')
 
     if users.exists(username=username):
         if 'new_address' in request.form:

@@ -7,3 +7,5 @@ MYSQL_DATABASE_USER = 'user'
 MYSQL_DATABASE_PASSWORD = 'password'
 MYSQL_DATABASE_DB = 'db'
 MYSQL_DATABASE_HOST = 'mysql'
+
+SECRET_KEY = 'super-secret'
