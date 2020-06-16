@@ -8,16 +8,17 @@ function create_post() {
     submitHandler: function(form) {
       var username = "test";
 
+      // In case the jwt token needs to be added to the header.
       function getCookie() {
         var cookie = document.cookie.match('(^|;)\\s*access_token_cookie\\s*=\\s*([^;]+)')
         return cookie ? cookie.pop() : '';
       }
 
-      function creationSucces(XMLHttpRequest, textStatus, errorThrown) {
+      function creationSucces(req) {
         alert("Post succesfully created!")
       }
 
-      function creationFailed(req) {
+      function creationFailed(XMLHttpRequest, textStatus, errorThrown) {
         alert("Failed to create post.")
       }
 
@@ -26,6 +27,7 @@ function create_post() {
         requestJSON('POST', dataServer + '/api/post/create', $(form).serialize(), creationSucces, creationFailed);
       }
 
+      // Central server needs to be set globally.
       centralServer = "http://192.168.1.102:5000/"
       requestJSON('GET', centralServer + 'api/user/address?username=' + username, null, create, null);
     }
@@ -38,17 +40,28 @@ $(document).ready( function() {
     var username = "test";
 
     function loadSucces(req) {
-      alert("here");
+      showPost(req);
+      // alert("Post succesfully loaded!")
+    }
 
+    // This function adds a post in the div 'posts_div'
+    function showPost(postdata) {
       var div = document.getElementById('posts_div')
-      var content = `<h5 style="color:#52B77C;"><b>`+ req.data.title + `</b></h5>
-        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + req.data.creation_date + `</h6>
-        <p class="w3-text-grey">` + req.data.body + `</p>
+      var content = `<h5 style="color:#52B77C;"><b>`+ postdata.data.title + `</b></h5>
+        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.data.creation_date + `</h6>
+        <p class="w3-text-grey">` + postdata.data.body + `</p>
         <hr>`
 
       $('#posts_div').append(content);
 
-      alert("Post succesfully created!")
+    }
+
+    // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
+    function showPostsArray(req) {
+      for (i=0; i < req.length; i++) {
+        var post = req.data[i];
+        showPost(post);
+      }
     }
 
     function loadFailed(XMLHttpRequest, textStatus, errorThrown) {
