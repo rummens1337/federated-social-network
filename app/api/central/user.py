@@ -1,5 +1,5 @@
 from flask import Blueprint, request, Flask, render_template, request
-
+from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 
@@ -91,7 +91,8 @@ def delete():
 
 @blueprint.route('/edit', methods=['POST'])
 def edit():
-    username = request.args.get('username')
+    # username = request.args.get('username')
+    username = get_jwt_identity()
 
     if users.exists(username=username):
         if 'new_address' in request.form:

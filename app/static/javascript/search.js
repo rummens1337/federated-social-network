@@ -24,7 +24,7 @@ function search_func() {
 
         centralServer = "http://192.168.1.250:5000/"
         requestJSON('GET', centralServer + 'api/user/address?username=' + username, null, search, noUser);
-    }
+      }
         // $.ajax({
         //   // Frontend/backend variabelen komen nog niet overeen
         //   data : data,
@@ -35,4 +35,4 @@ function search_func() {
         //   }
         // })
     });
-  }
+}
