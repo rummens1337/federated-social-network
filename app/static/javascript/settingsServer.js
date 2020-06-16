@@ -1,13 +1,16 @@
 var currentDataServer = "";
-var centralServer = "http://172.19.0.1:5000/";
-
-username="testuser"
+var centralServer = window.location.origin;
 
 function setDataAddress(req) {
     currentDataServer = req.data.address;
     document.getElementById('dataserveraddress').innerHTML = currentDataServer;
 }
 
+function setNoDataAddress() {
+    document.getElementById('dataserveraddress').innerHTML = "no server registered";
+    document.getElementById('dataserveraddress').style.color = "red";
+}
+
 $(document).ready(function() {
-    requestJSON('GET', centralServer + 'api/user/address?username=' + username, null, setDataAddress, null);
+    requestJSON('GET', centralServer + '/api/user/address', null, setDataAddress, setNoDataAddress);
 });
