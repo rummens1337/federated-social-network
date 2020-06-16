@@ -29,19 +29,19 @@ def insert_friendship():
     friend_username = request.args.get('friend_username')
 
     # check if user id exists
-    user_id = users.export('id', username=username)
-    if not user_id:
+    username = users.export('id', username=username)
+    if not username:
         return bad_json_response('user not found')
 
     #check if friendship already exists
-    if friends.exists(users_id = str(user_id[0]), friend = friend_username):
+    if friends.exists(username = str(username[0]), friend = friend_username):
         return bad_json_response('friendship already exists')
 
     # register friendship in database
-    friends.insert(users_id=str(user_id[0]), friend=friend_username)
+    friends.insert(username=str(username[0]), friend=friend_username)
 
     return good_json_response({
-        'usernames': user_id
+        'usernames': username
     })
 
 @blueprint.route('/add', methods=['POST'])
@@ -79,11 +79,11 @@ def get_friends():
     username = request.args.get('username')
 
     # Check if user exists
-    user_id = users.export('id', username=username)
-    if not user_id:
+    username = users.export('id', username=username)
+    if not username:
         return bad_json_response('user not found')
 
-    friendships = friends.export('friend', users_id = str(user_id[0]))
+    friendships = friends.export('friend', username = str(username[0]))
 
     # TODO: request all other avalible user data from the friends
 
@@ -103,12 +103,12 @@ def delete():
     # TODO: check if friend exists
 
     # check if user id exists
-    user_id = users.export('id', username=username)
-    if not user_id:
+    username = users.export('id', username=username)
+    if not username:
         return bad_json_response('user not found')
 
     #check if friendship already exists
-    friendship = friends.export('id', users_id = str(user_id[0]), friend = friend_username)
+    friendship = friends.export('id', username = str(username[0]), friend = friend_username)
     if not friendship:
         return bad_json_response('friendship does not exists')
 
@@ -118,7 +118,7 @@ def delete():
     # TODO: delete friendship for friend
 
     return good_json_response({
-        'usernames': user_id
+        'usernames': username
     })
 
 __all__ = ('blueprint')

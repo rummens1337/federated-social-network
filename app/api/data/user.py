@@ -15,10 +15,10 @@ central_server = "http://localhost:5000/api/"
 @blueprint.route('/', strict_slashes=False)
 @jwt_required
 def user():
-    user_id = request.args.get('user_id')
+    username = request.args.get('username')
 
-    if user_id is None:
-        return bad_json_response('user_id should be given as parameter.')
+    if username is None:
+        return bad_json_response('username should be given as parameter.')
 
     # TODO fail if user is not authenticated
 
@@ -26,7 +26,7 @@ def user():
         'username', 'name', 'uploads_id',
         'location', 'study', 'creation_date',
         'last_edit_date',
-        id=user_id
+        username=username
     )
 
     if not user_details:
@@ -77,19 +77,19 @@ def registered():
 @blueprint.route('/posts')
 @jwt_required
 def user_posts():
-    user_id = request.args.get('user_id')
+    username = request.args.get('username')
 
-    if user_id is None:
-        return bad_json_response('user_id should be given as parameter.')
+    if username is None:
+        return bad_json_response('username should be given as parameter.')
 
     # check if user id exists
-    if not users.exists(id=user_id):
+    if not users.exists(username=username):
         return bad_json_response('user not found')
 
     # TODO fail if user is not authenticated
 
     # TODO get all posts of a user.
-    user_posts = posts.export('title', 'body', users_id=user_id)
+    user_posts = posts.export('title', 'body', username=username)
 
     if len(user_posts) == 0:
         return bad_json_response('User has no posts.')
