@@ -8,6 +8,7 @@ from app.database import init_mysql
 from app.log import init_logger
 
 from flask_cors import CORS
+from flask import render_template
 
 
 init_logger()
@@ -27,39 +28,19 @@ jwt = JWTManager(app)
 # token attempts to access an endpoint
 @jwt.expired_token_loader
 def my_expired_token_callback(expired_token):
-    token_type = expired_token['type']
-    return jsonify({
-        'status': 401,
-        'sub_status': 42,
-        'msg': 'The {} token has expired'.format(token_type)
-    }), 401
+    return render_template("error.html", error="authentication")
 
 @jwt.unauthorized_loader
 def my_unauthorized_token_callback(expired_token):
-    token_type = expired_token['type']
-    return jsonify({
-        'status': 401,
-        'sub_status': 42,
-        'msg': 'The {} token can not be authorized'.format(token_type)
-    }), 401
+    return render_template("error.html", error="authentication")
 
 @jwt.needs_fresh_token_loader
 def my_needs_fresh_token_loader_callback(expired_token):
-    token_type = expired_token['type']
-    return jsonify({
-        'status': 401,
-        'sub_status': 42,
-        'msg': 'The {} token needs to be refreshed'.format(token_type)
-    }), 401
+    return render_template("error.html", error="authentication")
 
 @jwt.revoked_token_loader
 def my_revoked_token_loader_callback(expired_token):
-    token_type = expired_token['type']
-    return jsonify({
-        'status': 401,
-        'sub_status': 42,
-        'msg': 'The {} token has been revoked'.format(token_type)
-    }), 401
+    return render_template("error.html", error="authentication")
 
 
 if get_server_type() == ServerType.CENTRAL:
