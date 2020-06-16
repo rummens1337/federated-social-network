@@ -34,34 +34,33 @@ function create_post() {
 
 
 
-// $(document).ready( function() {
-//     var username = "test";
+$(document).ready( function() {
+    var username = "test";
 
-//     function loadSucces(req) {
-//       var json = JSON.parse(req);
-//       alert("here");
+    function loadSucces(req) {
+      alert("here");
 
-//       var div = document.getElementById('posts_div')
-//       var content = `<h5 style="color:#52B77C;"><b>`+ json['title'] + `</b></h5>
-//         <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + json['creation-date'] + `Just now</h6>
-//         <p class="w3-text-grey">Im online</p>
-//         <hr>`
+      var div = document.getElementById('posts_div')
+      var content = `<h5 style="color:#52B77C;"><b>`+ req.data.title + `</b></h5>
+        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + req.data.creation_date + `</h6>
+        <p class="w3-text-grey">` + req.data.body + `</p>
+        <hr>`
 
-//       $('#posts_div').append(content);
+      $('#posts_div').append(content);
 
-//       alert("Post succesfully created!")
-//     }
+      alert("Post succesfully created!")
+    }
 
-//     function loadFailed(XMLHttpRequest, textStatus, errorThrown) {
-//       alert("Something went wrong while retrieving posts.")
-//     }
+    function loadFailed(XMLHttpRequest, textStatus, errorThrown) {
+      alert("Something went wrong while retrieving posts.")
+    }
 
-//     function loadPost(req) {
-//       dataServer = req.data.address;
-//       requestJSON('POST', dataServer + '/api/post/', , loadSucces, loadFailed);
-//     }
+    function loadPost(req) {
+      dataServer = req.data.address;
+      requestJSON('GET', dataServer + '/api/post/?post_id=1', null, loadSucces, loadFailed);
+    }
 
-//     centralServer = "http://192.168.1.102:5000/"
-//     requestJSON('GET', centralServer + 'api/user/address?username=' + username, null, loadPost, loadFailed);
-//   }
-// );
+    centralServer = "http://192.168.1.102:5000/"
+    requestJSON('GET', centralServer + 'api/user/address?username=' + username, null, loadPost, loadFailed);
+  }
+);
