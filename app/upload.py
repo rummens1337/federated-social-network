@@ -87,7 +87,7 @@ if get_server_type() == ServerType.DATA:
     from app.database import uploads
 
 
-    def save_file(*args, **kwargs) -> str:
+    def save_file(*args, **kwargs) -> int:
         """Save a file and register in database `uploads` table.
 
         Example:
@@ -108,13 +108,11 @@ if get_server_type() == ServerType.DATA:
         if 'filename' in kwargs or 'location' in kwargs or 'filesize' in kwargs:
             raise KeyError('filename, location and filesize keys are set'
                            ' automatically and should not be set manually.')
-        uploads.insert(**kwargs, filename=filename, location=filepath,
+        return uploads.insert(**kwargs, filename=filename, location=filepath,
                        filesize=os.path.getsize(filepath), sha256=digest)
-        return filepath
 
 
-    def get_file(output: str='bytes', verify: bool=False,
-                 **kwargs) -> typing.Tuple[str, typing.Union[typing.BytesIO, bytes]]:
+    def get_file(rowid: int, output: str='bytes', verify: bool=False):
         """Get a file from the database and saved location.
 
         Retrieves a file using a query to the database and opening, and possibly
@@ -134,7 +132,7 @@ if get_server_type() == ServerType.DATA:
             (str, bytes): The original filename and filedata in bytes.
             (str, fp): The original filenamd the pointer to the opened file.
         """
-        find = uploads.export('filename', 'location', 'sha256', **kwargs)
+        find = uploads.export('filename', 'location', 'sha256', id=rowid)
         if len(find) == 0:
             raise ValueError('Uploaded data not found.' )
         if len(find) > 1:
