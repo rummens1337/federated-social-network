@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import posts
@@ -34,8 +35,9 @@ def post():
 
 
 @blueprint.route('/create', methods=['POST'])
+@jwt_required
 def create():
-    username = request.form['username']
+    username = get_jwt_identity()
     title = request.form['title']
     body = request.form['body']
 
