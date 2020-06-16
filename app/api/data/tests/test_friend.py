@@ -1,6 +1,6 @@
-from flask import Blueprint, request
-from app.api.utils import good_json_response, bad_json_response
-import requests
+# from flask import Blueprint, request
+# from app.api.utils import good_json_response, bad_json_response
+# import requests
 
 # blueprint.route('/add', methods=['POST'])
 def test_register():
@@ -15,5 +15,5 @@ def test_register():
 def test_delete():
     pass
 
-__all__ = ('blueprint')
+# __all__ = ('blueprint')
 

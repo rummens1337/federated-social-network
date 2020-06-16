@@ -1,8 +1,8 @@
-from flask import Blueprint, request
+# from flask import Blueprint, request
 
-from app.api.utils import good_json_response, bad_json_response
+# from app.api.utils import good_json_response, bad_json_response
 
-blueprint = Blueprint('data_user', __name__)
+# blueprint = Blueprint('data_user', __name__)
 
 
 # blueprint.route('/')
@@ -34,5 +34,5 @@ def delete():
 def test_edit():
     pass
 
-__all__ = ('blueprint')
+# __all__ = ('blueprint')
 
