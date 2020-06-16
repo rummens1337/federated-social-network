@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+{% block title %}Error{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+<body>
+    <div>
+        <h2>A federated social network</h2>
+    </div>
+    <div>
+        <!--  -->
+        <p>Error {{ error }}</p>
+</body>
+{% endblock %}
