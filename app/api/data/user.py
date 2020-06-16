@@ -136,14 +136,21 @@ def register():
     image_filename = request.files['file'].filename
     image = request.files['file'].read()
 
-    # TODO fail if user is already registered
     if users.exists(username=username):
         return bad_json_response('Username is already registered')
 
-    # TODO register user and save image | still todo save image
     users.insert(username=username, location=location, study=study)
 
-    return good_json_response()
+    uploads_id = save_file(DATA_IN_BYTES, filename=image_filename)
+    users.update({'uploads_id' : uploads_id}, username=username)
+    
+    return good_json_response({
+        'rowid' : rowid,
+        'username' : username,
+        'location' : location,
+        'study' : study,
+        'filename' : image_filename
+    })
 
 
 @blueprint.route('/delete', methods=['POST'])
