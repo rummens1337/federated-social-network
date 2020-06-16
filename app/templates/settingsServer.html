@@ -3,6 +3,7 @@
 {% block head %}
     <title>Settings</title>
     <link href="../static/css/setting1.css" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="../static/javascript/settingsServer.js"></script>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -18,6 +19,20 @@
         </div>
     </div>
     <div id="main" class="col-xl-8">
+        <div class="title">
+            <h2>Your data server</h2>
+        </div>
+        <ul class="style1">
+            <li>
+                <p><b>Your data server is registerd on the central server at ip address:</b></p>
+                <p id="dataserveraddress"></p>
+                <p>To change the ip address registration of your data server, enter the new ip address below</p>
+                <form name="updateaddress">
+                    <input type='text' class="form-control" name="new_address" value=""></input>
+                    <button class="btn-primary">Submit</button>
+                </form>
+            </li>
+        </ul>
         <div class="title">
             <h2>Personal server</h2>
         </div>
