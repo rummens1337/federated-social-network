@@ -8,12 +8,6 @@ function create_post() {
     submitHandler: function(form) {
       var username = "test";
 
-      // In case the jwt token needs to be added to the header.
-      function getCookie() {
-        var cookie = document.cookie.match('(^|;)\\s*access_token_cookie\\s*=\\s*([^;]+)')
-        return cookie ? cookie.pop() : '';
-      }
-
       function creationSucces(req) {
         alert("Post succesfully created!")
       }
@@ -28,8 +22,7 @@ function create_post() {
       }
 
       // Central server needs to be set globally.
-      centralServer = "http://192.168.1.102:5000/"
-      requestJSON('GET', centralServer + 'api/user/address?username=' + username, null, create, null);
+      requestJSON('GET', location.origin + '/api/user/address?username=' + username, null, create, null);
     }
   });
 }
@@ -73,7 +66,6 @@ $(document).ready( function() {
       requestJSON('GET', dataServer + '/api/post/?post_id=1', null, loadSucces, loadFailed);
     }
 
-    centralServer = "http://192.168.1.102:5000/"
-    requestJSON('GET', centralServer + 'api/user/address?username=' + username, null, loadPost, loadFailed);
+    requestJSON('GET', location.origin + '/api/user/address?username=' + username, null, loadPost, loadFailed);
   }
 );
