@@ -4,7 +4,7 @@ function search_func() {
         search_input: "required",
       },
       submitHandler: function(form) {
-        var input_data = $('input[name=search_input]');
+        var input_data = $('input[id=search_input]');
         var data = 'username=' + input_data.val();
 
         $.ajax({
