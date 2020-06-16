@@ -2,23 +2,21 @@ from flask import Blueprint, request
 import requests
 
 from app.api.utils import good_json_response, bad_json_response
-from app.database import users
-from app.database import posts
+from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from app.upload import get_file, save_file
 
 
 blueprint = Blueprint('data_user', __name__)
-
-central_server = "http://localhost:5000/api/"
 
 
 @blueprint.route('/', strict_slashes=False)
 @jwt_required
 def user():
-    user_id = request.args.get('user_id')
+    username = request.args.get('username')
 
-    if user_id is None:
-        return bad_json_response('user_id should be given as parameter.')
+    if username is None:
+        return bad_json_response('username should be given as parameter.')
 
     # TODO fail if user is not authenticated
 
@@ -26,7 +24,7 @@ def user():
         'username', 'name', 'uploads_id',
         'location', 'study', 'creation_date',
         'last_edit_date',
-        id=user_id
+        username=username
     )
 
     if not user_details:
@@ -77,19 +75,19 @@ def registered():
 @blueprint.route('/posts')
 @jwt_required
 def user_posts():
-    user_id = request.args.get('user_id')
+    username = request.args.get('username')
 
-    if user_id is None:
-        return bad_json_response('user_id should be given as parameter.')
+    if username is None:
+        return bad_json_response('username should be given as parameter.')
 
     # check if user id exists
-    if not users.exists(id=user_id):
+    if not users.exists(username=username):
         return bad_json_response('user not found')
 
     # TODO fail if user is not authenticated
 
     # TODO get all posts of a user.
-    user_posts = posts.export('title', 'body', users_id=user_id)
+    user_posts = posts.export('title', 'body', username=username)
 
     if len(user_posts) == 0:
         return bad_json_response('User has no posts.')
@@ -114,14 +112,14 @@ def login():
     if not users.exists(username=username):
         return bad_json_response("Login failed")
 
-    user = users.export('id', 'password', username=username)[0]
+    password_db = users.export('password', username=username)[0]
 
-    # TODO Safe string compare 
-    if user[1] != password:
+    # TODO Safe string compare
+    if password_db != password:
         return bad_json_response("Login failed2")
 
     # Login success
-    access_token = create_access_token(identity=user[0])
+    access_token = create_access_token(identity=username)
 
     return good_json_response({
         'token' : access_token
@@ -137,14 +135,20 @@ def register():
     image_filename = request.files['file'].filename
     image = request.files['file'].read()
 
-    # TODO fail if user is already registered
     if users.exists(username=username):
         return bad_json_response('Username is already registered')
 
-    # TODO register user and save image | still todo save image
-    users.insert(username=username, location=location, study=study)
+    users.insert(username=username, location=location, study=study, password='fakepassword', name='testerrrr')
 
-    return good_json_response()
+    uploads_id = save_file(image, filename=image_filename)
+    users.update({'uploads_id' : uploads_id}, username=username)
+
+    return good_json_response({
+        'username' : username,
+        'location' : location,
+        'study' : study,
+        'filename' : image_filename
+    })
 
 
 @blueprint.route('/delete', methods=['POST'])
@@ -155,7 +159,12 @@ def delete():
     # TODO delete user from database and remove static data
     # remove static data? Think it is done.
     if users.exists(username=username):
-        users.delete(username=username)
+        user_id = users.export('rowid', username=username)
+        users.delete(rowid=user_id)
+        uploads.delete(rowid=user_id)
+        posts.delete(rowid=user_id)
+        friends.delete(rowid=user_id)
+
         return good_json_response()
     else:
         return bad_json_response("Username is not registered.")

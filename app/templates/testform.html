@@ -1,5 +1,18 @@
-<form name="test" action="/api/user/register" method="POST">
+<form enctype="multipart/form-data" name="test" action="/api/user/register" method="POST">
     <input name="username">
-    <input name="address">
+    <input name="location">
+    <input name="study">
+    <input type="file" name="file" accept="image/*" onchange="show_preview(event)">
     <button></button>
 </form>
+
+<script>
+    function show_preview(event) {
+      var reader = new FileReader();
+      reader.onload = function() {
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
