@@ -35,7 +35,8 @@ import typing
 
 from flaskext.mysql import MySQL
 
-from app.utils import server_type, percent_type
+from app.type import get_server_type, ServerType
+from app.utils import percent_type
 
 BASE_SQL = os.path.join('app', 'database', 'sql')
 CENTRAL_SQL = os.path.join(BASE_SQL, 'central.sql')
@@ -68,6 +69,9 @@ class TableLoader:
     def __init__(self, table: str):
         self._table = table
 
+    def exists(self, *args, **kwargs):
+        pass
+
     def export_one(self, *args, **kwargs) -> typing.Union[str, int]:
         """Export a single entry from the table.
 
@@ -75,7 +79,7 @@ class TableLoader:
             By default the first result from a search in the table is returned.
             In the case where there is only one matching row, this is not a
             problem, but in the case of multiple matching rows, the row with the
-            lowest `rowid`, the primary key, is returned. This is usually the row
+            lowest `id`, the primary key, is returned. This is usually the row
             that was created the earliest.
 
         Example:
@@ -101,13 +105,13 @@ class TableLoader:
         kwargs['limit'] = 1
         return self.export(*args, **kwargs)[0]
 
-    def export(self, *args, order: str='rowid', order_direction: str='desc',
+    def export(self, *args, order: str='id', order_direction: str='desc',
                limit: int=None, **kwargs):
         """Export one or more entries from the table.
 
         Note:
             By default the order in which the results are returned is descending
-            over the primary key, `rowid`, in the table.
+            over the primary key, `id`, in the table.
 
         Example:
             Example calls are assuming an instance for table `user` for the
@@ -188,10 +192,14 @@ class TableLoader:
                 for d in cur.fetchall()
             )
 
-    def insert(self, **kwargs):
+    def insert(self, lastrowid=True, **kwargs):
         """Insert data into the table in the database.
 
         Args:
+            lastrowid (bool): Return last rowid or not, default is True. See
+            https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-lastrowid.html
+            for more information.
+
             kwargs: Every variable that needs to be set in the database for the
             table. For the data server the keys that can be added can be found
             in SQL file `app/database/sql/data.sql`, and the central server
@@ -200,18 +208,19 @@ class TableLoader:
             Note that all keys in the SQL files containing `NOT NULL` and not a
             `DEFAULT` value are requiered to be set. Others can be left empty.
 
-            The primary key `rowid` of the table should not be set. This is the
+            The primary key `id` of the table should not be set. This is the
             index of the row in the table itself and has on meaningful value
             outside of the SQL database.
 
             All keys that have a `DEFAULT CURRENT_TIMESTAMP` should not be
-            manually set. These are set automatically, just like the `rowid` key.
+            manually set. These are set automatically, just like the `id` key.
 
         Returns:
-            The return value of the database execution.
+            The rowid of the newly created row in the table, or the return value
+            of the execute function if returning the last rowid is disabled.
         """
         with cursor() as cur:
-            return cur.execute(
+            r = cur.execute(
                 'INSERT INTO {}({})'
                     .format(self._table, ','.join(kwargs.keys())) +
                 ' VALUES ({})'.format(','.join([
@@ -219,6 +228,9 @@ class TableLoader:
                 ])),
                 tuple(kwargs.values())
             )
+            if not lastrowid:
+                return r
+            return cur.lastrowid
 
     def update(self, update: dict, **kwargs):
         """Update a row in a table.
@@ -282,7 +294,7 @@ class TableLoader:
             bool: Whether a row exists or not.
         """
         with cursor() as cur:
-            return len(self.export('rowid', limit=1, **kwargs)) != 0
+            return len(self.export('id', limit=1, **kwargs)) != 0
 
     def delete(self, **kwargs):
         """Delete a row from the table in the database.
@@ -308,9 +320,9 @@ class TableLoader:
 def init_mysql(app):
     # globally set mysql variable
     globals()['mysql'] = MySQL(app)
-    if server_type() == 'CENTRAL':
+    if get_server_type() == ServerType.CENTRAL:
         sql_file = CENTRAL_SQL
-    elif server_type() == 'DATA':
+    elif get_server_type() == ServerType.DATA:
         sql_file = DATA_SQL
     with cursor() as cur:
         with open(sql_file, 'r') as f:
@@ -328,4 +340,3 @@ def init_mysql(app):
 def test_db():
     with cursor() as cur:
         cur.execute("INSERT INTO test VALUES (1)")
-

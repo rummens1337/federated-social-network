@@ -1,69 +1,243 @@
 {% extends "template.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}Home{% endblock %}
 {% block head %}
-<link type="text/css"  rel="stylesheet" href="{{ url_for('static', filename='./css/index.css') }}"/>
+
+<script type="text/javascript" src="../static/javascript/post.js"></script>
+{{ super() }}
+
 {% endblock %}
 {% block content %}
 
-<div class="row">
-    <div class="col-xl-3">
-        <h2>Profile</h2>
-        <h5>Photo:</h5>
-        <div class="fakeimg">Fake Profile Image</div>
-        <p>Some sub profile text/status</p>
-        <h3>Recent friends</h3>
-        <ul id="usernames" class="nav nav-pills flex-column">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../static/css/w3.css" >
+<!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/css/index.css">
+<style>
+    html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+</style>
 
-        <li class="nav-item">
-        <a class="nav-link active" href="#">Active</a>
-        </li>
+<!-- Page Container -->
+<div class="w3-content w3-margin-top" style="max-width:1900px;">
 
-        <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-        </li>
+    <!-- The Grid -->
+    <div class="w3-row-padding">
 
-        <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-        </li>
+        <!-- Left Column -->
+        <div class="w3-third" style="max-width:300px;">
 
-        <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-        </ul>
-    </div>
+            <div class="w3-white w3-text-grey w3-card-4">
+                <div class="w3-display-container">
+                    <img src="../static/images/avatar.jpg" style="width:100%" alt="Avatar">
+                        <div class="w3-display-bottomleft w3-container w3-text-teal">
+                            <h2>Jane Doe</h2>
+                        </div>
+                </div>
+                <!-- #TODO add right content for profile. -->
+                <div class="w3-container" style="background-color:#DFF8EB;">
+                    <br>
+                    <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Designer</p>
+                    <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
+                    <p><i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>Broken</p>
+                    <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>
+                    <a href="/settings"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
+                    <hr>
 
-    <div id="posts" class="col-xl-6">
-        <h2>Create post</h2>
-        <div class="form-group">
-            <label for="Textarea1">Write your post here</label>
-            <textarea class="form-control" id="Textarea1" rows="7" placeholder="Today I saw a great..."></textarea>
+                    <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+
+                    <p>Adobe Photoshop</p>
+                    <div class="w3-light-grey w3-round-xlarge w3-small" style="color:#52B77C;">
+                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:90%">90%</div>
+                    </div>
+                    <p>Photography</p>
+                    <div class="w3-light-grey w3-round-xlarge w3-small">
+                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:80%">
+                        <div class="w3-center w3-text-white">80%</div>
+                        </div>
+                    </div>
+                    <p>Illustrator</p>
+                    <div class="w3-light-grey w3-round-xlarge w3-small">
+                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:75%">75%</div>
+                    </div>
+                    <p>Media</p>
+                    <div class="w3-light-grey w3-round-xlarge w3-small">
+                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
+                    </div>
+                    <br>
+
+                    <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
+                    <p>English</p>
+                    <div class="w3-light-grey w3-round-xlarge">
+                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:100%"></div>
+                    </div>
+                    <p>Spanish</p>
+                    <div class="w3-light-grey w3-round-xlarge">
+                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:55%"></div>
+                    </div>
+                    <p>German</p>
+                    <div class="w3-light-grey w3-round-xlarge">
+                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:25%"></div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <br>
+
+        <!-- End Left Column -->
         </div>
-        <br>
 
-        <h2>Recent posts</h2>
-        <h5>date of post</h5>
-        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
-        <h2>Recent posts</h2>
-        <h5>date of post</h5>
-        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
-        <h2>Recent posts</h2>
-        <h5>date of post</h5>
-        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
-        <h2>Recent posts</h2>
-        <h5>date of post</h5>
-        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
-        <h2>Recent posts</h2>
-        <h5>date of post</h5>
-        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
-        <h2>Recent posts</h2>
-        <h5>date of post</h5>
-        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
-        <h2>Recent posts</h2>
-        <h5>date of post</h5>
-        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
-        <h2>Recent posts</h2>
-        <h5>date of post</h5>
-        <div class="fakeimg" style="margin-bottom:30px">Fake Image</div>
+        <!-- Right Column -->
+        <div class="w3-twothird">
+        <!-- First right box -->
+            <!-- #TODO add right fa fa icons -->
+            <div class="w3-container w3-card  w3-margin-bottom" style="background-color:#DFF8EB;">
+
+                <!-- Main title -->
+                <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-envelope fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Post something</h2>
+                <div class="w3-container"  style="background-color:#DFF8EB;">
+                    <form name="createpost">
+                        <div class="form-group">
+                            <input type="text" id="title" class="form-control" placeholder="Title your post here!">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="body" class="form-control" placeholder="Whatcha thinking bout" rows="2" style="resize: none;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="text-center" >
+                                <br>
+                                <button class="w3-text-grey btn btn-lg btn-outline mb1 black" type="submit" onclick="create_post();" >Post</button>
+                                <!-- <button class="btn btn-primary mb1 bg-olive">Button</button -->
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Scrollbox style #TODO maybe put in css or template? -->
+            <!-- <style>
+                .header {
+                padding: 10px 16px;
+                background: #555;
+                color: #f1f1f1;
+                }
+                /* Page content */
+                .content {
+                  padding: 16px;
+                }
+                /* The sticky class is added to the header with JS when it reaches its scroll position */
+                .sticky {
+                  position: sticky;
+                  top: 0;
+                }
+            </style> -->
+
+            <!-- Header for posts -->
+            <div class="header sticky" id="myHeader" style="background-color:#DFF8EB;">
+                <h2 class="w3-text-grey w3-padding-16"style="background-color:#DFF8EB;"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Posts</h2>
+            </div>
+
+            <!-- Posts #TODO timestamps, content, postee -->
+            <div class="w3-container"  style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;"><b>Example post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Just now</h6>
+                <p class="w3-text-grey">Im online</p>
+                <hr>
+            </div>
+
+            <div class="w3-container" style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;"><b>Example post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Almost just now</h6>
+                <p class="w3-text-grey">No wayy</p>
+                <hr>
+            </div>
+
+            <div class="w3-container" style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;" ><b>Definitely a post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Pre 9/11</h6>
+                <p class="w3-text-grey">Oh my lawd</p><br>
+            </div>
+
+            <div class="w3-container"  style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;"><b>Example post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Just now</h6>
+                <p class="w3-text-grey">Im online</p>
+                <hr>
+            </div>
+
+            <div class="w3-container" style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;"><b>Example post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Almost just now</h6>
+                <p class="w3-text-grey">No wayy</p>
+                <hr>
+            </div>
+
+            <div class="w3-container" style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;" ><b>Definitely a post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Pre 9/11</h6>
+                <p class="w3-text-grey">Oh my lawd</p><br>
+            </div>
+
+            <div class="w3-container"  style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;"><b>Example post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Just now</h6>
+                <p class="w3-text-grey">Im online</p>
+                <hr>
+            </div>
+
+            <div class="w3-container" style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;"><b>Example post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Almost just now</h6>
+                <p class="w3-text-grey">No wayy</p>
+                <hr>
+            </div>
+
+            <div class="w3-container" style="background-color:#DFF8EB;">
+                <h5 style="color:#52B77C;" ><b>Definitely a post</b></h5>
+                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Pre 9/11</h6>
+                <p class="w3-text-grey">Oh my lawd</p><br>
+            </div>
+
+            <!-- Scrollscript -->
+            <!-- <script>
+                // When the user scrolls the page, execute myFunction
+                window.onscroll = function() {myFunction()};
+                // Get the header
+                var header = document.getElementById("myHeader");
+                // Get the offset position of the navbar
+                var sticky = header.offsetTop;
+                // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+                function myFunction() {
+                    if (window.pageYOffset > sticky) {
+                        header.classList.add("sticky");
+                    } else {
+                        header.classList.remove("sticky");
+                    }
+                }
+            </script> -->
+
+        <!-- End Right Column -->
+        </div>
+
+    <!-- End Grid -->
     </div>
+
+<!-- End Page Container -->
 </div>
+
+<!-- <footer class="w3-container w3-center w3-margin-top" style="background-color:#011638;">
+  <p style="color:#52B77C;">Find me on social media.</p>
+  <i class="fa fa-facebook-official w3-hover-opacity" style="color:#52B77C;"></i>
+  <i class="fa fa-instagram w3-hover-opacity"style="color:#52B77C;"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"style="color:#52B77C;"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"style="color:#52B77C;"></i>
+  <i class="fa fa-twitter w3-hover-opacity"style="color:#52B77C;"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"style="color:#52B77C;"></i>
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+</footer> -->
+
+<!-- </body> -->
+
 {% endblock %}

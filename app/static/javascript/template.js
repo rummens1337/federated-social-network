@@ -8,9 +8,9 @@ function toggleNav(){
 function open() {
     document.getElementById("mySidenav").style.width = "250px";
 	document.getElementById("main").style.marginRight = "250px";
-	document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
-	document.getElementById("jumbotron").style.backgroundColor = "rgba(0,0,0,0.2)";
-	document.getElementById("search").style.backgroundColor = "rgba(0,0,0,0.2)";
+	document.body.style.backgroundColor = "rgba(54, 73, 88, 1)";
+	document.getElementById("jumbotron").style.backgroundColor = "rgba(54, 73, 88, 0.5)";
+	document.getElementById("search").style.backgroundColor = "rgba(54, 73, 88, 0.5)";
 	// document.getElementById("b1").style.backgroundColor = "#3b3b3f" ;
 	// document.getElementById("b2").style.backgroundColor = "#3b3b3f" ;
 	// document.getElementById("b3").style.backgroundColor = "#3b3b3f" ;
@@ -19,13 +19,12 @@ function open() {
 function close() {
     document.getElementById("mySidenav").style.width = "0";
   	document.getElementById("main").style.marginRight = "0";
-  	document.body.style.backgroundColor = "#3b3b3f" ;
-  	document.getElementById("jumbotron").style.backgroundColor = "#0b132b" ;
-  	document.getElementById("search").style.backgroundColor = "#0b132b" ;
+  	document.body.style.backgroundColor = "rgba(54, 73, 88, 1)" ;
+  	document.getElementById("jumbotron").style.backgroundColor = "rgba(54, 73, 88, 1)" ;
+  	document.getElementById("search").style.backgroundColor = "rgba(54, 73, 88, 1)" ;
  //  	document.getElementById("b1").style.backgroundColor = "#0b132b" ;
 	// document.getElementById("b2").style.backgroundColor = "#0b132b" ;
 	// document.getElementById("b3").style.backgroundColor = "#0b132b" ;
-
 
 }
 

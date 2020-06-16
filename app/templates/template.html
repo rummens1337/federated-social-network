@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="../static/images/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon-16x16.png">
+        <link rel="manifest" href="../static/images/site.webmanifest">
+        <!--  -->
         <title>{%block title%}{%endblock%} - FedNet</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,8 +15,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="../static/javascript/dataHandler.js"></script>
         <script type="text/javascript" src="../static/javascript/template.js"></script>
-        <script type="text/javascript" src="../static/javascript/test.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+        <!-- <script type="text/javascript" src="../static/javascript/test.js"></script> -->
         <style>
             .fakeimg {
               height: 200px;
@@ -21,7 +30,7 @@
         {% endblock %}
     </head>
     <body>
-        <div class="page-wrapper">
+        <div class="page-wrapper" style="background-color:#a2abab;">
             <div id="mySidenav" class="sidenav">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item active"><a class="nav-link" href="/index">Home</a></li>
@@ -35,16 +44,19 @@
                 <div id="b2" class="bar2"></div>
                 <div id="b3" class="bar3"></div>
             </div>
-            
+
             <div class="container-fluid" id="main">
 
             <nav class="nav-search container-fluid" id="search">
-                <form class="form-inline my-2 my-lg-0" style="padding-left:20px;">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-custom my-2 my-sm-0" type="submit">Search</button>
+                <form class="form-inline my-2 my-lg-0" style="padding-left:5px;">
+                    <a href="/index">
+                        <img src="../static/images/LogoBackOpaque.png" style="max-height:85px; padding-top:10px;">
+                    </a>
+                    <input class="form-control mr-sm-2 input" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-custom my-2 my-sm-0 search-btn" type="submit">Search</button>
                 </form>
             </nav>
-            
+
             {% block content %}
             {% endblock %}
 

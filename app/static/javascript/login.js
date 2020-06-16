@@ -1,16 +1,15 @@
-$(function validateAccount() {
+function validateAccount() {
   $("form[name='login']").validate({
     rules: {
-      email: {
+      username: {
         required: true,
-        email: true
       },
       password: {
         required: true,
       }
     },
     messages: {
-      email: "Please enter a valid email address",
+      username: "Please enter a valid username",
 
       password: {
         required: "Please enter password",
@@ -19,12 +18,38 @@ $(function validateAccount() {
     },
 
     submitHandler: function(form) {
-      form.submit();
+      // TODO: HASH PASSWORD
+      var username = $("#username").val();
+
+      function loginFailed(req) {
+        alert("Login failed")
+      }
+
+      function verifyLogin(req) {
+        if (req.data.hasOwnProperty("token")) {
+          alert("Login success")
+          // Cookies.set('access_token_cookie', req.data.token);
+          // alert(req.data.token)
+          Cookies.set('access_token_cookie', req.data.token);
+          window.location = "/";
+          
+        } else {
+          loginFailed()
+        }
+      }
+
+      function login(req) {
+        dataServer = req.data.address;
+        requestJSON('POST', dataServer + '/api/user/login', $(form).serialize(), verifyLogin, loginFailed);
+      }
+      
+      // TODO set central server in API
+      requestJSON('GET', window.location.origin + '/api/user/address?username=' + username, null, login, loginFailed);
     }
   });
-});
+}
 
-$(function validatePassword() {
+function validatePassword() {
   $("form[name='signup']").validate({
     rules: {
       username: "required",
@@ -45,7 +70,8 @@ $(function validatePassword() {
     },
 
     submitHandler: function(form) {
-      form.submit();
+      alert('..')
+      //form.submit();
     }
   });
-});
+}

@@ -5,3 +5,5 @@ requests
 pytest-html
 flake8
 
+
+flask-jwt-extended
