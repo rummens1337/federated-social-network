@@ -7,17 +7,20 @@ from flask_jwt_extended import (
 from app.database import init_mysql
 from app.log import init_logger
 
+from flask_cors import CORS
+
+
 init_logger()
 app = Flask(__name__)
 app.config.from_object('config')
 init_mysql(app)
+CORS(app)
 
 from app.api import register_central, register_data
 from app.type import get_server_type, ServerType
 
 # TODO is this only needed for data / central? if so: move it inside the IF.
 
-app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 jwt = JWTManager(app)
 # Using the expired_token_loader decorator, we will now call
 # this function whenever an expired but otherwise valid access
@@ -60,6 +63,7 @@ def my_revoked_token_loader_callback(expired_token):
 
 
 if get_server_type() == ServerType.CENTRAL:
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
     from app.api.central.main import blueprint as main_routes
     register_central(app)
 

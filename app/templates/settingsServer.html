@@ -3,6 +3,7 @@
 {% block head %}
     <title>Settings</title>
     <link href="../static/css/setting1.css" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="../static/javascript/settingsServer.js"></script>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -19,35 +20,53 @@
     </div>
     <div id="main" class="col-xl-8">
         <div class="title">
-            <h2>Personal server</h2>
+            <h2>Your data server</h2>
         </div>
         <ul class="style1">
             <li>
-                <p><b>Hosted accounts:</b></p>
-                <p>coennusse <button class="btn-danger"> Delete</button></p>
-                <p><b>Requests:</b></p>
-                <p>Jan <button class="btn-primary"> Accept</button> <button class="btn-danger"> Decline</button></p>
+                <p><b>Your data server is registerd on the central server at ip address:</b></p>
+                <p id="dataserveraddress"></p>
+                <p>When you setup your data server for the first time or when you move your data server to a new ip address, you have to register the ip address of the new data server in the FedNet central server.</p>
+                <p>To do this, enter the new ip address of your data server below.</p>
+                <form name="updateaddress" action="/api/user/edit" method="POST">
+                    <input type='text' class="form-control" name="new_address" value=""></input>
+                    <br>
+                    <button class="btn-primary">Submit</button>
+                </form>
             </li>
         </ul>
-        <div class="title">
-            <h2>Active hosts</h2>
-        </div>
-        <ul class="style1">
-            <li>
-                <p>coennusse <button class="btn-danger"> Delete</button></p>
-                <p>Jan <button class="btn-danger"> Delete</button></p>
-            </li>
-        </ul>
-        <div class="title">
-            <h2>Available hosts</h2>
-        </div>
-        <ul class="style1">
-            <li>
-                <p>Jan <button class="btn-primary"> Request to host</button></p>
-                <p>Jan <button class="btn-danger"> Pull back request</button></p>
+        <div class="w3-hide">
+            <div class="title">
+                <h2>Personal server</h2>
+            </div>
+            <ul class="style1">
+                <li>
+                    <p><b>Hosted accounts:</b></p>
+                    <p>coennusse <button class="btn-danger"> Delete</button></p>
+                    <p><b>Requests:</b></p>
+                    <p>Jan <button class="btn-primary"> Accept</button> <button class="btn-danger"> Decline</button></p>
+                </li>
+            </ul>
+            <div class="title">
+                <h2>Active hosts</h2>
+            </div>
+            <ul class="style1">
+                <li>
+                    <p>coennusse <button class="btn-danger"> Delete</button></p>
+                    <p>Jan <button class="btn-danger"> Delete</button></p>
+                </li>
+            </ul>
+            <div class="title">
+                <h2>Available hosts</h2>
+            </div>
+            <ul class="style1">
+                <li>
+                    <p>Jan <button class="btn-primary"> Request to host</button></p>
+                    <p>Jan <button class="btn-danger"> Pull back request</button></p>
 
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -11,6 +11,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../static/css/w3.css">
         <link rel="stylesheet" href="../static/css/template.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -18,8 +19,8 @@
         <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
         <script type="text/javascript" src="../static/javascript/dataHandler.js"></script>
         <script type="text/javascript" src="../static/javascript/template.js"></script>
+        <script type="text/javascript" src="../static/javascript/search.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-        <!-- <script type="text/javascript" src="../static/javascript/test.js"></script> -->
         <style>
             .fakeimg {
               height: 200px;
@@ -39,7 +40,7 @@
                     <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
                 </ul>
             </div>
-            <div class="button-side" onclick="myFunction(this); toggleNav()">
+            <div class="button-side" id="nav-btn" onclick="myFunction(this); toggleNav()">
                 <div id="b1" class="bar1"></div>
                 <div id="b2" class="bar2"></div>
                 <div id="b3" class="bar3"></div>
@@ -48,11 +49,11 @@
             <div class="container-fluid" id="main">
 
             <nav class="nav-search container-fluid" id="search">
-                <form class="form-inline my-2 my-lg-0" style="padding-left:5px;">
+                <form name='search-form' class="form-inline my-2 my-lg-0" style="padding-left:5px;">
                     <a href="/index">
                         <img src="../static/images/LogoBackOpaque.png" style="max-height:85px; padding-top:10px;">
                     </a>
-                    <input class="form-control mr-sm-2 input" type="search" placeholder="Search" aria-label="Search">
+                    <input id="search_input" class="form-control mr-sm-2 input" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-custom my-2 my-sm-0 search-btn" type="submit">Search</button>
                 </form>
             </nav>
