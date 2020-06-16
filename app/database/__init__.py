@@ -66,8 +66,9 @@ class TableLoader:
     """
 
     """
-    def __init__(self, table: str):
+    def __init__(self, table: str, primary_key: str):
         self._table = table
+        self._primary_key = primary_key
 
     def exists(self, *args, **kwargs):
         pass
@@ -105,7 +106,7 @@ class TableLoader:
         kwargs['limit'] = 1
         return self.export(*args, **kwargs)[0]
 
-    def export(self, *args, order: str='id', order_direction: str='desc',
+    def export(self, *args, order: str=None, order_direction: str='desc',
                limit: int=None, **kwargs):
         """Export one or more entries from the table.
 
@@ -170,6 +171,7 @@ class TableLoader:
             limit (int): The number of results to return.
             kwargs: The keys (str) and values (str, int) the rows should match.
         """
+        order = order or self._primary_key
         with cursor() as cur:
             cur.execute(
                 'SELECT ' + ','.join(args) +
@@ -332,9 +334,11 @@ def init_mysql(app):
                     continue
                 q += ';'
                 table = re.search(r'^[^\(]+?([a-zA-Z0-9]+)\s*\(', q).group(1)
-                print('Creating table {}.'.format(table), flush=True)
+                primary_key = re.search(r'([a-zA-Z0-9]+)\s+[^\s]+\s*PRIMARY\s*KEY', q).group(1)
+                print('Creating table {} with primary key {}.'
+                      .format(table, primary_key), flush=True)
                 cur.execute(q)
-                globals()[table] = TableLoader(table)
+                globals()[table] = TableLoader(table, primary_key)
 
 
 def test_db():
