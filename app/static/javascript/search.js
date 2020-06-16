@@ -19,7 +19,7 @@ function search_func() {
 
         function search(req) {
           dataServer = req.data.address;
-          requestJSON('POST', dataServer + '/api/search/search', $(form).serialize(), userFound, noUser;
+          requestJSON('POST', dataServer + '/api/search/search', $(form).serialize(), userFound, noUser);
         }
 
         centralServer = "http://192.168.1.250:5000/"
@@ -34,6 +34,5 @@ function search_func() {
         //     alert("Something went wrong.")
         //   }
         // })
-      }
     });
   }

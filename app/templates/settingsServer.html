@@ -26,8 +26,9 @@
             <li>
                 <p><b>Your data server is registerd on the central server at ip address:</b></p>
                 <p id="dataserveraddress"></p>
-                <p>To change the ip address registration of your data server, enter the new ip address below</p>
-                <form name="updateaddress">
+                <p>When you move your data server to a new ip address, you have to update the ip address registration in the central server.</p>
+                <p> To do this, enter the new ip address of your data server below.</p>
+                <form name="updateaddress" action="/api/user/edit">
                     <input type='text' class="form-control" name="new_address" value=""></input>
                     <button class="btn-primary">Submit</button>
                 </form>

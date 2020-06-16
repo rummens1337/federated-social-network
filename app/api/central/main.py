@@ -78,7 +78,7 @@ def privacy():
     return render_template('settingsPrivacy.html')
 
 @blueprint.route('/settings/server')
-@jwt_required
+#@jwt_required
 def server():
     return render_template('settingsServer.html')
 
