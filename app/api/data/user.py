@@ -2,8 +2,7 @@ from flask import Blueprint, request
 import requests
 
 from app.api.utils import good_json_response, bad_json_response
-from app.database import users
-from app.database import posts
+from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 
 
@@ -116,7 +115,7 @@ def login():
 
     user = users.export('id', 'password', username=username)[0]
 
-    # TODO Safe string compare 
+    # TODO Safe string compare
     if user[1] != password:
         return bad_json_response("Login failed2")
 
@@ -155,7 +154,12 @@ def delete():
     # TODO delete user from database and remove static data
     # remove static data? Think it is done.
     if users.exists(username=username):
-        users.delete(username=username)
+        user_id = users.export('rowid', username=username)
+        users.delete(rowid=user_id)
+        uploads.delete(rowid=user_id)
+        posts.delete(rowid=user_id)
+        friends.delete(rowid=user_id)
+
         return good_json_response()
     else:
         return bad_json_response("Username is not registered.")
