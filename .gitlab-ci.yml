@@ -38,3 +38,5 @@ build:
   stage: build
   script:
     - make run
+    - docker exec -it web_central bash | pytest
+    - make stop
