@@ -142,7 +142,7 @@ def register():
 
     users.insert(username=username, location=location, study=study, password='fakepassword', name='testerrrr')
 
-    uploads_id = save_file(DATA_IN_BYTES, filename=image_filename)
+    uploads_id = save_file(image, filename=image_filename)
     users.update({'uploads_id' : uploads_id}, username=username)
 
     return good_json_response({
