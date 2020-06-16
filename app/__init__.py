@@ -16,6 +16,7 @@ from app.api import register_central, register_data
 from app.type import get_server_type, ServerType
 
 # TODO is this only needed for data / central? if so: move it inside the IF.
+
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 jwt = JWTManager(app)
 # Using the expired_token_loader decorator, we will now call
@@ -36,7 +37,7 @@ def my_unauthorized_token_callback(expired_token):
     return jsonify({
         'status': 401,
         'sub_status': 42,
-        'msg': 'The {} token has expired'.format(token_type)
+        'msg': 'The {} token can not be authorized'.format(token_type)
     }), 401
 
 @jwt.needs_fresh_token_loader
@@ -45,7 +46,7 @@ def my_needs_fresh_token_loader_callback(expired_token):
     return jsonify({
         'status': 401,
         'sub_status': 42,
-        'msg': 'The {} token has expired'.format(token_type)
+        'msg': 'The {} token needs to be refreshed'.format(token_type)
     }), 401
 
 @jwt.revoked_token_loader
@@ -54,16 +55,7 @@ def my_revoked_token_loader_callback(expired_token):
     return jsonify({
         'status': 401,
         'sub_status': 42,
-        'msg': 'The {} token has expired'.format(token_type)
-    }), 401
-
-@jwt.user_loader_error_loader
-def my_user_loader_error_loader_callback(expired_token):
-    token_type = expired_token['type']
-    return jsonify({
-        'status': 401,
-        'sub_status': 42,
-        'msg': 'The {} token has expired'.format(token_type)
+        'msg': 'The {} token has been revoked'.format(token_type)
     }), 401
 
 
