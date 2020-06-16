@@ -9,8 +9,6 @@ from app.upload import get_file, save_file
 
 blueprint = Blueprint('data_user', __name__)
 
-central_server = "http://localhost:5000/api/"
-
 
 @blueprint.route('/', strict_slashes=False)
 @jwt_required
@@ -114,14 +112,14 @@ def login():
     if not users.exists(username=username):
         return bad_json_response("Login failed")
 
-    user = users.export('id', 'password', username=username)[0]
+    password_db = users.export('password', username=username)[0]
 
     # TODO Safe string compare
-    if user[1] != password:
+    if password_db != password:
         return bad_json_response("Login failed2")
 
     # Login success
-    access_token = create_access_token(identity=user[0])
+    access_token = create_access_token(identity=username)
 
     return good_json_response({
         'token' : access_token
@@ -146,7 +144,6 @@ def register():
     users.update({'uploads_id' : uploads_id}, username=username)
 
     return good_json_response({
-        'rowid' : rowid,
         'username' : username,
         'location' : location,
         'study' : study,

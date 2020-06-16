@@ -298,6 +298,7 @@ class TableLoader:
         with cursor() as cur:
             return len(self.export(self._primary_key, limit=1, **kwargs)) != 0
 
+
     def delete(self, **kwargs):
         """Delete a row from the table in the database.
 
