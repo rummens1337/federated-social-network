@@ -22,19 +22,20 @@ def user():
 def createtestusers():
     # This function is used for testing.
     # Insert users in central database with default address.
-    usernames = ['nick', 'auke']
+    usernames = ['nick', 'auke', 'testuser']
     address = '0.0.0.0:9000/'
     for username in usernames:
-        users.insert(username=username, address=address)
+        if not users.exists(username=username):
+            users.insert(username=username, address=address)
     return good_json_response()
     # TODO error handling if query fails
 
 
 @blueprint.route('/address', methods=['GET'])
 def address():
-    username = request.form['username']
+    username = request.args.get('username')
 
-    if username is None:
+    if username is None or username == '':
         return bad_json_response('Username should be given as parameter.')
 
     if users.exists(username=username):
@@ -67,10 +68,10 @@ def register():
     username = request.form['username']
     address = request.form['address']
 
-    if '@' not in address:
-        return bad_json_response('Invalid e-mail address.')
-
-    users.insert(username=username, address=address)
+    if not users.exists(username=username):
+        users.insert(username=username, address=address)
+    else:
+        return bad_json_response("Username already exists in database.")
 
     return good_json_response()
     # TODO error handling if query fails
