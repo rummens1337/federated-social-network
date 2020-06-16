@@ -38,13 +38,12 @@ pytest:
   - pytest
 
 
-  image: docker:19.03.11
-
-
 ###########
 ########### DO NOT REMOVE!!
 ###########
 ########### Fully functional docker setup, but need to find a way to perform tests.
+
+# image: docker:19.03.11
 # variables:
 #   # When using dind service, we need to instruct docker, to talk with
 #   # the daemon started inside of the service. The daemon is available
