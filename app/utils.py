@@ -6,10 +6,11 @@ import typing
 
 def percent_type(d: typing.Union[str, int]) -> str:
     """"""
-    if type(d) is str:
-        return '%s'
-    if type(d) is int:
-        return '%i'
+    return '%s'
+    #if type(d) is str:
+    #    return '%s'
+    #if type(d) is int:
+    #    return '%i'
 
 
 def random_string(length: int=8) -> str:

@@ -4,7 +4,7 @@ import requests
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
-from app.upload import save_file
+from app.upload import get_file, save_file
 
 
 blueprint = Blueprint('data_user', __name__)
@@ -142,7 +142,7 @@ def register():
 
     users.insert(username=username, location=location, study=study, password='fakepassword', name='testerrrr')
 
-    uploads_id = save_file(DATA_IN_BYTES, filename=image_filename)
+    uploads_id = save_file(image, filename=image_filename)
     users.update({'uploads_id' : uploads_id}, username=username)
 
     return good_json_response({
