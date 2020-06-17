@@ -9,7 +9,9 @@ def register_data(app):
 
 def register_central(app):
     from app.api.central.user import blueprint as central_user
+    from app.api.central.server import blueprint as central_server
     app.register_blueprint(central_user, url_prefix='/api/user')
+    app.register_blueprint(central_server, url_prefix='/api/server')
 
 
 def init_authentication(app):
