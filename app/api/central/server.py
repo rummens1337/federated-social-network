@@ -8,19 +8,27 @@ blueprint = Blueprint('central_server', __name__)
 
 
 @blueprint.route('/', methods=['GET'])
-def server():
-    return "server"
+def get_servers():
+    """Returns a list of all servers."""
+    result = servers.export('name', 'address')
 
+    # Returns empty array if no servers found.
+    return good_json_response({
+        'servers': result
+    })
 
-@blueprint.route('/test')
-def test():
-    return "test"
-
-@blueprint.route('/registerserver', methods=['POST'])
-def registerserver():
+@blueprint.route('/register', methods=['POST'])
+def register():
     name = request.form['name']
     address = request.form['address']
+
     if not servers.exists(address=address):
-        servers.insert(name=name, address=address)
+        result = servers.insert(name=name, address=address)
+        return good_json_response({
+        'server_id': result
+        })
+    else:
+        return bad_json_response('Something went wrong registering the server. \
+                                    Please try again later.')
 
 __all__ = ('blueprint')
