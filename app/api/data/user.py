@@ -75,25 +75,32 @@ def registered():
 @blueprint.route('/posts')
 @jwt_required
 def user_posts():
-    username = request.args.get('username')
+    username = get_jwt_identity()
 
     if username is None:
         return bad_json_response('username should be given as parameter.')
 
-    # check if user id exists
+    # Check if user id exists
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    # TODO fail if user is not authenticated
-
-    # TODO get all posts of a user.
-    user_posts = posts.export('title', 'body', username=username)
+    # Get all posts of a user.
+    user_posts = posts.export('title', 'body', 'creation_date', username=username)
 
     if len(user_posts) == 0:
         return bad_json_response('User has no posts.')
 
+    # Transfrom to array including dictionaries
+    posts_array = [{
+            'title' : item[0],
+            'body' : item[1],
+            'creation_date' : str(item[2])
+        } 
+        for item in user_posts
+    ]
+
     return good_json_response({
-        'posts': user_posts
+        'posts': posts_array
     })
 
 
