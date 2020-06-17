@@ -35,8 +35,7 @@ def createtestusers():
 @blueprint.route('/address', methods=['GET'])
 @jwt_required
 def address():
-    # username = request.args.get('username')
-    username = get_jwt_identity()
+    username = request.args.get('username')
 
     if username is None or username == '':
         return bad_json_response('Username should be given as parameter.')
@@ -59,7 +58,7 @@ def address():
 @jwt_required
 def registered():
     # TODO check if they are connected to a server?
-    username = get_jwt_identity()
+    username = request.args.get('username')
 
     if username is None:
         return bad_json_response('Username should be given as parameter.')
@@ -114,12 +113,6 @@ def edit():
             new_address = request.form['new_address']
             if 'new_address' != '':
                 users.update({'address':new_address}, username=username)
-
-        # TODO username can not be changed
-        # if 'new_username' in request.form:
-        #     new_username = request.form['new_username']
-        #     if 'new_username' != '':
-        #         users.update({'username':new_username}, username=username)
     else:
         return bad_json_response('Username does not exist in database.')
 
