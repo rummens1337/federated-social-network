@@ -32,8 +32,10 @@ def createtestusers():
 
 
 @blueprint.route('/address', methods=['GET'])
+@jwt_required
 def address():
-    username = request.args.get('username')
+    # username = request.args.get('username')
+    username = get_jwt_identity()
 
     if username is None or username == '':
         return bad_json_response('Username should be given as parameter.')
@@ -49,8 +51,10 @@ def address():
 
 
 @blueprint.route('/registered', methods=['GET'])
+@jwt_required
 def registered():
-    username = request.args.get('username')
+    # username = request.args.get('username')
+    username = get_jwt_identity()
 
     if username is None:
         return bad_json_response('Username should be given as parameter.')
@@ -78,8 +82,10 @@ def register():
 
 
 @blueprint.route('/delete', methods=['POST'])
+@jwt_required
 def delete():
-    username = request.form['username']
+    # username = request.form['username']
+    username = get_jwt_identity()
 
     if users.exists(username=username):
         users.delete(username=username)
@@ -90,6 +96,7 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
+@jwt_required
 def edit():
     # username = request.args.get('username')
     username = get_jwt_identity()
