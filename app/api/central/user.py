@@ -1,5 +1,5 @@
 from flask import Blueprint, request, Flask, render_template, request
-from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity
+from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity,verify_jwt_in_request_optional
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import servers
@@ -35,7 +35,15 @@ def createtestusers():
 @blueprint.route('/address', methods=['GET'])
 def address():
     username = request.args.get('username')
-
+    
+    # If username is not given, use the logged in username
+    if username is None or username == '':
+        try:
+            verify_jwt_in_request_optional()
+            username = get_jwt_identity()
+        except Exception:
+            return bad_json_response('Username error')
+    
     if username is None or username == '':
         return bad_json_response('Username should be given as parameter.')
 
