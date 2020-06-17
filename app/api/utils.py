@@ -7,7 +7,6 @@ def response_wrapper(func):
     def wrapper(*args, **kwargs):
         response = func(*args, **kwargs)
         r = Response(json.dumps(response), mimetype='application/json')
-        r.headers['Access-Control-Allow-Origin'] = '*'
         return r
     return wrapper
 
