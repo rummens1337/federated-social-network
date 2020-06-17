@@ -48,7 +48,6 @@ $(document).ready( function() {
 
     // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
     function showPostsArray(req) {
-      alert(req.data.posts.length)
       for (i=0; i < req.data.posts.length; i++) {
         var post = req.data.posts[i];
         showPost(post);
