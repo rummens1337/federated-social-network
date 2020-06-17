@@ -67,12 +67,10 @@ def create():
     })
 
 @blueprint.route('/delete', methods=['POST'])
+@jwt_required
 def delete():
-    username = request.form['username']
+    username = get_jwt_identity()
     post_id = request.form['post_id']
-
-    # TODO user should be authenticated
-    # TODO authenticated user should be the post owner
 
     if username is None:
         return bad_json_response('username should be given as parameter.')
@@ -86,6 +84,11 @@ def delete():
     # check if post id exists
     if not posts.exists(id=post_id):
         return bad_json_response('Post not found')
+
+    # Check if the user is the post owner
+    post_username = posts.export_one('username', id=post_id)
+    if post_username != username:
+        return bad_json_response('Not your post')
 
     # Delete post
     posts.delete(id = post_id)
