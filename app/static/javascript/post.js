@@ -6,8 +6,6 @@ function create_post() {
     },
 
     submitHandler: function(form) {
-      var username = "test";
-
       function creationSucces(req) {
         alert("Post succesfully created!")
       }
@@ -22,7 +20,7 @@ function create_post() {
       }
 
       // Central server needs to be set globally.
-      requestJSON('GET', location.origin + '/api/user/address?username=' + username, null, create, null);
+      requestJSON('GET', location.origin + '/api/user/address', null, create, null);
     }
   });
 }
@@ -63,9 +61,9 @@ $(document).ready( function() {
 
     function loadPost(req) {
       dataServer = req.data.address;
-      requestJSON('GET', dataServer + '/api/post/?post_id=1', null, loadSucces, loadFailed);
+      requestJSON('GET', dataServer + '/api/post/?post_id=3', null, loadSucces, loadFailed);
     }
 
-    requestJSON('GET', location.origin + '/api/user/address?username=' + username, null, loadPost, loadFailed);
+    requestJSON('GET', location.origin + '/api/user/address', null, loadPost, loadFailed);
   }
 );

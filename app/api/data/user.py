@@ -131,6 +131,8 @@ def register():
     username = request.form['username']
     location = request.form['location']
     study = request.form['study']
+    password = request.form['password']
+    name = request.form['name']
 
     image_filename = request.files['file'].filename
     image = request.files['file'].read()
@@ -138,17 +140,13 @@ def register():
     if users.exists(username=username):
         return bad_json_response('Username is already registered')
 
-    users.insert(username=username, location=location, study=study, password='fakepassword', name='testerrrr')
+    users.insert(username=username, location=location, study=study, password=password, name=name)
 
     uploads_id = save_file(image, filename=image_filename)
     users.update({'uploads_id' : uploads_id}, username=username)
 
-    return good_json_response({
-        'username' : username,
-        'location' : location,
-        'study' : study,
-        'filename' : image_filename
-    })
+    return good_json_response()
+
 
 
 @blueprint.route('/delete', methods=['POST'])
@@ -156,14 +154,11 @@ def register():
 def delete():
     username = request.form['username']
 
-    # TODO delete user from database and remove static data
-    # remove static data? Think it is done.
     if users.exists(username=username):
-        user_id = users.export('rowid', username=username)
-        users.delete(rowid=user_id)
-        uploads.delete(rowid=user_id)
-        posts.delete(rowid=user_id)
-        friends.delete(rowid=user_id)
+        users.delete(username=username)
+        uploads.delete(username=username)
+        posts.delete(username=username)
+        friends.delete(username=username)
 
         return good_json_response()
     else:
@@ -171,7 +166,7 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
-@jwt_required
+# @jwt_required
 def edit():
     username = request.form['username']
 
@@ -192,6 +187,10 @@ def edit():
             new_study = request.form['new_study']
             if 'new_study' != '':
                 users.update({'study':new_study}, username=username)
+        if 'new_password' in request.form:
+            new_password = request.form['new_password']
+            if 'new_password' != '':
+                users.update({'password':new_password}, username=username)
     else:
         return bad_json_response('Username does not exist in database.')
 

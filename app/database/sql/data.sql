@@ -31,8 +31,6 @@ CREATE TABLE IF NOT EXISTS friends (
 
 CREATE TABLE IF NOT EXISTS uploads (
     id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    username VARCHAR(255) NOT NULL,
-    FOREIGN KEY (username) REFERENCES users(username),
     filename VARCHAR(1000) NOT NULL,
     location VARCHAR(1000) NOT NULL,
     filesize INTEGER NOT NULL,
