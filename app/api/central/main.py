@@ -12,6 +12,7 @@ def test():
 @blueprint.route('/')
 @blueprint.route('/index')
 @blueprint.route('/home')
+@jwt_required
 def index():
     return render_template('index.html')
 
@@ -30,6 +31,10 @@ def signup():
 @jwt_required
 def profile():
     return render_template('profile.html')
+
+@blueprint.route('/profile/<username>')
+def profile_of(username):
+    return render_template('profile.html', username=username)
 
 @blueprint.route('/login')
 def login():
