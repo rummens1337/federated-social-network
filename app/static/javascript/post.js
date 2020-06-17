@@ -7,7 +7,7 @@ function create_post() {
 
     submitHandler: function(form) {
       function creationSucces(req) {
-        alert("Post succesfully created!")
+        if(!alert('Post succesfully created!')){window.location.reload();}
       }
 
       function creationFailed(XMLHttpRequest, textStatus, errorThrown) {
@@ -25,44 +25,52 @@ function create_post() {
   });
 }
 
+// Global username used for retrieving posts.
+// If not set. The user's own posts are loaded.
+var username = null;
 
+function loadSucces(req) {
+  showPostsArray(req);
+  // alert("Post succesfully loaded!")
+}
 
-$(document).ready( function() {
+// This function adds a post in the div 'posts_div'
+function showPost(postdata) {
+  var div = document.getElementById('posts_div')
+  var content = `<h5 style="color:#52B77C;"><b>`+ postdata.title + `</b></h5>
+    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
+    <p class="w3-text-grey">` + postdata.body + `</p>
+    <hr>`
 
-    function loadSucces(req) {
-      showPostsArray(req);
-      // alert("Post succesfully loaded!")
-    }
+  $('#posts_div').append(content);
 
-    // This function adds a post in the div 'posts_div'
-    function showPost(postdata) {
-      var div = document.getElementById('posts_div')
-      var content = `<h5 style="color:#52B77C;"><b>`+ postdata.title + `</b></h5>
-        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
-        <p class="w3-text-grey">` + postdata.body + `</p>
-        <hr>`
+}
 
-      $('#posts_div').append(content);
-
-    }
-
-    // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
-    function showPostsArray(req) {
-      for (i=0; i < req.data.posts.length; i++) {
-        var post = req.data.posts[i];
-        showPost(post);
-      }
-    }
-
-    function loadFailed(XMLHttpRequest, textStatus, errorThrown) {
-      alert("Something went wrong while retrieving posts.")
-    }
-
-    function loadPost(req) {
-      dataServer = req.data.address;
-      requestJSON('GET', dataServer + '/api/user/posts', null, loadSucces, loadFailed);
-    }
-
-    requestJSON('GET', location.origin + '/api/user/address', null, loadPost, loadFailed);
+// Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
+function showPostsArray(req) {
+  for (i=0; i < req.data.posts.length; i++) {
+    var post = req.data.posts[i];
+    showPost(post);
   }
-);
+}
+
+function loadFailed(XMLHttpRequest, textStatus, errorThrown) {
+  alert("Something went wrong while retrieving posts.")
+}
+
+function loadPost(req) {
+  var dataServer = req.data.address;
+  var url = (username == null || username == "") ? 
+    dataServer + '/api/user/posts' : 
+    dataServer + '/api/user/posts?username=' + username;
+  requestJSON('GET', url, null, loadSucces, loadFailed);
+}
+
+function loadPosts(u) {
+  username = u;
+  var url = (username == null || username == "") ? 
+    location.origin + '/api/user/address' : 
+    location.origin + '/api/user/address?username=' + username;
+  
+  requestJSON('GET', url, null, loadPost, loadFailed);
+}

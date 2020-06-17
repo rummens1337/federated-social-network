@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identit
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import servers
+from app.api import auth_username
 
 blueprint = Blueprint('central_user', __name__)
 
@@ -38,11 +39,7 @@ def address():
     
     # If username is not given, use the logged in username
     if username is None or username == '':
-        try:
-            verify_jwt_in_request_optional()
-            username = get_jwt_identity()
-        except Exception:
-            return bad_json_response('Username error')
+        username = auth_username()
     
     if username is None or username == '':
         return bad_json_response('Username should be given as parameter.')
