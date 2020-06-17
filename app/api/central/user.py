@@ -33,7 +33,6 @@ def createtestusers():
 
 
 @blueprint.route('/address', methods=['GET'])
-@jwt_required
 def address():
     username = request.args.get('username')
 
@@ -55,7 +54,6 @@ def address():
 
 
 @blueprint.route('/registered', methods=['GET'])
-@jwt_required
 def registered():
     # TODO check if they are connected to a server?
     username = request.args.get('username')
