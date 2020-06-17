@@ -10,7 +10,12 @@
 // - url: the url to do the request to.
 // - func: the function to apply the JSON data to.
 function requestJSON(type, url, data=null, success=null, error=null) {
+    var token = Cookies.get('access_token_cookie');
+    var headers = {};
+    if (token != null) headers = { 'Authorization' : 'Bearer ' + token };
+
     $.ajax({
+        headers: headers,
         type: type,
         url: url,
         data: data,

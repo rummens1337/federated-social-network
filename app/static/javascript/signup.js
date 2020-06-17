@@ -19,18 +19,22 @@ function sign_up() {
     },
 
     submitHandler: function(form) {
-      $.ajax({
-        // Frontend/backend variabelen komen nog niet overeen
-        data : $(form).serialize(),
-        type : 'POST',
-        url : '/api/user/register',
-        success : function(){
-          alert("Succesfully registered.")
-        },
-        error : function(data) {
-          alert("Something went wrong")
+        var mock_address = "http://192.168.1.102:9000"
+
+        function signupSucces(req) {
+          alert("You have been succesfully registered!")
         }
-      })
+
+        function signupFailed(XMLHttpRequest, textStatus, errorThrown) {
+          alert("Failed to register.")
+        }
+
+        function register(req) {
+          dataServer = mock_address;
+          requestJSON('POST', dataServer + '/api/user/register', $(form).serialize(), signupSucces, signupFailed);
+        }
+
+        register(null);
     }
   });
 }
