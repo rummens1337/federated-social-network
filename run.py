@@ -3,6 +3,15 @@ import os
 
 
 def main(server: str=None, port: int=None):
+    """
+    Sets the servertype based on environmental variables provided in the run command.
+    These variables define the flow of the entire application.
+    Starts the application.
+
+    parameters:
+    server (str): data | central -> defines which flask server to use.
+    port (int): ~5000-54000 -> defines what port to run on.
+    """
     if 'FLASK_SERVER_TYPE' not in os.environ:
         os.environ['FLASK_SERVER_TYPE'] = server.upper()
     if 'FLASK_PORT' in os.environ:

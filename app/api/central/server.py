@@ -4,7 +4,7 @@ from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import servers
 
-blueprint = Blueprint('cenral_server', __name__)
+blueprint = Blueprint('central_server', __name__)
 
 
 @blueprint.route('/', methods=['GET'])
@@ -15,5 +15,12 @@ def server():
 @blueprint.route('/test')
 def test():
     return "test"
+
+@blueprint.route('/registerserver', methods=['POST'])
+def registerserver():
+    name = request.form['name']
+    address = request.form['address']
+    if not servers.exists(address=address):
+        servers.insert(name=name, address=address)
 
 __all__ = ('blueprint')
