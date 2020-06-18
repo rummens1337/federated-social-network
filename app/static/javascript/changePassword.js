@@ -21,7 +21,7 @@ function changePassword() {
                 window.location.reload();
             }
 
-            requestJSON('POST', dataServer + '/api/user/password', $(form).serialize(), null, passwordChanged, changeFailed);
+            requestJSON('POST', dataServer + '/api/user/password', $(form).serialize(), passwordChanged, changeFailed);
             }
 
     });
