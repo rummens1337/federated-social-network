@@ -12,16 +12,16 @@ function changePassword() {
         },
 
         submitHandler: function(form) {
-            function fail(req) {
+            function changeFailed(req) {
                 alertError(req.reason, 2000);
             }
 
-            function succes() {
+            function passwordChanged() {
                 alert("Password changed")
                 window.location.reload();
             }
 
-            requestJSON('POST', dataServer + '/api/user/password', $(form).serialize(), null, succes, fail);
+            requestJSON('POST', dataServer + '/api/user/password', $(form).serialize(), null, passwordChanged, changeFailed);
             }
 
     });
