@@ -32,11 +32,11 @@ def user():
         return bad_json_response("User not found")
 
     # TODO: Get image url
-    image_filename = request.files['file'].filename
-    image = request.files['file'].read()
+    # image_filename = request.files['file'].filename
+    # image = request.files['file'].read()
 
-    uploads_id = save_file(image, filename=image_filename)
-    users.update({'uploads_id' : uploads_id}, username=username)
+    # uploads_id = save_file(image, filename=image_filename)
+    # users.update({'uploads_id' : uploads_id}, username=username)
 
     return good_json_response({
         'username': user_details[0][0],
