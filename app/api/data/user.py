@@ -40,7 +40,7 @@ def user():
     ipaddress = 'http://192.168.0.102:9000'
     up_id = users.export('uploads_id', username=username)
 
-    response = requests.get(ipaddress + '/api/file?id=6')
+    response = requests.get(ipaddress + '/api/file?id=' + str(up_id[0]))
     url = response.json()['data']['url']
     imageurl = ipaddress + url
 
