@@ -35,7 +35,7 @@ function sign_up() {
       }
 
       function signupFailed(response, XMLHttpRequest, textStatus, errorThrown) {
-        alert(response.value)
+        alert("Custom failure message here.")
       }
 
       // First register the user on central to check availability of the username and IP address.
