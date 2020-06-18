@@ -10,7 +10,7 @@ function setUserSettings(req) {
 
 function setDataAddress(req) {
     dataServer = req.data.address;
-    requestJSON('GET', dataServer + '/api/user', null, setUserSettings, null);
+    requestJSON('GET', dataServer + '/api/user', null, setUserSettings, console.log('error called from index.js'));
 }
 
 $(document).ready(function() {
