@@ -107,6 +107,12 @@ def user_posts():
         'posts': posts_array
     })
 
+# TODO implement
+@blueprint.route('/timeline', methods=['GET'])
+@jwt_required
+def timeline():
+    return user_posts()
+
 
 @blueprint.route('/login', methods=['POST'])
 def login():
