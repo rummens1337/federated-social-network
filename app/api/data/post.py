@@ -49,15 +49,15 @@ def create():
     url = '/api/post/XX'
 
     if username is None:
-        return bad_json_response('username should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
     if title is None:
-        return bad_json_response('Title should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'title'.")
     if body is None:
-        return bad_json_response('Body should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'body'.")
 
     # check if user id exists
     if not users.exists(username=username):
-        return bad_json_response('user not found')
+        return bad_json_response('User not found.')
 
     # Insert post
     posts.insert(username=username, body=body, title=title)
@@ -73,9 +73,9 @@ def delete():
     post_id = request.form['post_id']
 
     if username is None:
-        return bad_json_response('username should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
     if post_id is None:
-        return bad_json_response('Post_id should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'post_id'.")
 
     # check if user id exists
     if not users.exists(username=username):
@@ -93,7 +93,7 @@ def delete():
     # Delete post
     posts.delete(id = post_id)
 
-    return good_json_response()
+    return good_json_response("success")
 
 
 __all__ = ('blueprint')

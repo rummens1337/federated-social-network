@@ -6,7 +6,8 @@ from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
-
+from app.utils import ping
+from passlib.hash import sha256_crypt
 
 blueprint = Blueprint('data_user', __name__)
 
@@ -17,9 +18,7 @@ def user():
     username = get_jwt_identity()
 
     if username is None:
-        return bad_json_response('username should be given as parameter.')
-
-    # TODO fail if user is not authenticated
+        return bad_json_response('Authentication error: User not authenticated.')
 
     user_details = users.export(
         'username', 'firstname', 'lastname', 'uploads_id',
@@ -62,7 +61,7 @@ def users_all():
     usernames = users.export('username')
 
     if len(usernames) == 0:
-        return bad_json_response('No usernames in the database.')
+        return bad_json_response('No users found.')
 
     return good_json_response({
         'usernames': usernames
@@ -74,7 +73,7 @@ def registered():
     username = request.args.get('username')
 
     if username is None:
-        return bad_json_response('Username should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     if not users.exists(username = username):
         return bad_json_response('Username not found (in data server)')
@@ -95,17 +94,14 @@ def user_posts():
         username = auth_username()
 
     if username is None:
-        return bad_json_response('username should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     # Check if user id exists
     if not users.exists(username=username):
-        return bad_json_response('user not found')
+        return bad_json_response('User not found.')
 
     # Get all posts of a user.
     user_posts = posts.export('title', 'body', 'creation_date', username=username)
-
-    if len(user_posts) == 0:
-        return bad_json_response('User has no posts.')
 
     # Transfrom to array including dictionaries
     posts_array = [{
@@ -133,20 +129,20 @@ def login():
     password = request.form['password']
 
     if username is None:
-        return bad_json_response('username should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     if password is None:
-        return bad_json_response('password should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'password'.")
 
     # TODO fail if user is already authenticated
+
     if not users.exists(username=username):
-        return bad_json_response("Login failed")
+        return bad_json_response("User does not exist yet. Feel 'free' to join FedNet! :)")
 
     password_db = users.export('password', username=username)[0]
 
-    # TODO Safe string compare
-    if password_db != password:
-        return bad_json_response("Login failed2")
+    if not sha256_crypt.verify(password, password_db):
+        return bad_json_response("Password is incorrect.")
 
     # Login success
     access_token = create_access_token(identity=username)
@@ -159,19 +155,20 @@ def login():
 @blueprint.route('/register', methods=['POST'])
 def register():
     """Registers a user to this data server."""
+    # Exit early.
+    if users.exists(username=request.form['username']):
+        return bad_json_response('Username is already taken. Try again :)')
+
     username = request.form['username']
     firstname = request.form['firstname']
     lastname = request.form['lastname']
     email = request.form['email']
-    password = request.form['password']
-
-    if users.exists(username=username):
-        return bad_json_response('Username is already registered')
+    password = sha256_crypt.encrypt(request.form['password'])
 
     users.insert(username=username, firstname=firstname,
                 lastname=lastname, password=password, email=email)
 
-    return good_json_response("registered")
+    return good_json_response("success")
 
     # Do not remove yet: was used for file uploads!
     # location = request.form['location']
@@ -189,11 +186,11 @@ def deleteupload():
     uploads_id = request.args.get('uploads_id')
 
     if not uploads.exists(uploads_id=uploads_id):
-        return bad_json_response('Upload id is not in database')
+        return bad_json_response('BIG OOPS: Something went wrong deleting the file.')
 
     uploads.delete(uploads_id=uploads_id)
 
-    return good_json_response()
+    return good_json_response("success")
 
 
 @blueprint.route('/delete', methods=['POST'])
@@ -211,7 +208,7 @@ def delete():
         posts.delete(username=username)
         friends.delete(username=username)
 
-        return good_json_response()
+        return good_json_response("success")
     else:
         return bad_json_response("Username is not registered.")
 
@@ -249,11 +246,11 @@ def edit():
         if 'new_bio' != '':
             users.update({'bio':new_bio}, username=username)
     if 'new_password' in request.form:
-        new_password = request.form['new_password']
+        new_password = sha256_crypt.encrypt(request.form['new_password'])
         if 'new_password' != '':
             users.update({'password':new_password}, username=username)
 
-    return good_json_response()
+    return good_json_response("success")
 
 
 __all__ = ('blueprint')

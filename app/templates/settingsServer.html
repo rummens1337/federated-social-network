@@ -3,7 +3,7 @@
 {% block head %}
     <title>Settings</title>
     <link href="../static/css/setting1.css" rel="stylesheet" type="text/css" media="all" />
-    <script type="text/javascript" src="../static/javascript/settingsServer.js"></script>
+    <script type="text/javascript" src="../static/javascript/registerServer.js"></script>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -26,16 +26,16 @@
             <li>
                 <p><b>Your data server is registerd on the central server at ip address:</b></p>
                 <p id="dataserveraddress"></p>
-                <p>When you setup your data server for the first time or when you move your data server to a new ip address, you have to register the ip address of the new data server in the FedNet central server.</p>
-                <p>To do this, enter the new ip address of your data server below.</p>
+                <p>When you setup your data server for the first time or when you move your data server to a new address, you have to register the ip address of the new data server in the FedNet central server.</p>
+                <p>To do this, enter the new address of your data server below.</p>
                 <form name="updateaddress" action="/api/user/edit" method="POST">
-                    <input type='text' class="form-control" name="new_address" value=""></input>
+                    <input type='text' class="form-control" name="new_address" placeholder="New server address" value=""></input>
                     <br>
                     <button class="btn-primary">Submit</button>
                 </form>
             </li>
         </ul>
-        <div class="w3-hide">
+        <div>
             <div class="title">
                 <h2>Personal server</h2>
             </div>

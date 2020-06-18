@@ -36,6 +36,10 @@ def profile():
 def profile_of(username):
     return render_template('profile.html', username=username)
 
+@blueprint.route('/registerserver')
+def register():
+    return render_template('registerServer.html')
+
 @blueprint.route('/login')
 def login():
     return render_template('login.html')
