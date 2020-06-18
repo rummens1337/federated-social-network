@@ -246,5 +246,25 @@ def edit():
 
     return good_json_response("success")
 
+@blueprint.route('/password', methods=['POST'])
+@jwt_required
+def password():
+    username = get_jwt_identity()
+    password = request.form['oldPassword']
+
+    if password is None:
+        return bad_json_response("Bad request: Missing parameter 'password'.")
+
+    password_db = users.export('password', username=username)[0]
+
+    if not sha256_crypt.verify(password, password_db):
+        return bad_json_response("Password is incorrect.")
+
+    if 'newPassword' in request.form:
+        newPassword = sha256_crypt.encrypt(request.form['newPassword'])
+    if 'newPassword' != '':
+        users.update({'password':newPassword}, username=username)
+
+    return good_json_response("Succes")
 
 __all__ = ('blueprint')
