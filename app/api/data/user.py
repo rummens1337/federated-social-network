@@ -6,7 +6,8 @@ from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
-from passlib.hash import sha256_crypt
+from app.utils import ping
+
 
 blueprint = Blueprint('data_user', __name__)
 
