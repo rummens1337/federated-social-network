@@ -15,10 +15,8 @@ function setNoDataAddress() {
 function updateDataServer() {
     $("form[name='editdataserver']").validate({
         rules: {
-            new_address: {
-                "required": true,
-                startsWithHTTP: true,
-                endsWithSlash: true
+            select_server: {
+                "required": true
             }
         },
   
@@ -28,13 +26,13 @@ function updateDataServer() {
                 alertError("This data server is already registered to your account.", 2000);
             }
             else {
-                serverForm = {new_address:form.new_address.value};
+                serverForm = {new_address:form.select_server.value};
                 requestJSON("GET", centralServer + "/api/user/edit", serverForm, editSucces, editFailed);
             }
           }
   
           function editSucces() {
-            if(!alert('Your data server has been succesfully registered!')){window.location = "/settings/server";}
+            if(!alert('Your data server has been succesfully updated!')){window.location = "/settings/server";}
           }
   
           function editFailed(response) {
@@ -48,13 +46,25 @@ function updateDataServer() {
 }
 
 $(document).ready(function() {
-    jQuery.validator.addMethod("startsWithHTTP", function(value, element) {
-        return value.startsWith('http://');
-    }, "Server address should start with http://");
-
-    jQuery.validator.addMethod("endsWithSlash", function(value, element) {
-        return !value.endsWith('/');
-    }, "Server address may not end with /");
-
     requestJSON('GET', centralServer + '/api/user/address', null, setDataAddress, setNoDataAddress);
+
+    function populateServerSelect(req) {
+      var select = document.getElementById('select_server')
+      var data = req.data.servers;
+  
+      for(i in data) {
+        var server_option = document.createElement("option");
+        server_option.value = data[i][1]
+        server_option.textContent = data[i][0]
+  
+        select.appendChild(server_option);
+      }
+  
+    }
+  
+    function requestError(req) {
+      alert("Couldn't load servers...")
+    }
+
+    requestJSON("GET", centralServer + "/api/server", null, populateServerSelect, requestError);
 });
