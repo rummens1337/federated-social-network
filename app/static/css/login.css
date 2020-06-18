@@ -17,6 +17,9 @@
     transform: translate(-50%, 0%);
     margin-top: 25px;
 }
+.modal-content {
+    color:black;
+}
 
 hr {
     display: block;
