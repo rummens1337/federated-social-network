@@ -78,10 +78,13 @@ def registered():
     return good_json_response(r)
 
 
-@blueprint.route('/posts')
+@blueprint.route('/posts', methods=['GET'])
 @jwt_required
 def user_posts():
-    username = get_jwt_identity()
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
 
     if username is None:
         return bad_json_response('username should be given as parameter.')
