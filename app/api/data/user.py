@@ -208,7 +208,7 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
-# @jwt_required
+@jwt_required
 def edit():
     username = get_jwt_identity()
     # username = request.form['username']
