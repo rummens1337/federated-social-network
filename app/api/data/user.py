@@ -6,6 +6,7 @@ from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
+from app.utils import ping
 from passlib.hash import sha256_crypt
 
 blueprint = Blueprint('data_user', __name__)
@@ -35,12 +36,18 @@ def user():
 
     # uploads_id = save_file(image, filename=image_filename)
     # users.update({'uploads_id' : uploads_id}, username=username)
+    ipaddress = 'http://192.168.0.102:9000'
+    up_id = users.export('uploads_id', username=username)
+
+    response = requests.get(ipaddress + '/api/file?id=' + str(up_id[0]))
+    url = response.json()['data']['url']
+    imageurl = ipaddress + url
 
     return good_json_response({
         'username': user_details[0][0],
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
-        'image_url': 'https://www.xolt.nl/wp-content/themes/fox/images/placeholder.jpg',
+        'image_url': imageurl,
         'location': user_details[0][4],
         'study': user_details[0][5],
         'bio': user_details[0][6],
@@ -209,7 +216,8 @@ def delete():
 @blueprint.route('/edit', methods=['POST'])
 @jwt_required
 def edit():
-    username = get_jwt_identity()
+    # username = get_jwt_identity()
+    username = request.form['username']
 
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
@@ -222,6 +230,7 @@ def edit():
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
+
         uploads_id = save_file(image, filename=image_filename)
         users.update({'uploads_id' : uploads_id}, username=username)
     if 'new_location' in request.form:

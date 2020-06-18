@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identit
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import servers
+from app.utils import ping
 
 blueprint = Blueprint('central_server', __name__)
 
@@ -22,13 +23,16 @@ def register():
     name = request.form['name']
     address = request.form['address']
 
-    if not servers.exists(address=address):
-        result = servers.insert(name=name, address=address)
-        return good_json_response({
-        'server_id': result
-        })
+    if ping(address):
+        if not servers.exists(address=address):
+            result = servers.insert(name=name, address=address)
+            return good_json_response({
+                'server_id': result
+            })
+        else:
+            name = servers.export_one('name', address=address)
+            return bad_json_response('This data server is already registered by the name "' + name + '".')
     else:
-        return bad_json_response('Something went wrong registering the server. \
-                                    Please try again later.')
+        return bad_json_response('The data server did not respond. Is the installation correct?')
 
 __all__ = ('blueprint')

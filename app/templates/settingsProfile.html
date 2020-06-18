@@ -27,8 +27,9 @@
             <form enctype="multipart/form-data" name="settings">
                 <li>
                     <p><b> Profile picture</b></p>
-                    <img name="profilePicture" src= {{ profile.photo.photo_url }} >
-                    <input type ="file" name="file">
+                    <img name="profilePicture" id='image_url' >
+                    <input id='image_url' type="file" name="file" accept="image/*" onchange="show_preview(event)">
+                    <!-- <input type ="file" name="file" id='image_url'> -->
                 </li>
                 <li>
                     <p><b>Bio</b></p>
@@ -57,4 +58,15 @@
         </ul>
     </div>
 </div>
+
+<script>
+    function show_preview(event) {
+      var reader = new FileReader();
+      reader.onload = function() {
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 {% endblock %}

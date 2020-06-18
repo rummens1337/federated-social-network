@@ -1,0 +1,23 @@
+from flask import Blueprint, request
+
+from app.api.utils import good_json_response, bad_json_response
+from app.database import uploads
+
+blueprint = Blueprint('data_file', __name__)
+
+
+@blueprint.route('/', strict_slashes=False)
+def file_main():
+    file_id = request.args.get('id')
+
+    if not uploads.exists(id=file_id):
+        return bad_json_response('File ID does not exist.')
+
+    filename = uploads.export_one('filename', id=file_id)
+
+    return good_json_response({
+        'url': '/file/{}/{}'.format(file_id, filename)
+    })
+
+__all__ = ('file_main')
+

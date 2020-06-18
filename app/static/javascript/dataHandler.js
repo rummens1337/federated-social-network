@@ -27,3 +27,17 @@ function requestJSON(type, url, data=null, success=null, error=null) {
         error: error
     });
 };
+
+
+function alertError(error, ms) {
+    var dialog = document.createElement("div");
+
+    dialog.innerHTML = error;
+    dialog.setAttribute("class", "alert")
+
+    setTimeout(function(){
+      dialog.parentNode.removeChild(dialog);
+    }, ms);
+
+    document.body.appendChild(dialog);
+}

@@ -22,12 +22,12 @@ function validateAccount() {
         var username = $("#username").val();
 
         function loginFailed(req) {
-          alert("Login failed")
+          alertError(req.reason, 2000);
         }
 
         function verifyLogin(req) {
           if (req.data.hasOwnProperty("token")) {
-            alert("Login success")
+            // alertError("Login success", 1000)
             // Cookies.set('access_token_cookie', req.data.token);
             // alert(req.data.token)
             Cookies.set('access_token_cookie', req.data.token);
