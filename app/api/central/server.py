@@ -27,10 +27,11 @@ def register():
         if not servers.exists(address=address):
             result = servers.insert(name=name, address=address)
             return good_json_response({
-            'server_id': result
+                'server_id': result
             })
         else:
-            return bad_json_response('Something went wrong registering the server. Please try again later.')
+            name = servers.export_one(address=address)
+            return bad_json_response('This data server is already registered by the name ' + name + '.')
     else:
         return bad_json_response('The data server did not respond. Is the installation correct?')
 
