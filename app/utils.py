@@ -5,7 +5,7 @@ import typing
 import requests
 import json
 import flask
-
+from flask import current_app
 
 def percent_type(d: typing.Union[str, int]) -> str:
     """"""
@@ -31,13 +31,21 @@ def ping(host):
     except:
         return False
 
-def get_central_ip():
+def get_own_ip():
+    """Returns the IP of the current data server"""
     return flask.request.url_root
 
-def get_data_ip(username):
+# WORKS - pls don't change Q_Q
+def get_central_ip():
+    """Returns the IP of the central server"""
+    return current_app.config['CENTRAL_IP']
+
+# WORKS - pls don't change Q_Q
+def get_user_ip(username):
+    """Returns the IP of a data server for a given username"""
     response = requests.get(get_central_ip() + "/api/user/address?username=" + username)
 
-    if response.json()['data']['address']:
+    try:
         return response.json()['data']['address']
-    else:
+    except:
         return False

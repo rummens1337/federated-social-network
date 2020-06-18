@@ -9,7 +9,7 @@ h1, h2, h3, a {
     margin: 0;
     padding: 0.5cm;
     font-weight: 600;
-    color: #ffffff;
+    color: black;
 }
 
 img {
@@ -81,5 +81,5 @@ ul.style1 li {
 
 #menu a {
     text-decoration: none;
-    color: rgb(255, 255, 255);
+    color: black;
 }
