@@ -11,8 +11,8 @@ function saveProfile() {
                 window.location.reload();
             }
 
-            function editFailed() {
-                alert("Something went wrong");
+            function editFailed(response) {
+                alertError(response.reason, 2000);
             }
 
             requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(), null, editSucces, editFailed);
