@@ -4,7 +4,8 @@ function register() {
         server_name: "required",
         server_address: {
             "required": true,
-            startsWithHTTP: true
+            startsWithHTTP: true,
+            endsWithSlash: true
         }
       },
   
@@ -29,6 +30,10 @@ function register() {
 
 $(document).ready(function() {
     jQuery.validator.addMethod("startsWithHTTP", function(value, element) {
-        return value == 'nee';
+        return value.startsWith('http://');
     }, "Server address should start with http://");
+
+    jQuery.validator.addMethod("endsWithSlash", function(value, element) {
+        return !value.endsWith('/');
+    }, "Server address may not end with /");
 });
