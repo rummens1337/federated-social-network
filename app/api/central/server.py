@@ -31,8 +31,8 @@ def register():
             })
         else:
             name = servers.export_one('name', address=address)
-            return bad_json_response('This data server is already registered by the name "' + name + '".')
+            return bad_json_response('The data server at "' + address + '" is already registered by the name "' + name + '".')
     else:
-        return bad_json_response('The data server did not respond. Is the installation correct?')
+        return bad_json_response('The data server at "' + address + '" did not respond. Is the installation correct?')
 
 __all__ = ('blueprint')

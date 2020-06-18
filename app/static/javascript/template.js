@@ -28,7 +28,43 @@ function close() {
 
 }
 
-
 function myFunction(x) {
   	x.classList.toggle("change");
 }
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+
+function checkLogin() {
+    if (getCookie('access_token_cookie') != '') {
+        return true
+    }
+    else {
+        return false
+    }
+}
+
+function removeNavItems() {
+    if (!checkLogin()) {
+        document.getElementById("navlogout").classList.add("w3-hide");
+        document.getElementById("navsettings").classList.add("w3-hide");
+        document.getElementById("navfriends").classList.add("w3-hide");
+    }
+}
+
+$(document).ready(function() {
+    removeNavItems();
+});

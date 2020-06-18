@@ -1,4 +1,4 @@
-function register() {
+function register_server() {
     $("form[name='registerdataserver']").validate({
       rules: {
         server_name: "required",
@@ -8,17 +8,17 @@ function register() {
             endsWithSlash: true
         }
       },
-  
+
       submitHandler: function(form) {
         function registerCentral() {
           serverForm = {name:form.server_name.value, address:form.server_address.value};
           requestJSON("POST", "/api/server/register", serverForm, signupSucces, signupFailed);
         }
-  
+
         function signupSucces() {
           if(!alert('Your data server has been succesfully registered!')){window.location = "/";}
         }
-  
+
         function signupFailed(response) {
           alertError(response.reason, 2000);
         }
