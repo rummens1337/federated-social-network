@@ -27,7 +27,7 @@ function validateAccount() {
 
         function verifyLogin(req) {
           if (req.data.hasOwnProperty("token")) {
-            alert("Login success")
+            // alertError("Login success", 1000)
             // Cookies.set('access_token_cookie', req.data.token);
             // alert(req.data.token)
             Cookies.set('access_token_cookie', req.data.token);
