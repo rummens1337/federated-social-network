@@ -8,14 +8,10 @@ $(function saveProfile() {
 
         submitHandler: function(form) {
             function editSucces(req) {
-              if(!alert('Settings editted')){window.location.reload();}
+                window.location.reload();
             }
 
-            function editFailed(XMLHttpRequest, textStatus, errorThrown) {
-              alert("Failed to edit settings.")
-            }
-
-            requestJSON('POST', dataServer + '/api/user/edit?username=' + username, $(form).serialize(), editSucces, editFailed);
+            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(), null, editSucces);
           }
     });
 });
@@ -28,8 +24,7 @@ function setUserSettings(req) {
 
 function setDataAddress(req) {
     dataServer = req.data.address;
-    username = req.data.username;
-    requestJSON('GET', dataServer + '/api/user?username=' + username, null, setUserSettings, null);
+    requestJSON('GET', dataServer + '/api/user', null, setUserSettings, null);
 }
 
 $(document).ready(function() {

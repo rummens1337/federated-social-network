@@ -14,7 +14,7 @@ blueprint = Blueprint('data_user', __name__)
 @blueprint.route('/', strict_slashes=False)
 @jwt_required
 def user():
-    username = request.args.get('username')
+    username = get_jwt_identity()
 
     if username is None:
         return bad_json_response('username should be given as parameter.')
@@ -160,9 +160,9 @@ def register():
     if users.exists(username=username):
         return bad_json_response('Username is already registered')
 
-    users.insert(username=username, firstname=firstname, 
+    users.insert(username=username, firstname=firstname,
                 lastname=lastname, password=password, email=email)
-                
+
     return good_json_response("registered")
 
     # Do not remove yet: was used for file uploads!

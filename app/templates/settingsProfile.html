@@ -24,11 +24,11 @@
         </div>
 
         <ul class="style1">
-            <form name="settings">
+            <form enctype="multipart/form-data" name="settings">
                 <li>
                     <p><b> Profile picture</b></p>
                     <img name="profilePicture" src= {{ profile.photo.photo_url }} >
-                    <input type ="file" name="file" multiple/>
+                    <input type ="file" name="file">
                 </li>
                 <li>
                     <p><b>Bio</b></p>
@@ -50,7 +50,6 @@
                     <button type="submit" class="btn-primary btn-block" onclick="saveProfile()">Update</button>
                 </div>
             </form>
-
         </ul>
     </div>
 </div>
