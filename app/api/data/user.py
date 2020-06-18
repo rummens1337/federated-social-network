@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identi
 from app.upload import get_file, save_file
 from app.api import auth_username
 from app.utils import ping
-
+from passlib.hash import sha256_crypt
 
 blueprint = Blueprint('data_user', __name__)
 
