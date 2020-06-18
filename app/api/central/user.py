@@ -44,13 +44,13 @@ def address():
         username = auth_username()
 
     if username is None or username == '':
-        return bad_json_response('Username should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     if users.exists(username=username):
         server_id = users.export_one('server_id', username=username)
 
         if not servers.exists(  id=server_id):
-            bad_json_response('Server does not exist in database.')
+            bad_json_response('Server is not registered.')
 
         address = servers.export_one('address', id=server_id)
         return good_json_response({
@@ -58,7 +58,7 @@ def address():
             'username': username
         })
     else:
-        return bad_json_response('Username does not exist in database.')
+        return bad_json_response('User is not found.')
 
 
 @blueprint.route('/registered', methods=['GET'])
@@ -74,7 +74,6 @@ def registered():
     return good_json_response({
         'registered': exists
     })
-    # TODO error handling if query fails
 
 
 @blueprint.route('/register', methods=['POST'])
@@ -83,17 +82,16 @@ def register():
     server_id = request.form['server_id']
 
     if not servers.exists(address=server_id):
-        return bad_json_response("Server not in database.")
+        return bad_json_response("Server is not registered.")
 
     server_id = servers.export_one('id', address=server_id)
 
     if not users.exists(username=username):
         users.insert(username=username, server_id=server_id)
     else:
-        return bad_json_response("Username already exists in database.")
+        return bad_json_response("Username is already taken. Try again :)")
 
     return good_json_response("success")
-    # TODO error handling if query fails
 
 
 @blueprint.route('/delete', methods=['POST'])
@@ -106,8 +104,7 @@ def delete():
         users.delete(username=username)
         return good_json_response()
     else:
-        return bad_json_response("Username does not exist in database.")
-    # TODO error handling if query fails
+        return bad_json_response("No user found with the username " + username)
 
 
 @blueprint.route('/edit', methods=['POST'])
@@ -122,9 +119,8 @@ def edit():
             if 'new_address' != '':
                 users.update({'address':new_address}, username=username)
     else:
-        return bad_json_response('Username does not exist in database.')
+        return bad_json_response("No user found with the username " + username)
 
-    return good_json_response()
-    # TODO error handling if query fails
+    return good_json_response("success")
 
 __all__ = ('blueprint')
