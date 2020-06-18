@@ -211,7 +211,6 @@ def delete():
 @blueprint.route('/edit', methods=['POST'])
 @jwt_required
 def edit():
-    # username = request.form['username']
     username = get_jwt_identity()
 
     if 'new_name' in request.form:
@@ -221,7 +220,6 @@ def edit():
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
-        # TODO replace image | needs testing
         uploads_id = save_file(image, filename=image_filename)
         users.update({'uploads_id' : uploads_id}, username=username)
     if 'new_location' in request.form:
@@ -236,7 +234,6 @@ def edit():
         new_password = request.form['new_password']
         if 'new_password' != '':
             users.update({'password':new_password}, username=username)
-
 
     return good_json_response()
 

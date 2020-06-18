@@ -11,7 +11,7 @@ $(function saveProfile() {
                 window.location.reload();
             }
 
-            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(), null, editSucces);
+            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(),  editSucces, null);
           }
     });
 });
