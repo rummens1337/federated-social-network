@@ -18,7 +18,9 @@ def check_servertype():
     """Check the server that is supposed to be ran, change values accordingly."""
     if get_server_type() == ServerType.CENTRAL:
         app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+        from flask_mail import Mail
         from app.api.central.main import blueprint as main_routes
+        globals()['mail'] = Mail(app)
         register_central(app)
 
     elif get_server_type() == ServerType.DATA:
