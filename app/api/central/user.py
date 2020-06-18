@@ -29,7 +29,9 @@ def createtestusers():
     for username in usernames:
         if not users.exists(username=username):
             users.insert(username=username, server_id=server)
-    return good_json_response()
+        else:
+            return bad_json_response("Username already exists.")
+    return good_json_response("success")
     # TODO error handling if query fails
 
 
