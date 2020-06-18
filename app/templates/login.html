@@ -2,26 +2,21 @@
 {% block title %}Login{% endblock %}
 {% block head %}
     <script type="text/javascript" src="../static/javascript/login.js"></script>
-    <style type="text/css">
-        #search_input {
-            display:none;
-        }
-        .search-btn {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/css/login.css" >
     {{ super() }}
 {% endblock %}
 {% block content %}
     <div class="container pt-3 bg-dark text-white rounded">
+
         <div class="row">
-            <div class="col-md-6 mx-auto">
+            <div class="col-md-6 text-center my-auto">
+                <img src="../static/images/LogoBackOpaque.png" style="max-height:85px; padding-top:10px;">
+                <h3> Safely connect to other people!</h3>
+            </div>
+
+            <div class="col-md-6 mx-auto padding-login">
                 <div class="form">
-                        <div class="col-md-12 text-center">
-                            <h3> Safely connect to other people!</h3>
-                            <img src="../static/images/LogoBackOpaque.png" style="max-height:85px; padding-top:10px;">
-                        </div>
-                    </div>
+
                     <form name="login" method="POST">
                         <div class="form-group">
                             <label> Username </label>

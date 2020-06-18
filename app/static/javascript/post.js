@@ -53,8 +53,8 @@ function showPostsArray(req) {
   }
 }
 
-function loadFailed(XMLHttpRequest, textStatus, errorThrown) {
-  alert("Something went wrong while retrieving posts.")
+function loadFailed(req, XMLHttpRequest, textStatus, errorThrown) {
+  alertError(req.reason, 2000)
 }
 
 function loadPosts(req) {
