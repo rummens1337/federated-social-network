@@ -5,3 +5,4 @@ requests
 pytest-html
 flask-jwt-extended
 flask-cors
+passlib
