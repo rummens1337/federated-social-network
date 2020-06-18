@@ -1,6 +1,6 @@
 var centralServer = window.location.origin;
 
-$(function saveProfile() {
+function saveProfile() {
     $("form[name='settings']").validate({
         rules: {
             new_name: 'required'
@@ -15,10 +15,10 @@ $(function saveProfile() {
                 alert("Something went wrong");
             }
 
-            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(),  editSucces, editFailed);
+            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(), null, editSucces, editFailed);
           }
     });
-});
+};
 
 function setUserSettings(req) {
     document.getElementById('location').value = req.data.location;

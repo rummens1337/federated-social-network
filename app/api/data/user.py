@@ -213,7 +213,8 @@ def delete():
 @blueprint.route('/edit', methods=['POST'])
 @jwt_required
 def edit():
-    username = get_jwt_identity()
+    # username = get_jwt_identity()
+    username = request.form['username']
 
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
@@ -226,6 +227,7 @@ def edit():
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
+        
         uploads_id = save_file(image, filename=image_filename)
         users.update({'uploads_id' : uploads_id}, username=username)
     if 'new_location' in request.form:
