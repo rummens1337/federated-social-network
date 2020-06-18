@@ -14,9 +14,9 @@ def search():
 
     # TODO fail if user is already registered
     if users.exists(username=username):
-        return bad_json_response('Username is already registered')
+        return bad_json_response('Username is already registered.')
 
     # TODO register user and save image | still todo save image
     users.insert(username=username, location=location, study=study)
 
-    return good_json_response()
+    return good_json_response("success")
