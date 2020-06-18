@@ -79,12 +79,12 @@ def registered():
 @blueprint.route('/register', methods=['POST'])
 def register():
     username = request.form['username']
-    server_id = request.form['server_id']
+    address = request.form['server_id']
 
-    if not servers.exists(address=server_id):
+    if not servers.exists(address=address):
         return bad_json_response("Server is not registered.")
 
-    server_id = servers.export_one('id', address=server_id)
+    server_id = servers.export_one('id', address=address)
 
     if not users.exists(username=username):
         users.insert(username=username, server_id=server_id)
