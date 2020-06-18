@@ -7,11 +7,15 @@ $(function saveProfile() {
         },
 
         submitHandler: function(form) {
-            function editSucces(req) {
+            function editSucces() {
                 window.location.reload();
             }
 
-            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(),  editSucces, null);
+            function editFailed() {
+                alert("Something went wrong");
+            }
+
+            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(),  editSucces, editFailed);
           }
     });
 });
