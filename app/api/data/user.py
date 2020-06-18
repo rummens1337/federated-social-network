@@ -212,37 +212,31 @@ def delete():
 @jwt_required
 def edit():
     # username = request.form['username']
-    username = request.args.get('username')
+    username = get_jwt_identity()
 
-    if username is None or username == '':
-        username = auth_username()
+    if 'new_name' in request.form:
+        new_name = request.form['new_name']
+        if 'name' != '':
+            users.update({'name':new_name}, username=username)
+    if 'file' in request.files:
+        image_filename = request.files['file'].filename
+        image = request.files['file'].read()
+        # TODO replace image | needs testing
+        uploads_id = save_file(image, filename=image_filename)
+        users.update({'uploads_id' : uploads_id}, username=username)
+    if 'new_location' in request.form:
+        new_location = request.form['new_location']
+        if 'new_location' != '':
+            users.update({'location':new_location}, username=username)
+    if 'new_study' in request.form:
+        new_study = request.form['new_study']
+        if 'new_study' != '':
+            users.update({'study':new_study}, username=username)
+    if 'new_password' in request.form:
+        new_password = request.form['new_password']
+        if 'new_password' != '':
+            users.update({'password':new_password}, username=username)
 
-
-    if users.exists(username=username):
-        if 'new_name' in request.form:
-            new_name = request.form['new_name']
-            if 'name' != '':
-                users.update({'name':new_name}, username=username)
-        if 'file' in request.files:
-            image_filename = request.files['file'].filename
-            image = request.files['file'].read()
-            # TODO replace image | needs testing
-            uploads_id = save_file(image, filename=image_filename)
-            users.update({'uploads_id' : uploads_id}, username=username)
-        if 'new_location' in request.form:
-            new_location = request.form['new_location']
-            if 'new_location' != '':
-                users.update({'location':new_location}, username=username)
-        if 'new_study' in request.form:
-            new_study = request.form['new_study']
-            if 'new_study' != '':
-                users.update({'study':new_study}, username=username)
-        if 'new_password' in request.form:
-            new_password = request.form['new_password']
-            if 'new_password' != '':
-                users.update({'password':new_password}, username=username)
-    else:
-        return bad_json_response('Username does not exist in database.')
 
     return good_json_response()
 
