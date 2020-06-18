@@ -3,7 +3,7 @@
 {% block head %}
     <title>Settings</title>
     <link href="../static/css/setting1.css" rel="stylesheet" type="text/css" media="all" />
-    <script type="text/javascript" src="../static/javascript/settings6.js"></script>
+    <script type="text/javascript" src="../static/javascript/settingsProfile.js"></script>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -22,39 +22,35 @@
         <div class="title">
             <h2>Personal info</h2>
         </div>
+
         <ul class="style1">
-            <form action="" methode="post" name="settings">
+            <form name="settings">
                 <li>
+                    <p><b> Profile picture</b></p>
                     <img name="profilePicture" src= {{ profile.photo.photo_url }} >
-                    <button>Upload image</button>
+                    <input type ="file" name="file" multiple/>
                 </li>
                 <li>
                     <p><b>Bio</b></p>
-                    <textarea class="form-control" name="bio" rows="7" placeholder="Bio"></textarea>
+                    <textarea id='bio' class="form-control" name="bio" rows="7"></textarea>
                 </li>
                 <li>
                     <p><b>Study</b></p>
-                    <input type='text' class="form-control" name="study" value= "Computer science"> </input>
+                    <input id='study' type='text' class="form-control" name="new_study"> </input>
                 </li>
                 <li>
-                    <label> First name</label>
-                    <input type='text' class="form-control" name="firstname" value= {{profile.name.firstname}} > </input>
+                    <label> Name</label>
+                    <input id='name' type='text' class="form-control" name="new_name" /> </input>
                 </li>
                 <li>
-                    <p><b>Last name</b></p>
-                    <input type='text' class="form-control" name="lastname" value= {{profile.name.lastname}}> </input>
-                </li>
-                <li>
-                    <p><b>Username</b></p>
-                    <input type='text' class="form-control" name="username" value= {{profile.name.username}}> </input>
-                <li>
-                    <p><b>Email adress</b></p>
-                    <input type='email' class="form-control" name="email" value= {{profile.email.emailadress}}> </input>
+                    <label> Location</label>
+                    <input id='location' type='text' class="form-control" name="new_location"> </input>
                 </li>
                 <div>
                     <button type="submit" class="btn-primary btn-block" onclick="saveProfile()">Update</button>
                 </div>
             </form>
+
         </ul>
     </div>
 </div>

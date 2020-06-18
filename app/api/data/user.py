@@ -32,6 +32,11 @@ def user():
         return bad_json_response("User not found")
 
     # TODO: Get image url
+    # image_filename = request.files['file'].filename
+    # image = request.files['file'].read()
+
+    # uploads_id = save_file(image, filename=image_filename)
+    # users.update({'uploads_id' : uploads_id}, username=username)
 
     return good_json_response({
         'username': user_details[0][0],
@@ -170,6 +175,17 @@ def register():
     # image = request.files['file'].read()
     # uploads_id = save_file(image, filename=image_filename)
     # users.update({'uploads_id' : uploads_id}, username=username)
+
+@blueprint.route('/deleteupload')
+def deleteupload():
+    uploads_id = request.args.get('uploads_id')
+
+    if not uploads.exists(uploads_id=uploads_id):
+        return bad_json_response('Upload id is not in database')
+
+    uploads.delete(uploads_id=uploads_id)
+
+    return good_json_response()
 
 
 @blueprint.route('/delete', methods=['POST'])

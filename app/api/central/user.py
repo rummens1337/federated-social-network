@@ -36,11 +36,11 @@ def createtestusers():
 @blueprint.route('/address', methods=['GET'])
 def address():
     username = request.args.get('username')
-    
+
     # If username is not given, use the logged in username
     if username is None or username == '':
         username = auth_username()
-    
+
     if username is None or username == '':
         return bad_json_response('Username should be given as parameter.')
 
@@ -52,7 +52,8 @@ def address():
 
         address = servers.export_one('address', id=server_id)
         return good_json_response({
-            'address': address
+            'address': address,
+            'username': username
         })
     else:
         return bad_json_response('Username does not exist in database.')
