@@ -19,22 +19,27 @@ function sign_up() {
     },
 
     submitHandler: function(form) {
-        var mock_address = "http://192.168.1.102:9000"
 
-        function signupSucces(req) {
-          alert("You have been succesfully registered!")
-        }
+      response = "";
+      function registerCentral() {
+        serverForm = {username:form.username.value, server_id:form.select_server.value};
+        response = requestJSON("POST", window.origin + "/api/user/register", serverForm, registerData, signupFailed);
+      }
 
-        function signupFailed(XMLHttpRequest, textStatus, errorThrown) {
-          alert("Failed to register.")
-        }
+      function registerData() {
+        requestJSON("POST", form.select_server.value + "/api/user/register", $(form).serialize(), signupSucces, signupFailed);
+      }
 
-        function register(req) {
-          dataServer = mock_address;
-          requestJSON("POST", dataServer + "/api/user/register", $(form).serialize(), signupSucces, signupFailed);
-        }
+      function signupSucces() {
+        if(!alert('You have been succesfully registered!')){window.location = "/";}
+      }
 
-        register(null);
+      function signupFailed(response, XMLHttpRequest, textStatus, errorThrown) {
+        alert(response.value)
+      }
+
+      // First register the user on central to check availability of the username and IP address.
+      registerCentral();
     }
   });
 }

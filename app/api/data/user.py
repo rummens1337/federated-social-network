@@ -150,26 +150,31 @@ def login():
 
 @blueprint.route('/register', methods=['POST'])
 def register():
+    """Registers a user to this data server."""
     username = request.form['username']
-    location = request.form['location']
-    study = request.form['study']
+    firstname = request.form['firstname']
+    lastname = request.form['lastname']
+    email = request.form['email']
     password = request.form['password']
-    name = request.form['name']
-
-    image_filename = request.files['file'].filename
-    image = request.files['file'].read()
 
     if users.exists(username=username):
         return bad_json_response('Username is already registered')
 
-    users.insert(username=username, location=location, study=study, password=password, name=name)
+    users.insert(username=username, firstname=firstname, 
+                lastname=lastname, password=password, email=email)
+                
+    return good_json_response("registered")
 
-    # TODO make function to remove image
-    uploads_id = save_file(image, filename=image_filename)
-    users.update({'uploads_id' : uploads_id}, username=username)
+    # Do not remove yet: was used for file uploads!
+    # location = request.form['location']
+    # study = request.form['study']
+    # password = request.form['password']
+    # name = request.form['name']
 
-    return good_json_response()
-
+    # image_filename = request.files['file'].filename
+    # image = request.files['file'].read()
+    # uploads_id = save_file(image, filename=image_filename)
+    # users.update({'uploads_id' : uploads_id}, username=username)
 
 @blueprint.route('/deleteupload')
 def deleteupload():

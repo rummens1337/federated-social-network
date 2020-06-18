@@ -47,7 +47,7 @@ def address():
     if users.exists(username=username):
         server_id = users.export_one('server_id', username=username)
 
-        if not servers.exists(id=server_id):
+        if not servers.exists(  id=server_id):
             bad_json_response('Server does not exist in database.')
 
         address = servers.export_one('address', id=server_id)
@@ -80,15 +80,17 @@ def register():
     username = request.form['username']
     server_id = request.form['server_id']
 
-    if not servers.exists(id=server_id):
+    if not servers.exists(address=server_id):
         return bad_json_response("Server not in database.")
+
+    server_id = servers.export_one('id', address=server_id)
 
     if not users.exists(username=username):
         users.insert(username=username, server_id=server_id)
     else:
         return bad_json_response("Username already exists in database.")
 
-    return good_json_response()
+    return good_json_response("success")
     # TODO error handling if query fails
 
 
