@@ -6,9 +6,8 @@ from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
-from app.utils import ping
+from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 from passlib.hash import sha256_crypt
-
 blueprint = Blueprint('data_user', __name__)
 
 
@@ -30,24 +29,19 @@ def user():
     if not user_details:
         return bad_json_response("User not found")
 
-    # TODO: Get image url
-    # image_filename = request.files['file'].filename
-    # image = request.files['file'].read()
-
-    # uploads_id = save_file(image, filename=image_filename)
-    # users.update({'uploads_id' : uploads_id}, username=username)
-    ipaddress = 'http://192.168.0.102:9000'
     up_id = users.export('uploads_id', username=username)
 
-    response = requests.get(ipaddress + '/api/file?id=' + str(up_id[0]))
-    url = response.json()['data']['url']
-    imageurl = ipaddress + url
+    # TODO: FIX PL0X
+    # data_ip = get_own_ip()
+    # response = requests.get(data_ip + '/api/file?id=' + str(up_id[0]))
+    # url = response.json()['data']['url']
+    # imageurl = data_ip + url
 
     return good_json_response({
         'username': user_details[0][0],
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
-        'image_url': imageurl,
+        # 'image_url': imageurl,
         'location': user_details[0][4],
         'study': user_details[0][5],
         'bio': user_details[0][6],
@@ -79,7 +73,7 @@ def registered():
         return bad_json_response('Username not found (in data server)')
 
     # for testing purposes; Enter your own IP address instead of ipaddress
-    url = 'http://ipaddress:5000/api/user/registered?username=' + username
+    url = get_central_ip() + '/api/user/registered?username=' + username
     r = requests.get(url).json()
 
     return good_json_response(r)
@@ -216,8 +210,8 @@ def delete():
 @blueprint.route('/edit', methods=['POST'])
 @jwt_required
 def edit():
-    # username = get_jwt_identity()
-    username = request.form['username']
+    username = get_jwt_identity()
+    # username = request.form['username']
 
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
@@ -252,5 +246,25 @@ def edit():
 
     return good_json_response("success")
 
+@blueprint.route('/password', methods=['POST'])
+@jwt_required
+def password():
+    username = get_jwt_identity()
+    password = request.form['oldPassword']
+
+    if password is None:
+        return bad_json_response("Bad request: Missing parameter 'password'.")
+
+    password_db = users.export('password', username=username)[0]
+
+    if not sha256_crypt.verify(password, password_db):
+        return bad_json_response("Password is incorrect.")
+
+    if 'newPassword' in request.form:
+        newPassword = sha256_crypt.encrypt(request.form['newPassword'])
+    if 'newPassword' != '':
+        users.update({'password':newPassword}, username=username)
+
+    return good_json_response("Succes")
 
 __all__ = ('blueprint')

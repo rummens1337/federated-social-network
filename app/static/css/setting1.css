@@ -9,7 +9,7 @@ h1, h2, h3, a {
     margin: 0;
     padding: 0.5cm;
     font-weight: 600;
-    color: #ffffff;
+    color: black;
 }
 
 img {
@@ -26,6 +26,11 @@ img {
     text-align: center;
 }
 
+.form-control {
+    border: 1px solid black;
+
+}
+
 
 /*********************************************************************************/
 /* List Styles                                                                   */
@@ -38,13 +43,13 @@ ul.style1 {
     overflow: hidden;
     list-style: none;
     text-align: left;
-    color: #ffffff
+    color: black;
 }
 
 ul.style1 li {
     padding: 1.6em 0em 0em 0em;
     margin: 0 0 2.5em 0;
-    border-top: 1px solid rgba(0,0,0,.1);
+    border-top: 1px solid black;
 }
 
 /*********************************************************************************/
@@ -52,11 +57,11 @@ ul.style1 li {
 /*********************************************************************************/
 
 #menu li {
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 #menu h2 {
-    color: rgb(248, 248, 248)
+    color: rgb(0, 0, 0)
 }
 
 #menu li a, #menu li span {
@@ -66,7 +71,7 @@ ul.style1 li {
     text-decoration:  none;
     text-transform: uppercase;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.5);
 }
 
 #menu .current_page_item a {
@@ -76,5 +81,5 @@ ul.style1 li {
 
 #menu a {
     text-decoration: none;
-    color: rgb(255, 255, 255);
+    color: black;
 }

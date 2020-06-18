@@ -40,4 +40,4 @@ function alertError(error, ms) {
     }, ms);
 
     document.body.appendChild(dialog);
-}
+};

@@ -35,21 +35,24 @@ function loadSucces(req) {
 
 // This function adds a post in the div 'posts_div'
 function showPost(postdata) {
-  var div = document.getElementById('posts_div')
   var content = `<h5 style="color:#52B77C;"><b>`+ postdata.title + `</b></h5>
     <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
     <p class="w3-text-grey">` + postdata.body + `</p>
     <hr>`
 
   $('#posts_div').append(content);
-
 }
 
 // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
 function showPostsArray(req) {
-  for (i=0; i < req.data.posts.length; i++) {
-    var post = req.data.posts[i];
-    showPost(post);
+  if (req.data.posts.length > 0) {
+    for (i=0; i < req.data.posts.length; i++) {
+        var post = req.data.posts[i];
+        showPost(post);
+    }
+  }
+  else {
+    $('#posts_div').append('<p class="w3-text-grey">There are no posts on this profile.</p>');
   }
 }
 

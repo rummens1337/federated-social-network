@@ -79,12 +79,12 @@ def registered():
 @blueprint.route('/register', methods=['POST'])
 def register():
     username = request.form['username']
-    server_id = request.form['server_id']
+    address = request.form['server_id']
 
-    if not servers.exists(address=server_id):
+    if not servers.exists(address=address):
         return bad_json_response("Server is not registered.")
 
-    server_id = servers.export_one('id', address=server_id)
+    server_id = servers.export_one('id', address=address)
 
     if not users.exists(username=username):
         users.insert(username=username, server_id=server_id)
@@ -107,20 +107,28 @@ def delete():
         return bad_json_response("No user found with the username " + username)
 
 
-@blueprint.route('/edit', methods=['POST'])
+@blueprint.route('/edit', methods=['POST', 'GET'])
 @jwt_required
 def edit():
     # username = request.args.get('username')
     username = get_jwt_identity()
-
+    
     if users.exists(username=username):
-        if 'new_address' in request.form:
-            new_address = request.form['new_address']
-            if 'new_address' != '':
-                users.update({'address':new_address}, username=username)
+        #if 'new_address' in request.form:
+            #new_address = request.form['new_address']
+        new_address = request.args.get('new_address')
+        if 'new_address' != '':
+            if servers.exists(address=new_address):
+                new_id = servers.export_one('id', address=new_address)
+                users.update({'server_id':new_id}, username=username)
+                return good_json_response({'new_address': new_address})
+            else:
+                return bad_json_response("This address does not exist in the database.")
+        else:
+            return bad_json_response('Address undefined.')
+        #else:
+        #    return bad_json_response("Incorrect form.")
     else:
-        return bad_json_response("No user found with the username " + username)
-
-    return good_json_response("success")
+        return bad_json_response("No user found with the username " + username + ".")
 
 __all__ = ('blueprint')
