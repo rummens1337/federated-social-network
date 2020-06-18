@@ -14,8 +14,8 @@ function create_post() {
         if(!alert('Post succesfully created!')){window.location.reload();}
       }
 
-      function creationFailed(XMLHttpRequest, textStatus, errorThrown) {
-        alert("Failed to create post.")
+      function creationFailed(response, XMLHttpRequest, textStatus, errorThrown) {
+        alertError(response.reason, 2000);
       }
 
       function create(req) {
@@ -53,14 +53,14 @@ function showPostsArray(req) {
   }
 }
 
-function loadFailed(XMLHttpRequest, textStatus, errorThrown) {
-  alert("Something went wrong while retrieving posts.")
+function loadFailed(req, XMLHttpRequest, textStatus, errorThrown) {
+  alertError(req.reason, 2000)
 }
 
 function loadPosts(req) {
   var dataServer = req.data.address;
-  var url = (username == null || username == "") ? 
-    dataServer + '/api/user/posts' : 
+  var url = (username == null || username == "") ?
+    dataServer + '/api/user/posts' :
     dataServer + '/api/user/posts?username=' + username;
   requestJSON('GET', url, null, loadSucces, loadFailed);
 }
@@ -76,10 +76,10 @@ function loadTimeline(req) {
 // for the users made timeline from its friends.
 function loadUserPosts(u, location) {
   username = u;
-  var url = (username == null || username == "") ? 
-    '/api/user/address' : 
+  var url = (username == null || username == "") ?
+    '/api/user/address' :
     '/api/user/address?username=' + username;
-  
+
   if (location == 'posts') {
     requestJSON('GET', url, null, loadPosts, loadFailed);
   } else if (location == 'timeline') {

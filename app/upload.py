@@ -141,10 +141,12 @@ if get_server_type() == ServerType.DATA:
         filename, location, sha256 = find[0]
         if verify and not verify_file(location, sha256):
             raise ValueError('File has bad sha256 digest.')
-        with open(location, 'rb') as f:
-            if output == 'bytes':
-                return (filename, f.read())
-            if output == 'filepointer':
-                return (filename, f)
-            raise ValueError('Invalid value for argument \'output\'.')
+        f = open(location, 'rb')
+        if output == 'bytes':
+            read = f.read()
+            f.close()
+            return (filename, read)
+        if output in ('filepointer', 'fp'):
+            return (filename, f)
+        raise ValueError('Invalid value for argument \'output\'.')
 

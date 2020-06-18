@@ -1,11 +1,37 @@
-body {
+/* body {
     padding-top:3rem;
-}
+} */
 
 .login {
     background-color: #c5d3d2;
 }
 
+.padding-login {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.space_between {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%,-50%);
+}
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 2em;
+    padding: 0;
+}
+
 form .error {
     color: #ff0000;
+}
+
+#search_input {
+    display:none;
+}
+.search-btn {
+    display: none;
 }

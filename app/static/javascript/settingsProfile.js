@@ -1,6 +1,6 @@
 var centralServer = window.location.origin;
 
-$(function saveProfile() {
+function saveProfile() {
     $("form[name='settings']").validate({
         rules: {
             new_name: 'required'
@@ -11,16 +11,17 @@ $(function saveProfile() {
                 window.location.reload();
             }
 
-            function editFailed() {
-                alert("Something went wrong");
+            function editFailed(response) {
+                alertError(response.reason, 2000);
             }
 
-            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(),  editSucces, editFailed);
+            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(), null, editSucces, editFailed);
           }
     });
-});
+};
 
 function setUserSettings(req) {
+    document.getElementById('image_url').src = req.data.image_url;
     document.getElementById('location').value = req.data.location;
     document.getElementById('firstname').value = req.data.firstname;
     document.getElementById('lastname').value = req.data.lastname;
