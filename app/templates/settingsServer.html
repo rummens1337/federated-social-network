@@ -26,10 +26,25 @@
             <li>
                 <p><b>Your data server is registerd on the central server at ip address:</b></p>
                 <p id="dataserveraddress"></p>
-                <p>When you setup your data server for the first time or when you move your data server to a new ip address, you have to register the ip address of the new data server in the FedNet central server.</p>
-                <p>To do this, enter the new ip address of your data server below.</p>
+                <p>When you setup your data server for the first time or when you move your data server to a new address, you have to register the ip address of the new data server in the FedNet central server.</p>
+                <p>To do this, enter the new address of your data server below.</p>
                 <form name="updateaddress" action="/api/user/edit" method="POST">
-                    <input type='text' class="form-control" name="new_address" value=""></input>
+                    <input type='text' class="form-control" name="new_address" placeholder="New server address" value=""></input>
+                    <br>
+                    <button class="btn-primary">Submit</button>
+                </form>
+            </li>
+        </ul>
+        <div class="title">
+            <h2>Register new data server</h2>
+        </div>
+        <ul class="style1">
+            <li>
+                <p>When you set up a new data server, you have to register it on the FedNet central server to make it reachable for other users.</p>
+                <p>You can do this using the form below.</p>
+                <form name="registerdataserver" action="/api/server/register" method="POST">
+                    <input type='text' class="form-control" name="server_name" placeholder="Server name" value=""></input>
+                    <input type='text' class="form-control" name="server_address" placeholder="Server address" value=""></input>
                     <br>
                     <button class="btn-primary">Submit</button>
                 </form>
