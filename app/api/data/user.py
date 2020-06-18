@@ -204,9 +204,14 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
-# @jwt_required
+@jwt_required
 def edit():
-    username = request.form['username']
+    # username = request.form['username']
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
+
 
     if users.exists(username=username):
         if 'new_name' in request.form:
