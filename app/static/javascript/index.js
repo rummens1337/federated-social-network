@@ -8,7 +8,6 @@ function setUserSettings(req) {
 
 function setDataAddress(req) {
     dataServer = req.data.address;
-    alert( dataServer + '/api/user');
     requestJSON('GET', dataServer + '/api/user', null, setUserSettings, console.log('error called from index.js'));
 }
 
