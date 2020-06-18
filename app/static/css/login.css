@@ -11,11 +11,13 @@
     padding-bottom: 20px;
 }
 
-.space_between {
+.container {
     position: absolute;
-    top: 40%; left: 50%;
-    transform: translate(-50%,-50%);
+    left: 50%;
+    transform: translate(-50%, 0%);
+    margin-top: 25px;
 }
+
 hr {
     display: block;
     height: 1px;
