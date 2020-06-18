@@ -99,13 +99,19 @@ def user_posts():
             'title' : item[0],
             'body' : item[1],
             'creation_date' : str(item[2])
-        } 
+        }
         for item in user_posts
     ]
 
     return good_json_response({
         'posts': posts_array
     })
+
+# TODO implement
+@blueprint.route('/timeline', methods=['GET'])
+@jwt_required
+def timeline():
+    return user_posts()
 
 
 @blueprint.route('/login', methods=['POST'])
@@ -153,6 +159,7 @@ def register():
 
     users.insert(username=username, location=location, study=study, password=password, name=name)
 
+    # TODO make function to remove image
     uploads_id = save_file(image, filename=image_filename)
     users.update({'uploads_id' : uploads_id}, username=username)
 
@@ -165,9 +172,13 @@ def register():
 def delete():
     username = request.form['username']
 
+    uploads_id = users.export('uploads_id', username=username)
+
     if users.exists(username=username):
         users.delete(username=username)
-        uploads.delete(username=username)
+        # I dont think we want to delete this upload?
+        # Upload might be shared by 2 users?
+        uploads.delete(uploads_id=uploads_id)
         posts.delete(username=username)
         friends.delete(username=username)
 
@@ -189,7 +200,9 @@ def edit():
         if 'file' in request.files:
             image_filename = request.files['file'].filename
             image = request.files['file'].read()
-            # TODO replace image
+            # TODO replace image | needs testing
+            uploads_id = save_file(image, filename=image_filename)
+            users.update({'uploads_id' : uploads_id}, username=username)
         if 'new_location' in request.form:
             new_location = request.form['new_location']
             if 'new_location' != '':

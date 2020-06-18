@@ -3,7 +3,7 @@
 {% block head %}
 <!-- Send the username to the post script using the loadPosts funtction -->
 <script type="text/javascript" src="../static/javascript/post.js"></script>
-<script>$(document).ready( function() { loadPosts("{{ username }}"); }); </script>
+<script>$(document).ready( function() { loadUserPosts(null, "timeline"); }); </script>
 {{ super() }}
 
 {% endblock %}
