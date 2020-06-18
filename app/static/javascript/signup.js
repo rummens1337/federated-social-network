@@ -20,10 +20,9 @@ function sign_up() {
 
     submitHandler: function(form) {
 
-      response = "";
       function registerCentral() {
         serverForm = {username:form.username.value, server_id:form.select_server.value};
-        response = requestJSON("POST", window.origin + "/api/user/register", serverForm, registerData, signupFailed);
+        requestJSON("POST", "/api/user/register", serverForm, registerData, signupFailed);
       }
 
       function registerData() {
@@ -34,8 +33,8 @@ function sign_up() {
         if(!alert('You have been succesfully registered!')){window.location = "/";}
       }
 
-      function signupFailed(response, XMLHttpRequest, textStatus, errorThrown) {
-        alert("Custom failure message here.")
+      function signupFailed(response) {
+        alert(response.reason)
       }
 
       // First register the user on central to check availability of the username and IP address.
