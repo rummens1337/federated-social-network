@@ -8,7 +8,6 @@ from app.upload import get_file, save_file
 from app.api import auth_username
 from app.utils import ping, get_central_ip, get_data_ip
 from passlib.hash import sha256_crypt
-
 blueprint = Blueprint('data_user', __name__)
 
 

@@ -4,14 +4,8 @@ import string
 import typing
 import requests
 import json
-import configparser
+import flask
 
-# Create configparser object.
-config = configparser.ConfigParser()
-config.read(os.path.join(os.path.dirname(__file__) + '/config.ini'))
-
-def get_config(key):
-    return config.get("general", key)
 
 def percent_type(d: typing.Union[str, int]) -> str:
     """"""
@@ -38,7 +32,7 @@ def ping(host):
         return False
 
 def get_central_ip():
-    return get_config("central_ip")
+    return flask.request.url_root
 
 def get_data_ip(username):
     response = requests.get(get_central_ip() + "/api/user/address?username=" + username)
