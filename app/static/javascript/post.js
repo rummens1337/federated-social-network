@@ -1,3 +1,7 @@
+// Global username used for retrieving posts.
+// If not set. The user's own posts are loaded.
+var username = null;
+
 function create_post() {
   $("form[name='createpost']").validate({
     rules: {
@@ -25,13 +29,8 @@ function create_post() {
   });
 }
 
-// Global username used for retrieving posts.
-// If not set. The user's own posts are loaded.
-var username = null;
-
 function loadSucces(req) {
   showPostsArray(req);
-  // alert("Post succesfully loaded!")
 }
 
 // This function adds a post in the div 'posts_div'
@@ -58,7 +57,7 @@ function loadFailed(XMLHttpRequest, textStatus, errorThrown) {
   alert("Something went wrong while retrieving posts.")
 }
 
-function loadPost(req) {
+function loadPosts(req) {
   var dataServer = req.data.address;
   var url = (username == null || username == "") ? 
     dataServer + '/api/user/posts' : 
@@ -66,11 +65,24 @@ function loadPost(req) {
   requestJSON('GET', url, null, loadSucces, loadFailed);
 }
 
-function loadPosts(u) {
+// Load the timeline
+function loadTimeline(req) {
+  var dataServer = req.data.address;
+  var url = dataServer + '/api/user/timeline';
+  requestJSON('GET', url, null, loadSucces, loadFailed);
+}
+
+// Location can be 'posts' for a usernames own posts. Or 'timeline'
+// for the users made timeline from its friends.
+function loadUserPosts(u, location) {
   username = u;
   var url = (username == null || username == "") ? 
-    location.origin + '/api/user/address' : 
-    location.origin + '/api/user/address?username=' + username;
+    '/api/user/address' : 
+    '/api/user/address?username=' + username;
   
-  requestJSON('GET', url, null, loadPost, loadFailed);
+  if (location == 'posts') {
+    requestJSON('GET', url, null, loadPosts, loadFailed);
+  } else if (location == 'timeline') {
+    requestJSON('GET', url, null, loadTimeline, loadFailed);
+  }
 }
