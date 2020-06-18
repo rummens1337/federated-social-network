@@ -3,7 +3,12 @@
 {% block head %}
 <!-- Send the username to the post script using the loadPosts funtction -->
 <script type="text/javascript" src="../static/javascript/post.js"></script>
-<script>$(document).ready( function() { loadUserPosts(null, "timeline"); }); </script>
+<script type="text/javascript" src="../static/javascript/index.js"></script>
+
+<script>$(document).ready( function() {
+    loadUserPosts(null, "timeline");
+});
+</script>
 {{ super() }}
 
 {% endblock %}
@@ -31,9 +36,9 @@
 
             <div class="w3-white w3-text-grey w3-card-4">
                 <div class="w3-display-container">
-                    <img src="../static/images/betteravatar.png" style="width:100%" alt="Avatar">
+                    <img id='image_url' style="width:100%">
                         <div class="w3-display-bottomleft w3-container w3-text-teal">
-                            <h2>Jane Doe</h2>
+                            <p id='firstname'></p>
                         </div>
                 </div>
                 <!-- #TODO add right content for profile. -->

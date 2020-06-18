@@ -21,6 +21,7 @@ function saveProfile() {
 };
 
 function setUserSettings(req) {
+    document.getElementById('image_url').src = req.data.image_url;
     document.getElementById('location').value = req.data.location;
     document.getElementById('firstname').value = req.data.firstname;
     document.getElementById('lastname').value = req.data.lastname;

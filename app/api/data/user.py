@@ -42,7 +42,7 @@ def user():
         'username': user_details[0][0],
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
-        'image_url': 'https://www.xolt.nl/wp-content/themes/fox/images/placeholder.jpg',
+        'image_url': 'https://www.adhairmilano.com/wp-content/uploads/2018/10/Anche-per-linverno-2019-tagli-medi-con-effetto-bedhead-e1539274218553.jpg',
         'location': user_details[0][4],
         'study': user_details[0][5],
         'bio': user_details[0][6],
@@ -227,7 +227,7 @@ def edit():
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
-        
+
         uploads_id = save_file(image, filename=image_filename)
         users.update({'uploads_id' : uploads_id}, username=username)
     if 'new_location' in request.form:
