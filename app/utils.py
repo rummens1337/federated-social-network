@@ -3,7 +3,15 @@ import random
 import string
 import typing
 import requests
+import json
+import configparser
 
+# Create configparser object.
+config = configparser.ConfigParser()
+config.read(os.path.join(os.path.dirname(__file__) + '/config.ini'))
+
+def get_config(key):
+    return config.get("general", key)
 
 def percent_type(d: typing.Union[str, int]) -> str:
     """"""
@@ -12,7 +20,6 @@ def percent_type(d: typing.Union[str, int]) -> str:
     #    return '%s'
     #if type(d) is int:
     #    return '%i'
-
 
 def random_string(length: int=8) -> str:
     return ''.join(random.choices(string.hexdigits, k=length))
@@ -31,12 +38,10 @@ def ping(host):
         return False
 
 def get_central_ip():
-    # TODO: get central IP from config file.
-    return "http://192.168.2.8:5000"
+    return get_config("central_ip")
 
 def get_data_ip(username):
-    central_ip = get_central_ip()
-    response = requests.get(central_ip + "/api/user/address?username=" + username)
+    response = requests.get(get_central_ip() + "/api/user/address?username=" + username)
 
     if response.json()['data']['address']:
         return response.json()['data']['address']
