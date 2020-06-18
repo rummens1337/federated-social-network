@@ -37,18 +37,18 @@ def user():
 
     # uploads_id = save_file(image, filename=image_filename)
     # users.update({'uploads_id' : uploads_id}, username=username)
-    ipaddress = 'http://192.168.0.102:9000/api'
+    ipaddress = 'http://192.168.0.102:9000'
     up_id = users.export('uploads_id', username=username)
 
-    response = requests.get(ipaddress + '/file/?id=' + up_id)
-
-    alert(response)
+    response = requests.get(ipaddress + '/api/file?id=6')
+    url = response.json()['data']['url']
+    imageurl = ipaddress + url
 
     return good_json_response({
         'username': user_details[0][0],
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
-        'image_url': 'https://www.adhairmilano.com/wp-content/uploads/2018/10/Anche-per-linverno-2019-tagli-medi-con-effetto-bedhead-e1539274218553.jpg',
+        'image_url': imageurl,
         'location': user_details[0][4],
         'study': user_details[0][5],
         'bio': user_details[0][6],
