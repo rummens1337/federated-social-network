@@ -237,7 +237,7 @@ def edit():
         if 'new_bio' != '':
             users.update({'bio':new_bio}, username=username)
     if 'new_password' in request.form:
-        new_password = request.form['new_password']
+        new_password = sha256_crypt.encrypt(request.form['new_password'])
         if 'new_password' != '':
             users.update({'password':new_password}, username=username)
 
