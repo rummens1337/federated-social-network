@@ -37,6 +37,12 @@ def user():
 
     # uploads_id = save_file(image, filename=image_filename)
     # users.update({'uploads_id' : uploads_id}, username=username)
+    ipaddress = 'http://192.168.0.102:9000/api'
+    up_id = users.export('uploads_id', username=username)
+
+    response = requests.get(ipaddress + '/file/?id=' + up_id)
+
+    alert(response)
 
     return good_json_response({
         'username': user_details[0][0],
