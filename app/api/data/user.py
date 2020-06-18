@@ -6,7 +6,7 @@ from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
-from app.utils import ping, get_central_ip, get_data_ip
+from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 from passlib.hash import sha256_crypt
 blueprint = Blueprint('data_user', __name__)
 
@@ -31,16 +31,17 @@ def user():
 
     up_id = users.export('uploads_id', username=username)
 
-    data_ip = get_data_ip(username)
-    response = requests.get(data_ip + '/api/file?id=' + str(up_id[0]))
-    url = response.json()['data']['url']
-    imageurl = data_ip + url
+    # TODO: FIX PL0X
+    # data_ip = get_own_ip()
+    # response = requests.get(data_ip + '/api/file?id=' + str(up_id[0]))
+    # url = response.json()['data']['url']
+    # imageurl = data_ip + url
 
     return good_json_response({
         'username': user_details[0][0],
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
-        'image_url': imageurl,
+        # 'image_url': imageurl,
         'location': user_details[0][4],
         'study': user_details[0][5],
         'bio': user_details[0][6],
