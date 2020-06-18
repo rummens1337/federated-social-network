@@ -29,3 +29,16 @@ def ping(host):
         return True
     except:
         return False
+
+def get_central_ip():
+    # TODO: get central IP from config file.
+    return "http://192.168.2.8:5000"
+
+def get_data_ip(username):
+    central_ip = get_central_ip()
+    response = requests.get(central_ip + "/api/user/address?username=" + username)
+
+    if response.json()['data']['address']:
+        return response.json()['data']['address']
+    else:
+        return False
