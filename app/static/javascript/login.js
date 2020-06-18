@@ -22,7 +22,7 @@ function validateAccount() {
         var username = $("#username").val();
 
         function loginFailed(req) {
-          alert("Login failed")
+          alertError(req.reason, 2000);
         }
 
         function verifyLogin(req) {
