@@ -20,7 +20,7 @@ function register() {
         }
   
         function signupFailed(response) {
-          alert(response.reason);
+          alertError(response.reason, 2000);
         }
 
         registerCentral();

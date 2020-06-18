@@ -30,8 +30,8 @@ def register():
                 'server_id': result
             })
         else:
-            name = servers.export_one(address=address)
-            return bad_json_response('This data server is already registered by the name ' + name + '.')
+            name = servers.export_one('name', address=address)
+            return bad_json_response('This data server is already registered by the name "' + name + '".')
     else:
         return bad_json_response('The data server did not respond. Is the installation correct?')
 
