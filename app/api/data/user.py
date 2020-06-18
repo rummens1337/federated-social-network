@@ -6,7 +6,7 @@ from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
-from app.utils import ping
+from app.utils import ping, get_central_ip, get_data_ip
 from passlib.hash import sha256_crypt
 
 blueprint = Blueprint('data_user', __name__)
@@ -30,18 +30,12 @@ def user():
     if not user_details:
         return bad_json_response("User not found")
 
-    # TODO: Get image url
-    # image_filename = request.files['file'].filename
-    # image = request.files['file'].read()
-
-    # uploads_id = save_file(image, filename=image_filename)
-    # users.update({'uploads_id' : uploads_id}, username=username)
-    ipaddress = 'http://192.168.0.102:9000'
     up_id = users.export('uploads_id', username=username)
 
-    response = requests.get(ipaddress + '/api/file?id=' + str(up_id[0]))
+    data_ip = get_data_ip(username)
+    response = requests.get(data_ip + '/api/file?id=' + str(up_id[0]))
     url = response.json()['data']['url']
-    imageurl = ipaddress + url
+    imageurl = data_ip + url
 
     return good_json_response({
         'username': user_details[0][0],
@@ -79,7 +73,7 @@ def registered():
         return bad_json_response('Username not found (in data server)')
 
     # for testing purposes; Enter your own IP address instead of ipaddress
-    url = 'http://ipaddress:5000/api/user/registered?username=' + username
+    url = get_central_ip() + '/api/user/registered?username=' + username
     r = requests.get(url).json()
 
     return good_json_response(r)
