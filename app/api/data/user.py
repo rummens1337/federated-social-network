@@ -6,7 +6,7 @@ from app.database import users, friends, uploads, posts
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
-
+from passlib.hash import sha256_crypt
 
 blueprint = Blueprint('data_user', __name__)
 
@@ -134,7 +134,7 @@ def login():
 
     password_db = users.export('password', username=username)[0]
 
-    if password_db != password:
+    if not sha256_crypt.verify(password, password_db):
         return bad_json_response("Password is incorrect.")
 
     # Login success
@@ -148,14 +148,15 @@ def login():
 @blueprint.route('/register', methods=['POST'])
 def register():
     """Registers a user to this data server."""
+    # Exit early.
+    if users.exists(username=request.form['username']):
+        return bad_json_response('Username is already taken. Try again :)')
+
     username = request.form['username']
     firstname = request.form['firstname']
     lastname = request.form['lastname']
     email = request.form['email']
-    password = request.form['password']
-
-    if users.exists(username=username):
-        return bad_json_response('Username is already taken. Try again :)')
+    password = sha256_crypt.encrypt(request.form['password'])
 
     users.insert(username=username, firstname=firstname,
                 lastname=lastname, password=password, email=email)
