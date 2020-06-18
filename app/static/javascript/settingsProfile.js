@@ -18,8 +18,10 @@ $(function saveProfile() {
 
 function setUserSettings(req) {
     document.getElementById('location').value = req.data.location;
-    document.getElementById('name').value = req.data.name;
+    document.getElementById('firstname').value = req.data.firstname;
+    document.getElementById('lastname').value = req.data.lastname;
     document.getElementById('study').value = req.data.study;
+    document.getElementById('bio').value = req.data.bio;
 }
 
 function setDataAddress(req) {

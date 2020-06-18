@@ -22,8 +22,8 @@ def user():
     # TODO fail if user is not authenticated
 
     user_details = users.export(
-        'username', 'name', 'uploads_id',
-        'location', 'study', 'creation_date',
+        'username', 'firstname', 'lastname', 'uploads_id',
+        'location', 'study', 'bio', 'creation_date',
         'last_edit_date',
         username=username
     )
@@ -40,12 +40,14 @@ def user():
 
     return good_json_response({
         'username': user_details[0][0],
-        'name': user_details[0][1],
+        'firstname': user_details[0][1],
+        'lastname': user_details[0][2],
         'image_url': 'https://www.xolt.nl/wp-content/themes/fox/images/placeholder.jpg',
-        'location': user_details[0][3],
-        'study': user_details[0][4],
-        'creation_date': str(user_details[0][5]),
-        'last_edit_date': str(user_details[0][6])
+        'location': user_details[0][4],
+        'study': user_details[0][5],
+        'bio': user_details[0][6],
+        'creation_date': str(user_details[0][7]),
+        'last_edit_date': str(user_details[0][8])
     })
 
 
@@ -213,10 +215,14 @@ def delete():
 def edit():
     username = get_jwt_identity()
 
-    if 'new_name' in request.form:
-        new_name = request.form['new_name']
-        if 'name' != '':
-            users.update({'name':new_name}, username=username)
+    if 'new_firstname' in request.form:
+        new_firstname = request.form['new_firstname']
+        if 'firstname' != '':
+            users.update({'firstname':new_firstname}, username=username)
+    if 'new_lastname' in request.form:
+        new_lastname = request.form['new_lastname']
+        if 'lastname' != '':
+            users.update({'lastname':new_lastname}, username=username)
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
@@ -230,6 +236,10 @@ def edit():
         new_study = request.form['new_study']
         if 'new_study' != '':
             users.update({'study':new_study}, username=username)
+    if 'new_bio' in request.form:
+        new_bio = request.form['new_bio']
+        if 'new_bio' != '':
+            users.update({'bio':new_bio}, username=username)
     if 'new_password' in request.form:
         new_password = request.form['new_password']
         if 'new_password' != '':
