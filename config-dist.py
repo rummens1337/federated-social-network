@@ -8,6 +8,6 @@ MYSQL_DATABASE_PASSWORD = 'password'
 MYSQL_DATABASE_DB = 'db'
 MYSQL_DATABASE_HOST = 'mysql'
 
-CENTRAL_IP = "http://95.217.178.90/"
+CENTRAL_IP = "http://95.217.178.90"
 
 SECRET_KEY = 'super-secret'
