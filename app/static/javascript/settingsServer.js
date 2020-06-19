@@ -3,8 +3,8 @@ var centralServer = window.location.origin;
 
 function setDataAddress(req) {
     currentDataServer = req.data.address;
-    document.getElementById('dataserveraddress').innerHTML += currentDataServer;
-    document.getElementById('dataservername').innerHTML += req.data.name;
+    document.getElementById('dataserveraddress').innerHTML = '<b>Server address: </b>' + currentDataServer;
+    document.getElementById('dataservername').innerHTML = '<b>Server name: </b>' + req.data.name;
 }
 
 function setNoDataAddress() {
@@ -32,7 +32,9 @@ function updateDataServer() {
           }
   
           function editSucces() {
-            if(!alert('Your data server has been succesfully updated!')){}
+            if(!alertError('Your data server has been succesfully updated!', 2000)){
+                requestJSON('GET', centralServer + '/api/user/address', null, setDataAddress, setNoDataAddress);
+            }
           }
   
           function editFailed(response) {
