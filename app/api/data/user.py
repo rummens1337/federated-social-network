@@ -157,6 +157,9 @@ def register():
     if users.exists(username=request.form['username']):
         return bad_json_response('Username is already taken. Try again :)')
 
+    if users.exists(email=request.form['email']):
+        return bad_json_response('A user with this email is already registered on this data server.')
+
     username = request.form['username']
     firstname = request.form['firstname']
     lastname = request.form['lastname']
