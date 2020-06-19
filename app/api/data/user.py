@@ -231,20 +231,16 @@ def edit():
                 users.update({'uploads_id' : uploads_id}, username=username)
     if 'new_location' in request.form:
         new_location = request.form['new_location']
-        if 'new_location' != '':
-            users.update({'location':new_location}, username=username)
+        users.update({'location':new_location}, username=username)
     if 'new_study' in request.form:
         new_study = request.form['new_study']
-        if 'new_study' != '':
-            users.update({'study':new_study}, username=username)
+        users.update({'study':new_study}, username=username)
     if 'new_bio' in request.form:
         new_bio = request.form['new_bio']
-        if 'new_bio' != '':
-            users.update({'bio':new_bio}, username=username)
+        users.update({'bio':new_bio}, username=username)
     if 'new_password' in request.form:
         new_password = sha256_crypt.encrypt(request.form['new_password'])
-        if 'new_password' != '':
-            users.update({'password':new_password}, username=username)
+        users.update({'password':new_password}, username=username)
 
     return good_json_response("success")
 
