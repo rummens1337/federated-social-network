@@ -129,10 +129,6 @@ def login():
 
     if password is None:
         return bad_json_response("Bad request: Missing parameter 'password'.")
-
-    email_confirmed = users.export_one("email_confirmed", username=username)
-    if not email_confirmed:
-        return bad_json_response("The email for this user is not authenticated yet. Please check your email.")
         
     # TODO fail if user is already authenticated
 
@@ -143,6 +139,10 @@ def login():
 
     if not sha256_crypt.verify(password, password_db):
         return bad_json_response("Password is incorrect.")
+
+    email_confirmed = users.export_one("email_confirmed", username=username)
+    if not email_confirmed:
+        return bad_json_response("The email for this user is not authenticated yet. Please check your email.")
 
     # Login success
     access_token = create_access_token(identity=username)
