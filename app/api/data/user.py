@@ -217,18 +217,18 @@ def edit():
 
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
-        if 'firstname' != '':
-            users.update({'firstname':new_firstname}, username=username)
+        users.update({'firstname':new_firstname}, username=username)
     if 'new_lastname' in request.form:
         new_lastname = request.form['new_lastname']
-        if 'lastname' != '':
-            users.update({'lastname':new_lastname}, username=username)
+        users.update({'lastname':new_lastname}, username=username)
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
+        if image is not 0:
+            uploads_id = save_file(image, filename=image_filename)
 
-        uploads_id = save_file(image, filename=image_filename)
-        users.update({'uploads_id' : uploads_id}, username=username)
+            if uploads_id is not False:
+                users.update({'uploads_id' : uploads_id}, username=username)
     if 'new_location' in request.form:
         new_location = request.form['new_location']
         if 'new_location' != '':
