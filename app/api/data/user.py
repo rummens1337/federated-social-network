@@ -14,10 +14,13 @@ blueprint = Blueprint('data_user', __name__)
 @blueprint.route('/', strict_slashes=False)
 @jwt_required
 def user():
-    username = get_jwt_identity()
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
 
     if username is None:
-        return bad_json_response('Authentication error: User not authenticated.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     user_details = users.export(
         'username', 'firstname', 'lastname', 'uploads_id',
@@ -29,19 +32,18 @@ def user():
     if not user_details:
         return bad_json_response("User not found")
 
-    up_id = users.export('uploads_id', username=username)
-
-    # TODO: FIX PL0X
-    # data_ip = get_own_ip()
-    # response = requests.get(data_ip + '/api/file?id=' + str(up_id[0]))
-    # url = response.json()['data']['url']
-    # imageurl = data_ip + url
+    # Get image
+    up_id = user_details[0][3]
+    imageurl = "../static/images/default.jpg"
+    if uploads.exists(id=up_id):
+        filename = uploads.export_one('filename', id=up_id)
+        imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
 
     return good_json_response({
         'username': user_details[0][0],
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
-        # 'image_url': imageurl,
+        'image_url': imageurl,
         'location': user_details[0][4],
         'study': user_details[0][5],
         'bio': user_details[0][6],
@@ -219,34 +221,30 @@ def edit():
 
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
-        if 'firstname' != '':
-            users.update({'firstname':new_firstname}, username=username)
+        users.update({'firstname':new_firstname}, username=username)
     if 'new_lastname' in request.form:
         new_lastname = request.form['new_lastname']
-        if 'lastname' != '':
-            users.update({'lastname':new_lastname}, username=username)
+        users.update({'lastname':new_lastname}, username=username)
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
+        if image is not 0:
+            uploads_id = save_file(image, filename=image_filename)
 
-        uploads_id = save_file(image, filename=image_filename)
-        users.update({'uploads_id' : uploads_id}, username=username)
+            if uploads_id is not False:
+                users.update({'uploads_id' : uploads_id}, username=username)
     if 'new_location' in request.form:
         new_location = request.form['new_location']
-        if 'new_location' != '':
-            users.update({'location':new_location}, username=username)
+        users.update({'location':new_location}, username=username)
     if 'new_study' in request.form:
         new_study = request.form['new_study']
-        if 'new_study' != '':
-            users.update({'study':new_study}, username=username)
+        users.update({'study':new_study}, username=username)
     if 'new_bio' in request.form:
         new_bio = request.form['new_bio']
-        if 'new_bio' != '':
-            users.update({'bio':new_bio}, username=username)
+        users.update({'bio':new_bio}, username=username)
     if 'new_password' in request.form:
         new_password = sha256_crypt.encrypt(request.form['new_password'])
-        if 'new_password' != '':
-            users.update({'password':new_password}, username=username)
+        users.update({'password':new_password}, username=username)
 
     return good_json_response("success")
 

@@ -15,7 +15,9 @@ function saveProfile() {
                 alertError(response.reason, 2000);
             }
 
-            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(), editSucces, editFailed);
+            var data = new FormData(form)
+
+            requestJSONFile('POST', dataServer + '/api/user/edit', data, editSucces, editFailed);
           }
     });
 };
