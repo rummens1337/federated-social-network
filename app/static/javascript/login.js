@@ -76,14 +76,14 @@ function validateAccount() {
     });
   }
 
-$(document).ready( function() {
-  let params = new URLSearchParams(window.location.search)
+// $(document).ready( function() {
+//   let params = new URLSearchParams(window.location.search)
 
-  if (params.has('message')) {
-    let param = params.get('message');
+//   if (params.has('message')) {
+//     let param = params.get('message');
 
-    if (param == "registration_complete") {
-      alertError("Registration Complete, you can now log in!", 2000);
-    }
-  }
-});
+//     if (param == "registration_complete") {
+//       alertError("Registration Complete, you can now log in!", 2000);
+//     }
+//   }
+// });

@@ -9,6 +9,19 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
+<script>
+    $(document).ready( function() {
+  let params = new URLSearchParams(window.location.search)
+
+  if (params.has('message')) {
+    let param = params.get('message');
+
+    if (param == "registration_complete") {
+      alertError("Registration Complete, you can now log in!", 2000);
+    }
+  }
+});
+</script>
 
 <!-- Register Modal box. -->
 <div class="modal fade" id="registerUser" tabindex="-1" role="dialog" aria-labelledby="registerUserAria" aria-hidden="true">
