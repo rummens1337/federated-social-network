@@ -22,17 +22,17 @@ function updateDataServer() {
   
         submitHandler: function(form) {
           function editDataServer() {
-            if (form.new_address.value == currentDataServer) {
+            if (form.select_server.value == currentDataServer) {
                 alertError("This data server is already registered to your account.", 2000);
             }
             else {
                 serverForm = {new_address:form.select_server.value};
-                requestJSON("GET", "/api/user/edit", serverForm, editSucces, editFailed);
+                requestJSON("POST", "/api/user/edit", serverForm, editSucces, editFailed);
             }
           }
   
           function editSucces() {
-            if(!alert('Your data server has been succesfully updated!')){window.location = "";}
+            if(!alert('Your data server has been succesfully updated!')){}
           }
   
           function editFailed(response) {

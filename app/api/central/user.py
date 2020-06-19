@@ -108,7 +108,7 @@ def delete():
         return bad_json_response("No user found with the username " + username)
 
 
-@blueprint.route('/edit', methods=['POST', 'GET'])
+@blueprint.route('/edit', methods=['POST'])
 @jwt_required
 def edit():
     # username = request.args.get('username')
