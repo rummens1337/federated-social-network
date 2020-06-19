@@ -3,13 +3,13 @@ var centralServer = window.location.origin;
 
 function setDataAddress(req) {
     currentDataServer = req.data.address;
-    document.getElementById('dataserveraddress').innerHTML = currentDataServer;
-    document.getElementById('dataserveraddress').style.color = "lime";
+    document.getElementById('dataserveraddress').innerHTML += currentDataServer;
+    document.getElementById('dataservername').innerHTML += req.data.name;
 }
 
 function setNoDataAddress() {
-    document.getElementById('dataserveraddress').innerHTML = "no server registered";
-    document.getElementById('dataserveraddress').style.color = "red";
+    document.getElementById('dataservername').innerHTML = "no server registered";
+    document.getElementById('dataserveraddress').classList.add("w3-hide");
 }
 
 function updateDataServer() {
@@ -27,12 +27,12 @@ function updateDataServer() {
             }
             else {
                 serverForm = {new_address:form.select_server.value};
-                requestJSON("GET", centralServer + "/api/user/edit", serverForm, editSucces, editFailed);
+                requestJSON("GET", "/api/user/edit", serverForm, editSucces, editFailed);
             }
           }
   
           function editSucces() {
-            if(!alert('Your data server has been succesfully updated!')){window.location = "/settings/server";}
+            if(!alert('Your data server has been succesfully updated!')){window.location = "";}
           }
   
           function editFailed(response) {

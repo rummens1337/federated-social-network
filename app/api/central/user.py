@@ -49,11 +49,12 @@ def address():
     if users.exists(username=username):
         server_id = users.export_one('server_id', username=username)
 
-        if not servers.exists(  id=server_id):
+        if not servers.exists(id=server_id):
             bad_json_response('Server is not registered.')
 
-        address = servers.export_one('address', id=server_id)
+        name, address = servers.export_one('name', 'address', id=server_id)
         return good_json_response({
+            'name': name,
             'address': address,
             'username': username
         })
@@ -114,20 +115,20 @@ def edit():
     username = get_jwt_identity()
     
     if users.exists(username=username):
-        #if 'new_address' in request.form:
-            #new_address = request.form['new_address']
-        new_address = request.args.get('new_address')
-        if 'new_address' != '':
-            if servers.exists(address=new_address):
-                new_id = servers.export_one('id', address=new_address)
-                users.update({'server_id':new_id}, username=username)
-                return good_json_response({'new_address': new_address})
+        if 'new_address' in request.form:
+            new_address = request.form['new_address']
+            #new_address = request.args.get('new_address')
+            if 'new_address' != '':
+                if servers.exists(address=new_address):
+                    new_id = servers.export_one('id', address=new_address)
+                    users.update({'server_id':new_id}, username=username)
+                    return good_json_response({'new_address': new_address})
+                else:
+                    return bad_json_response("This address does not exist in the database.")
             else:
-                return bad_json_response("This address does not exist in the database.")
+                return bad_json_response('Address undefined.')
         else:
-            return bad_json_response('Address undefined.')
-        #else:
-        #    return bad_json_response("Incorrect form.")
+            return bad_json_response("Incorrect form.")
     else:
         return bad_json_response("No user found with the username " + username + ".")
 
