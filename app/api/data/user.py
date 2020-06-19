@@ -29,19 +29,22 @@ def user():
     if not user_details:
         return bad_json_response("User not found")
 
-    up_id = users.export('uploads_id', username=username)
 
-    # TODO: FIX PL0X
-    # data_ip = get_own_ip()
-    # response = requests.get(data_ip + '/api/file?id=' + str(up_id[0]))
-    # url = response.json()['data']['url']
-    # imageurl = data_ip + url
+    up_id = user_details[0][3]
+
+    if up_id == None or up_id == 0:
+        imageurl = "../static/images/default.jpg"
+    else:
+        data_ip = get_own_ip()
+        response = requests.get(data_ip + '/api/file?id=' + str(up_id[0]))
+        url = response.json()['data']['url']
+        imageurl = data_ip + url
 
     return good_json_response({
         'username': user_details[0][0],
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
-        # 'image_url': imageurl,
+        'image_url': imageurl,
         'location': user_details[0][4],
         'study': user_details[0][5],
         'bio': user_details[0][6],
