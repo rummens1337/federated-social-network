@@ -29,14 +29,13 @@ def user():
     if not user_details:
         return bad_json_response("User not found")
 
-
     up_id = user_details[0][3]
 
     if up_id == None or up_id == 0:
         imageurl = "../static/images/default.jpg"
     else:
         data_ip = get_own_ip()
-        response = requests.get(data_ip + '/api/file?id=' + str(up_id[0]))
+        response = requests.get(data_ip + '/api/file?id=' + str(up_id))
         url = response.json()['data']['url']
         imageurl = data_ip + url
 
