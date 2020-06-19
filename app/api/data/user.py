@@ -14,10 +14,13 @@ blueprint = Blueprint('data_user', __name__)
 @blueprint.route('/', strict_slashes=False)
 @jwt_required
 def user():
-    username = get_jwt_identity()
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
 
     if username is None:
-        return bad_json_response('Authentication error: User not authenticated.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     user_details = users.export(
         'username', 'firstname', 'lastname', 'uploads_id',
@@ -29,15 +32,12 @@ def user():
     if not user_details:
         return bad_json_response("User not found")
 
+    # TODO: is this okay?
     up_id = user_details[0][3]
-
-    if up_id == None or up_id == 0:
-        imageurl = "../static/images/default.jpg"
-    else:
-        data_ip = get_own_ip()
-        response = requests.get(data_ip + '/api/file?id=' + str(up_id))
-        url = response.json()['data']['url']
-        imageurl = data_ip + url
+    imageurl = "../static/images/default.jpg"
+    if uploads.exists(id=up_id):
+        filename = uploads.export_one('filename', id=up_id)
+        imageurl = '/file/{}/{}'.format(up_id, filename)
 
     return good_json_response({
         'username': user_details[0][0],
