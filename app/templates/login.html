@@ -11,16 +11,8 @@
 {% block content %}
 <script>
     $(document).ready( function() {
-  let params = new URLSearchParams(window.location.search)
-
-  if (params.has('message')) {
-    let param = params.get('message');
-
-    if (param == "registration_complete") {
-      alertError("Registration Complete, you can now log in!", 2000);
-    }
-  }
-});
+        handle_url_message();
+    });
 </script>
 
 <!-- Register Modal box. -->
@@ -75,7 +67,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn-success btn mx-auto" onclick="sign_up();">Sign up</button>
+                    <button type="submit" class="btn-success btn mx-auto" onclick="sign_up(); check_mail();">Sign up</button>
                 </div>
 
             </form>

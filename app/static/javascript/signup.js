@@ -31,7 +31,7 @@ function sign_up() {
 
       function signupSucces() {
         requestJSON("POST", form.select_server.value + "/api/mail/token", $(form).serialize())
-        if(!alert('You have been succesfully registered!')){window.location = "/";}
+        window.location = "/?message=registered";
       }
 
       function signupFailed(response) {

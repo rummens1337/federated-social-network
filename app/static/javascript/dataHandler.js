@@ -72,6 +72,21 @@ function alertError(error, ms, div_id=null) {
 
 
     setTimeout(function(){
-      dialog.parentNode.removeChild(dialog);
+    //   dialog.parentNode.removeChild(dialog);
+      $('#errorBox').fadeOut(500);
     }, ms);
 };
+
+function handle_url_message() {
+    let params = new URLSearchParams(window.location.search)
+
+    if (params.has('message')) {
+        let param = params.get('message');
+
+        if (param == "registration_complete") {
+            alertError("Registration Complete, you can now log in!", 2000);
+        } else if (param == "registered") {
+            alertError("Registered account, please check you email to verify it!", 4000);
+        }
+    }
+}
