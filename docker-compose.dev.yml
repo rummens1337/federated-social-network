@@ -4,7 +4,7 @@ services:
 
   web:
     restart: always
-    container_name: web_${FLASK_SERVER_TYPE}
+    container_name: web_${FLASK_SERVER_TYPE}_${DATA_NUMBER}
     build:
         context: ./
         dockerfile: ./docker/flask/Dockerfile
@@ -25,4 +25,5 @@ services:
         - WAIT_HOST_CONNECT_TIMEOUT=1
 
   redis:
+    container_name: redis_${FLASK_SERVER_TYPE}_${DATA_NUMBER}
     image: "redis:alpine"

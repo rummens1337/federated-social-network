@@ -5,7 +5,7 @@ services:
   #Starts the apache server and python 3.6
   apache:
     # will build ./docker/web/Dockerfile
-    container_name: apache_${FLASK_SERVER_TYPE}
+    container_name: apache_${FLASK_SERVER_TYPE}_${DATA_NUMBER}
     build: 
       context: ./
       dockerfile: ./docker/apache/Dockerfile
