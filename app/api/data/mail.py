@@ -3,11 +3,12 @@ from email.message import EmailMessage
 from flask import Blueprint, request, url_for, Flask
 import email, smtplib, ssl
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-from flask import current_app
+from flask import current_app, redirect
 from app.database import users
 from app.api.utils import good_json_response, bad_json_response
 from email.utils import make_msgid
 import mimetypes
+from app.utils import get_central_ip
 
 blueprint = Blueprint('data_mail', __name__)
 
@@ -75,7 +76,9 @@ def confirm_email(token):
         # The user will now be able to login.
         if users.exists(email=email):
             users.update({'email_confirmed':1}, email=email)
-            return good_json_response("successfully registered for email " + email)
+
+            # Redirect the user to the login page, trigger 'registration complete' process.
+            return redirect(get_central_ip() + "?message=registration_complete")
         else:
             return bad_json_response("No user with the email " + email + " exists.")
     except SignatureExpired:
