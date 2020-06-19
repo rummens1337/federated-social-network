@@ -15,10 +15,35 @@ function saveProfile() {
                 alertError(response.reason, 2000);
             }
 
-            requestJSON('POST', dataServer + '/api/user/edit', $(form).serialize(), editSucces, editFailed);
+            var data = new FormData(form)
+            // alert("here");
+            // console.log(data);
+
+            requestJSON2('POST', dataServer + '/api/user/edit', data, editSucces, editFailed);
           }
     });
 };
+function requestJSON2(type, url, data=null, success=null, error=null) {
+    var token = Cookies.get('access_token_cookie');
+    var headers = {};
+    if (token != null) headers = { 'Authorization' : 'Bearer ' + token };
+
+    $.ajax({
+        headers: headers,
+        type: type,
+        url: url,
+        processData: false,
+        contentType: false,
+        data: data,
+        crossDomain: true,
+        success: function(req) {
+            if (req.hasOwnProperty("data")) success(req);
+            else error(req);
+        },
+        error: error
+    });
+};
+
 
 function setUserSettings(req) {
     document.getElementById('image_url').src = req.data.image_url;
