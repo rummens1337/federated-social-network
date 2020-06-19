@@ -51,15 +51,27 @@ function requestJSONFile(type, url, data=null, success=null, error=null) {
 };
 
 
-function alertError(error, ms) {
+/*
+ * Shows an error message on screen.
+ * Error   : type string, message to be shown.
+ * ms      : type int,    amount of time to wait before closing error message
+ * div_id  : type string, needs to be set if error message should be shown above a certain div
+*/
+function alertError(error, ms, div_id=null) {
     var dialog = document.createElement("div");
 
     dialog.innerHTML = error;
-    dialog.setAttribute("class", "alert")
+    dialog.setAttribute("class", "alert");
+    dialog.setAttribute("id", "errorBox");
+
+    if (div_id) {
+        document.getElementById(div_id).appendChild(dialog);
+    } else{
+        document.body.appendChild(dialog);
+    }
+
 
     setTimeout(function(){
       dialog.parentNode.removeChild(dialog);
     }, ms);
-
-    document.body.appendChild(dialog);
 };

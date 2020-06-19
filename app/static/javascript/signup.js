@@ -35,7 +35,7 @@ function sign_up() {
       }
 
       function signupFailed(response) {
-        alertError(response.reason, 2000);
+        alertError(response.reason, 2000, "registerUser");
       }
 
       // First register the user on central to check availability of the username and IP address.
