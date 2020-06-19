@@ -21,7 +21,7 @@ function register_server() {
         }
 
         function registerCentralFailed(response) {
-          alertError(response.reason, 2000);
+          alertError(response.reason, 2000, "registerServer");
         }
 
         registerCentral();
