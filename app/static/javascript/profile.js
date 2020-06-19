@@ -5,8 +5,14 @@ function error(req) {
     alert("Error during loading.");
 }
 
+// Set the HTML
+// TODO
 function profile(req) {
-    alert(req.data.username);
+    document.getElementById('image_url').src = req.data.image_url;
+    // document.getElementById('location').innerHTML = req.data.location;
+    document.getElementById('name').innerHTML = req.data.firstname + ' ' + req.data.lastname;
+    // document.getElementById('study').innerHTML = req.data.study;
+    // document.getElementById('bio').innerHTML = req.data.bio;
 }
 
 // Get the data of the profile
