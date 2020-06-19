@@ -30,12 +30,14 @@ def send_verification_mail():
 
     # Create link with token and add it to the body of the mail.
     link = url_for('data_mail.confirm_email', token=token, _external=True)
-    msg.add_alternative('Your link is {}'.format(link), subtype="plaintext")
+    # msg.add_alternative('Your link is {}'.format(link), subtype="plaintext")
 
-    # TODO: add link in template below!
-    # verify_file = open('app/templates/email_template/verify-mail.html')
-    # html = verify_file.read()
-    # msg.add_alternative(html, subtype='html')
+    # Load the HTML template for the email, and embed the information needed.
+    verify_file = open('app/templates/email_template/verify-mail.html')
+    html = verify_file.read()
+    html = html.replace("VERIFY_LINK_HERE", link)
+    html = html.replace("USERNAME_HERE", "Michel Rummens")
+    msg.add_alternative(html, subtype='html')
 
     # Connect to the mailserver from google and send the e-mail.
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
