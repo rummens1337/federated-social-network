@@ -4,6 +4,7 @@
     <title>Settings</title>
     <link href="../static/css/setting1.css" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" src="../static/javascript/settingsServer.js"></script>
+    <script type="text/javascript" src="../static/javascript/registerServer.js"></script>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -24,16 +25,35 @@
         </div>
         <ul class="style1">
             <li>
-                <p><b>Your data server is registerd on the central server at ip address:</b></p>
+                <p>The data server registration for your account:</p>
+                <p id="dataservername"></p>
                 <p id="dataserveraddress"></p>
-                <p class="w3-hide">When you move your data server to a new address or when your profile moved to a different data server, you have to register this new address on the FedNet central server.</p>
-                <p>You can migrate your data to a new data server.</p>
-                <p>To do this, choose your new data server below.</p>
+                <p>When your profile moved to a different data server, you have to register your profile to this new data server on the FedNet central server. To do this, select your new data server below.</p>
+                <p class="w3-hide">You can migrate your data to a new data server. To do this, choose your new data server below. If the migration was succesful, your new data server will show above after you refresh this page.</p>
                 <form name="editdataserver">
                     <div class="form-group">
-                        <select id="select_server" name="server" class="form-control"></select>
+                        <select id="select_server" name="select_server" class="form-control"></select>
                     </div>
                     <button type="submit" class="btn-primary btn-block" onclick="updateDataServer();">Submit</button>
+                </form>
+            </li>
+        </ul>
+        <div class="title">
+            <h2>Register new data server</h2>
+        </div>
+        <ul class="style1">
+            <li>
+                <p>Using this form, you can register a new data server on the FedNet central server.</p>
+                <form name="registerdataserver" action="" method="POST">
+                    <div class="form-group">
+                        <label> Server name </label>
+                        <input type='text' class="form-control" name="server_name" placeholder="Enter server name" value=""></input>
+                    </div>
+                    <div class="form-group">
+                        <label> Server address </label>
+                        <input type='text' class="form-control" name="server_address" placeholder="Enter server address" value="http://"></input>
+                    </div>
+                    <button type="submit" class="btn-primary btn-block" onclick="register_server();">Register Server</button>
                 </form>
             </li>
         </ul>
