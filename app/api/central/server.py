@@ -11,7 +11,7 @@ blueprint = Blueprint('central_server', __name__)
 @blueprint.route('/', methods=['GET'])
 def get_servers():
     """Returns a list of all servers."""
-    result = servers.export('name', 'address')
+    result = servers.export('name', 'address', 'id')
 
     # Returns empty array if no servers found.
     return good_json_response({

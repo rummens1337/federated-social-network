@@ -17,8 +17,9 @@ CORS(app)
 def check_servertype():
     """Check the server that is supposed to be ran, change values accordingly."""
     if get_server_type() == ServerType.CENTRAL:
-        app.config['JWT_TOKEN_LOCATION'] = ['cookies']
         from app.api.central.main import blueprint as main_routes
+        app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+        app.config['JWT_COOKIE_CSRF_PROTECT'] = False  
         register_central(app)
 
     elif get_server_type() == ServerType.DATA:
@@ -26,6 +27,9 @@ def check_servertype():
         register_data(app)
 
     app.register_blueprint(main_routes, url_prefix='/')
+
+    # 4 hours
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 14400
 
 # Check servertype.
 check_servertype()

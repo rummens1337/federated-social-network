@@ -44,7 +44,7 @@ function validateAccount() {
         }
 
         // TODO set central server in API
-        requestJSON('GET', window.location.origin + '/api/user/address?username=' + username, null, login, loginFailed);
+        requestJSON('GET', '/api/user/address?username=' + username, null, login, loginFailed);
       }
     });
   }

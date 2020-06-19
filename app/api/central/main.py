@@ -24,7 +24,7 @@ def about():
 
 @blueprint.route('/signup')
 def signup():
-    return render_template('signup.html')
+    return render_template('login.html')
 
 @blueprint.route('/profile')
 @blueprint.route('/me')

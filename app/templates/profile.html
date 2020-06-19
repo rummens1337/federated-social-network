@@ -2,7 +2,10 @@
 {% block title %}Your profile{% endblock %}
 {% block head %}
     <!-- Send the username to the post script using the loadPosts funtction -->
+    <script type="text/javascript" src="../static/javascript/profile.js"></script>
     <script type="text/javascript" src="../static/javascript/post.js"></script>
+
+    <script>$(document).ready( function() { loadProfile("{{ username }}"); }); </script>
     <script>$(document).ready( function() { loadUserPosts("{{ username }}", "posts"); }); </script>
     {{ super() }}
 {% endblock %}
@@ -29,9 +32,9 @@
 
             <div class="w3-white w3-text-grey w3-card-4">
                 <div class="w3-display-container">
-                    <img src="../static/images/avatar.jpg" style="width:100%" alt="Avatar">
+                    <img id="image_url" src="../static/images/default.jpg" style="width:100%" alt="Avatar">
                         <div class="w3-display-bottomleft w3-container w3-text-teal">
-                            <h2>Jane Doe</h2>
+                            <h2 id="name"></h2>
                         </div>
                 </div>
                 <!-- #TODO add right content for profile. -->
