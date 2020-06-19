@@ -1,13 +1,17 @@
-# Set the following two lines.
-# If u change them later remove the 
-# mysql docker volumes (make rm) and restart (make run).
-
-# Default values, but NEED to be set in order for the application to work correctly.
+# MYSQL
 MYSQL_DATABASE_USER = 'user'
 MYSQL_DATABASE_PASSWORD = 'password'
 MYSQL_DATABASE_DB = 'db'
 MYSQL_DATABASE_HOST = 'mysql'
 
+# IP
 CENTRAL_IP = "http://95.217.178.90/"
 
+# Application's secret
 SECRET_KEY = 'super-secret'
+
+# EMAIL
+EMAIL_ADDRESS = "therealfednet@gmail.com"
+EMAIL_PASSWORD = "fednetbest1"
+EMAIL_SECRET = "So-super-Secret-Icant!2BelieveiIt"
+EMAIL_SALT = "saltyyyfednet"
