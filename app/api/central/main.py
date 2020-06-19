@@ -48,7 +48,7 @@ def login():
 def logout():
     return render_template('logout.html')
 
-@blueprint.route('/friend_list')
+@blueprint.route('/friends')
 @jwt_required
 def friend_list():
     friends = [
