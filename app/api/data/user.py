@@ -128,6 +128,10 @@ def login():
     if password is None:
         return bad_json_response("Bad request: Missing parameter 'password'.")
 
+    email_confirmed = users.export_one("email_confirmed", username=username)
+    if not email_confirmed:
+        return bad_json_response("The email for this user is not authenticated yet. Please check your email.")
+        
     # TODO fail if user is already authenticated
 
     if not users.exists(username=username):
