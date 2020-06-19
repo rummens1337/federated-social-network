@@ -170,17 +170,7 @@ def register():
                 lastname=lastname, password=password, email=email)
 
     return good_json_response("success")
-
-    # Do not remove yet: was used for file uploads!
-    # location = request.form['location']
-    # study = request.form['study']
-    # password = request.form['password']
-    # name = request.form['name']
-
-    # image_filename = request.files['file'].filename
-    # image = request.files['file'].read()
-    # uploads_id = save_file(image, filename=image_filename)
-    # users.update({'uploads_id' : uploads_id}, username=username)
+    
 
 @blueprint.route('/deleteupload')
 def deleteupload():
