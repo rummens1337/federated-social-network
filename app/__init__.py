@@ -28,5 +28,8 @@ def check_servertype():
 
     app.register_blueprint(main_routes, url_prefix='/')
 
+    # 4 hours
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 14400
+
 # Check servertype.
 check_servertype()

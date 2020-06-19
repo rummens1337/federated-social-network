@@ -21,7 +21,7 @@ function sign_up() {
     submitHandler: function(form) {
 
       function registerCentral() {
-        serverForm = {username:form.username.value, server_id:form.select_server.value};
+        serverForm = {username:form.username.value, server_address:form.select_server.value};
         requestJSON("POST", "/api/user/register", serverForm, registerData, signupFailed);
       }
 
@@ -44,7 +44,7 @@ function sign_up() {
 }
 
 $(document).ready( function() {
-  requestJSON("GET", window.location.origin + "/api/server", null, populateServerSelect, requestError);
+  requestJSON("GET", "/api/server", null, populateServerSelect, requestError);
 
   function populateServerSelect(req) {
     var select = document.getElementById('select_server')
