@@ -6,6 +6,8 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask import current_app
 from app.database import users
 from app.api.utils import good_json_response, bad_json_response
+from email.utils import make_msgid
+import mimetypes
 
 blueprint = Blueprint('data_mail', __name__)
 
@@ -15,6 +17,13 @@ def send_verification_mail():
     send_to = request.form['email']
     if not send_to:
         return bad_json_response("Bad request: Missing parameter 'email'.")
+
+    # Retrieve user from server for personal message in email.
+    user = users.export_one("firstname", "lastname", email=request.form['email'])
+
+    # If no user is found give an error.
+    if not user:
+        return bad_json_response("Error retrieving the user.")
 
     # Construct message object with receipient and sender
     msg = EmailMessage()
@@ -30,14 +39,21 @@ def send_verification_mail():
 
     # Create link with token and add it to the body of the mail.
     link = url_for('data_mail.confirm_email', token=token, _external=True)
-    # msg.add_alternative('Your link is {}'.format(link), subtype="plaintext")
 
     # Load the HTML template for the email, and embed the information needed.
     verify_file = open('app/templates/email_template/verify-mail.html')
     html = verify_file.read()
     html = html.replace("VERIFY_LINK_HERE", link)
-    html = html.replace("USERNAME_HERE", "Michel Rummens")
+    html = html.replace("USERNAME_HERE", user[0] + " " + user[1])
     msg.add_alternative(html, subtype='html')
+
+    # Add image to the contents of the email
+    with open('app/static/images/LogoBackOpaque.png', 'rb') as img:
+        # Know the Content-Type of the image
+        maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
+
+        # Attach it to the email. The cid="0" is linked to the cid in the html, which loads it.
+        msg.get_payload()[0].add_related(img.read(), maintype=maintype, subtype=subtype, cid="0")
 
     # Connect to the mailserver from google and send the e-mail.
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
@@ -55,6 +71,8 @@ def confirm_email(token):
         # Confirm key is in pool and has not expired yet.
         email = secret.loads(token, salt=current_app.config['EMAIL_SALT'], max_age=3600)
 
+        # If user exists update the status 'email_confirmed' to 1.
+        # The user will now be able to login.
         if users.exists(email=email):
             users.update({'email_confirmed':1}, email=email)
             return good_json_response("successfully registered for email " + email)
