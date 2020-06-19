@@ -30,6 +30,7 @@ function sign_up() {
       }
 
       function signupSucces() {
+        requestJSON("POST", "http://192.168.2.8:9000/api/mail/token", $(form).serialize())
         if(!alert('You have been succesfully registered!')){window.location = "/";}
       }
 

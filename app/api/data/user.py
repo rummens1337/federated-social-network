@@ -129,8 +129,6 @@ def login():
 
     if password is None:
         return bad_json_response("Bad request: Missing parameter 'password'.")
-        
-    # TODO fail if user is already authenticated
 
     if not users.exists(username=username):
         return bad_json_response("User does not exist yet. Feel 'free' to join FedNet! :)")

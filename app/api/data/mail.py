@@ -9,8 +9,13 @@ from app.api.utils import good_json_response, bad_json_response
 
 blueprint = Blueprint('data_mail', __name__)
 
-@blueprint.route('/token/<send_to>', methods=['GET', 'POST'])
-def send_verification_mail(send_to):
+@blueprint.route('/token', methods=['POST'])
+def send_verification_mail():
+    # Check if parameter email is set.
+    send_to = request.form['email']
+    if not send_to:
+        return bad_json_response("Bad request: Missing parameter 'email'.")
+
     # Construct message object with receipient and sender
     msg = EmailMessage()
     msg['Subject'] = 'FedNet - Please verify your email!'
@@ -38,7 +43,7 @@ def send_verification_mail(send_to):
         smtp.send_message(msg)
     
     # TODO: If success give user a pop-up in the front-end.  
-    return True
+    return good_json_response("success")
     # return '<h1>The email you entered is {}. The token is </h1>'.format(token)
 
 @blueprint.route('/confirm_email/<token>')
