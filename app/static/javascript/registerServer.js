@@ -12,14 +12,15 @@ function register_server() {
       submitHandler: function(form) {
         function registerCentral() {
           serverForm = {name:form.server_name.value, address:form.server_address.value};
-          requestJSON("POST", "/api/server/register", serverForm, signupSucces, signupFailed);
+          requestJSON("POST", "/api/server/register", serverForm, registerCentralSucces, registerCentralFailed);
         }
 
-        function signupSucces() {
-          if(!alert('Your data server has been succesfully registered!')){window.location = "/";}
+        function registerCentralSucces() {
+          if(!alertError('Your data server has been succesfully registered!', 2000)){}
+          doc
         }
 
-        function signupFailed(response) {
+        function registerCentralFailed(response) {
           alertError(response.reason, 2000);
         }
 
