@@ -27,6 +27,9 @@ CREATE TABLE IF NOT EXISTS friends (
     username VARCHAR(255) NOT NULL,
     FOREIGN KEY (username) REFERENCES users(username),
     friend VARCHAR(255) NOT NULL,
+    request_sent INT NOT NULL DEFAULT 0,
+    request_accepted INT NOT NULL DEFAULT 0,
+    request_delete INT NOT NULL DEFAULT 0,
     FOREIGN KEY (friend) REFERENCES users(username),
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_edit_date TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
@@ -42,4 +45,3 @@ CREATE TABLE IF NOT EXISTS uploads (
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_edit_date TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 );
-

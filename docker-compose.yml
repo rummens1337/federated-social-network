@@ -2,7 +2,7 @@ version: '3'
 
 services:
 
-#Starts the mysql server    
+#Starts the mysql server
   mysql:
     # TO be implemented later
     build: ./docker/mysql/8.0
