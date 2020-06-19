@@ -33,11 +33,12 @@ def user():
         return bad_json_response("User not found")
 
     # TODO: is this okay?
+    ipaddress = get_own_ip()
     up_id = user_details[0][3]
     imageurl = "../static/images/default.jpg"
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
-        imageurl = '/file/{}/{}'.format(up_id, filename)
+        imageurl = ipaddress + '/file/{}/{}'.format(up_id, filename)
 
     return good_json_response({
         'username': user_details[0][0],
