@@ -33,7 +33,7 @@ def send_verification_mail():
     msg.add_alternative('Your link is {}'.format(link), subtype="plaintext")
 
     # TODO: add link in template below!
-    # verify_file = open('app/api/data/verify-mail.html')
+    # verify_file = open('app/templates/email_template/verify-mail.html')
     # html = verify_file.read()
     # msg.add_alternative(html, subtype='html')
 
@@ -42,9 +42,7 @@ def send_verification_mail():
         smtp.login(current_app.config['EMAIL_ADDRESS'], current_app.config['EMAIL_PASSWORD'])
         smtp.send_message(msg)
     
-    # TODO: If success give user a pop-up in the front-end.  
     return good_json_response("success")
-    # return '<h1>The email you entered is {}. The token is </h1>'.format(token)
 
 @blueprint.route('/confirm_email/<token>')
 def confirm_email(token):
