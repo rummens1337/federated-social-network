@@ -94,7 +94,7 @@ if get_server_type() == ServerType.DATA:
         """Save a file and register in database `uploads` table.
 
         Example:
-            
+
 
         Args:
             args: see the arguments from function `save_file_data`.
@@ -109,6 +109,10 @@ if get_server_type() == ServerType.DATA:
             filename = os.path.basename(filepath)
         elif extension is not None:
             filename += '.' + extension
+
+        if os.path.getsize(filepath) == 0:
+            return False
+
         return uploads.insert(filename=filename, location=filepath, type=type,
                               filesize=os.path.getsize(filepath), sha256=digest)
 
