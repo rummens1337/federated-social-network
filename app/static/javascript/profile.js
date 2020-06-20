@@ -1,5 +1,17 @@
 var username = null;
 
+function requestSend(req) {
+  alertError("Friend request is sent", 2000);
+}
+
+function addFriend(friend) {
+    requestJSON('GET', '/api/user/address', null, function(req) {
+      requestJSON('POST', req.data.address + "/api/friend/add", {"friend" : friend }, requestSend, function(req) {
+        alertError(req.reason, 2000);
+      });
+    }, error);
+}
+
 function error(req) { 
     // TODO: use our custom error 
     alert("Error during loading.");

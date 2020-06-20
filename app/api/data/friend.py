@@ -106,7 +106,7 @@ def request_insert():
         return bad_json_response('user not found in central database')
 
     friends.insert(username=username, friend=friend, sender=0)
-    return good_json_response()
+    return good_json_response("Friendrequest inserted")
 
 
 @blueprint.route('/request/accept', methods=['POST'])
@@ -145,7 +145,7 @@ def request_accept():
     else:
         friends.delete(username=username, friend=friend)
     
-    return good_json_response()
+    return good_json_response("Friend request accepted or declined")
 
 
 @blueprint.route('/request/delete', methods=['POST'])
@@ -158,7 +158,7 @@ def request_delete():
     friends.delete(username=username, friend=friend)
     friends.delete(username=friend, friend=username)
 
-    return good_json_response()
+    return good_json_response("Friend request deleted")
 
 
 """
@@ -203,7 +203,7 @@ def add():
     try:
         response = requests.post(friend_address + '/api/friend/request/insert', data=data, headers=request.headers).json()
         if response['success'] == True:
-            return good_json_response()
+            return good_json_response("Friend request sent")
 
     except:
         friends.delete(username=username, friend=friend)
@@ -261,7 +261,7 @@ def accept():
     else:
         friends.delete(id=request_id)
 
-    return good_json_response()
+    return good_json_response('Friend request accepted or declined')
 
 
 @blueprint.route('/delete', methods=['POST'])
@@ -297,4 +297,4 @@ def delete():
     friends.delete(username=username, friend=friend)
     friends.delete(username=friend, friend=username)
 
-    return good_json_response()
+    return good_json_response("Friend deleted")

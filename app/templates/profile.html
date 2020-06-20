@@ -130,6 +130,11 @@
                     <!-- Content -->
                     <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>
                 </div>
+
+                <!-- TODO username != logged in user -->
+                {% if username is defined %}
+                    <button type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button>
+                {% endif %}
             </div>
 
             <!-- Scrollbox style #TODO maybe put in css or template? -->
