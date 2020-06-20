@@ -35,6 +35,7 @@
             <div id="mySidenav" class="sidenav">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item active"><a class="nav-link" href="/index">Home</a></li>
+                    <li class="nav-item" id='navme'><a class="nav-link" href="/profile">Me</a></li>
                     <li class="nav-item" id='navfriends'><a class="nav-link" href="/friends">Friends</a></li>
                     <li class="nav-item" id='navsettings'><a class="nav-link" href="/settings/profile">Settings</a></li>
                     <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
@@ -54,7 +55,12 @@
                     <a href="/index">
                         <img src="../static/images/LogoBackOpaque.png" style="max-height:85px; padding-top:10px;">
                     </a>
-                    <input id="search_input" class="form-control mr-sm-2 input" type="search" placeholder="Search" aria-label="Search">
+                    <div class="dropdown">
+                          <input autocomplete="off" type="text" placeholder="Search.." id="search_input" onclick="myFunction();" onkeyup="filterContent();">
+                        <div id="search_dropdown" class="dropdown-content rounded">
+                            <a href="#about">test</a>
+                        </div>
+                    </div>
                     <button class="btn btn-custom my-2 my-sm-0 search-btn" type="submit">Search</button>
                 </form>
             </nav>

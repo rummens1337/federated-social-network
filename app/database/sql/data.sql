@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    email_confirmed int(1) NOT NULL DEFAULT 0,
     password VARCHAR(1000) NOT NULL,
     uploads_id INTEGER DEFAULT NULL,
     location VARCHAR(1000) DEFAULT NULL,

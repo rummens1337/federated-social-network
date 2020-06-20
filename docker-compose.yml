@@ -7,7 +7,7 @@ services:
     # TO be implemented later
     build: ./docker/mysql/8.0
     restart: always
-    container_name: mysql_${FLASK_SERVER_TYPE}
+    container_name: mysql_${FLASK_SERVER_TYPE}_${DATA_NUMBER}
     environment:
       MYSQL_DATABASE: 'db'
       # So you don't have to use root, but you can if you like
@@ -31,7 +31,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_${FLASK_SERVER_TYPE}
+    container_name: phpmyadmin_${FLASK_SERVER_TYPE}_${DATA_NUMBER}
     restart: always
     # Gives the phpmyadmin container access to the mysql container
     links:

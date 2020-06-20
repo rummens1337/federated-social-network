@@ -9,6 +9,11 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
+<script>
+    $(document).ready( function() {
+        handle_url_message();
+    });
+</script>
 
 <!-- Register Modal box. -->
 <div class="modal fade" id="registerUser" tabindex="-1" role="dialog" aria-labelledby="registerUserAria" aria-hidden="true">
@@ -62,7 +67,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn-success btn mx-auto" onclick="sign_up();">Sign up</button>
+                    <button type="submit" class="btn-success btn mx-auto" onclick="sign_up(); check_mail();">Sign up</button>
                 </div>
 
             </form>

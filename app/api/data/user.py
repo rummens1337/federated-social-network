@@ -130,8 +130,6 @@ def login():
     if password is None:
         return bad_json_response("Bad request: Missing parameter 'password'.")
 
-    # TODO fail if user is already authenticated
-
     if not users.exists(username=username):
         return bad_json_response("User does not exist yet. Feel 'free' to join FedNet! :)")
 
@@ -139,6 +137,10 @@ def login():
 
     if not sha256_crypt.verify(password, password_db):
         return bad_json_response("Password is incorrect.")
+
+    email_confirmed = users.export_one("email_confirmed", username=username)
+    if not email_confirmed:
+        return bad_json_response("The email for this user is not authenticated yet. Please check your email.")
 
     # Login success
     access_token = create_access_token(identity=username)
@@ -155,6 +157,9 @@ def register():
     if users.exists(username=request.form['username']):
         return bad_json_response('Username is already taken. Try again :)')
 
+    if users.exists(email=request.form['email']):
+        return bad_json_response('A user with this email is already registered on this data server.')
+
     username = request.form['username']
     firstname = request.form['firstname']
     lastname = request.form['lastname']
@@ -165,17 +170,7 @@ def register():
                 lastname=lastname, password=password, email=email)
 
     return good_json_response("success")
-
-    # Do not remove yet: was used for file uploads!
-    # location = request.form['location']
-    # study = request.form['study']
-    # password = request.form['password']
-    # name = request.form['name']
-
-    # image_filename = request.files['file'].filename
-    # image = request.files['file'].read()
-    # uploads_id = save_file(image, filename=image_filename)
-    # users.update({'uploads_id' : uploads_id}, username=username)
+    
 
 @blueprint.route('/deleteupload')
 def deleteupload():

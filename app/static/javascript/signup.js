@@ -30,11 +30,12 @@ function sign_up() {
       }
 
       function signupSucces() {
-        if(!alert('You have been succesfully registered!')){window.location = "/";}
+        requestJSON("POST", form.select_server.value + "/api/mail/token", $(form).serialize())
+        window.location = "/?message=registered";
       }
 
       function signupFailed(response) {
-        alertError(response.reason, 2000);
+        alertError(response.reason, 2000, "registerUser");
       }
 
       // First register the user on central to check availability of the username and IP address.
