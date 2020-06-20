@@ -24,23 +24,28 @@ def init_authentication(app):
     # token attempts to access an endpoint
     from flask_jwt_extended import JWTManager, jwt_required
     from flask import render_template
+    from app.type import get_server_type, ServerType
     jwt = JWTManager(app)
+
+    template = "login.html"
+    if get_server_type() == ServerType.DATA:
+        template = "data/error.html"
 
     @jwt.expired_token_loader
     def my_expired_token_callback(expired_token):
-        return render_template("login.html", error="authentication")
+        return render_template(template, error="authentication")
 
     @jwt.unauthorized_loader
     def my_unauthorized_token_callback(expired_token):
-        return render_template("login.html", error="authentication")
+        return render_template(template, error="authentication")
 
     @jwt.needs_fresh_token_loader
     def my_needs_fresh_token_loader_callback(expired_token):
-        return render_template("login.html", error="authentication")
+        return render_template(template, error="authentication")
 
     @jwt.revoked_token_loader
     def my_revoked_token_loader_callback(expired_token):
-        return render_template("login.html", error="authentication")
+        return render_template(template, error="authentication")
 
 def auth_username():
     from flask_jwt_extended import verify_jwt_in_request_optional, get_jwt_identity

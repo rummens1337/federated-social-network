@@ -50,20 +50,8 @@ def logout():
 
 @blueprint.route('/friends')
 @jwt_required
-def friend_list():
-    friends = [
-        {
-            'name': {'username': ' Bas'},
-            'photo': {'photo_url': "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"},
-            'profile': {'profile_url': "https://google.nl"}
-        },
-        {
-            'name': {'username': 'Felix'},
-            'photo': {'photo_url': "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"},
-            'profile': {'profile_url': "https://google.nl"}
-        },
-    ]
-    return render_template('friends_list.html', friend_list = friends)
+def friends():
+    return render_template('friends.html')
 
 @blueprint.route('/settings')
 @jwt_required
