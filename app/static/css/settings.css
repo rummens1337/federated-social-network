@@ -5,14 +5,14 @@
     /* background-color: #364958; */
 }
 
-h1, h2, h3, a {
+.font-header-settings {
     margin: 0;
     padding: 0.5cm;
     font-weight: 600;
     color: black;
 }
 
-img {
+.image-settings {
     height: 50%;
     width: height;
     border-radius: 30px;
@@ -26,9 +26,8 @@ img {
     text-align: center;
 }
 
-.form-control {
-    border: 1px solid black;
-
+.form-control-settings {
+    /* border: 1px solid black;     */
 }
 
 

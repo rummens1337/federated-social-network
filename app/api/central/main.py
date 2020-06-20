@@ -79,22 +79,22 @@ def settingsProfile():
         'email': {'emailadress': "coennusse@live.nl"}
         }
 
-    return render_template('settingsProfile.html', profile = profile)
+    return render_template('settings/profile.html', profile = profile)
 
 @blueprint.route('/settings/privacy')
 @jwt_required
 def privacy():
-    return render_template('settingsPrivacy.html')
+    return render_template('settings/privacy.html')
 
 @blueprint.route('/settings/server')
 @jwt_required
 def server():
-    return render_template('settingsServer.html')
+    return render_template('settings/server.html')
 
-@blueprint.route('/password')
+@blueprint.route('/settings/password')
 @jwt_required
 def password():
-    return render_template('password.html')
+    return render_template('settings/password.html')
 
 
 __all__ = ('blueprint')
