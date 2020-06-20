@@ -4,299 +4,21 @@ import requests
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users, posts, uploads, friends
+from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
+from urllib.parse import urlparse
 
 blueprint = Blueprint('data_friend', __name__)
 
-central_server = "http://192.168.0.191:5000"
 
-def get_ip(username):
-    """Returns the ip of the data server a user is located.
-
-    Note:
-
-    Example:
-        case where user is in the database:
-        >>> get_ip(user1)
-        'http://192.168.0.191:9000'
-
-        else:
-        >>> get_ip(user2)
-        False
-
-
-    Args:
-        username: string with the username.
-
-    Returns:
-        string with the ip of the data server if user exists.
-        else False.
-
-    """
-    response = requests.get(
-        central_server + '/api/user/address?username=' + username).json()
-
-    if str(response['success']) != 'True':
-        return False
-    return response['data']['address']
-
-@blueprint.route('/check')
-def check():
-    username = request.args.get('username')
-    # TODO: send request to central server to get address of the data server
-
-    url = 'http://localhost:9000/api/friend/get_friends?username=' + username
-    r = requests.get(url).json()
-    # TODO: send request to data server to check if user exists
-
-    return good_json_response(r)
-
-
-@blueprint.route('/insert_friendship', methods=['POST'])
-def insert_friendship():
-    """Inserts a friendship in the database.
-
-    Note:
-        Don't use directly with the frontend. Use /add instead.
-
-    Example:
-        Example calls are assuming that 'user1' is a user in the data server.
-        It also assumes that the friendship doesn't already exists.
-
-        Case where users exists and friendship doesn't already exists:
-        >>> [server address]/api/friend/insert_friendship?username=user1&friend_username=user2
-        {"success": true}
-
-        Case where user does not exist:
-        >>> [server address]/api/friend/insert_friendship?username=user2&friend_username=user3
-        {"success": false, "reason": "user not found"}
-
-    Args:
-        username: Username of the user in the data server.
-        friend_username: Username of the other user.
-
-    Returns:
-        A json response with either a succes of a failure and reason of failure.
-
-    """
-    username = request.args.get('username')
-    friend_username = request.args.get('friend_username')
-
-    # check if user id exists
-    if not users.exists(username=username):
-        return bad_json_response('user not found')
-
-    # check if friendship already exists
-    if friends.exists(username=username, friend=friend_username):
-        return bad_json_response('friendship already exists')
-    # register friendship in database
-    friends.insert(username=username, friend=friend_username, request_sent=1)
-
-    return good_json_response()
-
-
-@blueprint.route('/accept_friendship', methods=['POST'])
-def accept_friendship():
-    """Checks if a friendship request was actually sent and accepts the friendship.
-
-    Note:
-        Don't use directly with the frontend. Use /add instead.
-
-    Example:
-
-    Args:
-
-    Returns:
-
-    """
-    username = request.args.get('username')
-    friend_username = request.args.get('friend_username')
-
-    # check if user id exists
-    if not users.exists(username=username):
-        return bad_json_response('user not found')
-
-    # check if friendship already exists
-    if friends.exists(username=username, friend=friend_username):
-        return bad_json_response('friendship already exists')
-
-    # Check if request was sent:
-    # Get address from central server
-    friend_address = get_ip(friend_username)
-    if not friend_address:
-        return bad_json_response('user not found in central database')
-
-    response = requests.get(friend_address + '/api/friend/confirm_request?username=' +
-                            friend_username + '&friend_username=' + username).json()
-
-    if str(response['success']) != 'True':
-        return bad_json_response('request denied')
-    if response['data'] != 'True':
-        return bad_json_response('request denieded')
-
-    friends.insert(username=username, friend=friend_username)
-    return good_json_response()
-
-
-@blueprint.route('/confirm_request')
-def confirm_request():
-    """Confirms that a friendship is requested.
-
-    Note:
-        Don't use directly with the frontend. Use /add instead.
-
-    Example:
-        [server_address]/api/friend/confirm_request?username=user1&friend_username=user2
-
-    Args:
-        username: Username of the user that that sent the request.
-        friend_username: Username of the user that recieved the request.
-    Returns:
-
-    """
-    username = request.args.get('username')
-    friend_username = request.args.get('friend_username')
-
-    if username is None:
-        return bad_json_response('username should be given as parameter.')
-
-    if friend_username is None:
-        return bad_json_response('username should be given as parameter.')
-
-    if not users.exists(username=username):
-        return bad_json_response('user not found')
-
-    confirm = friends.export(
-        'request_sent', request_sent=1, username=username, friend=friend_username)
-
-    if confirm:
-        return good_json_response('True')
-    else:
-        return good_json_response('False')
-
-
-@blueprint.route('/add', methods=['POST'])
-@jwt_required
-def register():
-    """Adds a friendship between two users.
-
-    Note:
-
-    Example:
-
-    Args:
-
-    Returns:
-
-    """
-    # username = request.form['username']
-    # friend_username = request.form['friend_username']
-    username = get_jwt_identity()
-    # username = request.args.get('username')
-    friend_username = request.args.get('friend_username')
-    if not users.exists(username=username):
-        return bad_json_response('user not found')
-
-    friend_address = get_ip(friend_username)
-    if not friend_address:
-        return bad_json_response('user not found in central database')
-
-    data_server = get_ip(username)
-    if not data_server:
-        return bad_json_response('user not found in central database')
-    # register friendship in database
-    response1 = requests.post(data_server + '/api/friend/insert_friendship?username=' +
-                              username + '&friend_username=' + friend_username)
-    if str(response1.json()['success']) != 'True':
-        return bad_json_response(response1.json()['reason'])
-
-    # register friend in other database
-    response2 = requests.post(friend_address + '/api/friend/accept_friendship?username=' +
-                              friend_username + '&friend_username=' + username).json()
-    if str(response2['success']) != 'True':
-        friends.delete(username=username, friend=friend_username)
-        return bad_json_response(response2['reason'])
-
-    friends.update({'request_sent': 0, 'request_accepted': 1},
-                   username=username, friend=friend_username)
-
-    return good_json_response()
-
-
-@blueprint.route('/accept_request', methods=['POST'])
-@jwt_required
-def accept_request():
-    """Accepts a friendship request.
-
-    Note:
-
-    Example:
-
-    Args:
-
-    Returns:
-
-    """
-    username = get_jwt_identity()
-    friend_username = request.form['friend_username']
-
-    # Check if friendship EXISTS
-    if not friends.exists(username=username, friend=friend_username):
-        return bad_json_response('friendship not found')
-
-    # update friendship
-    friends.update({'request_accepted': 1},
-                   username=username, friend=friend_username)
-
-    return good_json_response()
-
-
-@blueprint.route('/reject_request', methods=['POST'])
-@jwt_required
-def reject_request():
-    """Rejects a friendship request
-
-    Note:
-
-    Example:
-
-    Args:
-
-    Returns:
-
-    """
-    username = get_jwt_identity()
-    friend_username = request.form['friend_username']
-
-    # Check if friendship EXISTS
-    if not friends.exists(username=username, friend=friend_username):
-        return bad_json_response('friendship not found')
-
-    # update friendship
-    data_server = get_ip(username)
-    if not data_server:
-        return bad_json_response('user not found in central database')
-
-    response = requests.post(data_server + '/api/friend/delete_friendship?username=' +
-                             friend_username + '&friend_username=' + username).json()
-    return good_json_response(str(response))
-    if str(response['success']) != 'True':
-        return bad_json_response(response['reason'])
-
-    return good_json_response()
-
-
-@blueprint.route('/get_friends')
+"""
+General functions 
+"""
+@blueprint.route('/all')
 @jwt_required
 def get_friends():
-    """Returns all the friends of a user
+    """ Returns all the friends of a user
 
-    Note:
-
-    Example:
-
-    Args:
-
-    Returns:
+    Returns: all the friends of a user
 
     """
     username = get_jwt_identity()
@@ -304,204 +26,275 @@ def get_friends():
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    friendships = friends.export('friend', username=username)
+    friendships = friends.export('friend', username=username, accepted=1)
 
-    # TODO: request all other avalible user data from the friends
+    friends_array = [{
+            'username' : item
+        }
+        for item in friendships
+    ]
 
     return good_json_response({
-        'friends': friendships
+        'friends': friends_array
     })
 
 
-@blueprint.route('/get_friend_requests')
+@blueprint.route('/requests')
 @jwt_required
-def get_friend_requests():
-    """Returns all the recieved friend request.
+def requests_open():
+    """ Returns all the friend requests of a user.
+        Including accepted and sender information.
+        If sender = 0: means that the request can be 
+            accepted by the user.
+        If sender = 1: means that the request is pending.
 
-    Note:
-
-    Example:
-
-    Args:
-
-    Returns:
+    Returns: all the friend requests pending of a user
 
     """
     username = get_jwt_identity()
-
     # Check if user exists
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    friendships = friends.export(
-        'friend', username=username, request_accepted=0)
+    friendships = friends.export('friend', 'accepted', 'sender', username=username, accepted=0)
 
     # TODO: request all other avalible user data from the friends
 
+    friends_array = [{
+            'username' : item[0],
+            'sender' : item[2]
+        }
+        for item in friendships
+    ]
+
     return good_json_response({
-        'friends': friendships
+        'friends': friends_array
     })
 
 
-@blueprint.route('/delete_friendship', methods=['POST'])
-def delete_friendship():
-    """Deletes a friendship from the database
+"""
+Request functions 
+"""
+@blueprint.route('/request/insert', methods=['POST'])
+@jwt_required
+def request_insert():
+    """ Insert receiving request from other data server.
 
     Note:
-        This function should not be used directly by the frontend.
-        Use /delete instead
+        Don't use directly with the frontend. Use /add in send functions
+        instead.
 
-    Example:
-
-    Args:
-
-    Returns:
+    Returns: json reponse with status of the request
 
     """
-    username = request.args.get('username')
-    friend_username = request.args.get('friend_username')
+    username = request.form['username']
+    friend = request.form['friend']
 
     # check if user id exists
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    # check if friendship already exists
-    if not friends.exists(username=username, friend=friend_username):
-        return bad_json_response('friendship does not exists')
+    # Check if friendship already exists
+    # Return a good json reponse, because the friend can be on 
+    # the same data server.
+    if friends.exists(username=username, friend=friend) or friends.exists(username=friend, friend=username):
+        return good_json_response('friendship already exists')
 
-    # register friendship in database
-    friends.update({'request_delete': 1}, username=username,
-                   friend=friend_username)
-
-    return good_json_response()
-
-
-@blueprint.route('/accept_deletion', methods=['POST'])
-def accept_deletion():
-    """Accepts a deletion request.
-
-    Note:
-        This function should not be used directly by the frontend.
-        Use /delete instead
-
-    Example:
-
-    Args:
-
-    Returns:
-
-    """
-    username = request.args.get('username')
-    friend_username = request.args.get('friend_username')
-
-    # check if user id exists
-    if not users.exists(username=username):
-        return bad_json_response('user not found')
-
-    # check if friendship already exists
-    if not friends.exists(username=username, friend=friend_username):
-        return bad_json_response('friendship does not exists')
-
-    # Get address from central server
-    friend_address = get_ip(friend_username)
+    # Get the friend's data server address and check if friend exists
+    friend_address = get_user_ip(friend)
     if not friend_address:
         return bad_json_response('user not found in central database')
 
-    response = requests.get(friend_address + '/api/friend/confirm_deletion?username=' +
-                            friend_username + '&friend_username=' + username).json()
-
-    if str(response['success']) != 'True':
-        return bad_json_response('request denied')
-    if response['data'] != 'True':
-        return bad_json_response('request denieded')
-
-    friends.delete(username=username, friend=friend_username)
-    return good_json_response()
+    friends.insert(username=username, friend=friend, sender=0)
+    return good_json_response("Friendrequest inserted")
 
 
-@blueprint.route('/confirm_deletion')
-def confirm_deletion():
-    """Confirm that a deletion request was sent.
-
+@blueprint.route('/request/accept', methods=['POST'])
+@jwt_required
+def request_accept():
+    """
     Note:
-        This function should not be used directly by the frontend.
-        Use /delete instead
+        Don't use directly with the frontend. Use /add in send functions
+        instead.
 
-    Example:
-
-    Args:
-
-    Returns:
+    Returns: json reponse with status of the request
 
     """
-    username = request.args.get('username')
-    friend_username = request.args.get('friend_username')
+    username = request.form['username']
+    friend = request.form['friend']
+    accept = request.form['accept']
 
-    if username is None:
-        return bad_json_response('username should be given as parameter.')
+    if friend != get_jwt_identity():
+        return bad_json_response("Authentication error")
 
-    if friend_username is None:
-        return bad_json_response('username should be given as parameter.')
+    if not friends.exists(username=username, friend=friend):
+        return bad_json_response("friendship request does not exist")
+
+    request_db = friends.export_one('accepted', 'sender', username=username, friend=friend)
+    
+    # Check if already accepted
+    if int(request_db[0]) == 1:
+        return bad_json_response("Request already accepted")
+
+    if int(request_db[1]) == 1:
+        return bad_json_response("User sent the request him/herself")
+
+    # Update friendship
+    if int(accept) == 1:
+        friends.update({'accepted': 1}, username=username, friend=friend)
+    else:
+        friends.delete(username=username, friend=friend)
+    
+    return good_json_response("Friend request accepted or declined")
+
+
+@blueprint.route('/request/delete', methods=['POST'])
+@jwt_required
+def request_delete():
+    # TODO: better protection
+    username = request.form['username']
+    friend = request.form['friend']
+
+    friends.delete(username=username, friend=friend)
+    friends.delete(username=friend, friend=username)
+
+    return good_json_response("Friend request deleted")
+
+
+"""
+Send functions 
+"""
+@blueprint.route('/add', methods=['POST'])
+@jwt_required
+def add():
+    """ Adds a friendship between two users. Sets the sender
+        on 1 for the user that is sending the request. Accepted 
+        is set on 0. 
+
+    Returns: json reponse with status of the request
+
+    """
+    username = get_jwt_identity()
+    friend = request.form['friend']
+
+    if username == friend:
+        return bad_json_response("Friend equals user")
 
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    confirm = friends.export(
-        'request_sent', request_delete=1, username=username, friend=friend_username)
+    # check if friendship already exists
+    if friends.exists(username=username, friend=friend) or \
+            friends.exists(username=friend, friend=username):
+        return bad_json_response('friendship already exists')
 
-    if confirm:
-        return good_json_response('True')
+    # Get the friend's data server address and check if friend exists
+    friend_address = get_user_ip(friend)
+    if not friend_address:
+        return bad_json_response('user not found in central database')
+
+    # Add the friend in current dataserver's database
+    if not friends.insert(username=username, friend=friend, sender=1):
+        return bad_json_response("error adding friend1")
+
+    # register friend in other database
+    data = { "username" : friend, "friend" : username }
+
+    try:
+        response = requests.post(friend_address + '/api/friend/request/insert', data=data, headers=request.headers).json()
+        if response['success'] == True:
+            return good_json_response("Friend request sent")
+
+    except:
+        friends.delete(username=username, friend=friend)
+        return bad_json_response("Error while inserting")
+
+    return bad_json_response("friend error")
+
+
+@blueprint.route('/accept', methods=['POST'])
+@jwt_required
+def accept():
+    username = get_jwt_identity()
+    request_id = request.form['id']
+    accept = request.form['accept']
+
+    # Check if friendship exists
+    if not friends.exists(id=request_id):
+        return bad_json_response('friendship not found')
+
+    # Send other user that it is accepted
+    # can only accept if logged in user is the friend (request reciever)
+    request_db = friends.export_one('username', 'friend', 'accepted', 'sender', id=request_id)
+    friend = request_db[1]
+
+    # Check if already accepted
+    if int(request_db[2]) == 1:
+        return bad_json_response("Request already accepted")
+
+    # Get the friend's data server address and check if friend exists
+    friend_address = get_user_ip(friend)
+    if not friend_address:
+        return bad_json_response('user not found in central database')
+
+    if urlparse(get_own_ip()).netloc == urlparse(friend_address).netloc:
+        if username != friend or request_db[3] != 1:
+            return bad_json_response("Friend undefined error")
     else:
-        return good_json_response('False')
+        # Check if not the sender and the username is allowed to 
+        # accept the current request. If so, send the request to 
+        # the other data server.
+        if request_db[3] == 1 or request_db[0] != username:
+            return bad_json_response("User sent the request him/herself or not authenticated")
+        
+        data = { "username" : friend, "friend" : username, "accept" : accept }
+        try:
+            response = requests.post(friend_address + '/api/friend/request/accept', data=data, headers=request.headers).json()
+            if response['success'] != True:
+                return bad_json_response("Friend error")
+        except:
+            return bad_json_response("Friend error2")
+    
+    # Update friendship  in the data server's own database
+    if int(accept) == 1:
+        friends.update({'accepted': 1}, id=request_id)
+    else:
+        friends.delete(id=request_id)
+
+    return good_json_response('Friend request accepted or declined')
 
 
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required
 def delete():
-    """Deletes a friendship between two users.
-
-    Note:
-
-    Example:
-
-    Args:
-
-    Returns:
-
-    """
-    # username = request.form['username']
-    # friend_username = request.form['friend_username']
+    # TODO needs more testing
+    # initial test works
     username = get_jwt_identity()
-    # username = request.args.get('username')
-    friend_username = request.args.get('friend_username')
+    friend = request.form['friend']
 
-    if not users.exists(username=username):
-        return bad_json_response('user not found')
+    # Check if friendship exists
+    if not friends.exists(username=username, friend=friend) and \
+            friends.exists(username=friend, friend=username):
+        return bad_json_response('friendship does not exist')
 
-    friend_address = get_ip(friend_username)
+    # Get the friend's data server address and check if friend exists
+    friend_address = get_user_ip(friend)
     if not friend_address:
         return bad_json_response('user not found in central database')
 
-    # register friendship in database
-    data_server = get_ip(username)
-    if not data_server:
-        return bad_json_response('user not found in central database')
+    # Delete friendship in other data server
+    if urlparse(get_own_ip()).netloc != urlparse(friend_address).netloc:
+        
+        data = { "username" : friend, "friend" : username }
+        try:
+            response = requests.post(friend_address + '/api/friend/request/delete', data=data, headers=request.headers).json()
+            if response['success'] != True:
+                return bad_json_response("Error while deleting1")
+        except:
+            return bad_json_response("Error while deleting2")
 
-    response1 = requests.post(data_server + '/api/friend/delete_friendship?username=' +
-                              username + '&friend_username=' + friend_username)
-    if str(response1.json()['success']) != 'True':
-        return bad_json_response(response1.json()['reason'])
+    # Delete in this database
+    friends.delete(username=username, friend=friend)
+    friends.delete(username=friend, friend=username)
 
-    # register friend in other database
-    response2 = requests.post(friend_address + '/api/friend/accept_deletion?username=' +
-                              friend_username + '&friend_username=' + username).json()
-    if str(response2['success']) != 'True':
-        friends.delete(username=username, friend=friend_username)
-        return bad_json_response(response2['reason'])
-
-    friends.delete(
-        username=username, friend=friend_username)
-
-    return good_json_response()
-
-__all__ = ('blueprint')
+    return good_json_response("Friend deleted")

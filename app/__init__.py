@@ -11,7 +11,6 @@ init_logger()
 app = Flask(__name__)
 app.config.from_object('config')
 init_mysql(app)
-init_authentication(app)
 CORS(app)
 
 def check_servertype():
@@ -33,3 +32,4 @@ def check_servertype():
 
 # Check servertype.
 check_servertype()
+init_authentication(app)
