@@ -16,8 +16,7 @@ function register_server() {
         }
 
         function registerCentralSucces() {
-          if(!alertError('Your data server has been succesfully registered!', 2000)){}
-          doc
+          alertError('Your data server has been succesfully registered!', 2000, "registerServer")
         }
 
         function registerCentralFailed(response) {

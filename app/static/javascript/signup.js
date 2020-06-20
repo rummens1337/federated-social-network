@@ -44,7 +44,8 @@ function sign_up() {
   });
 }
 
-$(document).ready( function() {
+function loadServers() {
+  document.getElementById("select_server").innerHTML = "";
   requestJSON("GET", "/api/server", null, populateServerSelect, requestError);
 
   function populateServerSelect(req) {
@@ -66,4 +67,4 @@ $(document).ready( function() {
   function requestError(req) {
     alert("Couldn't load servers...")
   }
-});
+}
