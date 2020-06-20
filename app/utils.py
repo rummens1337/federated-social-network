@@ -26,7 +26,9 @@ def ping(host):
     """
 
     try:
-        requests.get(host + "/index")
+        r = requests.get(host + "/index")
+        if r.text != "DATA SERVER":
+            return False
         return True
     except:
         return False
