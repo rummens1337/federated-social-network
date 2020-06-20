@@ -4,51 +4,37 @@ import requests
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users, posts, uploads, friends
+from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 
 blueprint = Blueprint('data_friend', __name__)
 
-central_server = "http://192.168.0.191:5000"
 
-def get_ip(username):
-    """Returns the ip of the data server a user is located.
+@blueprint.route('/all')
+@jwt_required
+def get_friends():
+    """Returns all the friends of a user
 
     Note:
 
     Example:
-        case where user is in the database:
-        >>> get_ip(user1)
-        'http://192.168.0.191:9000'
-
-        else:
-        >>> get_ip(user2)
-        False
-
 
     Args:
-        username: string with the username.
 
     Returns:
-        string with the ip of the data server if user exists.
-        else False.
 
     """
-    response = requests.get(
-        central_server + '/api/user/address?username=' + username).json()
+    username = get_jwt_identity()
+    # Check if user exists
+    if not users.exists(username=username):
+        return bad_json_response('user not found')
 
-    if str(response['success']) != 'True':
-        return False
-    return response['data']['address']
+    friendships = friends.export('friend', username=username)
 
-@blueprint.route('/check')
-def check():
-    username = request.args.get('username')
-    # TODO: send request to central server to get address of the data server
+    # TODO: request all other avalible user data from the friends
 
-    url = 'http://localhost:9000/api/friend/get_friends?username=' + username
-    r = requests.get(url).json()
-    # TODO: send request to data server to check if user exists
-
-    return good_json_response(r)
+    return good_json_response({
+        'friends': friendships
+    })
 
 
 @blueprint.route('/insert_friendship', methods=['POST'])
@@ -121,7 +107,7 @@ def accept_friendship():
 
     # Check if request was sent:
     # Get address from central server
-    friend_address = get_ip(friend_username)
+    friend_address = get_user_ip(friend_username)
     if not friend_address:
         return bad_json_response('user not found in central database')
 
@@ -196,11 +182,11 @@ def register():
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    friend_address = get_ip(friend_username)
+    friend_address = get_user_ip(friend_username)
     if not friend_address:
         return bad_json_response('user not found in central database')
 
-    data_server = get_ip(username)
+    data_server = get_own_ip()
     if not data_server:
         return bad_json_response('user not found in central database')
     # register friendship in database
@@ -272,7 +258,7 @@ def reject_request():
         return bad_json_response('friendship not found')
 
     # update friendship
-    data_server = get_ip(username)
+    data_server = get_own_ip()
     if not data_server:
         return bad_json_response('user not found in central database')
 
@@ -283,34 +269,6 @@ def reject_request():
         return bad_json_response(response['reason'])
 
     return good_json_response()
-
-
-@blueprint.route('/get_friends')
-@jwt_required
-def get_friends():
-    """Returns all the friends of a user
-
-    Note:
-
-    Example:
-
-    Args:
-
-    Returns:
-
-    """
-    username = get_jwt_identity()
-    # Check if user exists
-    if not users.exists(username=username):
-        return bad_json_response('user not found')
-
-    friendships = friends.export('friend', username=username)
-
-    # TODO: request all other avalible user data from the friends
-
-    return good_json_response({
-        'friends': friendships
-    })
 
 
 @blueprint.route('/get_friend_requests')
@@ -403,7 +361,7 @@ def accept_deletion():
         return bad_json_response('friendship does not exists')
 
     # Get address from central server
-    friend_address = get_ip(friend_username)
+    friend_address = get_user_ip(friend_username)
     if not friend_address:
         return bad_json_response('user not found in central database')
 
@@ -478,12 +436,12 @@ def delete():
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    friend_address = get_ip(friend_username)
+    friend_address = get_user_ip(friend_username)
     if not friend_address:
         return bad_json_response('user not found in central database')
 
     # register friendship in database
-    data_server = get_ip(username)
+    data_server = get_own_ip()
     if not data_server:
         return bad_json_response('user not found in central database')
 
