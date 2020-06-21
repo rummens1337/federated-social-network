@@ -1,13 +1,11 @@
 var username = null;
 
-function requestSend(req) {
-  alertError("Friend request is sent", 2000);
-  location.reload();
-}
-
 function addFriend(friend) {
     requestJSON('GET', '/api/user/address', null, function(req) {
-      requestJSON('POST', req.data.address + "/api/friend/add", {"friend" : friend }, requestSend, function(req) {
+      requestJSON('POST', req.data.address + "/api/friend/add", {"friend" : friend }, function(req) {
+        // Friend request is sent
+        location.reload();
+      }, function(req) {
         alertError(req.reason, 2000);
       });
     }, function(req) {
@@ -18,7 +16,7 @@ function addFriend(friend) {
 function deleteFriend(friend) {
     requestJSON('GET', '/api/user/address', null, function(req) {
         requestJSON('POST', req.data.address + "/api/friend/delete", {"friend" : friend }, function(req) {
-            alertError("Friend is deleted", 2000);
+            // Friend is deleted
             location.reload();
         }, function(req) {
             alertError(req.reason, 2000);
@@ -29,16 +27,6 @@ function deleteFriend(friend) {
 }
 
 function acceptFriend(friend) {
-    // requestJSON('GET', '/api/user/address', null, function(req) {
-    //     requestJSON('POST', req.data.address + "/api/friend/delete", {"friend" : friend }, function(req) {
-    //         alertError("Friend is deleted", 2000);
-    //         location.reload();
-    //     }, function(req) {
-    //         alertError(req.reason, 2000);
-    //     });
-    // }, function(req) {
-    //     alertError(req.reason, 2000);
-    // });
     location.href = "/friend/requests";
 }
 
