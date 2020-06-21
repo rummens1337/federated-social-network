@@ -123,7 +123,7 @@
 
                 <!-- TODO username != logged in user -->
                 {% if username is defined %}
-                    <button type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button>
+                    <button id="add_friend" type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button>
                 {% endif %}
             </div>
 

@@ -32,24 +32,66 @@ def user():
     if not user_details:
         return bad_json_response("User not found")
 
+    # Check what the status of the friendship is between the users
+    friend_status = is_friend(username)
+    if username == get_jwt_identity():
+        friend_status = 1
+
     # Get image
     up_id = user_details[0][3]
     imageurl = "../static/images/default.jpg"
-    if uploads.exists(id=up_id):
+    if friend_status == 1 and uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
         imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
 
-    return good_json_response({
+    # Basic information visible if not friends
+    basic_info = {
         'username': user_details[0][0],
+        'friend' : friend_status,
+        'image_url': imageurl
+    }
+
+    if friend_status != 1:
+        return good_json_response(basic_info)
+
+    # All information visible if friends
+    sensitive_info = {
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
-        'image_url': imageurl,
         'location': user_details[0][4],
         'study': user_details[0][5],
         'bio': user_details[0][6],
         'creation_date': str(user_details[0][7]),
         'last_edit_date': str(user_details[0][8])
-    })
+    }
+
+    return good_json_response({**basic_info, **sensitive_info})
+
+
+def is_friend(username):
+    """
+     Returns what the status of the friendship is between the 
+     logged in user and the given argument username
+    # 0: no friendship
+    # 1: friends
+    # 2: friendship request is sent, waiting for response..
+    # 2: friendship request received, sender is waiting for reply
+    """
+    if friends.exists(username=get_jwt_identity(), friend=username):
+        friend_details = friends.export_one('accepted', 'sender', username=get_jwt_identity(), friend=username)
+        if int(friend_details[0]) == 1:
+            return 1 # accepted = 1
+        if int(friend_details[1]) == 1:
+            return 2 # pending
+        return 3 # acceptable
+        
+    if friends.exists(username=username, friend=get_jwt_identity()):
+        friend_details = friends.export_one('accepted', 'sender', username=username, friend=get_jwt_identity())
+        if int(friend_details[0]) == 1:
+            return 1 # accepted = 1
+        if int(friend_details[1]) == 1:
+            return 3 # acceptable
+        return 2 # pending
 
 
 @blueprint.route('/all')
@@ -95,6 +137,10 @@ def user_posts():
     # Check if user id exists
     if not users.exists(username=username):
         return bad_json_response('User not found.')
+
+    # Send no data in case the users are not friends
+    if username != get_jwt_identity() and is_friend(username) != 1:
+        return good_json_response()
 
     # Get all posts of a user.
     user_posts = posts.export('title', 'body', 'creation_date', username=username)

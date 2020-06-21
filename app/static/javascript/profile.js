@@ -22,6 +22,12 @@ function profile(req) {
     document.getElementById('name').innerHTML = req.data.firstname + ' ' + req.data.lastname;
     // document.getElementById('study').innerHTML = req.data.study;
     // document.getElementById('bio').innerHTML = req.data.bio;
+
+    var friend = req.data.friend;
+    if (friend == 0) document.getElementById('add_friend').innerHTML = "Befriend me!";
+    else if (friend == 1) document.getElementById('add_friend').innerHTML = "Unfriend";
+    else if (friend == 2) document.getElementById('add_friend').innerHTML = "Pending..";
+    else if (friend == 3) document.getElementById('add_friend').innerHTML = "Accept friendship request";
 }
 
 // Get the data of the profile
@@ -38,6 +44,7 @@ function getProfile(req) {
 // Get the address of the profile
 function loadProfile(u) {
     username = u;
+    setup();
     var url = (username == null || username == "") ?
       '/api/user/address' :
       '/api/user/address?username=' + username;
@@ -46,7 +53,10 @@ function loadProfile(u) {
       alertError(req.reason, 2000);
     });
 }
-  
-$(document).ready(function() {
-  getUsername();
-});
+
+// Setup the profile page
+function setup() {
+  if (getUsername() == username) {
+    $("#add_friend").remove();
+  }
+}
