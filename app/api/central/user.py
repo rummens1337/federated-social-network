@@ -35,6 +35,17 @@ def createtestusers():
     # TODO error handling if query fails
 
 
+@blueprint.route('/search', methods=['GET'])
+def search():
+    # TODO search users
+    query = request.args.get('query')
+    
+    if query is None or query == "":
+        return bad_json_response("no seach given")
+
+    return user()
+
+
 @blueprint.route('/address', methods=['GET'])
 def address():
     username = request.args.get('username')
