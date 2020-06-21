@@ -140,7 +140,7 @@ def user_posts():
 
     # Send no data in case the users are not friends
     if username != get_jwt_identity() and is_friend(username) != 1:
-        return good_json_response()
+        return good_json_response({'posts' : {} })
 
     # Get all posts of a user.
     user_posts = posts.export('title', 'body', 'creation_date', username=username)

@@ -2,6 +2,7 @@ var username = null;
 
 function requestSend(req) {
   alertError("Friend request is sent", 2000);
+  location.reload();
 }
 
 function addFriend(friend) {
@@ -14,20 +15,67 @@ function addFriend(friend) {
     });
 }
 
+function deleteFriend(friend) {
+    requestJSON('GET', '/api/user/address', null, function(req) {
+        requestJSON('POST', req.data.address + "/api/friend/delete", {"friend" : friend }, function(req) {
+            alertError("Friend is deleted", 2000);
+            location.reload();
+        }, function(req) {
+            alertError(req.reason, 2000);
+        });
+    }, function(req) {
+        alertError(req.reason, 2000);
+    });
+}
+
+function acceptFriend(friend) {
+    // requestJSON('GET', '/api/user/address', null, function(req) {
+    //     requestJSON('POST', req.data.address + "/api/friend/delete", {"friend" : friend }, function(req) {
+    //         alertError("Friend is deleted", 2000);
+    //         location.reload();
+    //     }, function(req) {
+    //         alertError(req.reason, 2000);
+    //     });
+    // }, function(req) {
+    //     alertError(req.reason, 2000);
+    // });
+    location.href = "/friend/requests";
+}
+
 // Set the HTML
 // TODO
 function profile(req) {
-    document.getElementById('image_url').src = req.data.image_url;
-    // document.getElementById('location').innerHTML = req.data.location;
-    document.getElementById('name').innerHTML = req.data.firstname + ' ' + req.data.lastname;
-    // document.getElementById('study').innerHTML = req.data.study;
-    // document.getElementById('bio').innerHTML = req.data.bio;
+    var friend_status = req.data.friend;
 
-    var friend = req.data.friend;
-    if (friend == 0) document.getElementById('add_friend').innerHTML = "Befriend me!";
-    else if (friend == 1) document.getElementById('add_friend').innerHTML = "Unfriend";
-    else if (friend == 2) document.getElementById('add_friend').innerHTML = "Pending..";
-    else if (friend == 3) document.getElementById('add_friend').innerHTML = "Accept friendship request";
+    if (friend_status == 1) {
+        document.getElementById('image_url').src = req.data.image_url;
+        // document.getElementById('location').innerHTML = req.data.location;
+        document.getElementById('name').innerHTML = req.data.firstname + ' ' + req.data.lastname;
+        // document.getElementById('study').innerHTML = req.data.study;
+        // document.getElementById('bio').innerHTML = req.data.bio;
+    } else {
+        document.getElementById('name').innerHTML = req.data.username;
+        $("#stats").remove();
+        $("#about").remove();
+        $("#posts").remove();
+    }
+    
+    if (document.getElementById('add_friend') != null) {
+      var friend = req.data.username;
+      if (friend_status == 0) document.getElementById('add_friend').innerHTML = "Befriend me!";
+      else if (friend_status == 1) {
+        document.getElementById('add_friend').innerHTML = "Unfriend";
+        $("#add_friend").attr("onclick", "deleteFriend('"+friend+"')");
+      }
+      else if (friend_status == 2) {
+        document.getElementById('add_friend').innerHTML = "Pending..";
+        $("#add_friend").attr("onclick", "deleteFriend('"+friend+"')");
+      }
+      else if (friend_status == 3) {
+        document.getElementById('add_friend').innerHTML = "Accept friendship request";
+        $("#add_friend").attr("onclick", "acceptFriend('"+friend+"')");
+      }
+    }
 }
 
 // Get the data of the profile

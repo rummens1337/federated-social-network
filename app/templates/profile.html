@@ -28,7 +28,7 @@
                         </div>
                 </div>
                 <!-- #TODO add right content for profile. -->
-                <div class="w3-container" style="background-color:#DFF8EB;">
+                <div id="stats" class="w3-container" style="background-color:#DFF8EB;">
                     <br>
                     <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Designer</p>
                     <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
@@ -85,40 +85,42 @@
         <!-- First right box -->
             <!-- #TODO add right fa fa icons -->
             <div class="w3-container w3-card  w3-margin-bottom" style="background-color:#DFF8EB;">
+                
+                <div id="about">
+                    <!-- Main title -->
+                    <h2 class="w3-text-grey w3-padding-16">
+                        <i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>About me
+                    </h2>
+                    <div class="w3-container"  style="background-color:#DFF8EB;">
+                        <!-- Sub title -->
+                        <h5 class="w3-opacity w3-text-teal"><b>Hobbies, interest</b></h5>
+                        <!-- Content box title -->
+                        <h6 class="w3-text-teal">
+                            <i class="fa fa-circle fa-fw w3-margin-right"></i>Combing dogs
+                        </h6>
+                        <!-- Content -->
+                        <p class="w3-text-grey">Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
+                        <hr>
+                    </div>
 
-                <!-- Main title -->
-                <h2 class="w3-text-grey w3-padding-16">
-                    <i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>About me
-                </h2>
-                <div class="w3-container"  style="background-color:#DFF8EB;">
-                    <!-- Sub title -->
-                    <h5 class="w3-opacity w3-text-teal"><b>Hobbies, interest</b></h5>
-                    <!-- Content box title -->
-                    <h6 class="w3-text-teal">
-                        <i class="fa fa-circle fa-fw w3-margin-right"></i>Combing dogs
-                    </h6>
-                    <!-- Content -->
-                    <p class="w3-text-grey">Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
-                    <hr>
-                </div>
+                    <div class="w3-container"  style="background-color:#DFF8EB;">
+                        <!-- Sub title -->
+                        <h5 class="w3-opacity w3-text-teal"><b>You can always wake me up for</b></h5>
+                        <!-- Content box title -->
+                        <h6 class="w3-text-teal"><i class="fa fa-circle fa-fw w3-margin-right"></i>A frozen banana</h6>
+                        <!-- Content -->
+                        <p class="w3-text-grey">Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
+                        <hr>
+                    </div>
 
-                <div class="w3-container"  style="background-color:#DFF8EB;">
-                    <!-- Sub title -->
-                    <h5 class="w3-opacity w3-text-teal"><b>You can always wake me up for</b></h5>
-                    <!-- Content box title -->
-                    <h6 class="w3-text-teal"><i class="fa fa-circle fa-fw w3-margin-right"></i>A frozen banana</h6>
-                    <!-- Content -->
-                    <p class="w3-text-grey">Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
-                    <hr>
-                </div>
-
-                <div class="w3-container"  style="background-color:#DFF8EB;">
-                    <!-- Sub title -->
-                    <h5 class="w3-opacity w3-text-teal"><b>Never contact me if</b></h5>
-                    <!-- Content box title -->
-                    <h6 class="w3-text-teal"><i class="fa fa-circle fa-fw w3-margin-right"></i>Your name's Jeff</h6>
-                    <!-- Content -->
-                    <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>
+                    <div class="w3-container"  style="background-color:#DFF8EB;">
+                        <!-- Sub title -->
+                        <h5 class="w3-opacity w3-text-teal"><b>Never contact me if</b></h5>
+                        <!-- Content box title -->
+                        <h6 class="w3-text-teal"><i class="fa fa-circle fa-fw w3-margin-right"></i>Your name's Jeff</h6>
+                        <!-- Content -->
+                        <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>
+                    </div>
                 </div>
 
                 <!-- TODO username != logged in user -->
@@ -146,15 +148,17 @@
                 }
             </style>
 
-            <!-- Header for posts -->
-            <div class="header" id="myHeader" style="background-color:#DFF8EB;">
-                <h2 class="w3-text-grey w3-padding-16"style="background-color:#DFF8EB;"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Posts</h2>
-            </div>
+            <div id="posts">
+                <!-- Header for posts -->
+                <div class="header" id="myHeader" style="background-color:#DFF8EB;">
+                    <h2 class="w3-text-grey w3-padding-16"style="background-color:#DFF8EB;"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Posts</h2>
+                </div>
 
 
-            
-            <!-- Posts #TODO timestamps, content, postee -->
-            <div id="posts_div" class="w3-container"  style="background-color:#DFF8EB;">
+                
+                <!-- Posts #TODO timestamps, content, postee -->
+                <div id="posts_div" class="w3-container"  style="background-color:#DFF8EB;">
+                </div>
             </div>
 
             <!-- Scrollscript -->

@@ -33,6 +33,7 @@ def profile():
     return render_template('profile.html')
 
 @blueprint.route('/profile/<username>')
+@jwt_required
 def profile_of(username):
     return render_template('profile.html', username=username)
 
