@@ -20,16 +20,15 @@ function show(friend) {
   $('#friend-list').append(content);
 }
 
-function error(req) { 
-  // TODO: use our custom error 
-  alert("Error during loading.");
-}
-
 function setDataAddress(req) {
   dataServer = req.data.address;
-  requestJSON('GET', dataServer + '/api/friend/all', null, showFriends, error);
+  requestJSON('GET', dataServer + '/api/friend/all', null, showFriends, function(req) {
+    alertError(req.reason, 2000);
+  });
 }
 
 $(document).ready(function() {
-  requestJSON('GET', '/api/user/address', null, setDataAddress, error);
+  requestJSON('GET', '/api/user/address', null, setDataAddress, function(req) {
+    alertError(req.reason, 2000);
+  });
 });

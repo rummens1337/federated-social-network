@@ -9,12 +9,9 @@ function addFriend(friend) {
       requestJSON('POST', req.data.address + "/api/friend/add", {"friend" : friend }, requestSend, function(req) {
         alertError(req.reason, 2000);
       });
-    }, error);
-}
-
-function error(req) { 
-    // TODO: use our custom error 
-    alert("Error during loading.");
+    }, function(req) {
+      alertError(req.reason, 2000);
+    });
 }
 
 // Set the HTML
@@ -33,7 +30,9 @@ function getProfile(req) {
     var url = (username == null || username == "") ?
       dataServer + '/api/user' :
       dataServer + '/api/user?username=' + username;
-    requestJSON('GET', url, null, profile, error);
+    requestJSON('GET', url, null, profile, function(req) {
+      alertError(req.reason, 2000);
+    });
 }
 
 // Get the address of the profile
@@ -43,6 +42,8 @@ function loadProfile(u) {
       '/api/user/address' :
       '/api/user/address?username=' + username;
   
-    requestJSON('GET', url, null, getProfile, error);
+    requestJSON('GET', url, null, getProfile, function(req) {
+      alertError(req.reason, 2000);
+    });
   }
   
