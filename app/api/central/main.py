@@ -53,6 +53,11 @@ def logout():
 def friends():
     return render_template('friends.html')
 
+@blueprint.route('/friend/requests')
+@jwt_required
+def friend_requests():
+    return render_template('friend/requests.html')
+
 @blueprint.route('/settings')
 @jwt_required
 def settings():

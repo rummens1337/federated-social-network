@@ -61,6 +61,7 @@ function removeNavItems() {
         document.getElementById("navlogout").classList.add("w3-hide");
         document.getElementById("navsettings").classList.add("w3-hide");
         document.getElementById("navfriends").classList.add("w3-hide");
+        document.getElementById("navfriendrequests").classList.add("w3-hide");
     }
 }
 
