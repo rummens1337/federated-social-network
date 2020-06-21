@@ -27,11 +27,12 @@ def get_friends():
         return bad_json_response('user not found')
 
     friendships = friends.export('friend', username=username, accepted=1)
+    friendships2 = friends.export('username', friend=username, accepted=1)
 
     friends_array = [{
             'username' : item
         }
-        for item in friendships
+        for item in friendships + friendships2
     ]
 
     return good_json_response({
@@ -56,15 +57,17 @@ def requests_open():
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    friendships = friends.export('friend', 'accepted', 'sender', username=username, accepted=0)
+    friendships = friends.export('friend', 'accepted', 'sender', 'id', username=username, accepted=0, sender=0)
+    friendships2 = friends.export('username', 'accepted', 'sender', 'id', friend=username, accepted=0, sender=1)
 
     # TODO: request all other avalible user data from the friends
 
     friends_array = [{
             'username' : item[0],
-            'sender' : item[2]
+            'sender' : item[2],
+            'id' : item[3]
         }
-        for item in friendships
+        for item in friendships + friendships2
     ]
 
     return good_json_response({
@@ -136,7 +139,8 @@ def request_accept():
     if int(request_db[0]) == 1:
         return bad_json_response("Request already accepted")
 
-    if int(request_db[1]) == 1:
+    # Only accept if it was the sender
+    if int(request_db[1]) != 1:
         return bad_json_response("User sent the request him/herself")
 
     # Update friendship
@@ -151,9 +155,14 @@ def request_accept():
 @blueprint.route('/request/delete', methods=['POST'])
 @jwt_required
 def request_delete():
-    # TODO: better protection
     username = request.form['username']
     friend = request.form['friend']
+
+    if username == friend:
+        return bad_json_response("Username equals friend")
+
+    if username != get_jwt_identity() and friend != get_jwt_identity():
+        return bad_json_response("Not allowed")
 
     friends.delete(username=username, friend=friend)
     friends.delete(username=friend, friend=username)
@@ -251,7 +260,7 @@ def accept():
         try:
             response = requests.post(friend_address + '/api/friend/request/accept', data=data, headers=request.headers).json()
             if response['success'] != True:
-                return bad_json_response("Friend error")
+                return bad_json_response(response['reason'])
         except:
             return bad_json_response("Friend error2")
     

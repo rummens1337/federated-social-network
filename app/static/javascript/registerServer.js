@@ -16,7 +16,7 @@ function register_server() {
         }
 
         function registerCentralSucces() {
-          alertError('Your data server has been succesfully registered!', 2000, "registerServer")
+          window.location = "/?message=registered_server";
         }
 
         function registerCentralFailed(response) {

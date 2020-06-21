@@ -21,7 +21,7 @@ function requestJSON(type, url, data=null, success=null, error=null) {
         data: data,
         crossDomain: true,
         success: function(req) {
-            if (req.hasOwnProperty("data")) success(req);
+            if (req.hasOwnProperty("success") && req.success == true) success(req);
             else error(req);
         },
         error: error
@@ -43,7 +43,7 @@ function requestJSONFile(type, url, data=null, success=null, error=null) {
         data: data,
         crossDomain: true,
         success: function(req) {
-            if (req.hasOwnProperty("data")) success(req);
+            if (req.hasOwnProperty("success") && req.success == true) success(req);
             else error(req);
         },
         error: error
@@ -87,6 +87,8 @@ function handle_url_message() {
             alertError("Registration Complete, you can now log in!", 2000);
         } else if (param == "registered") {
             alertError("Registered account, please check you email to verify it!", 4000);
+        } else if (param == "registered_server") {
+            alertError("Registered server!", 4000);
         }
     }
 }

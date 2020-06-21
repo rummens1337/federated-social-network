@@ -11,7 +11,7 @@ function create_post() {
 
     submitHandler: function(form) {
       function creationSucces(req) {
-        if(!alert('Post succesfully created!')){window.location.reload();}
+        window.location.reload();
       }
 
       function creationFailed(response, XMLHttpRequest, textStatus, errorThrown) {

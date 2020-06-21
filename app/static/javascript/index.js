@@ -6,16 +6,15 @@ function setUserSettings(req) {
     document.getElementById('bio').innerHTML = req.data.bio;
 }
 
-function error(req) { 
-    // TODO: use our custom error 
-    alert("Error during loading.");
-}
-
 function setDataAddress(req) {
     dataServer = req.data.address;
-    requestJSON('GET', dataServer + '/api/user', null, setUserSettings, error);
+    requestJSON('GET', dataServer + '/api/user', null, setUserSettings, function(req) {
+        alertError(req.reason, 2000);
+      });
 }
 
 $(document).ready(function() {
-    requestJSON('GET', '/api/user/address', null, setDataAddress, error);
+    requestJSON('GET', '/api/user/address', null, setDataAddress, function(req) {
+        alertError(req.reason, 2000);
+      });
 });

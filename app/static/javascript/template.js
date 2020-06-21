@@ -32,29 +32,27 @@ function myFunction(x) {
   	x.classList.toggle("change");
 }
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+/* Get the username of the logged in user. */
+function getUsername() {
+    if (checkLogin()) {
+        var decoded = jwt_decode(Cookies.get('access_token_cookie'));
+        return decoded["identity"];
     }
-    return "";
+    return null;
 }
 
+/*  Check if the user is logged in and the JWT token is not expired.
+    TODO: should be validated too... */
 function checkLogin() {
-    if (getCookie('access_token_cookie') != '') {
-        return true
+    if (Cookies.get('access_token_cookie') != '' && Cookies.get('access_token_cookie') != null) {
+        var decoded = jwt_decode(Cookies.get('access_token_cookie'));
+        if (Date.now() >= decoded['exp'] * 1000) {
+            // logout
+            window.location = "/logout";
+            return false;
+        } else { return true; }
     }
-    else {
-        return false
-    }
+    return false;
 }
 
 function removeNavItems() {
@@ -63,6 +61,7 @@ function removeNavItems() {
         document.getElementById("navlogout").classList.add("w3-hide");
         document.getElementById("navsettings").classList.add("w3-hide");
         document.getElementById("navfriends").classList.add("w3-hide");
+        document.getElementById("navfriendrequests").classList.add("w3-hide");
     }
 }
 

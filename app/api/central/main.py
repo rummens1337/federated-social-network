@@ -33,6 +33,7 @@ def profile():
     return render_template('profile.html')
 
 @blueprint.route('/profile/<username>')
+@jwt_required
 def profile_of(username):
     return render_template('profile.html', username=username)
 
@@ -52,6 +53,11 @@ def logout():
 @jwt_required
 def friends():
     return render_template('friends.html')
+
+@blueprint.route('/friend/requests')
+@jwt_required
+def friend_requests():
+    return render_template('friend/requests.html')
 
 @blueprint.route('/settings')
 @jwt_required
