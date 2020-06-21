@@ -151,9 +151,14 @@ def request_accept():
 @blueprint.route('/request/delete', methods=['POST'])
 @jwt_required
 def request_delete():
-    # TODO: better protection
     username = request.form['username']
     friend = request.form['friend']
+
+    if username == friend:
+        return bad_json_response("Username equals friend")
+
+    if username != get_jwt_identity() and friend != get_jwt_identity():
+        return bad_json_response("Not allowed")
 
     friends.delete(username=username, friend=friend)
     friends.delete(username=friend, friend=username)

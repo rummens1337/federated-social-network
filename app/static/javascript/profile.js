@@ -45,5 +45,8 @@ function loadProfile(u) {
     requestJSON('GET', url, null, getProfile, function(req) {
       alertError(req.reason, 2000);
     });
-  }
+}
   
+$(document).ready(function() {
+  getUsername();
+});
