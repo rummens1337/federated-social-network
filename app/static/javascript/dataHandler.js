@@ -72,8 +72,8 @@ function alertError(error, ms, div_id=null) {
 
 
     setTimeout(function(){
-    //   dialog.parentNode.removeChild(dialog);
-      $('#errorBox').fadeOut(500);
+    //   $('#errorBox').fadeOut(500);
+      dialog.parentNode.removeChild(dialog);
     }, ms);
 };
 
