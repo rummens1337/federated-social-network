@@ -51,8 +51,9 @@ ENV WAIT_VERSION 2.7.2
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
 RUN chmod +x /wait
 
+RUN pip3 install flask-jwt-extended\[asymmetric_crypto\]
+
 RUN ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key -q -N ""
-# Don't add passphrase
 RUN openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 
 CMD python3 run.py

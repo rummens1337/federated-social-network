@@ -53,7 +53,6 @@ EXPOSE 80
 WORKDIR /var/www/apache-flask/
 
 RUN ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key -q -N ""
-# Don't add passphrase
 RUN openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 
 
