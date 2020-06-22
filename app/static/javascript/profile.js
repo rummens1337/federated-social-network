@@ -47,7 +47,7 @@ function profile(req) {
         $("#about").remove();
         $("#posts").remove();
     }
-    
+
     if (document.getElementById('add_friend') != null) {
       var friend = req.data.username;
       if (friend_status == 0) document.getElementById('add_friend').innerHTML = "Befriend me!";
@@ -85,7 +85,7 @@ function loadProfile(u) {
     var url = (username == null || username == "") ?
       '/api/user/address' :
       '/api/user/address?username=' + username;
-  
+
     requestJSON('GET', url, null, getProfile, function(req) {
       alertError(req.reason, 2000);
       location.href = "/";

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
     study VARCHAR(1000) DEFAULT '-',
     bio VARCHAR(1000) DEFAULT '-',
     relationship_status VARCHAR(1000) DEFAULT '-',
-    phone_number INTEGER DEFAULT NULL,
+    phone_number VARCHAR(1000) DEFAULT '-',
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_edit_date TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 );
