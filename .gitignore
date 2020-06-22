@@ -1,7 +1,8 @@
 # Project specific
 config.py
-logs/
-data/
+config.ini
+/logs/
+/data/
 
 *~
 *.pyc

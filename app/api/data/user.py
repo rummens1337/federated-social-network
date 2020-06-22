@@ -2,47 +2,97 @@ from flask import Blueprint, request
 import requests
 
 from app.api.utils import good_json_response, bad_json_response
-from app.database import users
-from app.database import posts
+from app.database import users, friends, uploads, posts
+from app.database import skills, languages, hobbies
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
-
-
+from app.upload import get_file, save_file
+from app.api import auth_username
+from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
+from passlib.hash import sha256_crypt
 blueprint = Blueprint('data_user', __name__)
-
-central_server = "http://localhost:5000/api/"
 
 
 @blueprint.route('/', strict_slashes=False)
 @jwt_required
 def user():
-    user_id = request.args.get('user_id')
+    username = request.args.get('username')
 
-    if user_id is None:
-        return bad_json_response('user_id should be given as parameter.')
+    if username is None or username == '':
+        username = auth_username()
 
-    # TODO fail if user is not authenticated
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     user_details = users.export(
-        'username', 'name', 'uploads_id',
-        'location', 'study', 'creation_date',
+        'username', 'firstname', 'lastname', 'uploads_id',
+        'location', 'study', 'bio', 'creation_date',
         'last_edit_date',
-        id=user_id
+        username=username
     )
 
     if not user_details:
         return bad_json_response("User not found")
 
-    # TODO: Get image url
+    # Check what the status of the friendship is between the users
+    friend_status = is_friend(username)
+    if username == get_jwt_identity():
+        friend_status = 1
 
-    return good_json_response({
+    # Get image
+    up_id = user_details[0][3]
+    imageurl = "../static/images/default.jpg"
+    if friend_status == 1 and uploads.exists(id=up_id):
+        filename = uploads.export_one('filename', id=up_id)
+        imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
+
+    # Basic information visible if not friends
+    basic_info = {
         'username': user_details[0][0],
-        'name': user_details[0][1],
-        'image_url': 'https://www.xolt.nl/wp-content/themes/fox/images/placeholder.jpg',
-        'location': user_details[0][3],
-        'study': user_details[0][4],
-        'creation_date': str(user_details[0][5]),
-        'last_edit_date': str(user_details[0][6])
-    })
+        'friend' : friend_status,
+        'image_url': imageurl
+    }
+
+    if friend_status != 1:
+        return good_json_response(basic_info)
+
+    # All information visible if friends
+    sensitive_info = {
+        'firstname': user_details[0][1],
+        'lastname': user_details[0][2],
+        'location': user_details[0][4],
+        'study': user_details[0][5],
+        'bio': user_details[0][6],
+        'creation_date': str(user_details[0][7]),
+        'last_edit_date': str(user_details[0][8])
+    }
+
+    return good_json_response({**basic_info, **sensitive_info})
+
+
+def is_friend(username):
+    """
+     Returns what the status of the friendship is between the
+     logged in user and the given argument username
+    # 0: no friendship
+    # 1: friends
+    # 2: friendship request is sent, waiting for response..
+    # 2: friendship request received, sender is waiting for reply
+    """
+    if friends.exists(username=get_jwt_identity(), friend=username):
+        friend_details = friends.export_one('accepted', 'sender', username=get_jwt_identity(), friend=username)
+        if int(friend_details[0]) == 1:
+            return 1 # accepted = 1
+        if int(friend_details[1]) == 1:
+            return 2 # pending
+        return 3 # acceptable
+
+    if friends.exists(username=username, friend=get_jwt_identity()):
+        friend_details = friends.export_one('accepted', 'sender', username=username, friend=get_jwt_identity())
+        if int(friend_details[0]) == 1:
+            return 1 # accepted = 1
+        if int(friend_details[1]) == 1:
+            return 3 # acceptable
+        return 2 # pending
 
 
 @blueprint.route('/all')
@@ -50,7 +100,7 @@ def users_all():
     usernames = users.export('username')
 
     if len(usernames) == 0:
-        return bad_json_response('No usernames in the database.')
+        return bad_json_response('No users found.')
 
     return good_json_response({
         'usernames': usernames
@@ -62,41 +112,93 @@ def registered():
     username = request.args.get('username')
 
     if username is None:
-        return bad_json_response('Username should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     if not users.exists(username = username):
         return bad_json_response('Username not found (in data server)')
 
     # for testing purposes; Enter your own IP address instead of ipaddress
-    url = 'http://ipaddress:5000/api/user/registered?username=' + username
+    url = get_central_ip() + '/api/user/registered?username=' + username
     r = requests.get(url).json()
 
     return good_json_response(r)
 
 
-@blueprint.route('/posts')
+@blueprint.route('/posts', methods=['GET'])
 @jwt_required
 def user_posts():
-    user_id = request.args.get('user_id')
+    username = request.args.get('username')
 
-    if user_id is None:
-        return bad_json_response('user_id should be given as parameter.')
+    if username is None or username == '':
+        username = auth_username()
 
-    # check if user id exists
-    if not users.exists(id=user_id):
-        return bad_json_response('user not found')
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    # TODO fail if user is not authenticated
+    # Check if user id exists
+    if not users.exists(username=username):
+        return bad_json_response('User not found.')
 
-    # TODO get all posts of a user.
-    user_posts = posts.export('title', 'body', users_id=user_id)
-
-    if len(user_posts) == 0:
-        return bad_json_response('User has no posts.')
+    # Send no data in case the users are not friends
+    if username != get_jwt_identity() and is_friend(username) != 1:
+        return good_json_response({'posts' : {} })
 
     return good_json_response({
-        'posts': user_posts
+        'posts': get_posts(username)
     })
+
+
+def get_posts(username):
+    # Get all posts of a user.
+    user_posts = posts.export('title', 'body', 'creation_date', username=username)
+
+    # Transfrom to array including dictionaries
+    posts_array = [{
+            'title' : item[0],
+            'body' : item[1],
+            'creation_date' : str(item[2])
+        }
+        for item in user_posts
+    ]
+
+    return  posts_array
+
+
+@blueprint.route('/timeline', methods=['GET'])
+@jwt_required
+def timeline():
+    from app.api.data.friend import get_friends
+
+    username = get_jwt_identity()
+    # Check if user exists
+    if not users.exists(username=username):
+        return bad_json_response('user not found')
+
+    # Get the user's own posts
+    posts_array = []
+    posts = get_posts(username)
+    if len(posts) != 0:
+        posts_array.append({
+            'username'  : username,
+            'posts'     : posts
+        })
+
+    # Get the user's friends
+    friends = get_friends(username)
+    for i in range(0, len(friends)):
+        friend = friends[i]['username']
+        friend_address = get_user_ip(friend)
+        # Get the posts of the friend
+        response = requests.get(friend_address + '/api/user/posts?username='+friend, headers=request.headers).json()
+        if response['success'] == True:
+            posts = response['data']['posts']
+            if len(posts) != 0:
+                posts_array.append({
+                    'username'  : friend,
+                    'posts'     : posts
+                })
+
+    return good_json_response(posts_array)
 
 
 @blueprint.route('/login', methods=['POST'])
@@ -105,23 +207,25 @@ def login():
     password = request.form['password']
 
     if username is None:
-        return bad_json_response('username should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     if password is None:
-        return bad_json_response('password should be given as parameter.')
+        return bad_json_response("Bad request: Missing parameter 'password'.")
 
-    # TODO fail if user is already authenticated
     if not users.exists(username=username):
-        return bad_json_response("Login failed")
+        return bad_json_response("User does not exist yet. Feel 'free' to join FedNet! :)")
 
-    user = users.export('id', 'password', username=username)[0]
+    password_db = users.export('password', username=username)[0]
 
-    # TODO Safe string compare 
-    if user[1] != password:
-        return bad_json_response("Login failed2")
+    if not sha256_crypt.verify(password, password_db):
+        return bad_json_response("Password is incorrect.")
+
+    email_confirmed = users.export_one("email_confirmed", username=username)
+    if not email_confirmed:
+        return bad_json_response("The email for this user is not authenticated yet. Please check your email.")
 
     # Login success
-    access_token = create_access_token(identity=user[0])
+    access_token = create_access_token(identity=username)
 
     return good_json_response({
         'token' : access_token
@@ -130,21 +234,36 @@ def login():
 
 @blueprint.route('/register', methods=['POST'])
 def register():
+    """Registers a user to this data server."""
+    # Exit early.
+    if users.exists(username=request.form['username']):
+        return bad_json_response('Username is already taken. Try again :)')
+
+    if users.exists(email=request.form['email']):
+        return bad_json_response('A user with this email is already registered on this data server.')
+
     username = request.form['username']
-    location = request.form['location']
-    study = request.form['study']
+    firstname = request.form['firstname']
+    lastname = request.form['lastname']
+    email = request.form['email']
+    password = sha256_crypt.encrypt(request.form['password'])
 
-    image_filename = request.files['file'].filename
-    image = request.files['file'].read()
+    users.insert(username=username, firstname=firstname,
+                lastname=lastname, password=password, email=email)
 
-    # TODO fail if user is already registered
-    if users.exists(username=username):
-        return bad_json_response('Username is already registered')
+    return good_json_response("success")
 
-    # TODO register user and save image | still todo save image
-    users.insert(username=username, location=location, study=study)
 
-    return good_json_response()
+@blueprint.route('/deleteupload')
+def deleteupload():
+    uploads_id = request.args.get('uploads_id')
+
+    if not uploads.exists(uploads_id=uploads_id):
+        return bad_json_response('BIG OOPS: Something went wrong deleting the file.')
+
+    uploads.delete(uploads_id=uploads_id)
+
+    return good_json_response("success")
 
 
 @blueprint.route('/delete', methods=['POST'])
@@ -152,11 +271,17 @@ def register():
 def delete():
     username = request.form['username']
 
-    # TODO delete user from database and remove static data
-    # remove static data? Think it is done.
+    uploads_id = users.export('uploads_id', username=username)
+
     if users.exists(username=username):
         users.delete(username=username)
-        return good_json_response()
+        # I dont think we want to delete this upload?
+        # Upload might be shared by 2 users?
+        uploads.delete(uploads_id=uploads_id)
+        posts.delete(username=username)
+        friends.delete(username=username)
+
+        return good_json_response("success")
     else:
         return bad_json_response("Username is not registered.")
 
@@ -164,29 +289,166 @@ def delete():
 @blueprint.route('/edit', methods=['POST'])
 @jwt_required
 def edit():
-    username = request.form['username']
+    username = get_jwt_identity()
+    # username = request.form['username']
 
-    if users.exists(username=username):
-        if 'new_name' in request.form:
-            new_name = request.form['new_name']
-            if 'name' != '':
-                users.update({'name':new_name}, username=username)
-        if 'file' in request.files:
-            image_filename = request.files['file'].filename
-            image = request.files['file'].read()
-            # TODO replace image
-        if 'new_location' in request.form:
-            new_location = request.form['new_location']
-            if 'new_location' != '':
-                users.update({'location':new_location}, username=username)
-        if 'new_study' in request.form:
-            new_study = request.form['new_study']
-            if 'new_study' != '':
-                users.update({'study':new_study}, username=username)
-    else:
-        return bad_json_response('Username does not exist in database.')
+    if 'new_firstname' in request.form:
+        new_firstname = request.form['new_firstname']
+        users.update({'firstname':new_firstname}, username=username)
+    if 'new_lastname' in request.form:
+        new_lastname = request.form['new_lastname']
+        users.update({'lastname':new_lastname}, username=username)
+    if 'file' in request.files:
+        image_filename = request.files['file'].filename
+        image = request.files['file'].read()
+        if image is not 0:
+            uploads_id = save_file(image, filename=image_filename)
 
-    return good_json_response()
+            if uploads_id is not False:
+                users.update({'uploads_id' : uploads_id}, username=username)
+    if 'new_location' in request.form:
+        new_location = request.form['new_location']
+        users.update({'location':new_location}, username=username)
+    if 'new_study' in request.form:
+        new_study = request.form['new_study']
+        users.update({'study':new_study}, username=username)
+    if 'new_bio' in request.form:
+        new_bio = request.form['new_bio']
+        users.update({'bio':new_bio}, username=username)
+    if 'new_password' in request.form:
+        new_password = sha256_crypt.encrypt(request.form['new_password'])
+        users.update({'password':new_password}, username=username)
 
+    return good_json_response("success")
+
+@blueprint.route('/password', methods=['POST'])
+@jwt_required
+def password():
+    username = get_jwt_identity()
+    password = request.form['oldPassword']
+
+    if password is None:
+        return bad_json_response("Bad request: Missing parameter 'password'.")
+
+    password_db = users.export('password', username=username)[0]
+
+    if not sha256_crypt.verify(password, password_db):
+        return bad_json_response("Password is incorrect.")
+
+    if 'newPassword' in request.form:
+        newPassword = sha256_crypt.encrypt(request.form['newPassword'])
+    if 'newPassword' != '':
+        users.update({'password':newPassword}, username=username)
+
+    return good_json_response("Succes")
+
+
+@blueprint.route('/hobby')
+@jwt_required
+def hobby():
+    username = get_jwt_identity()
+
+    hobbies_details = hobbies.export('id', 'title', username=username)
+
+    hobbies_array = [{
+            'id' : item[0],
+            'title' : item[1]
+        }
+        for item in hobbies_details
+    ]
+
+    return good_json_response({
+        'hobbies': hobbies_array
+    })
+
+@blueprint.route('/addHobby', methods=['POST'])
+@jwt_required
+def addHobby():
+    username = get_jwt_identity()
+    # username = request.form['username']
+
+    title = request.form['title']
+
+    hobbies.insert(username=username, title=title)
+
+    return good_json_response("success")
+
+@blueprint.route('/deleteHobby', methods=['POST'])
+@jwt_required
+def deleteHobby():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+
+    hobbies.delete(id=id)
+
+    return good_json_response("success")
+
+@blueprint.route('/skill')
+@jwt_required
+def skill():
+    username = get_jwt_identity()
+
+    skill_details = skills.export(
+            'id', 'title', 'skill_level' ,username=username
+            )
+
+    skill_array = [{
+            'id' : item[0],
+            'title' : item[1],
+            'skill_level' : item[2]
+        }
+        for item in skill_details
+    ]
+
+    return good_json_response({
+        'skills': skill_array
+    })
+
+@blueprint.route('/addSkill', methods=['POST'])
+@jwt_required
+def addSkill():
+    username = get_jwt_identity()
+
+    title = request.form['title']
+    skill_level = request.form['skill_level']
+
+    skills.insert(username=username, title=title, skill_level=skill_level)
+
+    return good_json_response("success")
+
+@blueprint.route('/language')
+@jwt_required
+def language():
+    username = get_jwt_identity()
+
+    language_details = skills.export(
+            'id', 'title', 'skill_level' ,username=username
+            )
+
+    language_array = [{
+            'id' : item[0],
+            'title' : item[1],
+            'skill_level' : item[2]
+        }
+        for item in language_details
+    ]
+
+    return good_json_response({
+        'languages': language_array
+    })
+
+
+@blueprint.route('/addLanguage', methods=['POST'])
+@jwt_required
+def addLanguage():
+    username = get_jwt_identity()
+
+    title = request.form['title']
+    skill_level = request.form['skill_level']
+
+    languages.insert(username=username, title=title, skill_level=skill_level)
+
+    return good_json_response("success")
 
 __all__ = ('blueprint')

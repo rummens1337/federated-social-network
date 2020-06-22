@@ -1,23 +1,23 @@
 {% extends "template.html" %}
 {% block title %}Home{% endblock %}
 {% block head %}
-
+<!-- Send the username to the post script using the loadPosts funtction -->
 <script type="text/javascript" src="../static/javascript/post.js"></script>
+<script type="text/javascript" src="../static/javascript/index.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
+<script type="text/javascript" src="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js"></script>
+<link rel="stylesheet" href="../static/css/index.css">
+
+<script>$(document).ready( function() {
+    loadUserPosts(null, "timeline");
+});
+</script>
 {{ super() }}
 
 {% endblock %}
 {% block content %}
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../static/css/w3.css" >
-<!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="../static/css/index.css">
-<style>
-    html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-</style>
+<!--  -->
 
 <!-- Page Container -->
 <div class="w3-content w3-margin-top" style="max-width:1900px;">
@@ -30,20 +30,22 @@
 
             <div class="w3-white w3-text-grey w3-card-4">
                 <div class="w3-display-container">
-                    <img src="../static/images/avatar.jpg" style="width:100%" alt="Avatar">
-                        <div class="w3-display-bottomleft w3-container w3-text-teal">
-                            <h2>Jane Doe</h2>
-                        </div>
+                    <img id='image_url' style="width:100%">
                 </div>
                 <!-- #TODO add right content for profile. -->
-                <div class="w3-container" style="background-color:#DFF8EB;">
+                <div class="w3-container p-3" style="background-color:#DFF8EB;">
+                    <h2 id='name'></h2>
+
                     <br>
-                    <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Designer</p>
-                    <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
-                    <p><i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>Broken</p>
-                    <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>
-                    <a href="/settings"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
-                    <hr>
+                    <p id='bio'></p>
+                    <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                    <p id='study'></p>
+                    <i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                    <p id='location'></p>
+                    <!-- <p><i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>Broken</p>
+                    <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p> -->
+                    <a href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
+                    <!-- <hr>
 
                     <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
 
@@ -79,7 +81,7 @@
                     <p>German</p>
                     <div class="w3-light-grey w3-round-xlarge">
                         <div class="w3-round-xlarge w3-teal" style="height:24px;width:25%"></div>
-                    </div>
+                    </div> -->
                     <br>
                 </div>
             </div>
@@ -99,15 +101,23 @@
                 <div class="w3-container"  style="background-color:#DFF8EB;">
                     <form name="createpost">
                         <div class="form-group">
-                            <input type="text" id="title" class="form-control" placeholder="Title your post here!">
+                            <textarea type="text" name="title" class="form-control" placeholder="Title" rows="1" style="resize: none;"></textarea>
                         </div>
                         <div class="form-group">
-                            <textarea id="body" class="form-control" placeholder="Whatcha thinking bout" rows="2" style="resize: none;"></textarea>
+                            <textarea name="body" id="posttext" class="form-control" placeholder="What are you thinking about?" rows="2" style="resize: none;"></textarea>
+                            <script>
+                                $(document).ready(function() {
+                                    $("#posttext").emojioneArea({
+                                        pickerPosition: "bottom",
+                                        tonesStyle: "bullet"
+                                    });
+                                })
+                                </script>
                         </div>
                         <div class="form-group">
                             <div class="text-center" >
                                 <br>
-                                <button class="w3-text-grey btn btn-lg btn-outline mb1 black" type="submit" onclick="create_post();" >Post</button>
+                                <button class="submit" type="submit" onclick="create_post();" >Post</button>
                                 <!-- <button class="btn btn-primary mb1 bg-olive">Button</button -->
                             </div>
                         </div>
@@ -140,64 +150,7 @@
             </div>
 
             <!-- Posts #TODO timestamps, content, postee -->
-            <div class="w3-container"  style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;"><b>Example post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Just now</h6>
-                <p class="w3-text-grey">Im online</p>
-                <hr>
-            </div>
-
-            <div class="w3-container" style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;"><b>Example post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Almost just now</h6>
-                <p class="w3-text-grey">No wayy</p>
-                <hr>
-            </div>
-
-            <div class="w3-container" style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;" ><b>Definitely a post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Pre 9/11</h6>
-                <p class="w3-text-grey">Oh my lawd</p><br>
-            </div>
-
-            <div class="w3-container"  style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;"><b>Example post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Just now</h6>
-                <p class="w3-text-grey">Im online</p>
-                <hr>
-            </div>
-
-            <div class="w3-container" style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;"><b>Example post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Almost just now</h6>
-                <p class="w3-text-grey">No wayy</p>
-                <hr>
-            </div>
-
-            <div class="w3-container" style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;" ><b>Definitely a post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Pre 9/11</h6>
-                <p class="w3-text-grey">Oh my lawd</p><br>
-            </div>
-
-            <div class="w3-container"  style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;"><b>Example post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Just now</h6>
-                <p class="w3-text-grey">Im online</p>
-                <hr>
-            </div>
-
-            <div class="w3-container" style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;"><b>Example post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Almost just now</h6>
-                <p class="w3-text-grey">No wayy</p>
-                <hr>
-            </div>
-
-            <div class="w3-container" style="background-color:#DFF8EB;">
-                <h5 style="color:#52B77C;" ><b>Definitely a post</b></h5>
-                <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Pre 9/11</h6>
-                <p class="w3-text-grey">Oh my lawd</p><br>
+            <div id="posts_div" class="w3-container"  style="background-color:#DFF8EB;">
             </div>
 
             <!-- Scrollscript -->

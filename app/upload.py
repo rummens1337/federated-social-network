@@ -55,19 +55,19 @@ def save_file_data(filedata: typing.Union[typing.BinaryIO, bytes],
             results += '.' + extension
     if sha256:
         digest = hashlib.sha256()
-    with open(results, 'wb') as f:
+    with open(result, 'wb') as f:
         if type(filedata) is bytes:
             f.write(filedata)
             if sha256:
                 digest.update(filedata)
-            return result
-        while True:
-            buf = filedata.read(100*1024)
-            if sha256:
-                digest.update(buf)
-            if buf is None:
-                break
-            f.write(buf)
+        else:
+            while True:
+                buf = filedata.read(100*1024)
+                if sha256:
+                    digest.update(buf)
+                if buf is None:
+                    break
+                f.write(buf)
     if sha256:
         return (result, digest.hexdigest())
     return result
@@ -87,11 +87,14 @@ if get_server_type() == ServerType.DATA:
     from app.database import uploads
 
 
-    def save_file(*args, **kwargs) -> str:
+    def save_file(filedata: typing.Union[typing.BinaryIO, bytes],
+                  filename: typing.Optional[str]=None,
+                  extension: typing.Optional[str]=None,
+                  type: str='REPLACE_ME') -> int:
         """Save a file and register in database `uploads` table.
 
         Example:
-            
+
 
         Args:
             args: see the arguments from function `save_file_data`.
@@ -100,21 +103,21 @@ if get_server_type() == ServerType.DATA:
         Returns:
             str: The location of the saved file.
         """
-        filepath, digest = save_file_data(*args, sha256=True)
+        filepath, digest = save_file_data(filedata, filename=filename,
+                                          extension=extension, sha256=True)
         if filename is None:
             filename = os.path.basename(filepath)
         elif extension is not None:
             filename += '.' + extension
-        if 'filename' in kwargs or 'location' in kwargs or 'filesize' in kwargs:
-            raise KeyError('filename, location and filesize keys are set'
-                           ' automatically and should not be set manually.')
-        uploads.insert(**kwargs, filename=filename, location=filepath,
-                       filesize=os.path.getsize(filepath), sha256=digest)
-        return filepath
+
+        if os.path.getsize(filepath) == 0:
+            return False
+
+        return uploads.insert(filename=filename, location=filepath, type=type,
+                              filesize=os.path.getsize(filepath), sha256=digest)
 
 
-    def get_file(output: str='bytes', verify: bool=False,
-                 **kwargs) -> typing.Tuple[str, typing.Union[typing.BytesIO, bytes]]:
+    def get_file(id: int, output: str='bytes', verify: bool=False):
         """Get a file from the database and saved location.
 
         Retrieves a file using a query to the database and opening, and possibly
@@ -134,7 +137,7 @@ if get_server_type() == ServerType.DATA:
             (str, bytes): The original filename and filedata in bytes.
             (str, fp): The original filenamd the pointer to the opened file.
         """
-        find = uploads.export('filename', 'location', 'sha256', **kwargs)
+        find = uploads.export('filename', 'location', 'sha256', id=id)
         if len(find) == 0:
             raise ValueError('Uploaded data not found.' )
         if len(find) > 1:
@@ -142,10 +145,12 @@ if get_server_type() == ServerType.DATA:
         filename, location, sha256 = find[0]
         if verify and not verify_file(location, sha256):
             raise ValueError('File has bad sha256 digest.')
-        with open(location, 'rb') as f:
-            if output == 'bytes':
-                return (filename, f.read())
-            if output == 'filepointer':
-                return (filename, f)
-            raise ValueError('Invalid value for argument \'output\'.')
+        f = open(location, 'rb')
+        if output == 'bytes':
+            read = f.read()
+            f.close()
+            return (filename, read)
+        if output in ('filepointer', 'fp'):
+            return (filename, f)
+        raise ValueError('Invalid value for argument \'output\'.')
 

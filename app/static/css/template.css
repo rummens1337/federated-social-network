@@ -1,5 +1,5 @@
 body {
-  background-color: #3b3b3f;
+  background-color: #3f3b3e;
   color: #cdcdcd;
 
 }
@@ -71,7 +71,7 @@ body {
   z-index: 1; /* Stay on top */
   cursor: pointer;
   position: absolute;
-  top: 10px;
+  top: 27px;
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
@@ -99,6 +99,37 @@ body {
   transform: rotate(45deg) translate(-8px, -8px);
 }
 
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+  display:block;
+}
 
 /* Position and style the close button (top right corner) */
 .sidenav .closebtn {
@@ -114,7 +145,17 @@ body {
 #main {
   transition: margin-left .5s;
   margin: 0;
-  padding-bottom: 2.5rem;
+  padding-bottom: 7.5rem;
+}
+
+.alert {
+  position:fixed;
+  top:50%;
+  left:50%;
+  color:white;
+  background-color:#52B77C;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 
@@ -200,7 +241,8 @@ body {
   font: bold 16px 'Bitter', sans-serif;
   box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
   outline: 1px solid;
-  /*outline-color: rgba(255, 255, 255, .5);*/
+  outline-color: #032863;
+  outline-width: thin;
   outline-offset: 0px;
   text-shadow: none;
   transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
@@ -213,7 +255,7 @@ body {
   outline-offset: 15px;
   background-color: #011638;
   color: #DFF8EB;
-  text-shadow: 1px 1px 2px #427388; 
+  text-shadow: 1px 1px 2px #427388;
 }
 
 .input {

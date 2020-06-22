@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+{% block title %}Friends{% endblock %}
+{% block head %}
+    <link type="text/css"  rel="stylesheet" href="../static/css/friends.css"/>
+    <script type="text/javascript" src="../static/javascript/friends.js"></script>
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div>
+    <ul id='friend-list'>
+        <h1> Your friends:</h1>
+    </ul>
+</div>
+{% endblock %}

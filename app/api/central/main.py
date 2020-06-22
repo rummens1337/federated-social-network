@@ -12,6 +12,7 @@ def test():
 @blueprint.route('/')
 @blueprint.route('/index')
 @blueprint.route('/home')
+@jwt_required
 def index():
     return render_template('index.html')
 
@@ -23,13 +24,22 @@ def about():
 
 @blueprint.route('/signup')
 def signup():
-    return render_template('signup.html')
+    return render_template('login.html')
 
 @blueprint.route('/profile')
 @blueprint.route('/me')
 @jwt_required
 def profile():
     return render_template('profile.html')
+
+@blueprint.route('/profile/<username>')
+@jwt_required
+def profile_of(username):
+    return render_template('profile.html', username=username)
+
+@blueprint.route('/registerserver')
+def register():
+    return render_template('registerServer.html')
 
 @blueprint.route('/login')
 def login():
@@ -39,22 +49,15 @@ def login():
 def logout():
     return render_template('logout.html')
 
-@blueprint.route('/friend_list')
+@blueprint.route('/friends')
 @jwt_required
-def friend_list():
-    friends = [
-        {
-            'name': {'username': ' Bas'},
-            'photo': {'photo_url': "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"},
-            'profile': {'profile_url': "https://google.nl"}
-        },
-        {
-            'name': {'username': 'Felix'},
-            'photo': {'photo_url': "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"},
-            'profile': {'profile_url': "https://google.nl"}
-        },
-    ]
-    return render_template('friends_list.html', friend_list = friends)
+def friends():
+    return render_template('friends.html')
+
+@blueprint.route('/friend/requests')
+@jwt_required
+def friend_requests():
+    return render_template('friend/requests.html')
 
 @blueprint.route('/settings')
 @jwt_required
@@ -70,22 +73,27 @@ def settingsProfile():
         'email': {'emailadress': "coennusse@live.nl"}
         }
 
-    return render_template('settingsProfile.html', profile = profile)
+    return render_template('settings/profile.html', profile = profile)
 
 @blueprint.route('/settings/privacy')
 @jwt_required
 def privacy():
-    return render_template('settingsPrivacy.html')
+    return render_template('settings/privacy.html')
 
 @blueprint.route('/settings/server')
 @jwt_required
 def server():
-    return render_template('settingsServer.html')
+    return render_template('settings/server.html')
 
-@blueprint.route('/password')
+@blueprint.route('/settings/password')
 @jwt_required
 def password():
-    return render_template('password.html')
+    return render_template('settings/password.html')
+
+@blueprint.route('/settings/about')
+@jwt_required
+def personalInfo():
+    return render_template('settings/about.html')
 
 
 __all__ = ('blueprint')

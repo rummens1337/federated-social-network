@@ -7,3 +7,6 @@ flake8
 
 
 flask-jwt-extended
+flask-cors
+passlib
+Flask-Mail
