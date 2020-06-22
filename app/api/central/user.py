@@ -37,13 +37,14 @@ def createtestusers():
 
 @blueprint.route('/search', methods=['GET'])
 def search():
-    # TODO search users
-    query = request.args.get('query')
+    username = request.args.get('username')
+    # TODO: add 'like' function
+    userlist = users.export('username', username=username)
     
-    if query is None or query == "":
-        return bad_json_response("no seach given")
+    if userlist is None or userlist == "":
+        return bad_json_response("No users found")
 
-    return user()
+    return good_json_response({'users':userlist})
 
 
 @blueprint.route('/address', methods=['GET'])
