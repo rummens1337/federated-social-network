@@ -133,16 +133,16 @@ function setDataAddress(req) {
     requestJSON('GET', dataServer + '/api/user/hobby', null, showHobbies, function(req) {
         alertError(req.reason, 2000);
     });
-    requestJSON('GET', dataServer + '/api/friend/skill', null, showSkills, function(req) {
+    requestJSON('GET', dataServer + '/api/user/skill', null, showSkills, function(req) {
         alertError(req.reason, 2000);
     });
-    requestJSON('GET', dataServer + '/api/friend/language', null, showLanguages, function(req) {
+    requestJSON('GET', dataServer + '/api/user/language', null, showLanguages, function(req) {
         alertError(req.reason, 2000);
     });
 }
 
 $(document).ready(function() {
-    requestJSON('GET', '/api/user/address', null, setDataAddress, function(req) {
+    requestJSON('GET', centralServer + '/api/user/address', null, setDataAddress, function(req) {
         alertError(req.reason, 2000);
     });
 });

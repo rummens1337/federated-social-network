@@ -2,7 +2,8 @@ from flask import Blueprint, request
 import requests
 
 from app.api.utils import good_json_response, bad_json_response
-from app.database import users, friends, uploads, posts, skills, languages, hobbies
+from app.database import users, friends, uploads, posts
+from app.database import skills, languages, hobbies
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
@@ -314,11 +315,8 @@ def hobby():
 
     hobbies_details = hobbies.export('title', username=username)
 
-    if not hobbies_details:
-        return bad_json_response("You have no hobbies")
-
     hobbies_array = [{
-            'title' : item,
+            'title' : item
         }
         for item in hobbies_details
     ]
@@ -338,5 +336,47 @@ def addHobby():
     hobbies.insert(username=username, title=title)
 
     return good_json_response("success")
+
+# @blueprint.route('/deleteHobby', methods=['POST'])
+# # @jwt_required
+# def deleteHobby():
+#     # username = get_jwt_identity()
+#     username = request.form['username']
+
+#     title = request.form['title']
+
+#     hobbies.insert(username=username, title=title)
+
+#     return good_json_response("success")
+
+# @blueprint.route('/skills')
+# @jwt_required
+# def skills():
+#     username = get_jwt_identity()
+
+#     hobbies_details = hobbies.export('title', username=username)
+
+#     hobbies_array = [{
+#             'title' : item
+#         }
+#         for item in hobbies_details
+#     ]
+
+#     return good_json_response({
+#         'hobbies': hobbies_array
+#     })
+
+# @blueprint.route('/addSkill', methods=['POST'])
+# @jwt_required
+# def addSkill():
+#     username = get_jwt_identity()
+#     # username = request.form['username']
+
+#     title = request.form['title']
+
+#     hobbies.insert(username=username, title=title)
+
+#     return good_json_response("success")
+
 
 __all__ = ('blueprint')
