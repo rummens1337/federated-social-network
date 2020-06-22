@@ -8,6 +8,7 @@ from app.upload import get_file, save_file
 from app.api import auth_username
 from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 from passlib.hash import sha256_crypt
+from app.migrate import export
 blueprint = Blueprint('data_user', __name__)
 
 
@@ -305,5 +306,12 @@ def password():
         users.update({'password':newPassword}, username=username)
 
     return good_json_response("Succes")
+
+
+@blueprint.route('/export')
+@jwt_required
+def export():
+    username = get_jwt_identity()
+    return send_file(export(username), mimetype='application/zip')
 
 __all__ = ('blueprint')
