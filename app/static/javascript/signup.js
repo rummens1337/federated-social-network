@@ -30,8 +30,12 @@ function sign_up() {
       }
 
       function signupSucces() {
-        requestJSON("POST", form.select_server.value + "/api/mail/token", $(form).serialize())
-        window.location = "/?message=registered";
+        requestJSON("POST", form.select_server.value + "/api/mail/token", $(form).serialize(), mail_sent);
+      }
+
+      function mail_sent() {
+        toggle_modal("registerUser");
+        alertError("Registered account, please check you email to verify it!", 4000);
       }
 
       function signupFailed(response) {
