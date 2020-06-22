@@ -348,10 +348,11 @@ def password():
 def hobby():
     username = get_jwt_identity()
 
-    hobbies_details = hobbies.export('title', username=username)
+    hobbies_details = hobbies.export('id', 'title', username=username)
 
     hobbies_array = [{
-            'title' : item
+            'id' : item[0],
+            'title' : item[1]
         }
         for item in hobbies_details
     ]
@@ -372,46 +373,82 @@ def addHobby():
 
     return good_json_response("success")
 
-# @blueprint.route('/deleteHobby', methods=['POST'])
-# # @jwt_required
-# def deleteHobby():
-#     # username = get_jwt_identity()
-#     username = request.form['username']
+@blueprint.route('/deleteHobby', methods=['POST'])
+@jwt_required
+def deleteHobby():
+    username = get_jwt_identity()
 
-#     title = request.form['title']
+    id = request.form['id']
 
-#     hobbies.insert(username=username, title=title)
+    hobbies.delete(id=id)
 
-#     return good_json_response("success")
+    return good_json_response("success")
 
-# @blueprint.route('/skills')
-# @jwt_required
-# def skills():
-#     username = get_jwt_identity()
+@blueprint.route('/skill')
+@jwt_required
+def skill():
+    username = get_jwt_identity()
 
-#     hobbies_details = hobbies.export('title', username=username)
+    skill_details = skills.export(
+            'id', 'title', 'skill_level' ,username=username
+            )
 
-#     hobbies_array = [{
-#             'title' : item
-#         }
-#         for item in hobbies_details
-#     ]
+    skill_array = [{
+            'id' : item[0],
+            'title' : item[1],
+            'skill_level' : item[2]
+        }
+        for item in skill_details
+    ]
 
-#     return good_json_response({
-#         'hobbies': hobbies_array
-#     })
+    return good_json_response({
+        'skills': skill_array
+    })
 
-# @blueprint.route('/addSkill', methods=['POST'])
-# @jwt_required
-# def addSkill():
-#     username = get_jwt_identity()
-#     # username = request.form['username']
+@blueprint.route('/addSkill', methods=['POST'])
+@jwt_required
+def addSkill():
+    username = get_jwt_identity()
 
-#     title = request.form['title']
+    title = request.form['title']
+    skill_level = request.form['skill_level']
 
-#     hobbies.insert(username=username, title=title)
+    skills.insert(username=username, title=title, skill_level=skill_level)
 
-#     return good_json_response("success")
+    return good_json_response("success")
 
+@blueprint.route('/language')
+@jwt_required
+def language():
+    username = get_jwt_identity()
+
+    language_details = skills.export(
+            'id', 'title', 'skill_level' ,username=username
+            )
+
+    language_array = [{
+            'id' : item[0],
+            'title' : item[1],
+            'skill_level' : item[2]
+        }
+        for item in language_details
+    ]
+
+    return good_json_response({
+        'languages': language_array
+    })
+
+
+@blueprint.route('/addLanguage', methods=['POST'])
+@jwt_required
+def addLanguage():
+    username = get_jwt_identity()
+
+    title = request.form['title']
+    skill_level = request.form['skill_level']
+
+    languages.insert(username=username, title=title, skill_level=skill_level)
+
+    return good_json_response("success")
 
 __all__ = ('blueprint')
