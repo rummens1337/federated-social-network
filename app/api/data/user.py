@@ -206,23 +206,23 @@ def login():
     username = request.form['username']
     password = request.form['password']
 
-    # if username is None:
-    #     return bad_json_response("Bad request: Missing parameter 'username'.")
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    # if password is None:
-    #     return bad_json_response("Bad request: Missing parameter 'password'.")
+    if password is None:
+        return bad_json_response("Bad request: Missing parameter 'password'.")
 
-    # if not users.exists(username=username):
-    #     return bad_json_response("User does not exist yet. Feel 'free' to join FedNet! :)")
+    if not users.exists(username=username):
+        return bad_json_response("User does not exist yet. Feel 'free' to join FedNet! :)")
 
-    # password_db = users.export('password', username=username)[0]
+    password_db = users.export('password', username=username)[0]
 
-    # if not sha256_crypt.verify(password, password_db):
-    #     return bad_json_response("Password is incorrect.")
+    if not sha256_crypt.verify(password, password_db):
+        return bad_json_response("Password is incorrect.")
 
-    # email_confirmed = users.export_one("email_confirmed", username=username)
-    # if not email_confirmed:
-    #     return bad_json_response("The email for this user is not authenticated yet. Please check your email.")
+    email_confirmed = users.export_one("email_confirmed", username=username)
+    if not email_confirmed:
+        return bad_json_response("The email for this user is not authenticated yet. Please check your email.")
 
     # Login success
     access_token = create_access_token(identity=username)

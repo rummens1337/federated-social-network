@@ -16,20 +16,19 @@ CORS(app)
 def check_servertype():
     """Check the server that is supposed to be ran, change values accordingly."""
     app.config['MYSQL_DATABASE_CHARSET'] = 'utf8mb4'
+    app.config['JWT_ALGORITHM'] = 'RS256'
 
     if get_server_type() == ServerType.CENTRAL:
         from app.api.central.main import blueprint as main_routes
         app.config['JWT_TOKEN_LOCATION'] = ['cookies']
         app.config['JWT_COOKIE_CSRF_PROTECT'] = False  
-        app.config['JWT_PUBLIC_KEY'] = open('ssh-keyfile.pub').read()
         register_central(app)
-
+        app.config['JWT_PUBLIC_KEY'] = open('jwtRS256.key.pub').read()
     elif get_server_type() == ServerType.DATA:
         from app.api.data.main import blueprint as main_routes
         register_data(app)
-        app.config['JWT_PRIVATE_KEY'] = open('ssh-keyfile').read()
-        app.config['JWT_PUBLIC_KEY'] = open('ssh-keyfile.pub').read()
-        app.config['JWT_ALGORITHM'] = 'RS256'
+        app.config['JWT_PRIVATE_KEY'] = open('jwtRS256.key').read()
+        app.config['JWT_PUBLIC_KEY'] = open('jwtRS256.key.pub').read()
 
     app.register_blueprint(main_routes, url_prefix='/')
 
