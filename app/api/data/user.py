@@ -292,9 +292,11 @@ def edit():
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
         users.update({'firstname':new_firstname}, username=username)
+
     if 'new_lastname' in request.form:
         new_lastname = request.form['new_lastname']
         users.update({'lastname':new_lastname}, username=username)
+
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
@@ -303,18 +305,30 @@ def edit():
 
             if uploads_id is not False:
                 users.update({'uploads_id' : uploads_id}, username=username)
+
     if 'new_location' in request.form:
         new_location = request.form['new_location']
         users.update({'location':new_location}, username=username)
+
     if 'new_study' in request.form:
         new_study = request.form['new_study']
         users.update({'study':new_study}, username=username)
+
     if 'new_bio' in request.form:
         new_bio = request.form['new_bio']
         users.update({'bio':new_bio}, username=username)
+
     if 'new_password' in request.form:
         new_password = sha256_crypt.encrypt(request.form['new_password'])
         users.update({'password':new_password}, username=username)
+
+    if 'new_relationship_status' in request.form:
+        new_relationship_status = request.form['new_relationship_status']
+        users.update({'relationship_status':new_relationship_status}, username=username)
+
+    if 'new_phone_number' in request.form:
+        new_phone_number = request.form['new_phone_number']
+        users.update({'phone_number':new_phone_number}, username=username)
 
     return good_json_response("success")
 
