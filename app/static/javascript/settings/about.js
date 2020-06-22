@@ -65,8 +65,9 @@ function showSkill(skill) {
     var content =
     '<form enctype="multipart/form-data" name="skill">' +
     '<p>' + skill.title + '</p>' +
-    '<p><input type="range" min="1" max="100" value="' + skill.value + '" ></p>' +
-    '<button type="submit" class="btn-danger" onclick="deleteSkill(' + skill.id + ')">Delete</button>' +
+    '<p><input type="range" min="1" max="100" value="' + skill.skill_level + '" ></p>' +
+    '<button name="slider" type="submit" class="btn-danger" onclick="deleteSkill(' + skill.id + ')">Delete</button>' +
+    ' <button type="submit" class="btn-primary" onclick="updateSkill(' + skill.id + ')">Update</button>' +
     '</form>'
     $('#skills-list').append(content);
 }
@@ -86,12 +87,16 @@ function addSkill() {
     });
 };
 
+function deleteSkill(id) {
+    var data = {'id' : id}
+    requestJSON('POST', dataServer + '/api/user/deleteSkill', data, editSucces, editFailed);
+};
+
 // Language functions
 
 // Call this function when requesting an array of languages
 function showLanguages(req) {
-    // if (req.data.languages.length > 0) {
-    if (0 == 1) {
+    if (req.data.languages.length > 0) {
       for (i=0; i < req.data.languages.length; i++) {
           var languages = req.data.languages[i];
           showLanguage(languages);
@@ -104,10 +109,13 @@ function showLanguages(req) {
 
 // This function adds a language in the div 'languages'
 function showLanguage(language) {
-    var content = '<p>' + language.title + '</p>' +
-        '<p>' +
-        '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
-        '</p>'
+    var content =
+    '<form enctype="multipart/form-data" name="language">' +
+    '<p>' + language.title + '</p>' +
+    '<p><input type="range" min="1" max="100" value="' + language.skill_level + '" ></p>' +
+    '<button type="submit" class="btn-danger" onclick="deleteLanguage(' + language.id + ')">Delete</button>' +
+    ' <button type="submit" class="btn-primary" onclick="updateSkill(' + language.id + ')">Update</button>' +
+    '</form>'
     $('#languages-list').append(content);
 }
 
@@ -115,16 +123,21 @@ function showLanguage(language) {
 function addLanguage() {
     $("form[name='language']").validate({
         rules: {
-            new_skill: 'required',
-            new_level: 'required'
+            title: 'required',
+            skill_level: 'required'
         },
 
         submitHandler: function(form) {
             var data = new FormData(form)
 
-            requestJSONFile('POST', dataServer + '/api/user/edit', data, editSucces, editFailed);
+            requestJSONFile('POST', dataServer + '/api/user/addLanguage', data, editSucces, editFailed);
         }
     });
+};
+
+function deleteLanguage(id) {
+    var data = {'id' : id}
+    requestJSON('POST', dataServer + '/api/user/deleteLanguage', data, editSucces, editFailed);
 };
 
 // Main functions
