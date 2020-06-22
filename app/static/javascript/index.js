@@ -3,7 +3,6 @@ function setUserSettings(req) {
     document.getElementById('location').innerHTML = req.data.location;
     document.getElementById('name').innerHTML = req.data.firstname + ' ' + req.data.lastname;
     document.getElementById('study').innerHTML = req.data.study;
-    document.getElementById('bio').innerHTML = req.data.bio;
     document.getElementById('status').innerHTML = req.data.relationship_status;
     document.getElementById('number').innerHTML = req.data.phone_number;
 }
