@@ -190,8 +190,8 @@ def timeline():
             posts_array = posts_array + posts
 
     import datetime
-    posts_array = sorted(posts_array, key=lambda k: 
-        datetime.datetime.strptime(k['creation_date'], "%Y-%m-%d %H:%M:%S"), reverse=True) 
+    posts_array = sorted(posts_array, key=lambda k:
+        datetime.datetime.strptime(k['creation_date'], "%Y-%m-%d %H:%M:%S"), reverse=True)
 
     return good_json_response({
         'posts': posts_array
@@ -358,6 +358,7 @@ def hobby():
         'hobbies': hobbies_array
     })
 
+
 @blueprint.route('/addHobby', methods=['POST'])
 @jwt_required
 def addHobby():
@@ -370,6 +371,7 @@ def addHobby():
 
     return good_json_response("success")
 
+
 @blueprint.route('/deleteHobby', methods=['POST'])
 @jwt_required
 def deleteHobby():
@@ -380,6 +382,7 @@ def deleteHobby():
     hobbies.delete(id=id)
 
     return good_json_response("success")
+
 
 @blueprint.route('/skill')
 @jwt_required
@@ -402,6 +405,7 @@ def skill():
         'skills': skill_array
     })
 
+
 @blueprint.route('/addSkill', methods=['POST'])
 @jwt_required
 def addSkill():
@@ -414,12 +418,25 @@ def addSkill():
 
     return good_json_response("success")
 
+
+@blueprint.route('/deleteSkill', methods=['POST'])
+@jwt_required
+def deleteSkill():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+
+    skills.delete(id=id)
+
+    return good_json_response("success")
+
+
 @blueprint.route('/language')
 @jwt_required
 def language():
     username = get_jwt_identity()
 
-    language_details = skills.export(
+    language_details = languages.export(
             'id', 'title', 'skill_level' ,username=username
             )
 
@@ -447,5 +464,44 @@ def addLanguage():
     languages.insert(username=username, title=title, skill_level=skill_level)
 
     return good_json_response("success")
+
+
+@blueprint.route('/deleteLanguage', methods=['POST'])
+@jwt_required
+def deleteLanguage():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+
+    languages.delete(id=id)
+
+    return good_json_response("success")
+
+
+@blueprint.route('/editSkill', methods=['POST'])
+@jwt_required
+def editSkill():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+    skill_level = request.form['skill_level']
+
+    skills.update({'skill_level':skill_level}, id=id)
+
+    return good_json_response('success')
+
+
+@blueprint.route('/editLanguage', methods=['POST'])
+@jwt_required
+def editLanguage():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+    skill_level = request.form['skill_level']
+
+    languages.update({'skill_level':skill_level}, id=id)
+
+    return good_json_response('success')
+
 
 __all__ = ('blueprint')
