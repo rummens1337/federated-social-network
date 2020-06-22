@@ -1,9 +1,10 @@
 var centralServer = window.location.origin;
 
+// Hobby functions
+
 // Call this function when requesting an array of hobbies
 function showHobbies(req) {
-    // if (req.data.hobbies.length > 0) {
-    if (0 == 1) {
+    if (req.data.hobbies.length > 0) {
       for (i=0; i < req.data.hobbies.length; i++) {
           var hobby = req.data.hobbies[i];
           showHobby(hobby);
@@ -16,10 +17,28 @@ function showHobbies(req) {
 
 // This function adds a hobby in the div 'hobbies'
 function showHobby(hobby) {
-    var content = ' <li class="hobby-selected"><div class="name">' +
-        hobby.title + '</div></li>';
+    var content = '<p>' + hobby.title + '</p>' +
+        '<p>' +
+        '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
+        '</p>'
     $('#hobbies-list').append(content);
 }
+
+function addHobby() {
+    $("form[name='hobby']").validate({
+        rules: {
+            new_hobby: 'required'
+        },
+
+        submitHandler: function(form) {
+            var data = new FormData(form)
+
+            requestJSONFile('POST', dataServer + '/api/user/addHobby', data, editSucces, editFailed);
+        }
+    });
+};
+
+// Skills functions
 
 // Call this function when requesting an array of skills
 function showSkills(req) {
@@ -37,10 +56,29 @@ function showSkills(req) {
 
 // This function adds a skill in the div 'skills'
 function showSkill(skill) {
-    var content = ' <li class="skill-selected"><div class="name">' +
-        skill.title + '</div></li>';
+    var content = '<p>' + skill.title + '</p>' +
+        '<p>' +
+        '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
+        '</p>'
     $('#skill-list').append(content);
 }
+
+function addSkill() {
+    $("form[name='skill']").validate({
+        rules: {
+            new_skill: 'required',
+            new_level: 'required'
+        },
+
+        submitHandler: function(form) {
+            var data = new FormData(form)
+
+            requestJSONFile('POST', dataServer + '/api/user/edit', data, editSucces, editFailed);
+        }
+    });
+};
+
+// Language functions
 
 // Call this function when requesting an array of languages
 function showLanguages(req) {
@@ -57,21 +95,48 @@ function showLanguages(req) {
 }
 
 // This function adds a language in the div 'languages'
-function showLanguage(showLanguage) {
-    var content = ' <li class="language-selected"><div class="name">' +
-        language.title + '</div></li>';
+function showLanguage(language) {
+    var content = '<p>' + language.title + '</p>' +
+        '<p>' +
+        '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
+        '</p>'
     $('#languages-list').append(content);
+}
+
+
+function addLanguage() {
+    $("form[name='language']").validate({
+        rules: {
+            new_skill: 'required',
+            new_level: 'required'
+        },
+
+        submitHandler: function(form) {
+            var data = new FormData(form)
+
+            requestJSONFile('POST', dataServer + '/api/user/edit', data, editSucces, editFailed);
+        }
+    });
+};
+
+// Main functions
+function editSucces() {
+    window.location.reload();
+}
+
+function editFailed(response) {
+    alertError(response.reason, 2000);
 }
 
 function setDataAddress(req) {
     dataServer = req.data.address;
-    requestJSON('GET', dataServer + '/api/friend/all', null, showHobbies, function(req) {
+    requestJSON('GET', dataServer + '/api/user/hobby', null, showHobbies, function(req) {
         alertError(req.reason, 2000);
     });
-    requestJSON('GET', dataServer + '/api/friend/all', null, showSkills, function(req) {
+    requestJSON('GET', dataServer + '/api/friend/skill', null, showSkills, function(req) {
         alertError(req.reason, 2000);
     });
-    requestJSON('GET', dataServer + '/api/friend/all', null, showLanguages, function(req) {
+    requestJSON('GET', dataServer + '/api/friend/language', null, showLanguages, function(req) {
         alertError(req.reason, 2000);
     });
 }
