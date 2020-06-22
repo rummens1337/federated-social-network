@@ -384,22 +384,27 @@ def deleteHobby():
 
     return good_json_response("success")
 
-# @blueprint.route('/skills')
+@blueprint.route('/skill', methods=['POST'])
 # @jwt_required
-# def skills():
-#     username = get_jwt_identity()
+def skill():
+    # username = get_jwt_identity()
+    username = request.form['username']
 
-#     hobbies_details = hobbies.export('title', username=username)
+    skill_details = skills.export(
+            'id', 'title', 'skill_level' ,username=username
+            )
 
-#     hobbies_array = [{
-#             'title' : item
-#         }
-#         for item in hobbies_details
-#     ]
+    skill_array = [{
+            'id' : item[0],
+            'title' : item[1],
+            'skill_level' : item[2]
+        }
+        for item in skill_details
+    ]
 
-#     return good_json_response({
-#         'hobbies': hobbies_array
-#     })
+    return good_json_response({
+        'skills': skill_array
+    })
 
 # @blueprint.route('/addSkill', methods=['POST'])
 # @jwt_required
