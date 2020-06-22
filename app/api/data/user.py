@@ -327,19 +327,15 @@ def hobby():
         'hobbies': hobbies_array
     })
 
-@blueprint.route('/addhobby', methods=['POST'])
-# @jwt_required
-def addhobby():
-    # username = get_jwt_identity()
-    username = request.form['username']
+@blueprint.route('/addHobby', methods=['POST'])
+@jwt_required
+def addHobby():
+    username = get_jwt_identity()
+    # username = request.form['username']
 
     title = request.form['title']
-    body = request.form['body']
 
-    if not body:
-        hobbies.insert(username=username, title=title)
-    else:
-        hobbies.insert(username=username, title=title, body=body)
+    hobbies.insert(username=username, title=title)
 
     return good_json_response("success")
 
