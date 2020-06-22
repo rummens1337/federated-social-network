@@ -74,6 +74,7 @@ function getProfile(req) {
       dataServer + '/api/user?username=' + username;
     requestJSON('GET', url, null, profile, function(req) {
       alertError(req.reason, 2000);
+      location.href = "/";
     });
 }
 
@@ -87,6 +88,7 @@ function loadProfile(u) {
   
     requestJSON('GET', url, null, getProfile, function(req) {
       alertError(req.reason, 2000);
+      location.href = "/";
     });
 }
 

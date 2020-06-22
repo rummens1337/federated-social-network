@@ -6,23 +6,24 @@ function search_func() {
 
       submitHandler: function(form) {
         var input_data = $('input[id=search_input]');
-        var data = 'username=' + input_data.val();
-        var username = 'test'
+        var data = '?username=' + input_data.val();
 
         function userFound(req) {
-          alertError(req.reason, 2000)
+          users = req.data.users
+          // TODO: populate the searchfield
+          alertError(req.data.users, 2000)
         }
 
         function noUser(req) {
           alertError(req.reason, 2000)
         }
 
-        function search(req) {
-          dataServer = req.data.address;
-          requestJSON('GET', dataServer + '/api/search/search', $(form).serialize(), userFound, noUser);
-        }
+        // function search(req) {
+        //   dataServer = req.data.address;
+        //   requestJSON('GET', dataServer + '/api/search/search', $(form).serialize(), userFound, noUser);
+        // }
 
-        requestJSON('GET', 'api/user/search', $({"user":"test"}).serialize(), userFound, noUser);
+        requestJSON('GET', '/api/user/search' + data, null, userFound, noUser);
       }
     });
 }
