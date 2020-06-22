@@ -351,8 +351,8 @@ def hobby():
     hobbies_details = hobbies.export('id', 'title', username=username)
 
     hobbies_array = [{
-            'title' : item[0],
-            'id' : item[1]
+            'id' : item[0],
+            'title' : item[1]
         }
         for item in hobbies_details
     ]
