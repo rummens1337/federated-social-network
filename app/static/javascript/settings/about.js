@@ -17,10 +17,15 @@ function showHobbies(req) {
 
 // This function adds a hobby in the div 'hobbies'
 function showHobby(hobby) {
-    var content = '<p>' + hobby.title + '</p>' +
+    document.getElementById('id').value = hobby.id;
+    var content =
+    '<form name="deleteHobby' +
+        '<input type="hidden" id="id" name="id">'
+        '<p>' + hobby.title + '</p>' +
         '<p>' +
-        '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
-        '</p>'
+            '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
+        '</p>' +
+    '</form>'
     $('#hobbies-list').append(content);
 }
 
@@ -34,6 +39,16 @@ function addHobby() {
             var data = new FormData(form)
 
             requestJSONFile('POST', dataServer + '/api/user/addHobby', data, editSucces, editFailed);
+        }
+    });
+};
+
+function deleteHobby() {
+    $("form[name='deleteHobby']").validate({
+        submitHandler: function(form) {
+            var data = new FormData(form)
+
+            requestJSONFile('POST', dataServer + '/api/user/deleteHobby', data, editSucces, editFailed);
         }
     });
 };
