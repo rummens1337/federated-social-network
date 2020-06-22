@@ -2,7 +2,7 @@
 {% set active_item = 'info' %}
 
 {% block head %}
-<script type="text/javascript" src="../static/javascript/settings/about.js"></script>
+    <script type="text/javascript" src="../static/javascript/settings/about.js"></script>
 {{ super() }}
 {% endblock %}
 
@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label> Skill level </label>
+                        <label> Language level </label>
                         <input type="range" min="1" max="100" value="50" class="slider" name='level'>
                     </div>
 
@@ -136,7 +136,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn-primary btn mx-auto">Add language</button>
+                        <button type="submit" class="btn-primary btn mx-auto">Add skill</button>
                     </div>
                 </form>
             </div>
