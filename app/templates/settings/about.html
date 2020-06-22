@@ -7,7 +7,66 @@
 {% endblock %}
 
 {% block content_settings %}
-<!-- Register Modal box. -->
+<!-- Add Hobby -->
+<div class="modal fade" id="addHobby" tabindex="-1" role="dialog" aria-labelledby="addHobby" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Hobby</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form name="hobby">
+                    <div class="form-group">
+                        <label> Hobby </label>
+                        <input id='hobby' type='text' name="title"> </input>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-primary btn mx-auto" onclick="addHobby();">Add hobby</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add skill -->
+<div class="modal fade" id="addSkill" tabindex="-1" role="dialog" aria-labelledby="addSkill" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Skill</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form name="skill">
+                    <div class="form-group">
+                        <label> Skill </label>
+                        <input id='skill' type='text' name="new_skill" /> </input>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Skill level </label>
+                        <input type="range" min="1" max="100" value="50" class="slider" name='level'>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-primary btn mx-auto" onclick="addSkill();">Add skill</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add language -->
 <div class="modal fade" id="addLanguage" tabindex="-1" role="dialog" aria-labelledby="addLanguage" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -104,39 +163,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn-primary btn mx-auto">Add language</button>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addSkill" tabindex="-1" role="dialog" aria-labelledby="addSkill" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Skill</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <form name="skill">
-                    <div class="form-group">
-                        <label> Skill </label>
-                        <input id='skill' type='text' name="new_skill" /> </input>
-                    </div>
-
-                    <div class="form-group">
-                        <label> Skill level </label>
-                        <input type="range" min="1" max="100" value="50" class="slider" name='level'>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn-primary btn mx-auto">Add skill</button>
+                        <button type="submit" class="btn-primary btn mx-auto" onclick="addLanguage();">Add language</button>
                     </div>
                 </form>
             </div>
@@ -144,37 +171,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addHobby" tabindex="-1" role="dialog" aria-labelledby="addHobby" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Hobby</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <form name="hobby">
-                    <div class="form-group">
-                        <label> Hobby </label>
-                        <input id='hobby' type='text' name="new_hobby"> </input>
-                    </div>
-
-                    <div class="form-group">
-                        <label> Description </label>
-                        <textarea id='info' class="form-control form-control-settings" name="new_info" rows="7"></textarea>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn-primary btn mx-auto">Add language</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- Main -->
 <div id="main" class="col-xl-8">
     <div class="title">
         <h2 class="font-header-settings">About you</h2>

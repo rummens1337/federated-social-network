@@ -29,13 +29,10 @@ function create_post() {
   });
 }
 
-function loadSucces(req) {
-  showPostsArray(req);
-}
-
 // This function adds a post in the div 'posts_div'
-function showPost(postdata) {
-  var content = `<h5 style="color:#52B77C;"><b>`+ postdata.title + `</b></h5>
+function showPost(postdata, user=null) {
+  var content = `<h5 style="color:#52B77C;"><b>`+ ((user != null) ? (user + '</b><br>') : "") + 
+    postdata.title + `</b></h5>
     <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
     <p class="w3-text-grey">` + postdata.body + `</p>
     <hr>`
@@ -57,6 +54,26 @@ function showPostsArray(req) {
   }
 }
 
+// Get the timeline of a user
+//  TODO: filter on date
+function showTimelineArray(req) {
+    var user, posts, post;
+    if (req.data.length > 0) {
+        for (i=0; i < req.data.length; i++) {
+            user = req.data[i].username;
+            posts = req.data[i].posts;
+            for (j=0; j < posts.length; j++) {
+                post = posts[j];
+                showPost(post, user);
+            }
+        }
+    }
+    else {
+      $('#posts_div').append('<p class="w3-text-grey">There are no posts on this timeline &#128532.</p>\
+                              <img src="/static/images/no-posts.jpg" width=100% alt="Y no posts bruh Q_Q">');
+    }
+  }
+
 function loadFailed(req, XMLHttpRequest, textStatus, errorThrown) {
   alertError(req.reason, 2000)
 }
@@ -66,14 +83,14 @@ function loadPosts(req) {
   var url = (username == null || username == "") ?
     dataServer + '/api/user/posts' :
     dataServer + '/api/user/posts?username=' + username;
-  requestJSON('GET', url, null, loadSucces, loadFailed);
+  requestJSON('GET', url, null, showPostsArray, loadFailed);
 }
 
 // Load the timeline
 function loadTimeline(req) {
   var dataServer = req.data.address;
   var url = dataServer + '/api/user/timeline';
-  requestJSON('GET', url, null, loadSucces, loadFailed);
+  requestJSON('GET', url, null, showTimelineArray, loadFailed);
 }
 
 // Location can be 'posts' for a usernames own posts. Or 'timeline'
