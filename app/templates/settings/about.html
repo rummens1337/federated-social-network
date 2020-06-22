@@ -2,7 +2,7 @@
 {% set active_item = 'info' %}
 
 {% block head %}
-<script type="text/javascript" src="../static/javascript/settingsAbout.js"></script>
+<script type="text/javascript" src="../static/javascript/settings/about.js"></script>
 {{ super() }}
 {% endblock %}
 
@@ -138,7 +138,6 @@
                     <div class="modal-footer">
                         <button type="submit" class="btn-primary btn mx-auto">Add language</button>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -159,7 +158,7 @@
                 <form name="hobby">
                     <div class="form-group">
                         <label> Hobby </label>
-                        <input id='hobby' type='text' name="new_hobby" /> </input>
+                        <input id='hobby' type='text' name="new_hobby"> </input>
                     </div>
 
                     <div class="form-group">
@@ -183,18 +182,20 @@
 
     <ul class="style1">
         <form enctype="multipart/form-data" name="settings">
-            <li>
+            <li id='hobbies-list'>
                 <p><b> Hobbies</b></p>
-                    <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addHobby" data-whatever="@getbootstrap">Add hobby</button>
             </li>
-            <li>
+            <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addHobby" data-whatever="@getbootstrap">Add hobby</button>
+
+            <li id='skills-list'>
                 <p><b>Skills</b></p>
-                <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addSkill" data-whatever="@getbootstrap">Add skill</button>
             </li>
-            <li>
+            <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addSkill" data-whatever="@getbootstrap">Add skill</button>
+
+            <li id='languages-list'>
                 <p><b>Languages</b></p>
-                <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addLanguage" data-whatever="@getbootstrap">Add language</button>
             </li>
+            <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addLanguage" data-whatever="@getbootstrap">Add language</button>
         </form>
     </ul>
 </div>
