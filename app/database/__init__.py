@@ -55,10 +55,10 @@ def cursor():
         con.close()
 
 
-def where(data: dict, delimiter: str=' AND ') -> str:
+def where(data: dict, equal: str='=', delimiter: str=' AND ') -> str:
     return delimiter.join(
-        '{} = {}'.format(d[0], percent_type(d[1]))
-        for d in data.items()
+        '{} {} %s'.format(d, equal)
+        for d in data.keys()
     )
 
 
@@ -107,7 +107,8 @@ class TableLoader:
         return self.export(*args, **kwargs)[0]
 
     def export(self, *args, order: str=None, order_direction: str='desc',
-               limit: int=None, **kwargs):
+               limit: int=None, as_dict: bool=False, like_prefix: bool=False,
+               like_suffix: bool=False, **kwargs):
         """Export one or more entries from the table.
 
         Note:
@@ -177,7 +178,16 @@ class TableLoader:
                 'SELECT ' + ','.join(args) +
                 ' FROM ' + self._table +
                 (
-                    ' WHERE ' + where(kwargs)
+                    (
+                        ' WHERE ' + where(
+                            kwargs,
+                            equal=(
+                                '='
+                                if not (like_prefix or like_suffix) else
+                                'LIKE'
+                            )
+                        )
+                    )
                     if len(kwargs) > 0 else
                     ''
                 ) +
@@ -187,11 +197,26 @@ class TableLoader:
                     if limit is not None else
                     ''
                 ),
-                tuple(kwargs.values())
+                tuple(
+                    (
+                        ('%' if like_prefix else '') +
+                        value +
+                        ('%' if like_suffix else '')
+                    )
+                    if type(value) is str else
+                    value
+                    for value in kwargs.values()
+                )
             )
+            result = cur.fetchall()
+            if as_dict:
+                description = tuple(d[0] for d in cur.description)
+                return tuple(
+                    dict(zip(description, d)) for d in result
+                )
             return tuple(
                 d if len(d) > 1 else d[0]
-                for d in cur.fetchall()
+                for d in result
             )
 
     def insert(self, lastrowid=True, **kwargs):
