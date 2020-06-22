@@ -410,6 +410,17 @@ def addSkill():
 
     return good_json_response("success")
 
+@blueprint.route('/deleteSkill', methods=['POST'])
+@jwt_required
+def deleteSkill():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+
+    skills.delete(id=id)
+
+    return good_json_response("success")
+
 @blueprint.route('/language')
 @jwt_required
 def language():
@@ -441,6 +452,17 @@ def addLanguage():
     skill_level = request.form['skill_level']
 
     languages.insert(username=username, title=title, skill_level=skill_level)
+
+    return good_json_response("success")
+
+@blueprint.route('/deleteLanguage', methods=['POST'])
+@jwt_required
+def deleteLanguage():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+
+    languages.delete(id=id)
 
     return good_json_response("success")
 
