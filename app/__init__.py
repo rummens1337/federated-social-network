@@ -21,11 +21,15 @@ def check_servertype():
         from app.api.central.main import blueprint as main_routes
         app.config['JWT_TOKEN_LOCATION'] = ['cookies']
         app.config['JWT_COOKIE_CSRF_PROTECT'] = False  
+        app.config['JWT_PUBLIC_KEY'] = open('ssh-keyfile.pub').read()
         register_central(app)
 
     elif get_server_type() == ServerType.DATA:
         from app.api.data.main import blueprint as main_routes
         register_data(app)
+        app.config['JWT_PRIVATE_KEY'] = open('ssh-keyfile').read()
+        app.config['JWT_PUBLIC_KEY'] = open('ssh-keyfile.pub').read()
+        app.config['JWT_ALGORITHM'] = 'RS256'
 
     app.register_blueprint(main_routes, url_prefix='/')
 
