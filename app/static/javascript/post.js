@@ -32,7 +32,7 @@ function create_post() {
 // This function adds a post in the div 'posts_div'
 function showPost(postdata, timeline=false) {
     var user = timeline ? postdata.username : null;
-    var content = `<h5 style="color:#52B77C;">@<b>`+ ((user != null) ? (user + '</b><br>') : "") + 
+    var content = `<h5 style="color:#52B77C;"><b>`+ ((user != null) ? ('@' + user + '</b><br>') : "") + 
         postdata.title + `</b></h5>
         <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
         <p class="w3-text-grey">` + postdata.body + `</p>
