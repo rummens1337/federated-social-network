@@ -22,6 +22,14 @@ def index():
 def about():
     return render_template('about.html')
 
+@blueprint.route('/about/serverSetup')
+def serverSetup():
+    return render_template('/about/serverSetup.html')
+
+@blueprint.route('/about/joinServer')
+def joinServer():
+    return render_template('/about/joinServer.html')
+
 @blueprint.route('/signup')
 def signup():
     return render_template('login.html')
