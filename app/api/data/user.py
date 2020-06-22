@@ -307,19 +307,18 @@ def password():
     return good_json_response("Succes")
 
 
-@blueprint.route('/hobby', methods=['POST'])
+@blueprint.route('/hobby')
 @jwt_required
 def hobby():
     username = get_jwt_identity()
 
-    hobbies_details = hobbies.export('title', 'body', username=username)
+    hobbies_details = hobbies.export('title', username=username)
 
     if not hobbies_details:
         return bad_json_response("You have no hobbies")
 
     hobbies_array = [{
             'title' : item[0],
-            'body' : item[1],
         }
         for item in hobbies_details
     ]
@@ -327,5 +326,21 @@ def hobby():
     return good_json_response({
         'hobbies': hobbies_array
     })
+
+@blueprint.route('/addhobby', methods=['POST'])
+# @jwt_required
+def addhobby():
+    # username = get_jwt_identity()
+    username = request.form['username']
+
+    title = request.form['title']
+    body = request.form['body']
+
+    if not body:
+        hobbies.insert(username=username, title=title)
+    else:
+        hobbies.insert(username=username, title=title, body=body)
+
+    return good_json_response("success")
 
 __all__ = ('blueprint')
