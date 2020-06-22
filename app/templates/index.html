@@ -4,6 +4,10 @@
 <!-- Send the username to the post script using the loadPosts funtction -->
 <script type="text/javascript" src="../static/javascript/post.js"></script>
 <script type="text/javascript" src="../static/javascript/index.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
 <link rel="stylesheet" href="../static/css/index.css">
 
 <script>$(document).ready( function() {
@@ -102,7 +106,15 @@
                             <textarea type="text" name="title" class="form-control" placeholder="Title your post here!"></textarea>
                         </div>
                         <div class="form-group">
-                            <textarea name="body" class="form-control" placeholder="Whatcha thinking bout" rows="2" style="resize: none;"></textarea>
+                            <textarea id="posttext" name="body" class="form-control" placeholder="Whatcha thinking bout" rows="2" style="resize: none;"></textarea>
+                            <script>
+                                $(document).ready(function() {
+                                    $("#posttext").emojioneArea({
+                                        pickerPosition: "bottom",
+                                        tonesStyle: "bullet"
+                                    });
+                                })
+                                </script>
                         </div>
                         <div class="form-group">
                             <div class="text-center" >
