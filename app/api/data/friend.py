@@ -15,7 +15,7 @@ General functions
 """
 @blueprint.route('/all')
 @jwt_required
-def get_friends():
+def all_friends():
     """ Returns all the friends of a user
 
     Returns: all the friends of a user
@@ -26,6 +26,21 @@ def get_friends():
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
+    return good_json_response({
+        'friends': get_friends(username)
+    })
+
+    
+
+def get_friends(username):
+    """ Returns all the friends of a user
+
+    Note: make sure username is validated before!
+
+    Returns: all the friends of a user
+
+    """
+
     friendships = friends.export('friend', username=username, accepted=1)
     friendships2 = friends.export('username', friend=username, accepted=1)
 
@@ -35,9 +50,7 @@ def get_friends():
         for item in friendships + friendships2
     ]
 
-    return good_json_response({
-        'friends': friends_array
-    })
+    return friends_array
 
 
 @blueprint.route('/requests')
