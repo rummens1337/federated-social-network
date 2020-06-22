@@ -23,11 +23,13 @@ def register():
     name = request.form['name']
     address = request.form['address']
 
-    if ping(address):
+    pub_key = ping(address)
+    if pub_key:
         if not servers.exists(address=address):
-            result = servers.insert(name=name, address=address)
+            result = servers.insert(name=name, address=address, pub_key=pub_key)
             return good_json_response({
-                'server_id': result
+                'server_id': result,
+                'pub_key':pub_key
             })
         else:
             name = servers.export_one('name', address=address)
