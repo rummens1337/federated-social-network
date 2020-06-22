@@ -63,11 +63,12 @@ function showSkills(req) {
 // This function adds a skill in the div 'skills'
 function showSkill(skill) {
     var content =
-    '<form enctype="multipart/form-data" name="skill">' +
+    '<form enctype="multipart/form-data" name="editSkill">' +
     '<p>' + skill.title + '</p>' +
-    '<p><input type="range" min="1" max="100" value="' + skill.skill_level + '" ></p>' +
+    '<input name="id" type="hidden" value="' + skill.id + '">' +
+    '<p><input name="skill_level" input type="range" min="1" max="100" value="' + skill.skill_level + '" ></p>' +
     '<button name="slider" type="submit" class="btn-danger" onclick="deleteSkill(' + skill.id + ')">Delete</button>' +
-    ' <button type="submit" class="btn-primary" onclick="updateSkill(' + skill.id + ')">Update</button>' +
+    ' <button type="submit" class="btn-primary" onclick="updateSkill()">Update</button>' +
     '</form>'
     $('#skills-list').append(content);
 }
@@ -82,7 +83,22 @@ function addSkill() {
         submitHandler: function(form) {
             var data = new FormData(form)
 
-            requestJSONFile('POST', dataServer + '/api/user/addSkill', data, editSucces, editFailed);
+            requestJSON('POST', dataServer + '/api/user/addSkill', data, editSucces, editFailed);
+        }
+    });
+};
+
+function updateSkill() {
+    $("form[name='editSkill']").validate({
+        rules: {
+            skill_level: 'required',
+            id: 'required'
+        },
+
+        submitHandler: function(form) {
+            var data = new FormData(form)
+
+            requestJSONFile('POST', dataServer + '/api/user/editSkill', data, editSucces, editFailed);
         }
     });
 };
@@ -110,11 +126,12 @@ function showLanguages(req) {
 // This function adds a language in the div 'languages'
 function showLanguage(language) {
     var content =
-    '<form enctype="multipart/form-data" name="language">' +
+    '<form enctype="multipart/form-data" name="editLanguage">' +
     '<p>' + language.title + '</p>' +
-    '<p><input type="range" min="1" max="100" value="' + language.skill_level + '" ></p>' +
+    '<input name="id" type="hidden" value="' + language.id + '">' +
+    '<p><input name="skill_level" type="range" min="1" max="100" value="' + language.skill_level + '" ></p>' +
     '<button type="submit" class="btn-danger" onclick="deleteLanguage(' + language.id + ')">Delete</button>' +
-    ' <button type="submit" class="btn-primary" onclick="updateSkill(' + language.id + ')">Update</button>' +
+    ' <button type="submit" class="btn-primary" onclick="updateLanguage()">Update</button>' +
     '</form>'
     $('#languages-list').append(content);
 }
@@ -138,6 +155,21 @@ function addLanguage() {
 function deleteLanguage(id) {
     var data = {'id' : id}
     requestJSON('POST', dataServer + '/api/user/deleteLanguage', data, editSucces, editFailed);
+};
+
+function updateLanguage() {
+    $("form[name='editLanguage']").validate({
+        rules: {
+            skill_level: 'required',
+            id: 'required'
+        },
+
+        submitHandler: function(form) {
+            var data = new FormData(form)
+
+            requestJSONFile('POST', dataServer + '/api/user/editLanguage', data, editSucces, editFailed);
+        }
+    });
 };
 
 // Main functions
