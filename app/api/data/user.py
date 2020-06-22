@@ -479,14 +479,27 @@ def deleteLanguage():
 
 
 @blueprint.route('/editSkill', methods=['POST'])
-# @jwt_required
+@jwt_required
 def editSkill():
-    # username = get_jwt_identity()
+    username = get_jwt_identity()
 
     id = request.form['id']
     skill_level = request.form['skill_level']
 
     skills.update({'skill_level':skill_level}, id=id)
+
+    return good_json_response('success')
+
+
+@blueprint.route('/editLanguage', methods=['POST'])
+@jwt_required
+def editLanguage():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+    skill_level = request.form['skill_level']
+
+    languages.update({'skill_level':skill_level}, id=id)
 
     return good_json_response('success')
 
