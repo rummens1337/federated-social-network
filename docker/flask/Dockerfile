@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev\
     python3-pip \
     vim \
+    ssh-client \
  && apt-get clean \
  && apt-get autoremove \
  && rm -rf /var/lib/apt/lists/*
@@ -49,6 +50,8 @@ ENV FLASK_ENV development
 ENV WAIT_VERSION 2.7.2
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
 RUN chmod +x /wait
+
+RUN ssh-keygen -t rsa -b 4096 -f ./ssh-keyfile -q -N ""
 
 CMD python3 run.py
 # CMD ["python3", "run.py", "-s", $TYPE, "-p", $PORT]

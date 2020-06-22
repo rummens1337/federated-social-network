@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y apache2 \
     python3-dev\
     python3-pip \
     vim \
+    ssh-client \
  && apt-get clean \
  && apt-get autoremove \
  && rm -rf /var/lib/apt/lists/*
@@ -50,5 +51,7 @@ ENV FLASK_APP app
 EXPOSE 80
 
 WORKDIR /var/www/apache-flask/
+
+RUN ssh-keygen -t rsa -b 4096 -f ./ssh-keyfile -q -N ""
 
 CMD  /usr/sbin/apache2ctl -D FOREGROUND
