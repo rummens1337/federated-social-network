@@ -27,7 +27,7 @@ function showHobby(hobby) {
 function addHobby() {
     $("form[name='hobby']").validate({
         rules: {
-            new_hobby: 'required'
+            title: 'required'
         },
 
         submitHandler: function(form) {
