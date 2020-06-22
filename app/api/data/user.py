@@ -26,7 +26,7 @@ def user():
     user_details = users.export(
         'username', 'firstname', 'lastname', 'uploads_id',
         'location', 'study', 'bio', 'creation_date',
-        'last_edit_date',
+        'last_edit_date', 'relationship_status', 'phone_number',
         username=username
     )
 
@@ -63,7 +63,10 @@ def user():
         'study': user_details[0][5],
         'bio': user_details[0][6],
         'creation_date': str(user_details[0][7]),
-        'last_edit_date': str(user_details[0][8])
+        'last_edit_date': str(user_details[0][8]),
+        'relationship_status': user_details[0][9],
+        'phone_number': user_details[0][10]
+
     }
 
     return good_json_response({**basic_info, **sensitive_info})
