@@ -373,17 +373,17 @@ def addHobby():
 
     return good_json_response("success")
 
-# @blueprint.route('/deleteHobby', methods=['POST'])
-# # @jwt_required
-# def deleteHobby():
-#     # username = get_jwt_identity()
-#     username = request.form['username']
+@blueprint.route('/deleteHobby', methods=['POST'])
+@jwt_required
+def deleteHobby():
+    username = get_jwt_identity()
 
-#     title = request.form['title']
+    id = request.form['id']
+    title = request.form['title']
 
-#     hobbies.insert(username=username, title=title)
+    hobbies.delete(id=id)
 
-#     return good_json_response("success")
+    return good_json_response("success")
 
 # @blueprint.route('/skills')
 # @jwt_required
