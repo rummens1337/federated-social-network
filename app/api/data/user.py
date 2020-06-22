@@ -155,7 +155,8 @@ def get_posts(username):
     posts_array = [{
             'title' : item[0],
             'body' : item[1],
-            'creation_date' : str(item[2])
+            'creation_date' : str(item[2]),
+            'username'  : username
         }
         for item in user_posts
     ]
@@ -174,13 +175,7 @@ def timeline():
         return bad_json_response('user not found')
 
     # Get the user's own posts
-    posts_array = []
-    posts = get_posts(username)
-    if len(posts) != 0:
-        posts_array.append({
-            'username'  : username,
-            'posts'     : posts
-        })
+    posts_array = get_posts(username)
 
     # Get the user's friends
     friends = get_friends(username)
@@ -191,13 +186,11 @@ def timeline():
         response = requests.get(friend_address + '/api/user/posts?username='+friend, headers=request.headers).json()
         if response['success'] == True:
             posts = response['data']['posts']
-            if len(posts) != 0:
-                posts_array.append({
-                    'username'  : friend,
-                    'posts'     : posts
-                })
+            posts_array = posts_array + posts
 
-    return good_json_response(posts_array)
+    return good_json_response({
+        'posts': posts_array
+    })
 
 
 @blueprint.route('/login', methods=['POST'])
