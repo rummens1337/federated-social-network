@@ -348,10 +348,11 @@ def password():
 def hobby():
     username = get_jwt_identity()
 
-    hobbies_details = hobbies.export('title', username=username)
+    hobbies_details = hobbies.export('id', 'title', username=username)
 
     hobbies_array = [{
-            'title' : item
+            'title' : item[0],
+            'id' : item[1]
         }
         for item in hobbies_details
     ]
