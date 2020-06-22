@@ -15,18 +15,30 @@ function showHobbies(req) {
     }
 }
 
+function deleteHobby() {
+    $("form[name='hobby']").validate({
+        rules: {
+            id: 'required'
+        },
+
+        submitHandler: function(form) {
+            alert('b')
+            requestJSON('POST', dataServer + '/api/user/deleteHobby', form.serialize(), editSucces, editFailed);
+        }
+    });
+};
+
 // This function adds a hobby in the div 'hobbies'
 function showHobby(hobby) {
-    document.getElementById('id').value = hobby.id;
     var content =
-    '<form name="deleteHobby' +
-        '<input type="hidden" id="id" name="id">'
+    '<form name="hobby">' +
         '<p>' + hobby.title + '</p>' +
-        '<p>' +
-            '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
-        '</p>' +
+        '<input type="hidden" id="id" name="id">' +
+        '<button type="button" class="btn-danger" onclick="deleteHobby()">Delete</button>' +
     '</form>'
     $('#hobbies-list').append(content);
+
+    document.getElementById('id').value = hobby.id;
 }
 
 function addHobby() {
@@ -43,15 +55,7 @@ function addHobby() {
     });
 };
 
-function deleteHobby() {
-    $("form[name='deleteHobby']").validate({
-        submitHandler: function(form) {
-            var data = new FormData(form)
 
-            requestJSONFile('POST', dataServer + '/api/user/deleteHobby', data, editSucces, editFailed);
-        }
-    });
-};
 
 // Skills functions
 

@@ -379,7 +379,6 @@ def deleteHobby():
     username = get_jwt_identity()
 
     id = request.form['id']
-    title = request.form['title']
 
     hobbies.delete(id=id)
 
