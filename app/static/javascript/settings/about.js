@@ -83,7 +83,7 @@ function addSkill() {
         submitHandler: function(form) {
             var data = new FormData(form)
 
-            requestJSON('POST', dataServer + '/api/user/addSkill', data, editSucces, editFailed);
+            requestJSONFile('POST', dataServer + '/api/user/addSkill', data, editSucces, editFailed);
         }
     });
 };
