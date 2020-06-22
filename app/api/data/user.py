@@ -3,6 +3,7 @@ import requests
 
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users, friends, uploads, posts
+from app.database import skills, languages, hobbies
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
@@ -70,7 +71,7 @@ def user():
 
 def is_friend(username):
     """
-     Returns what the status of the friendship is between the 
+     Returns what the status of the friendship is between the
      logged in user and the given argument username
     # 0: no friendship
     # 1: friends
@@ -84,7 +85,7 @@ def is_friend(username):
         if int(friend_details[1]) == 1:
             return 2 # pending
         return 3 # acceptable
-        
+
     if friends.exists(username=username, friend=get_jwt_identity()):
         friend_details = friends.export_one('accepted', 'sender', username=username, friend=get_jwt_identity())
         if int(friend_details[0]) == 1:
@@ -142,6 +143,12 @@ def user_posts():
     if username != get_jwt_identity() and is_friend(username) != 1:
         return good_json_response({'posts' : {} })
 
+    return good_json_response({
+        'posts': get_posts(username)
+    })
+
+
+def get_posts(username):
     # Get all posts of a user.
     user_posts = posts.export('title', 'body', 'creation_date', username=username)
 
@@ -154,15 +161,44 @@ def user_posts():
         for item in user_posts
     ]
 
-    return good_json_response({
-        'posts': posts_array
-    })
+    return  posts_array
 
-# TODO implement
+
 @blueprint.route('/timeline', methods=['GET'])
 @jwt_required
 def timeline():
-    return user_posts()
+    from app.api.data.friend import get_friends
+
+    username = get_jwt_identity()
+    # Check if user exists
+    if not users.exists(username=username):
+        return bad_json_response('user not found')
+
+    # Get the user's own posts
+    posts_array = []
+    posts = get_posts(username)
+    if len(posts) != 0:
+        posts_array.append({
+            'username'  : username,
+            'posts'     : posts
+        })
+
+    # Get the user's friends
+    friends = get_friends(username)
+    for i in range(0, len(friends)):
+        friend = friends[i]['username']
+        friend_address = get_user_ip(friend)
+        # Get the posts of the friend
+        response = requests.get(friend_address + '/api/user/posts?username='+friend, headers=request.headers).json()
+        if response['success'] == True:
+            posts = response['data']['posts']
+            if len(posts) != 0:
+                posts_array.append({
+                    'username'  : friend,
+                    'posts'     : posts
+                })
+
+    return good_json_response(posts_array)
 
 
 @blueprint.route('/login', methods=['POST'])
@@ -216,7 +252,7 @@ def register():
                 lastname=lastname, password=password, email=email)
 
     return good_json_response("success")
-    
+
 
 @blueprint.route('/deleteupload')
 def deleteupload():
@@ -305,5 +341,114 @@ def password():
         users.update({'password':newPassword}, username=username)
 
     return good_json_response("Succes")
+
+
+@blueprint.route('/hobby')
+@jwt_required
+def hobby():
+    username = get_jwt_identity()
+
+    hobbies_details = hobbies.export('id', 'title', username=username)
+
+    hobbies_array = [{
+            'id' : item[0],
+            'title' : item[1]
+        }
+        for item in hobbies_details
+    ]
+
+    return good_json_response({
+        'hobbies': hobbies_array
+    })
+
+@blueprint.route('/addHobby', methods=['POST'])
+@jwt_required
+def addHobby():
+    username = get_jwt_identity()
+    # username = request.form['username']
+
+    title = request.form['title']
+
+    hobbies.insert(username=username, title=title)
+
+    return good_json_response("success")
+
+@blueprint.route('/deleteHobby', methods=['POST'])
+@jwt_required
+def deleteHobby():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+
+    hobbies.delete(id=id)
+
+    return good_json_response("success")
+
+@blueprint.route('/skill')
+@jwt_required
+def skill():
+    username = get_jwt_identity()
+
+    skill_details = skills.export(
+            'id', 'title', 'skill_level' ,username=username
+            )
+
+    skill_array = [{
+            'id' : item[0],
+            'title' : item[1],
+            'skill_level' : item[2]
+        }
+        for item in skill_details
+    ]
+
+    return good_json_response({
+        'skills': skill_array
+    })
+
+@blueprint.route('/addSkill', methods=['POST'])
+@jwt_required
+def addSkill():
+    username = get_jwt_identity()
+
+    title = request.form['title']
+    skill_level = request.form['skill_level']
+
+    skills.insert(username=username, title=title, skill_level=skill_level)
+
+    return good_json_response("success")
+
+@blueprint.route('/language')
+@jwt_required
+def language():
+    username = get_jwt_identity()
+
+    language_details = skills.export(
+            'id', 'title', 'skill_level' ,username=username
+            )
+
+    language_array = [{
+            'id' : item[0],
+            'title' : item[1],
+            'skill_level' : item[2]
+        }
+        for item in language_details
+    ]
+
+    return good_json_response({
+        'languages': language_array
+    })
+
+
+@blueprint.route('/addLanguage', methods=['POST'])
+@jwt_required
+def addLanguage():
+    username = get_jwt_identity()
+
+    title = request.form['title']
+    skill_level = request.form['skill_level']
+
+    languages.insert(username=username, title=title, skill_level=skill_level)
+
+    return good_json_response("success")
 
 __all__ = ('blueprint')

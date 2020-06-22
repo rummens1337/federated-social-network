@@ -90,5 +90,10 @@ def server():
 def password():
     return render_template('settings/password.html')
 
+@blueprint.route('/settings/about')
+@jwt_required
+def personalInfo():
+    return render_template('settings/about.html')
+
 
 __all__ = ('blueprint')

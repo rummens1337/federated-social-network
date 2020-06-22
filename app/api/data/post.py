@@ -10,6 +10,7 @@ blueprint = Blueprint('data_post', __name__)
 # TODO COMMENTS
 
 @blueprint.route('/', strict_slashes=False)
+@jwt_required
 def post():
     # TODO user should be authenticated
 
