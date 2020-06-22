@@ -52,7 +52,8 @@ function showPostsArray(req) {
     }
   }
   else {
-    $('#posts_div').append('<p class="w3-text-grey">There are no posts on this profile.</p>');
+    $('#posts_div').append('<p class="w3-text-grey">There are no posts on this profile &#128532.</p>\
+                            <img src="/static/images/no-posts.jpg" width=100% alt="Y no posts bruh Q_Q">');
   }
 }
 
