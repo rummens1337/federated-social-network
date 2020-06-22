@@ -15,18 +15,9 @@ function showHobbies(req) {
     }
 }
 
-function deleteHobby() {
-    $("form[name='hobby']").validate({
-        rules: {
-            id: 'required'
-        },
-
-        submitHandler: function(form) {
-            var data = new FormData(form)
-
-            requestJSONFile('POST', dataServer + '/api/user/deleteHobby', data, editSucces, editFailed);
-        }
-    });
+function deleteHobby(id) {
+    var data = {'id' : id}
+    requestJSON('POST', dataServer + '/api/user/deleteHobby', data, editSucces, editFailed);
 };
 
 // This function adds a hobby in the div 'hobbies'
@@ -35,7 +26,7 @@ function showHobby(hobby) {
     '<form enctype="multipart/form-data" name="hobby">' +
         '<p>' + hobby.title + '</p>' +
         '<input type="hidden" id="id" name="id">' +
-        '<button type="submit" class="btn-danger" onclick="deleteHobby()">Delete</button>' +
+        '<button type="submit" class="btn-danger" onclick="deleteHobby(' + hobby.id+ ')">Delete</button>' +
     '</form>'
     $('#hobbies-list').append(content);
 
