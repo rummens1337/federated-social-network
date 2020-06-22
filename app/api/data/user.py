@@ -189,6 +189,10 @@ def timeline():
             posts = response['data']['posts']
             posts_array = posts_array + posts
 
+    import datetime
+    posts_array = sorted(posts_array, key=lambda k: 
+        datetime.datetime.strptime(k['creation_date'], "%Y-%m-%d %H:%M:%S"), reverse=True) 
+
     return good_json_response({
         'posts': posts_array
     })
