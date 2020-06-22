@@ -3,6 +3,9 @@ flask-mysql
 pytest
 requests
 pytest-html
+flake8
+
+
 flask-jwt-extended
 flask-cors
 passlib
