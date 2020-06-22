@@ -2,7 +2,7 @@ from flask import Blueprint, request
 import requests
 
 from app.api.utils import good_json_response, bad_json_response
-from app.database import users, friends, uploads, posts
+from app.database import users, friends, uploads, posts, skills, languages, hobbies
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
@@ -70,7 +70,7 @@ def user():
 
 def is_friend(username):
     """
-     Returns what the status of the friendship is between the 
+     Returns what the status of the friendship is between the
      logged in user and the given argument username
     # 0: no friendship
     # 1: friends
@@ -84,7 +84,7 @@ def is_friend(username):
         if int(friend_details[1]) == 1:
             return 2 # pending
         return 3 # acceptable
-        
+
     if friends.exists(username=username, friend=get_jwt_identity()):
         friend_details = friends.export_one('accepted', 'sender', username=username, friend=get_jwt_identity())
         if int(friend_details[0]) == 1:
@@ -251,7 +251,7 @@ def register():
                 lastname=lastname, password=password, email=email)
 
     return good_json_response("success")
-    
+
 
 @blueprint.route('/deleteupload')
 def deleteupload():
@@ -340,5 +340,38 @@ def password():
         users.update({'password':newPassword}, username=username)
 
     return good_json_response("Succes")
+
+
+@blueprint.route('/hobby')
+@jwt_required
+def hobby():
+    username = get_jwt_identity()
+
+    hobbies_details = hobbies.export('title', username=username)
+
+    if not hobbies_details:
+        return bad_json_response("You have no hobbies")
+
+    hobbies_array = [{
+            'title' : item,
+        }
+        for item in hobbies_details
+    ]
+
+    return good_json_response({
+        'hobbies': hobbies_array
+    })
+
+@blueprint.route('/addHobby', methods=['POST'])
+@jwt_required
+def addHobby():
+    username = get_jwt_identity()
+    # username = request.form['username']
+
+    title = request.form['title']
+
+    hobbies.insert(username=username, title=title)
+
+    return good_json_response("success")
 
 __all__ = ('blueprint')
