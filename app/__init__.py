@@ -15,6 +15,8 @@ CORS(app)
 
 def check_servertype():
     """Check the server that is supposed to be ran, change values accordingly."""
+    app.config['MYSQL_DATABASE_CHARSET'] = 'utf8mb4'
+
     if get_server_type() == ServerType.CENTRAL:
         from app.api.central.main import blueprint as main_routes
         app.config['JWT_TOKEN_LOCATION'] = ['cookies']
