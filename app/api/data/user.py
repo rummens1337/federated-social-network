@@ -318,7 +318,7 @@ def hobby():
         return bad_json_response("You have no hobbies")
 
     hobbies_array = [{
-            'title' : item[0],
+            'title' : item,
         }
         for item in hobbies_details
     ]
