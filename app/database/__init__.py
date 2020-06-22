@@ -172,6 +172,8 @@ class TableLoader:
             limit (int): The number of results to return.
             kwargs: The keys (str) and values (str, int) the rows should match.
         """
+        if len(args) == 0:
+            args = ('*',)
         order = order or self._primary_key
         with cursor() as cur:
             cur.execute(
