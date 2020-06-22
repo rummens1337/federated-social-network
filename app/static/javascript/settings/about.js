@@ -15,13 +15,22 @@ function showHobbies(req) {
     }
 }
 
+function deleteHobby(id) {
+    var data = {'id' : id}
+    requestJSON('POST', dataServer + '/api/user/deleteHobby', data, editSucces, editFailed);
+};
+
 // This function adds a hobby in the div 'hobbies'
 function showHobby(hobby) {
-    var content = '<p>' + hobby.title + '</p>' +
-        '<p>' +
-        '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
-        '</p>'
+    var content =
+    '<form enctype="multipart/form-data" name="hobby">' +
+        '<p>' + hobby.title + '</p>' +
+        '<input type="hidden" id="id" name="id">' +
+        '<button type="submit" class="btn-danger" onclick="deleteHobby(' + hobby.id+ ')">Delete</button>' +
+    '</form>'
     $('#hobbies-list').append(content);
+
+    document.getElementById('id').value = hobby.id;
 }
 
 function addHobby() {
@@ -37,6 +46,8 @@ function addHobby() {
         }
     });
 };
+
+
 
 // Skills functions
 
@@ -133,16 +144,16 @@ function setDataAddress(req) {
     requestJSON('GET', dataServer + '/api/user/hobby', null, showHobbies, function(req) {
         alertError(req.reason, 2000);
     });
-    requestJSON('GET', dataServer + '/api/friend/skill', null, showSkills, function(req) {
+    requestJSON('GET', dataServer + '/api/user/skill', null, showSkills, function(req) {
         alertError(req.reason, 2000);
     });
-    requestJSON('GET', dataServer + '/api/friend/language', null, showLanguages, function(req) {
+    requestJSON('GET', dataServer + '/api/user/language', null, showLanguages, function(req) {
         alertError(req.reason, 2000);
     });
 }
 
 $(document).ready(function() {
-    requestJSON('GET', '/api/user/address', null, setDataAddress, function(req) {
+    requestJSON('GET', centralServer + '/api/user/address', null, setDataAddress, function(req) {
         alertError(req.reason, 2000);
     });
 });
