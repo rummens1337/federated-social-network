@@ -4,11 +4,13 @@ def register_data(app):
     from app.api.data.friend import blueprint as data_friend
     from app.api.data.file import blueprint as data_file
     from app.api.data.mail import blueprint as data_mail
+    from app.api.data.server import blueprint as data_server
     app.register_blueprint(data_user, url_prefix='/api/user')
     app.register_blueprint(data_post, url_prefix='/api/post')
     app.register_blueprint(data_friend, url_prefix='/api/friend')
     app.register_blueprint(data_file, url_prefix='/api/file')
     app.register_blueprint(data_mail, url_prefix='/api/mail')
+    app.register_blueprint(data_server, url_prefix='/api/server')
 
 
 def register_central(app):
