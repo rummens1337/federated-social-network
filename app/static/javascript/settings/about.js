@@ -22,8 +22,9 @@ function deleteHobby() {
         },
 
         submitHandler: function(form) {
-            alert('b')
-            requestJSON('POST', dataServer + '/api/user/deleteHobby', form.serialize(), editSucces, editFailed);
+            var data = new FormData(form)
+
+            requestJSONFile('POST', dataServer + '/api/user/deleteHobby', data, editSucces, editFailed);
         }
     });
 };
@@ -31,10 +32,10 @@ function deleteHobby() {
 // This function adds a hobby in the div 'hobbies'
 function showHobby(hobby) {
     var content =
-    '<form name="hobby">' +
+    '<form enctype="multipart/form-data" name="hobby">' +
         '<p>' + hobby.title + '</p>' +
         '<input type="hidden" id="id" name="id">' +
-        '<button type="button" class="btn-danger" onclick="deleteHobby()">Delete</button>' +
+        '<button type="submit" class="btn-danger" onclick="deleteHobby()">Delete</button>' +
     '</form>'
     $('#hobbies-list').append(content);
 
