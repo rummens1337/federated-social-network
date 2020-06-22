@@ -15,23 +15,21 @@ function showHobbies(req) {
     }
 }
 
-function deleteHobby(id) {
-    var data = {'id' : id}
-    requestJSON('POST', dataServer + '/api/user/deleteHobby', data, editSucces, editFailed);
-};
 
 // This function adds a hobby in the div 'hobbies'
 function showHobby(hobby) {
     var content =
     '<form enctype="multipart/form-data" name="hobby">' +
         '<p>' + hobby.title + '</p>' +
-        '<input type="hidden" id="id" name="id">' +
         '<button type="submit" class="btn-danger" onclick="deleteHobby(' + hobby.id+ ')">Delete</button>' +
     '</form>'
     $('#hobbies-list').append(content);
-
-    document.getElementById('id').value = hobby.id;
 }
+
+function deleteHobby(id) {
+    var data = {'id' : id}
+    requestJSON('POST', dataServer + '/api/user/deleteHobby', data, editSucces, editFailed);
+};
 
 function addHobby() {
     $("form[name='hobby']").validate({
@@ -47,14 +45,11 @@ function addHobby() {
     });
 };
 
-
-
 // Skills functions
 
 // Call this function when requesting an array of skills
 function showSkills(req) {
-    // if (req.data.skills.length > 0) {
-    if (0 == 1) {
+    if (req.data.skills.length > 0) {
       for (i=0; i < req.data.skills.length; i++) {
           var skill = req.data.skills[i];
           showSkill(skill);
@@ -67,24 +62,26 @@ function showSkills(req) {
 
 // This function adds a skill in the div 'skills'
 function showSkill(skill) {
-    var content = '<p>' + skill.title + '</p>' +
-        '<p>' +
-        '<button type="button" class="btn-danger" onclick="deleteSkill">Delete</button>' +
-        '</p>'
-    $('#skill-list').append(content);
+    var content =
+    '<form enctype="multipart/form-data" name="skill">' +
+    '<p>' + skill.title + '</p>' +
+    '<p><input type="range" min="1" max="100" value="' + skill.value + '" ></p>' +
+    '<button type="submit" class="btn-danger" onclick="deleteSkill(' + skill.id + ')">Delete</button>' +
+    '</form>'
+    $('#skills-list').append(content);
 }
 
 function addSkill() {
     $("form[name='skill']").validate({
         rules: {
-            new_skill: 'required',
-            new_level: 'required'
+            title: 'required',
+            skill_level: 'required'
         },
 
         submitHandler: function(form) {
             var data = new FormData(form)
 
-            requestJSONFile('POST', dataServer + '/api/user/edit', data, editSucces, editFailed);
+            requestJSONFile('POST', dataServer + '/api/user/addSkill', data, editSucces, editFailed);
         }
     });
 };
