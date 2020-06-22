@@ -40,6 +40,8 @@ RUN chown -R www-data:www-data /var/www/apache-flask/
 RUN chmod -R 755 /var/www/apache-flask/ 
 # 775 for upload folders!!
 
+COPY ./docker/key.sh /var/www/apache/key.sh
+
 RUN a2dissite 000-default.conf
 RUN a2ensite apache-flask.conf
 
@@ -52,8 +54,9 @@ EXPOSE 80
 
 WORKDIR /var/www/apache-flask/
 
-RUN ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key -q -N ""
-RUN openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
+RUN chmod +x key.sh
+RUN ./key.sh
 
+RUN pip3 install flask-jwt-extended\[asymmetric_crypto\]
 
 CMD  /usr/sbin/apache2ctl -D FOREGROUND

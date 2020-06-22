@@ -35,11 +35,15 @@ RUN pip3 install -r /var/www/flask/app/requirements.txt
 
 COPY ./run.py /var/www/flask/run.py
 COPY config.py /var/www/flask/config.py
-# COPY $HOST/app /var/www/apache-flask/app/
+
+COPY ./docker/key.sh /var/www/flask/key.sh
 
 EXPOSE 80
 
 WORKDIR /var/www/flask
+
+RUN chmod +x key.sh
+RUN ./key.sh
 
 ARG FLASK_SERVER_TYPE
 ARG FLASK_PORT
@@ -52,9 +56,6 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERS
 RUN chmod +x /wait
 
 RUN pip3 install flask-jwt-extended\[asymmetric_crypto\]
-
-RUN ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key -q -N ""
-RUN openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 
 CMD python3 run.py
 # CMD ["python3", "run.py", "-s", $TYPE, "-p", $PORT]
