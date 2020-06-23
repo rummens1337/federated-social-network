@@ -357,6 +357,21 @@ def password():
     return good_json_response("Succes")
 
 
+@blueprint.route('/forgotpassword', methods=['POST'])
+def forgotpassword():
+    username = request.form['username']
+    password = request.form['password']
+
+    if password is None:
+        return bad_json_response("Bad request: Missing parameter 'password'.")
+
+    newPassword = sha256_crypt.encrypt(request.form['password'])
+
+    users.update({'password':newPassword}, username=username)
+
+    return good_json_response("Succes")
+
+
 @blueprint.route('/hobby')
 @jwt_required
 def hobby():
