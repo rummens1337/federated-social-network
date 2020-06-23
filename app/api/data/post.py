@@ -23,15 +23,24 @@ def post():
     if not post_db:
         return bad_json_response('post not found')
 
-    post_db = posts.export('body', 'title', 'username', 'creation_date', 'last_edit_date', id=post_id)[0]
+    post_db = posts.export('body', 'title', 'username', 'uploads_id' , 'creation_date', 'last_edit_date', id=post_id)[0]
+
+    # Get image
+    up_id = post_db[3]
+    # default is null?
+    # imageurl = "../static/images/default.jpg"
+    if uploads.exists(id=up_id):
+        filename = uploads.export_one('filename', id=up_id)
+        imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
 
     return good_json_response({
         'post_id': post_id,
         'body': post_db[0],
         'title': post_db[1],
         'username': post_db[2],
-        'creation_date': str(post_db[3]),
-        'last_edit_date': str(post_db[4])
+        'image_url': imageurl,
+        'creation_date': str(post_db[4]),
+        'last_edit_date': str(post_db[5])
     })
 
 
@@ -100,6 +109,9 @@ def delete():
 # @blueprint.route('/uploadPost', methods=['POST'])
 # @jwt_required
 # def uploadPost():
+#     username = get_jwt_identity()
+#     # username = request.form['username']
+
 #     image_filename = request.files['file'].filename
 #     image = request.files['file'].read()
 
@@ -107,12 +119,12 @@ def delete():
 #         uploads_id = save_file(image, filename=image_filename)
 
 #     if uploads_id is not False:
-#         users.update({'uploads_id' : uploads_id}, username=username)
+#         posts.update({'uploads_id' : uploads_id}, username=username)
 
 
-@blueprint.route('/getcomments')
+@blueprint.route('/getComments')
 # @jwt_required
-def getcomments():
+def getComments():
     post_id = request.args.get('post_id')
 
     if post_id is None or post_id == '':
@@ -157,6 +169,29 @@ def addComment():
 
     return good_json_response('success')
 
+
+@blueprint.route('/editComment', methods=['POST'])
+# @jwt_required
+def editComment():
+    # username = get_jwt_identity()
+    # username = request.form['username']
+
+    id = request.form['id']
+    comment = request.form['comment']
+
+    comments.update({'comment':comment}, id=id)
+
+    return good_json_response('success')
+
+
+@blueprint.route('/deleteComment', methods=['POST'])
+# @jwt_required
+def deleteComment():
+    id = request.form['id']
+
+    comments.delete(id=id)
+
+    return good_json_response("success")
 
 
 __all__ = ('blueprint')

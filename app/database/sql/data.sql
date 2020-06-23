@@ -39,8 +39,10 @@ CREATE TABLE IF NOT EXISTS comments (
 
 -- CREATE TABLE IF NOT EXISTS likes (
 --     id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+--     username VARCHAR(255) NOT NULL,
 --     FOREIGN KEY (username) REFERENCES users(username),
---     FOREIGN KEY (id) REFERENCES posts(id)
+--     post_id INTEGER NOT NULL,
+--     FOREIGN KEY (post_id) REFERENCES posts(id)
 -- );
 
 CREATE TABLE IF NOT EXISTS friends (

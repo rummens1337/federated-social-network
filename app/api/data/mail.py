@@ -8,7 +8,7 @@ from app.database import users
 from app.api.utils import good_json_response, bad_json_response
 from email.utils import make_msgid
 import mimetypes
-from app.utils import get_central_ip
+from app.utils import get_central_ip, get_own_ip
 from passlib.hash import sha256_crypt
 
 blueprint = Blueprint('data_mail', __name__)
@@ -93,19 +93,19 @@ def confirm_email(token):
 @blueprint.route('/forgotpass', methods=['POST'])
 def forgotpass():
     # Check if
-    send_to = request.form['email']
+    username = request.form['username']
 
-    if not email:
-        return bad_json_response("Bad request: Missing parameter 'email'.")
+    if not username:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    # Retrieve email for given username. 
+    # Retrieve email for given username.
     # Also retrieve firstname and lastname for personal message.
-    firstname, lastname, username = users.export_one("firstname", "lastname", "username", email=send_to)
+    firstname, lastname, send_to = users.export_one("firstname", "lastname", "email", username=username)
 
     # If no user is found give an error.
     if not firstname or not lastname or not username:
         return bad_json_response("Error retrieving the user.")
-        
+
     #stuur mail met new ww link
     # Construct message object with receipient and sender
     msg = EmailMessage()
@@ -161,7 +161,7 @@ def confirm_forgotpass():
         # Error if no user with given email is found.
         if not users.exists(email=email):
             return bad_json_response("No user with the email " + email + " exists.")
-        
+
         # Encrypt password for storage in database.
         password = sha256_crypt.encrypt(request.form['password'])
         users.update({'password':password}, email=email)
@@ -173,3 +173,45 @@ def confirm_forgotpass():
     except BadTimeSignature:
         message = "The token did not match. Are you trying to hack some user? Q_Q"
         return redirect(get_central_ip() + "?message=" + message)
+
+
+@blueprint.route('/forgot_username', methods=['POST'])
+def forgot_username():
+    email = request.form['email']
+
+    if not email:
+        return bad_json_response("Bad request: Missing parameter 'email'.")
+
+    # Retrieve email for given username.
+    # Also retrieve firstname and lastname for personal message.
+    username = users.export_one("username", email=email)
+
+    # If no user is found for given email, don't send email.
+    if not username:
+        return bad_json_response("No user with this e-mail exists on this server: " + get_own_ip())
+
+    # Construct message object with receipient and sender
+    msg = EmailMessage()
+    msg['Subject'] = 'FedNet - Your username is ' + username
+    msg['From'] = current_app.config['EMAIL_ADDRESS']
+    msg['To'] = email
+
+    # Load the HTML template for the email, and embed the information needed.
+    verify_file = open('app/templates/email_template/forgot-username.html')
+    html = verify_file.read()
+    html = html.replace("USERNAME_HERE", username)
+    msg.add_alternative(html, subtype='html')
+
+    # Add image to the contents of the email
+    with open('app/static/images/LogoBackOpaque.png', 'rb') as img:
+        # Know the Content-Type of the image
+        maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
+
+        # Attach it to the email. The cid="0" is linked to the cid in the html, which loads it.
+        msg.get_payload()[0].add_related(img.read(), maintype=maintype, subtype=subtype, cid="0")
+    # Connect to the mailserver from google and send the e-mail.
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(current_app.config['EMAIL_ADDRESS'], current_app.config['EMAIL_PASSWORD'])
+        smtp.send_message(msg)
+
+    return good_json_response(("Email was sent to " + email + "."))
