@@ -184,14 +184,18 @@ def timeline():
 
     # Get the user's friends
     friends = get_friends(username)
+    
     for i in range(0, len(friends)):
-        friend = friends[i]['username']
-        friend_address = get_user_ip(friend)
-        # Get the posts of the friend
-        response = requests.get(friend_address + '/api/user/posts?username='+friend, headers=request.headers).json()
-        if response['success'] == True:
-            posts = response['data']['posts']
-            posts_array = posts_array + posts
+        try:
+            friend = friends[i]['username']
+            friend_address = get_user_ip(friend)
+            # Get the posts of the friend
+            response = requests.get(friend_address + '/api/user/posts?username='+friend, headers=request.headers).json()
+            if response['success'] == True:
+                posts = response['data']['posts']
+                posts_array = posts_array + posts
+        except:
+            continue
 
     import datetime
     posts_array = sorted(posts_array, key=lambda k:
