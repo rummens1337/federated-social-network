@@ -315,4 +315,22 @@ def export_zip():
     return send_file(export(username), mimetype='application/zip', as_attachment=True,
                      attachment_filename='export.zip')
 
+
+@blueprint.route('/import', methods=['POST'])
+@jwt_required
+def import_zip():
+    username = get_jwt_identity()
+
+    #get file
+    if 'file' in request.files:
+        file_filename = request.files['file'].filename
+        file = request.files['file'].read()
+        if file is not 0:
+            # import file
+
+            # file is the file to be imported
+            # import(username, file)
+
+            return good_json_response({'filename': file_filename})
+
 __all__ = ('blueprint')

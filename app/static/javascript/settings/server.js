@@ -54,17 +54,31 @@ function exportData() {
   
         submitHandler: function(form) {
           function exportDataServer() {
-            requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, exportFailed);
+            requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, migrationFailed);
+          }
+
+          function importSucces(res) {
+            alertError("Importing success, your new server will appear on the top of this page. Filename: " + res.data.filename, 5000)
           }
   
           function exportSucces(res) {
+            alertError("Exporting data, please do not leave this page until this process has finished!", 5000);
             console.log(res)
             var blob = new Blob([res], {type: "application/zip"});
-            saveAs(blob, "export.zip")
-            alertError("Exporting data, please do not leave this page until this process has finished!", 5000);
+
+            // Use this to download file to browser (maybe option).
+            // saveAs(blob, "export.zip")
+
+            // To set to user chosen new server.
+            var newServer = currentDataServer;
+
+            var data = new FormData()
+            data.append('file', blob, "import.zip")
+
+            requestJSONFile("POST", newServer + "/api/user/import", data, importSucces, migrationFailed);
           }
   
-          function exportFailed(response) {
+          function migrationFailed(response) {
             console.log(response)
             alertError(response.reason, 2000);
           }
