@@ -60,7 +60,7 @@ def send_verification_mail():
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login(current_app.config['EMAIL_ADDRESS'], current_app.config['EMAIL_PASSWORD'])
         smtp.send_message(msg)
-    
+
     return good_json_response("success")
 
 @blueprint.route('/confirm_email/<token>')
@@ -83,3 +83,56 @@ def confirm_email(token):
             return bad_json_response("No user with the email " + email + " exists.")
     except SignatureExpired:
         return bad_json_response("The token has expired. Please try registering again.")
+
+
+@blueprint.route('/forgotpass', methods=['POST'])
+def forgotpass():
+    # Check if parameter email is set.
+    send_to = request.form['email']
+    username = request.form['username']
+
+    if not send_to:
+        return bad_json_response("Bad request: Missing parameter 'email'.")
+
+    if users.exists(username=username, email=send_to):
+        #stuur mail met new ww link
+        # Construct message object with receipient and sender
+        msg = EmailMessage()
+        msg['Subject'] = 'FedNet - Please verify your email!'
+        msg['From'] = current_app.config['EMAIL_ADDRESS']
+        msg['To'] = send_to
+
+        # Create the secret key based on our little secret :)
+        secret = URLSafeTimedSerializer(current_app.config['EMAIL_SECRET'])
+
+        # Create token based on a user their email and salt to prevent same token.
+        token = secret.dumps(send_to, salt=current_app.config['EMAIL_SALT'])
+
+        # Create link with token and add it to the body of the mail.
+        link = url_for('data_mail.confirm_email', token=token, _external=True)
+
+        # Load the HTML template for the email, and embed the information needed.
+        verify_file = open('app/templates/email_template/forgot-mail.html')
+        html = verify_file.read()
+        html = html.replace("LINK_HERE", link)
+        html = html.replace("USERNAME_HERE", username)
+        msg.add_alternative(html, subtype='html')
+
+        # Add image to the contents of the email
+        with open('app/static/images/LogoBackOpaque.png', 'rb') as img:
+            # Know the Content-Type of the image
+            maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
+
+            # Attach it to the email. The cid="0" is linked to the cid in the html, which loads it.
+            msg.get_payload()[0].add_related(img.read(), maintype=maintype, subtype=subtype, cid="0")
+        # Connect to the mailserver from google and send the e-mail.
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(current_app.config['EMAIL_ADDRESS'], current_app.config['EMAIL_PASSWORD'])
+            smtp.send_message(msg)
+
+        return good_json_response("success")
+    else:
+        return bad_json_response(
+            'Username and e-mail combination does not exist.'
+            )
+
