@@ -20,7 +20,7 @@ function show(friend) {
   var content = `<div class="p-10 bg-white">
                    <div class="media media-xs overflow-visible">
                       <a class="media-left" href="javascript:;"> <img src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
-                      <div class="media-body valign-middle">
+                      <div class="media-body valign-middle" onclick="location.href='../profile/fred';" style="cursor: pointer;">
                         <b class="text-dark">` + friend.username + `</b><br>
                         <b class="text-inverse">` + friend.username + `</b>
                       </div>

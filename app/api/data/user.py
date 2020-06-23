@@ -153,13 +153,14 @@ def user_posts():
 
 def get_posts(username):
     # Get all posts of a user.
-    user_posts = posts.export('title', 'body', 'creation_date', username=username)
+    user_posts = posts.export('id', 'title', 'body', 'creation_date', username=username)
 
     # Transfrom to array including dictionaries
     posts_array = [{
-            'title' : item[0],
-            'body' : item[1],
-            'creation_date' : str(item[2]),
+            'post_id' : item[0],
+            'title' : item[1],
+            'body' : item[2],
+            'creation_date' : str(item[3]),
             'username'  : username
         }
         for item in user_posts
