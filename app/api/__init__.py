@@ -79,16 +79,26 @@ def jwt_required_custom(fn):
     def wrapper(*args, **kwargs):
         try:
             # decode token (base64)
+            header = None
             if get_server_type() == ServerType.CENTRAL:
-                parts = request.cookies['access_token_cookie'].split(".")
+                header = request.cookies['access_token_cookie']
             else:
-                parts = request.headers['authorization'].split(".")
-        
+                header = request.headers['authorization']
+
+            # Get the identity and save as username
+            parts = header.split(".")
             decoded = base64.b64decode(parts[1] + "=============").decode("utf-8")
             username = json.loads(decoded)['identity']
 
             # Get the correct pub key
-            pub = requests.get(get_central_ip() + '/api/server/pub_key?username='+username).json()['data']
+            if get_server_type() == ServerType.CENTRAL:
+                # Get the pubkey using own API call
+                from app.api.central.server import get_pub_key
+                pub = get_pub_key(username)
+            else:
+                # Get the pubkey by call to the central server
+                pub = requests.get(get_central_ip() + '/api/server/pub_key?username='+username).json()['data']
+        
             current_app.config['JWT_PUBLIC_KEY'] = pub
         except:
             # Show login on exception

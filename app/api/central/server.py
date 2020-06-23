@@ -26,6 +26,9 @@ def pub_key():
     if username is None:
         return bad_json_response("No username")
 
+    return good_json_response(get_pub_key(username))
+
+def get_pub_key(username):
     server_id = users.export_one('server_id', username = username)
     if server_id is None:
         return bad_json_response("No server_id")
@@ -34,7 +37,7 @@ def pub_key():
     if pub is None:
         return bad_json_response("No pub")
 
-    return good_json_response(pub)
+    return pub
 
 @blueprint.route('/register', methods=['POST'])
 def register():
