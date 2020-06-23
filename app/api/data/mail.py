@@ -98,14 +98,14 @@ def forgotpass():
     if not username:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    # Retrieve email for given username. 
+    # Retrieve email for given username.
     # Also retrieve firstname and lastname for personal message.
     firstname, lastname, send_to = users.export_one("firstname", "lastname", "email", username=username)
 
     # If no user is found give an error.
     if not firstname or not lastname or not username:
         return bad_json_response("Error retrieving the user.")
-        
+
     #stuur mail met new ww link
     # Construct message object with receipient and sender
     msg = EmailMessage()
@@ -161,7 +161,7 @@ def confirm_forgotpass():
         # Error if no user with given email is found.
         if not users.exists(email=email):
             return bad_json_response("No user with the email " + email + " exists.")
-        
+
         # Encrypt password for storage in database.
         password = sha256_crypt.encrypt(request.form['password'])
         users.update({'password':password}, email=email)
@@ -175,14 +175,14 @@ def confirm_forgotpass():
         return redirect(get_central_ip() + "?message=" + message)
 
 
-@blueprint.route('/forgot_username', methods=['GET'])
+@blueprint.route('/forgot_username', methods=['POST'])
 def forgot_username():
     email = request.form['email']
 
     if not email:
         return bad_json_response("Bad request: Missing parameter 'email'.")
 
-    # Retrieve email for given username. 
+    # Retrieve email for given username.
     # Also retrieve firstname and lastname for personal message.
     username = users.export_one("username", email=email)
 
