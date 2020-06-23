@@ -18,6 +18,7 @@ function change() {
 
         function passwordChanged() {
             alert("Password changed")
+            window.location.href = 'index'
         }
 
         requestJSON('POST', dataServer + '/api/mail/confirm_forgotpass', $(form).serialize(), passwordChanged, changeFailed);
