@@ -6,6 +6,6 @@ function toggle_modal(modal_id) {
         });
     }
     else {
-        alert("no");
+        alertError("Something went wrong.", 1000);
     }
 }
