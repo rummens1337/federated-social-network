@@ -98,7 +98,7 @@ def forgotpass():
         #stuur mail met new ww link
         # Construct message object with receipient and sender
         msg = EmailMessage()
-        msg['Subject'] = 'FedNet - Please verify your email!'
+        msg['Subject'] = 'FedNet - Change your password.'
         msg['From'] = current_app.config['EMAIL_ADDRESS']
         msg['To'] = send_to
 
