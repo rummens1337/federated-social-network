@@ -9,6 +9,7 @@ from app.api.utils import good_json_response, bad_json_response
 from email.utils import make_msgid
 import mimetypes
 from app.utils import get_central_ip
+from passlib.hash import sha256_crypt
 
 blueprint = Blueprint('data_mail', __name__)
 
@@ -144,25 +145,28 @@ def forgotpass():
 
     return good_json_response("success")
 
-@blueprint.route('/confirm_forgotpass/<token>')
-def confirm_forgotpass(token):
+@blueprint.route('/confirm_forgotpass', methods=['POST'])
+def confirm_forgotpass():
     try:
+        token = request.form['token']
+        password = request.form['password']
+
         # Create the secret key based on our little secret :)
         secret = URLSafeTimedSerializer(current_app.config['EMAIL_SECRET'])
 
         # Confirm key is in pool and has not expired yet.
+        # Extract email from secret.
         email = secret.loads(token, salt=current_app.config['EMAIL_FORGOTPASS_SALT'], max_age=3600)
 
-        # If user exists update the status 'email_confirmed' to 1.
-        # The user will now be able to login.
-        if users.exists(email=email):
-            # TODO: CUSTOM RESET PASSWORD LOGIC HERE!
-            # TODO: 
-
-            # Redirect the user to the login page, trigger 'registration complete' process.
-            return redirect(get_central_ip() + "?message=registration_complete")
-        else:
+        # Error if no user with given email is found.
+        if not users.exists(email=email):
             return bad_json_response("No user with the email " + email + " exists.")
+        
+        # Encrypt password for storage in database.
+        password = sha256_crypt.encrypt(request.form['password'])
+        users.update({'password':password}, email=email)
+
+        return good_json_response("Change password succesfull")
     except SignatureExpired:
         message = "The token has expired, please try registering again."
         return redirect(get_central_ip() + "?message=" + message)
