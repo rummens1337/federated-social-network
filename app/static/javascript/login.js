@@ -26,7 +26,7 @@ function validateAccount() {
             alertError(req.reason, 2000);
           }
           else {
-            alertError("Something went wrong connection to your data server. Please contact the server owner.", 4000)
+            alertError("Something went wrong connecting to your data server. Please contact the server owner.", 4000)
           }
         }
 
