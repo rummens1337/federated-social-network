@@ -28,29 +28,32 @@
                 <!-- #TODO add right content for profile. -->
                 <div class="w3-container p-3" style="background-color:#DFF8EB;">
                     <h2 id='name'></h2>
-                    <br>
-                    <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                    <p id='study'></p>
-                    <i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                    <p id='location'></p>
-                    <i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                    <p id='status'></p>
-                    <i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                    <p id='number'></p>
-                    <a href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
-                    <hr>
+                    <!-- Stats div is used for profile.js!!! -->
+                    <div id = "stats"> 
+                        <br>
+                        <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <p id='study'></p>
+                        <i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <p id='location'></p>
+                        <i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <p id='status'></p>
+                        <i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <p id='number'></p>
+                        <a href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
+                        <hr>
 
-                    <li id='skills-list'>
-                        <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
-                    </li>
+                        <li id='skills-list'>
+                            <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+                        </li>
 
-                    <br>
+                        <br>
 
-                    <li id='languages-list'>
-                        <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
-                    </li>
+                        <li id='languages-list'>
+                            <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
+                        </li>
 
-                    <br>
+                        <br>
+                    </div>
                 </div>
             </div>
             <br>
@@ -69,7 +72,7 @@
                     <h2 class="w3-text-grey w3-padding-16">
                         <i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>About me
                     </h2>
-                    <div class="w3-container"  style="background-color:#DFF8EB;">
+                    <div class="w 3-container"  style="background-color:#DFF8EB;">
                         <!-- Sub title -->
                         <h5 class="w3-opacity w3-text-teal"><b>Bio</b></h5>
                         <!-- Content -->
@@ -83,7 +86,7 @@
                         <ul id='hobbies-list'>
                         </ul>
                     </div>
-
+                </div>
                 <!-- TODO username != logged in user -->
                 {% if username is defined %}
                     <button id="add_friend" type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button>

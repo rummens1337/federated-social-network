@@ -1,86 +1,13 @@
 {% extends "template.html" %}
 {% block title %}Friend requests{% endblock %}
 {% block head %}
-<!-- <link type="text/css"  rel="stylesheet" href="../static/css/friends.css"/> -->
-<script type="text/javascript" src="../static/javascript/post.js"></script>
-<script type="text/javascript" src="../static/javascript/index.js"></script>
-<script type="text/javascript" src="../static/javascript/friend/requests.js"></script>
-
+    <!-- <link type="text/css"  rel="stylesheet" href="../static/css/friends.css"/> -->
+    <script type="text/javascript" src="../static/javascript/friend/requests.js"></script>
 {{ super() }}
 {% endblock %}
 
 {% block content %}
 <div id="request-list">
-
-    <!-- Page Container -->
-    <div class="w3-content w3-margin-top" style="max-width:1900px;">
-
-        <!-- The Grid -->
-        <div class="w3-row-padding">
-
-            <!-- Left Column -->
-            <div class="w3-third" style="max-width:300px;">
-
-                <div class="w3-white w3-text-grey w3-card-4">
-                    <div class="w3-display-container">
-                        <img id='image_url' style="width:100%">
-                    </div>
-                    <!-- #TODO add right content for profile. -->
-                    <div class="w3-container p-3" style="background-color:#DFF8EB;">
-                        <h2 id='name'></h2>
-
-                        <br>
-                        <p id='bio'></p>
-                        <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                        <p id='study'></p>
-                        <i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                        <p id='location'></p>
-                        <!-- <p><i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>Broken</p>
-                        <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p> -->
-                        <a href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
-
-                        <br>
-                    </div>
-                </div>
-                <br>
-
-            <!-- End Left Column -->
-            </div>
-
-            <!-- Right Column -->
-            <div class="w3-twothird">
-            <!-- First right box -->
-
-
-
-                <!-- Header for posts -->
-                <div class="header sticky" id="myHeader" style="background-color:#DFF8EB;">
-                    <h2 class="w3-text-grey w3-padding-16"style="background-color:#DFF8EB;"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Friend requests</h2>
-                </div>
-
-                <!-- Posts #TODO timestamps, content, postee -->
-                <div id="friend" class="w3-container"  style="background-color:#DFF8EB;">
-                </div>
-
-
-                <!-- #TODO Requests maken, ophalen en hier afbeelden, accepteren/weigeren -->
-                <div class="text-center" >
-                    <br>
-                    <!-- <button class="accept" type="accept" onclick="accept_friend();" >Accept</button>
-                    <button class="decline" type="decline" onclick="decline_friend();" >Decline</button> -->
-                    <!-- <button class="btn btn-primary mb1 bg-olive">Button</button -->
-                </div>
-                <a href="/profile/'+ friend.username + '">
-                <li class="friend selected"><img src="/static/images/default.jpg"><div class="name"></div></li></a>
-
-            <!-- End Right Column -->
-            </div>
-
-        <!-- End Grid -->
-        </div>
-
-    <!-- End Page Container -->
-    </div>
 
 </div>
 {% endblock %}
