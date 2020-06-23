@@ -3,7 +3,7 @@ image: "python:3.7"
 # Do before script
 before_script:
   - python --version
-  - pip install -r docker/flask/requirements.txt
+  - pip install -r docker/flask/requirements.txt pylint
 
 # Different stages
 stages:
@@ -38,10 +38,10 @@ pytest:
   - pytest
 
 
-###########
-########### DO NOT REMOVE!!
-###########
-########### Fully functional docker setup, but need to find a way to perform tests.
+# ###########
+# ########### DO NOT REMOVE!!
+# ###########
+# ########### Fully functional docker setup, but need to find a way to perform tests.
 
 # image: docker:19.03.11
 # variables:
@@ -75,12 +75,15 @@ pytest:
 #   - apk upgrade
 #   - apk add --no-cache docker-compose
 #   - apk add make
+#   - make run
 
   
 
 # build:
 #   stage: build
 #   script:
-#     - make run
-#     - docker exec -it web_central bash | pytest
-#     - make stop
+#     - ls
+
+
+# after_script:
+#   - make stop
