@@ -1,11 +1,12 @@
 from flask import Blueprint, request
 import requests
 
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users, posts, uploads, friends
 from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 from urllib.parse import urlparse
+from app.api import jwt_required_custom
 
 blueprint = Blueprint('data_friend', __name__)
 
@@ -14,7 +15,7 @@ blueprint = Blueprint('data_friend', __name__)
 General functions 
 """
 @blueprint.route('/all')
-@jwt_required
+@jwt_required_custom
 def all_friends():
     """ Returns all the friends of a user
 
@@ -54,7 +55,7 @@ def get_friends(username):
 
 
 @blueprint.route('/requests')
-@jwt_required
+@jwt_required_custom
 def requests_open():
     """ Returns all the friend requests of a user.
         Including accepted and sender information.
@@ -92,7 +93,7 @@ def requests_open():
 Request functions 
 """
 @blueprint.route('/request/insert', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def request_insert():
     """ Insert receiving request from other data server.
 
@@ -126,7 +127,7 @@ def request_insert():
 
 
 @blueprint.route('/request/accept', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def request_accept():
     """
     Note:
@@ -166,7 +167,7 @@ def request_accept():
 
 
 @blueprint.route('/request/delete', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def request_delete():
     username = request.form['username']
     friend = request.form['friend']
@@ -187,7 +188,7 @@ def request_delete():
 Send functions 
 """
 @blueprint.route('/add', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def add():
     """ Adds a friendship between two users. Sets the sender
         on 1 for the user that is sending the request. Accepted 
@@ -235,7 +236,7 @@ def add():
 
 
 @blueprint.route('/accept', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def accept():
     username = get_jwt_identity()
     request_id = request.form['id']
@@ -287,7 +288,7 @@ def accept():
 
 
 @blueprint.route('/delete', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def delete():
     # TODO needs more testing
     # initial test works

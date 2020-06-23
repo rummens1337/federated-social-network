@@ -1,16 +1,19 @@
 from flask import Blueprint, request
 
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
+
 from app.database import posts, comments
+from app.api import jwt_required_custom
+
 
 blueprint = Blueprint('data_post', __name__)
 
 # TODO COMMENTS
 
 @blueprint.route('/', strict_slashes=False)
-@jwt_required
+@jwt_required_custom
 def post():
     # TODO user should be authenticated
 
@@ -45,7 +48,7 @@ def post():
 
 
 @blueprint.route('/create', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def create():
     username = get_jwt_identity()
     title = request.form['title']
@@ -77,7 +80,7 @@ def create():
     })
 
 @blueprint.route('/delete', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def delete():
     username = get_jwt_identity()
     post_id = request.form['post_id']

@@ -4,16 +4,19 @@ import requests
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users, friends, uploads, posts
 from app.database import skills, languages, hobbies
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
 from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 from passlib.hash import sha256_crypt
+from app.api import jwt_required_custom
+
+
 blueprint = Blueprint('data_user', __name__)
 
 
 @blueprint.route('/', strict_slashes=False)
-@jwt_required
+@jwt_required_custom
 def user():
     username = request.args.get('username')
 
@@ -128,7 +131,7 @@ def registered():
 
 
 @blueprint.route('/posts', methods=['GET'])
-@jwt_required
+@jwt_required_custom
 def user_posts():
     username = request.args.get('username')
 
@@ -170,7 +173,7 @@ def get_posts(username):
 
 
 @blueprint.route('/timeline', methods=['GET'])
-@jwt_required
+@jwt_required_custom
 def timeline():
     from app.api.data.friend import get_friends
 
@@ -272,7 +275,7 @@ def deleteupload():
 
 
 @blueprint.route('/delete', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def delete():
     username = request.form['username']
 
@@ -292,7 +295,7 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def edit():
     username = get_jwt_identity()
     # username = request.form['username']
@@ -341,7 +344,7 @@ def edit():
     return good_json_response("success")
 
 @blueprint.route('/password', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def password():
     username = get_jwt_identity()
     password = request.form['oldPassword']
@@ -378,7 +381,7 @@ def forgotpassword():
 
 
 @blueprint.route('/hobby')
-@jwt_required
+@jwt_required_custom
 def hobby():
     username = request.args.get('username')
 
@@ -403,7 +406,7 @@ def hobby():
 
 
 @blueprint.route('/addHobby', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addHobby():
     username = get_jwt_identity()
     # username = request.form['username']
@@ -416,7 +419,7 @@ def addHobby():
 
 
 @blueprint.route('/deleteHobby', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def deleteHobby():
     username = get_jwt_identity()
 
@@ -428,7 +431,7 @@ def deleteHobby():
 
 
 @blueprint.route('/skill')
-@jwt_required
+@jwt_required_custom
 def skill():
     username = request.args.get('username')
 
@@ -456,7 +459,7 @@ def skill():
 
 
 @blueprint.route('/addSkill', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addSkill():
     username = get_jwt_identity()
 
@@ -469,7 +472,7 @@ def addSkill():
 
 
 @blueprint.route('/editSkill', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def editSkill():
     # username = get_jwt_identity()
 
@@ -482,7 +485,7 @@ def editSkill():
 
 
 @blueprint.route('/deleteSkill', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def deleteSkill():
     username = get_jwt_identity()
 
@@ -494,7 +497,7 @@ def deleteSkill():
 
 
 @blueprint.route('/language')
-@jwt_required
+@jwt_required_custom
 def language():
     username = request.args.get('username')
 
@@ -522,7 +525,7 @@ def language():
 
 
 @blueprint.route('/addLanguage', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addLanguage():
     username = get_jwt_identity()
 
@@ -535,7 +538,7 @@ def addLanguage():
 
 
 @blueprint.route('/deleteLanguage', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def deleteLanguage():
     username = get_jwt_identity()
 
@@ -547,7 +550,7 @@ def deleteLanguage():
 
 
 @blueprint.route('/editLanguage', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def editLanguage():
     username = get_jwt_identity()
 
@@ -560,7 +563,7 @@ def editLanguage():
 
 
 @blueprint.route('/export', methods=['GET'])
-@jwt_required
+@jwt_required_custom
 def export_data():
     username = get_jwt_identity()
 
@@ -573,7 +576,7 @@ def export_data():
 
 
 @blueprint.route('/import', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def import_data():
     username = get_jwt_identity()
 
