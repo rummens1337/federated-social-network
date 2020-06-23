@@ -61,11 +61,9 @@ function loadServersForgot() {
   function populateServerSelect(req) {
     var select = document.getElementById('select_server2')
     var data = req.data.servers;
-    console.log(req);
 
     for(i in data) {
       var server_option = document.createElement("option");
-      console.log(i)
       server_option.value = data[i][1]
       server_option.textContent = data[i][0]
 
