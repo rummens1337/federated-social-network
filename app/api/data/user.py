@@ -360,7 +360,13 @@ def password():
 @blueprint.route('/hobby')
 @jwt_required
 def hobby():
-    username = get_jwt_identity()
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
+
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     hobbies_details = hobbies.export('id', 'title', username=username)
 
@@ -404,7 +410,13 @@ def deleteHobby():
 @blueprint.route('/skill')
 @jwt_required
 def skill():
-    username = get_jwt_identity()
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
+
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     skill_details = skills.export(
             'id', 'title', 'skill_level' ,username=username
@@ -451,7 +463,13 @@ def deleteSkill():
 @blueprint.route('/language')
 @jwt_required
 def language():
-    username = get_jwt_identity()
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
+
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     language_details = languages.export(
             'id', 'title', 'skill_level' ,username=username
