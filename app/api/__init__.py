@@ -71,28 +71,22 @@ def custom_jwt_required(fn):
     """
     from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
     from flask import request, current_app, Flask
-    # from app.database import servers
-
-    # app = Flask(__name__)
-
-    # import logging
-
-    # with current_app.app_context():
-    #     logging.debug(get_jwt_identity()) 
-
-
-
-    # @wraps(fn)
+    import logging
+    import json
+    import jwt
+    import base64
+ 
     def wrapper(*args, **kwargs):
-        import logging
+        try:
+            # decode token (base64)
+            parts = request.headers['authorization'].split(".")
+            decoded = base64.b64decode(parts[1] + "=============").decode("utf-8")
+            username = json.loads(decoded)['identity']
+        except:
+            return "error"
+    
 
-
-        
-
-        token = request.headers['authorization']
-
-        # decode token (base64)
-        # read u = token_decoded['identity']  THIS IS THE USENAME
+        # requests.GET('http://192.168.1.250:5000/api/user/')
         # get public key uing centralSserver/api/user/address?username=u
         # set public key like this:
 
