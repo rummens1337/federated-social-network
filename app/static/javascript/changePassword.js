@@ -6,8 +6,8 @@ function change() {
       rules: {
         password: "required",
         confirm_password: {
-            required: true
-            // equalTo: "#password"
+            required: true,
+            equalTo: "#password"
         }
       },
 
