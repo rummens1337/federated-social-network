@@ -1,8 +1,8 @@
 var centralServer = window.location.origin;
 var dataServer = ""
 
-function forgotPassword() {
-    $("form[name='recoverPassword']").validate({
+function changePassword() {
+    $("form[name='changePassword']").validate({
       rules: {
         username: "required",
         password: "required",
