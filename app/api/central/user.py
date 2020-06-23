@@ -40,7 +40,7 @@ def createtestusers():
 def search():
     username = request.args.get('username')
     # TODO: add 'like' function
-    userlist = users.export('username', username=username)
+    userlist = users.export('username', username=username, like_prefix=True, like_suffix=True)
     
     if userlist is None or userlist == "":
         return bad_json_response("No users found")
