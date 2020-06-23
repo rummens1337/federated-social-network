@@ -158,6 +158,29 @@ def addComment():
     return good_json_response('success')
 
 
+@blueprint.route('/editComment', methods=['POST'])
+# @jwt_required
+def editComment():
+    # username = get_jwt_identity()
+    # username = request.form['username']
+
+    id = request.form['id']
+    comment = request.form['comment']
+
+    comments.update({'comment':comment}, id=id)
+
+    return good_json_response('success')
+
+
+@blueprint.route('/deleteComment', methods=['POST'])
+# @jwt_required
+def deleteComment():
+    id = request.form['id']
+
+    comments.delete(id=id)
+
+    return good_json_response("success")
+
 
 __all__ = ('blueprint')
 
