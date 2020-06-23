@@ -4,7 +4,6 @@ var dataServer = ""
 function changePassword() {
     $("form[name='changePassword']").validate({
       rules: {
-        username: "required",
         password: "required",
         confirm_password: {
             required: true,
