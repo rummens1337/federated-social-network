@@ -6,8 +6,6 @@ from app.api.utils import good_json_response, bad_json_response
 from app.database import test_db, uploads
 from app.upload import get_file
 
-from app.api import custom_jwt_required
-
 blueprint = Blueprint('main', __name__)
 
 
@@ -19,7 +17,6 @@ def test():
 
 @blueprint.route('/')
 @blueprint.route('/index')
-@custom_jwt_required
 def index():
     return "DATA SERVER"
 

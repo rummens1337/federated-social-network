@@ -4,16 +4,19 @@ import requests
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users, friends, uploads, posts
 from app.database import skills, languages, hobbies
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
 from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 from passlib.hash import sha256_crypt
+from app.api import jwt_required_custom
+
+
 blueprint = Blueprint('data_user', __name__)
 
 
 @blueprint.route('/', strict_slashes=False)
-@jwt_required
+@jwt_required_custom
 def user():
     username = request.args.get('username')
 
@@ -125,7 +128,7 @@ def registered():
 
 
 @blueprint.route('/posts', methods=['GET'])
-@jwt_required
+@jwt_required_custom
 def user_posts():
     username = request.args.get('username')
 
@@ -165,7 +168,7 @@ def get_posts(username):
 
 
 @blueprint.route('/timeline', methods=['GET'])
-@jwt_required
+@jwt_required_custom
 def timeline():
     from app.api.data.friend import get_friends
 
@@ -267,7 +270,7 @@ def deleteupload():
 
 
 @blueprint.route('/delete', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def delete():
     username = request.form['username']
 
@@ -287,7 +290,7 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def edit():
     username = get_jwt_identity()
     # username = request.form['username']
@@ -322,7 +325,7 @@ def edit():
     return good_json_response("success")
 
 @blueprint.route('/password', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def password():
     username = get_jwt_identity()
     password = request.form['oldPassword']
@@ -344,7 +347,7 @@ def password():
 
 
 @blueprint.route('/hobby')
-@jwt_required
+@jwt_required_custom
 def hobby():
     username = get_jwt_identity()
 
@@ -362,7 +365,7 @@ def hobby():
     })
 
 @blueprint.route('/addHobby', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addHobby():
     username = get_jwt_identity()
     # username = request.form['username']
@@ -374,7 +377,7 @@ def addHobby():
     return good_json_response("success")
 
 @blueprint.route('/deleteHobby', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def deleteHobby():
     username = get_jwt_identity()
 
@@ -385,7 +388,7 @@ def deleteHobby():
     return good_json_response("success")
 
 @blueprint.route('/skill')
-@jwt_required
+@jwt_required_custom
 def skill():
     username = get_jwt_identity()
 
@@ -406,7 +409,7 @@ def skill():
     })
 
 @blueprint.route('/addSkill', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addSkill():
     username = get_jwt_identity()
 
@@ -418,7 +421,7 @@ def addSkill():
     return good_json_response("success")
 
 @blueprint.route('/language')
-@jwt_required
+@jwt_required_custom
 def language():
     username = get_jwt_identity()
 
@@ -440,7 +443,7 @@ def language():
 
 
 @blueprint.route('/addLanguage', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addLanguage():
     username = get_jwt_identity()
 

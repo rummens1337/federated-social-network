@@ -1,5 +1,5 @@
 from flask import Blueprint, request, Flask, render_template, request
-from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity
+from flask_jwt_extended import create_access_token,get_jwt_identity
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import servers
@@ -17,6 +17,24 @@ def get_servers():
     return good_json_response({
         'servers': result
     })
+
+
+@blueprint.route('/pub_key', methods=['GET'])
+def pub_key():
+    username = request.args.get('username')
+
+    if username is None:
+        return bad_json_response("No username")
+
+    server_id = users.export_one('server_id', username = username)
+    if server_id is None:
+        return bad_json_response("No server_id")
+
+    pub = servers.export_one('pub_key', id=server_id)
+    if pub is None:
+        return bad_json_response("No pub")
+
+    return good_json_response(pub)
 
 @blueprint.route('/register', methods=['POST'])
 def register():

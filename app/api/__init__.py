@@ -1,7 +1,4 @@
-appp = None
-
 def register_data(app):
-    appp = app
     from app.api.data.user import blueprint as data_user
     from app.api.data.post import blueprint as data_post
     from app.api.data.friend import blueprint as data_friend
@@ -61,7 +58,7 @@ def auth_username():
     except Exception:
         return None
 
-def custom_jwt_required(fn):
+def jwt_required_custom(fn):
     """
     A decorator to protect a Flask endpoint.
     If you decorate an endpoint with this, it will ensure that the requester
@@ -70,45 +67,36 @@ def custom_jwt_required(fn):
     See also: :func:`~flask_jwt_extended.jwt_required`
     """
     from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
-    from flask import request, current_app, Flask
+    from app.utils import get_central_ip
+    from flask import request, current_app, Flask, render_template
+    from app.type import get_server_type, ServerType
     import logging
     import json
     import jwt
     import base64
+    import requests
  
     def wrapper(*args, **kwargs):
         try:
             # decode token (base64)
-            parts = request.headers['authorization'].split(".")
+            if get_server_type() == ServerType.CENTRAL:
+                parts = request.cookies['access_token_cookie'].split(".")
+            else:
+                parts = request.headers['authorization'].split(".")
+        
             decoded = base64.b64decode(parts[1] + "=============").decode("utf-8")
             username = json.loads(decoded)['identity']
+
+            # Get the correct pub key
+            pub = requests.get(get_central_ip() + '/api/server/pub_key?username='+username).json()['data']
+            current_app.config['JWT_PUBLIC_KEY'] = pub
         except:
-            return "error"
-    
-
-        # requests.GET('http://192.168.1.250:5000/api/user/')
-        # get public key uing centralSserver/api/user/address?username=u
-        # set public key like this:
-
-        current_app.config['JWT_PUBLIC_KEY'] = """-----BEGIN PUBLIC KEY-----
-MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAmUKUAi3m3DdHX4YfHnVl
-0ePaqEgKE02ZijFTpB+y71ZqpDYzTql06XSVkk8O3Ylbwc5GSH5sJS7bQlhoKTWy
-4A0rSaJP4n5AQ2pNKjkZbMDrylglQx4AHxPe0b6hIvLAiW8ZKSyLVaY+kH1+GdWR
-/ggE7n/MCnyOT4/4fyWvl6Wyiw9r2orqrcjYPpkgpQjbOdJRKBJ+iXNzUYV85VZY
-vfwERJhmIJabDr9BmsKwNksRsRzdBkO6QTkrTfIykM0fBz57ZZJyjYxNBLviZzPr
-09ulO8vmA2i8TMdOcFbOIhD9CrmQIWbHpruksuMYE5ea1RDfAulV5gaMHn6FuHDl
-RURD3bmQ4qGteu74tlabuQoTwfR4Jg5VoRfjWLxOL5H/mLWZOla05thai3ci32fO
-RECrvB9BFh1vz8YPsljgAd5Kmmv9E0x3aIgJHkoFaQR0lMQ5BFop5bOglHJ3Lbqh
-MjBwxP0f2Hyock7zM75J5b72/G4Ua+OYZBwlgSucr+bW7fsjx33vp9L7+9WD/HCt
-tDYOJ1AwmLqVxeGSsRgNVxNSgKIgZqmgtXtWVuX5Ta8g4DU+lb3/966s5c/FuMbR
-vFWNZ2eysczAxCfg64C3Ze2nzKHGbQ1mMA+eNZ1decJVUU3j06/mzoyj/LvXIzht
-27ApYiuikwDI5JxkLR0NyBkCAwEAAQ==
------END PUBLIC KEY-----"""
-
-        url = request.url_root
-        # pub_key = servers.export('pub_key', address=url)
-
+            # Show login on exception
+            return render_template("login.html")
         
+        # Let the JWT extended library check the token
         verify_jwt_in_request()
         return fn(*args, **kwargs)
+
+    wrapper.__name__ = fn.__name__
     return wrapper
