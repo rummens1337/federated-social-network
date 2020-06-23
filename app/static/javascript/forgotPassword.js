@@ -14,7 +14,6 @@ function forgotPassword() {
       submitHandler: function(form) {
         function setDataAddress(req) {
             dataServer = req.data.address;
-
             requestJSON('POST', dataServer + '/api/mail/forgotpass', $(form).serialize(), mail_sent, mailFailed)
         }
 

@@ -75,12 +75,6 @@ def settings():
 @blueprint.route('/settings/profile')
 @jwt_required
 def settingsProfile():
-    profile = {
-        'name': {'firstname': 'Coen', 'lastname': 'Nusse','username': 'Coen'},
-        'photo': {'photo_url': "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"},
-        'email': {'emailadress': "coennusse@live.nl"}
-        }
-
     return render_template('settings/profile.html', profile = profile)
 
 @blueprint.route('/settings/privacy')
@@ -104,9 +98,7 @@ def personalInfo():
     return render_template('settings/about.html')
 
 @blueprint.route('/forgotPassword')
-@jwt_required
 def changePassword():
     return render_template('changePassword.html')
-
 
 __all__ = ('blueprint')

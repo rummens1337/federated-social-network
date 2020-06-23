@@ -1,13 +1,13 @@
 var centralServer = window.location.origin;
 var dataServer = ""
 
-function changePassword() {
+function change() {
     $("form[name='changePassword']").validate({
       rules: {
         password: "required",
         confirm_password: {
             required: true,
-            equalTo: "$password"
+            equalTo: "#password"
         }
       },
 
@@ -18,10 +18,10 @@ function changePassword() {
 
         function passwordChanged() {
             alert("Password changed")
-            window.location.reload();
+            window.location.href = 'index'
         }
 
-        requestJSON('POST', dataServer + '/api/mail/confirm_password', $(form).serialize(), passwordChanged, changeFailed);
+        requestJSON('POST', dataServer + '/api/mail/confirm_forgotpass', $(form).serialize(), passwordChanged, changeFailed);
         }
 
     });

@@ -120,16 +120,20 @@ def getcomments():
                 "Bad request: Missing or invalid parameter 'post_id'."
                 )
 
+    if not posts.exists(id=post_id):
+        return bad_json_response("Post id does not exist.")
+
     comment_details = comments.export(
-            'id', 'comment', 'creation_date',
+            'id', 'comment', 'username', 'creation_date',
             'last_edit_date', post_id=post_id
             )
 
     comments_array = [{
             'id': item[0],
             'comment': item[1],
-            'creation_date': str(item[2]),
-            'last_edit_date': str(item[3])
+            'username': item[2],
+            'creation_date': str(item[3]),
+            'last_edit_date': str(item[4])
         }
         for item in comment_details
     ]
@@ -139,15 +143,19 @@ def getcomments():
     })
 
 
-# @blueprint.route('/addComment', methods=['POST'])
+@blueprint.route('/addComment', methods=['POST'])
 # @jwt_required
-# def addComment():
-#     username = get_jwt_identity()
-#     # need to somehow give post_id with it (in html?)
-#     post_id = request.form['post_id']
-#     comment = request.form['comment']
+def addComment():
+    # username = get_jwt_identity()
+    username = request.form['username']
 
-#     comments.insert(comment=comment, post_id=post_id)
+    # need to somehow give post_id with it (in html? hidden)
+    post_id = request.form['post_id']
+    comment = request.form['comment']
+
+    comments.insert(comment=comment, post_id=post_id, username=username)
+
+    return good_json_response('success')
 
 
 
