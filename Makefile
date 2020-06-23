@@ -64,6 +64,7 @@ export PHPMYADMIN_PORT
 # Starts all docker containers as described in the docker-compose.yml file
 run:
 	docker-compose -f docker-compose.dev.yml -f docker-compose.yml up --remove-orphans --build
+	pytest
 
 # Starts all docker containers as described in the docker-compose.yml file as production
 run-prod:
