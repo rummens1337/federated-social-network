@@ -292,7 +292,7 @@ class TableLoader:
         with cursor() as cur:
             return cur.execute(
                 'UPDATE ' + self._table +
-                ' SET ' + where(update, ', ') +
+                ' SET ' + where(update, delimiter=', ') +
                 ' WHERE ' + where(kwargs),
                 tuple(itertools.chain(update.values(), kwargs.values()))
             )
