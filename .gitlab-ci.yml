@@ -3,7 +3,7 @@ image: "python:3.7"
 # Do before script
 before_script:
   - python --version
-  - pip install -r docker/flask/requirements.txt
+  - pip install -r docker/flask/requirements.txt pylint
 
 # Different stages
 stages:
