@@ -60,6 +60,10 @@ function requestJSONFile(type, url, data=null, success=null, error=null) {
 function alertError(error, ms, div_id=null) {
     var dialog = document.createElement("div");
 
+    if (error == undefined) {
+        error = "Error in handling your request.";
+    }
+
     dialog.innerHTML = error;
     dialog.setAttribute("class", "alert");
     dialog.setAttribute("id", "errorBox");
