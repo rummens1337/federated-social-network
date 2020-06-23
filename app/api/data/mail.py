@@ -93,14 +93,14 @@ def confirm_email(token):
 @blueprint.route('/forgotpass', methods=['POST'])
 def forgotpass():
     # Check if
-    send_to = request.form['email']
+    username = request.form['username']
 
-    if not email:
-        return bad_json_response("Bad request: Missing parameter 'email'.")
+    if not username:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     # Retrieve email for given username. 
     # Also retrieve firstname and lastname for personal message.
-    firstname, lastname, username = users.export_one("firstname", "lastname", "username", email=send_to)
+    firstname, lastname, send_to = users.export_one("firstname", "lastname", "email", username=username)
 
     # If no user is found give an error.
     if not firstname or not lastname or not username:
