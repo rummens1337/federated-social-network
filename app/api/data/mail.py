@@ -168,8 +168,8 @@ def confirm_forgotpass():
 
         return good_json_response("Change password succesfull")
     except SignatureExpired:
-        message = "The token has expired, please try registering again."
+        message = "The token has expired, please try requesting a new password."
         return redirect(get_central_ip() + "?message=" + message)
     except BadTimeSignature:
-        message = "The token did not match. Are you trying to hack FedNet? Q_Q"
+        message = "The token did not match. Are you trying to hack some user? Q_Q"
         return redirect(get_central_ip() + "?message=" + message)
