@@ -4,11 +4,7 @@ var dataServer = ""
 function forgotPassword() {
     $("form[name='recoverPassword']").validate({
       rules: {
-        username: "required",
-        email: {
-          required: true,
-          email: true
-        },
+        username: "required"
       },
 
       submitHandler: function(form) {
@@ -24,7 +20,7 @@ function forgotPassword() {
 
         function mailFailed(response) {
             alertError(response.reason, 2000);
-          }
+        }
 
         requestJSON('GET', centralServer + '/api/user/address?username=' + form.username.value, null, setDataAddress, null);
       }
