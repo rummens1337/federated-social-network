@@ -110,9 +110,9 @@ def delete():
 #         users.update({'uploads_id' : uploads_id}, username=username)
 
 
-@blueprint.route('/getcomments')
+@blueprint.route('/getComments')
 # @jwt_required
-def getcomments():
+def getComments():
     post_id = request.args.get('post_id')
 
     if post_id is None or post_id == '':
