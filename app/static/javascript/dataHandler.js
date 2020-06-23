@@ -51,6 +51,25 @@ function requestJSONFile(type, url, data=null, success=null, error=null) {
 };
 
 
+function requestJSONMigrationFile(type, url, data=null, success=null, error=null) {
+    var token = Cookies.get('access_token_cookie');
+    var headers = {};
+    if (token != null) headers = { 'Authorization' : 'Bearer ' + token };
+
+    $.ajax({
+        headers: headers,
+        type: type,
+        url: url,
+        processData: false,
+        contentType: false,
+        data: data,
+        crossDomain: true,
+        success: success,
+        error: error
+    });
+};
+
+
 /*
  * Shows an error message on screen.
  * Error   : type string, message to be shown.

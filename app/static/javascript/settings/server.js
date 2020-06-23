@@ -47,6 +47,31 @@ function updateDataServer() {
     });
 }
 
+function exportData() {
+    $("form[name='exportdata']").validate({
+        rules: {
+        },
+  
+        submitHandler: function(form) {
+          function exportDataServer() {
+            requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, exportFailed);
+          }
+  
+          function exportSucces(res) {
+            console.log(res)
+            alertError("Exporting data, please do not leave this page until this process has finished!", 5000);
+          }
+  
+          function exportFailed(response) {
+            console.log(response)
+            alertError(response.reason, 2000);
+          }
+          
+          exportDataServer();
+        }
+    });
+}
+
 $(document).ready(function() {
     requestJSON('GET', centralServer + '/api/user/address', null, setDataAddress, setNoDataAddress);
 
