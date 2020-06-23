@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, send_file
 import requests
 
 from app.api.utils import good_json_response, bad_json_response
@@ -310,8 +310,9 @@ def password():
 
 @blueprint.route('/export')
 @jwt_required
-def export():
+def export_zip():
     username = get_jwt_identity()
-    return send_file(export(username), mimetype='application/zip')
+    return send_file(export(username), mimetype='application/zip', as_attachment=True,
+                     attachment_filename='export.zip')
 
 __all__ = ('blueprint')
