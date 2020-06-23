@@ -21,17 +21,24 @@ function changePassword() {
             window.location.reload();
         }
 
-        requestJSON('POST', dataServer + '/api/user/forgotPassword', $(form).serialize(), passwordChanged, changeFailed);
+        requestJSON('POST', dataServer + '/api/mail/confirm_password', $(form).serialize(), passwordChanged, changeFailed);
         }
 
     });
 };
 
 function setDataAddress(req) {
-dataServer = req.data.address;
+    dataServer = req.data.address;
 }
 
 $(document).ready(function() {
-requestJSON('GET', centralServer + '/api/user/address', null, setDataAddress, null);
-});
+    const queryString = window.location.search;
+    const urlParam = new URLSearchParams(queryString);
+    const token = urlParam.get('token')
+    const username = urlParam.get('username')
+    document.getElementById('token').value = token
 
+    requestJSON('GET', centralServer + '/api/user/address?username=' + username, null, setDataAddress, function(req) {
+        alertError(req.reason, 2000);
+    })
+});

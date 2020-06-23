@@ -103,5 +103,10 @@ def password():
 def personalInfo():
     return render_template('settings/about.html')
 
+@blueprint.route('/forgotPassword')
+@jwt_required
+def changePassword():
+    return render_template('changePassword.html')
+
 
 __all__ = ('blueprint')
