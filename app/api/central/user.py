@@ -4,6 +4,7 @@ from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import servers
 from app.api import auth_username
+from app.utils import ping
 
 blueprint = Blueprint('central_user', __name__)
 
@@ -99,10 +100,14 @@ def register():
 
     server_id = servers.export_one('id', address=address)
 
-    if not users.exists(username=username):
-        users.insert(username=username, server_id=server_id)
+    # Check if server is live.
+    if ping(address):
+        if not users.exists(username=username):
+            users.insert(username=username, server_id=server_id)
+        else:
+            return bad_json_response("Username is already taken. Try again :)")
     else:
-        return bad_json_response("Username is already taken. Try again :)")
+        return bad_json_response("This data server is not available. Please contact the server owner.")
 
     return good_json_response("success")
 

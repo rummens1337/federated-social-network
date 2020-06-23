@@ -20,6 +20,10 @@ def test():
 def index():
     return "DATA SERVER"
 
+@blueprint.route('/ping', methods=['GET'])
+def ping():
+    return good_json_response()
+
 
 @blueprint.route('/file/<int:file_id>/<filename>')
 def file(file_id: int, filename: str):
