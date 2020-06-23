@@ -59,6 +59,8 @@ function exportData() {
   
           function exportSucces(res) {
             console.log(res)
+            var blob = new Blob([res], {type: "application/zip"});
+            saveAs(blob, "export.zip")
             alertError("Exporting data, please do not leave this page until this process has finished!", 5000);
           }
   
