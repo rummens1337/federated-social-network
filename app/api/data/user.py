@@ -571,7 +571,7 @@ def export_data():
 @jwt_required
 def import_data():
     username = get_jwt_identity()
-    
+
     #
     # call import funtion with zip
 
