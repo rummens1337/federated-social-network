@@ -35,7 +35,7 @@ function sign_up() {
 
       function mail_sent() {
         toggle_modal("registerUser");
-        alertError("Registered account, please check you email to verify it!", 4000);
+        alertError("Registered account, please check your email to verify it!", 4000);
       }
 
       function signupFailed(response) {
