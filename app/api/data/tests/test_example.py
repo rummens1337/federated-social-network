@@ -1,6 +1,3 @@
-
-import pytest
-
 # This would be the function imported from another file
 def f():
     return 3
@@ -11,4 +8,4 @@ def test_function_false():
 
 # This would be the test.
 def test_function_true():
-    assert f() == 3
+    assert f() != 3
