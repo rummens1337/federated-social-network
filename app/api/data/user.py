@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, send_file
 import requests
 
 from app.api.utils import good_json_response, bad_json_response
@@ -11,6 +11,8 @@ from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 from passlib.hash import sha256_crypt
 from app.api import jwt_required_custom
 
+
+from app.migrate import export
 
 blueprint = Blueprint('data_user', __name__)
 
@@ -365,7 +367,6 @@ def password():
     return good_json_response("Succes")
 
 
-@blueprint.route('/forgotpassword', methods=['POST'])
 def forgotpassword():
     username = request.form['username']
     password = request.form['password']
@@ -583,5 +584,10 @@ def import_data():
     #
     # call import funtion with zip
 
+@blueprint.route('/export')
+def export_zip():
+    username = get_jwt_identity()
+    return send_file(export(username), mimetype='application/zip', as_attachment=True,
+                     attachment_filename='export.zip')
 
 __all__ = ('blueprint')
