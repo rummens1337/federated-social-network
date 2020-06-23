@@ -104,7 +104,10 @@ class TableLoader:
             The one returned value from the table.
         """
         kwargs['limit'] = 1
-        return self.export(*args, **kwargs)[0]
+        result = self.export(*args, **kwargs)
+        if len(result) != 0:
+            return result[0]
+        return None
 
     def export(self, *args, order: str=None, order_direction: str='desc',
                limit: int=None, as_dict: bool=False, like_prefix: bool=False,
