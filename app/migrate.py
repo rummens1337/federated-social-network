@@ -25,7 +25,7 @@ def _store_in_zip(tablename: str, data: EXPORT_FORMAT_MULTI, f: typing.BinaryIO,
         f = zipfile.ZipFile(f)
     result = []
     for d in data:
-        filename = os.path.join(tablename, d[primary])
+        filename = os.path.join('export', tablename, d[primary])
         if file_data is not None:
             f.writestr(filename, file_data.read())
         filename += '.json'
