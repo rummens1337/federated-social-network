@@ -52,7 +52,7 @@ function showSkills(req) {
     if (req.data.skills.length > 0) {
       for (i=0; i < req.data.skills.length; i++) {
           var skill = req.data.skills[i];
-          showSkill(skill);
+          showSkill(skill, i);
       }
     }
     else {
@@ -61,14 +61,14 @@ function showSkills(req) {
 }
 
 // This function adds a skill in the div 'skills'
-function showSkill(skill) {
+function showSkill(skill, i) {
     var content =
-    '<form enctype="multipart/form-data" name="editSkill">' +
+    '<form enctype="multipart/form-data" name="editSkill' + i + '">' +
     '<p>' + skill.title + '</p>' +
     '<input name="id" type="hidden" value="' + skill.id + '">' +
     '<p><input name="skill_level" input type="range" min="1" max="100" value="' + skill.skill_level + '" ></p>' +
     '<button name="slider" type="submit" class="btn-danger" onclick="deleteSkill(' + skill.id + ')">Delete</button>' +
-    ' <button type="submit" class="btn-primary" onclick="updateSkill()">Update</button>' +
+    '<button type="submit" class="btn-primary" onclick="updateSkill(' + i + ')">Update</button>' +
     '</form>'
     $('#skills-list').append(content);
 }
@@ -88,8 +88,9 @@ function addSkill() {
     });
 };
 
-function updateSkill() {
-    $("form[name='editSkill']").validate({
+function updateSkill(i) {
+    str = 'editSkill' + i
+    $("form[name=" + str + "]").validate({
         rules: {
             skill_level: 'required',
             id: 'required'
@@ -114,8 +115,8 @@ function deleteSkill(id) {
 function showLanguages(req) {
     if (req.data.languages.length > 0) {
       for (i=0; i < req.data.languages.length; i++) {
-          var languages = req.data.languages[i];
-          showLanguage(languages);
+          var language = req.data.languages[i];
+          showLanguage(language, i);
       }
     }
     else {
@@ -124,14 +125,14 @@ function showLanguages(req) {
 }
 
 // This function adds a language in the div 'languages'
-function showLanguage(language) {
+function showLanguage(language, i) {
     var content =
-    '<form enctype="multipart/form-data" name="editLanguage">' +
+    '<form enctype="multipart/form-data" name="editLanguage' + i + '">' +
     '<p>' + language.title + '</p>' +
     '<input name="id" type="hidden" value="' + language.id + '">' +
     '<p><input name="skill_level" type="range" min="1" max="100" value="' + language.skill_level + '" ></p>' +
     '<button type="submit" class="btn-danger" onclick="deleteLanguage(' + language.id + ')">Delete</button>' +
-    ' <button type="submit" class="btn-primary" onclick="updateLanguage()">Update</button>' +
+    ' <button type="submit" class="btn-primary" onclick="updateLanguage(' + i + ')">Update</button>' +
     '</form>'
     $('#languages-list').append(content);
 }
@@ -157,8 +158,9 @@ function deleteLanguage(id) {
     requestJSON('POST', dataServer + '/api/user/deleteLanguage', data, editSucces, editFailed);
 };
 
-function updateLanguage() {
-    $("form[name='editLanguage']").validate({
+function updateLanguage(i) {
+    var str = 'editLanguage' + i
+    $("form[name=" + str + "]").validate({
         rules: {
             skill_level: 'required',
             id: 'required'

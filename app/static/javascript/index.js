@@ -49,7 +49,7 @@ function showLanguage(language) {
     '<p>' + language.title + '</p>' +
     '<div class="w3-light-grey w3-round-xlarge">' +
         '<div class="w3-round-xlarge w3-teal" style="height:24px;width:' + language.skill_level + '%"></div>' +
-    '</div>'
+    '</div>' + '<br>'
     $('#languages-list').append(content);
 }
 
