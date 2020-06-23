@@ -22,7 +22,7 @@ function showHobby(hobby) {
     '<form enctype="multipart/form-data" name="hobby">' +
         '<p>' + hobby.title + '</p>' +
         '<button type="submit" class="btn-danger" onclick="deleteHobby(' + hobby.id+ ')">Delete</button>' +
-    '</form>'
+    '</form><br>'
     $('#hobbies-list').append(content);
 }
 
@@ -68,8 +68,8 @@ function showSkill(skill, i) {
     '<input name="id" type="hidden" value="' + skill.id + '">' +
     '<p><input name="skill_level" input type="range" min="1" max="100" value="' + skill.skill_level + '" ></p>' +
     '<button name="slider" type="submit" class="btn-danger" onclick="deleteSkill(' + skill.id + ')">Delete</button>' +
-    '<button type="submit" class="btn-primary" onclick="updateSkill(' + i + ')">Update</button>' +
-    '</form>'
+    ' <button type="submit" class="btn-primary" onclick="updateSkill(' + i + ')">Update</button>' +
+    '</form><br>'
     $('#skills-list').append(content);
 }
 
@@ -133,7 +133,7 @@ function showLanguage(language, i) {
     '<p><input name="skill_level" type="range" min="1" max="100" value="' + language.skill_level + '" ></p>' +
     '<button type="submit" class="btn-danger" onclick="deleteLanguage(' + language.id + ')">Delete</button>' +
     ' <button type="submit" class="btn-primary" onclick="updateLanguage(' + i + ')">Update</button>' +
-    '</form>'
+    '</form><br>'
     $('#languages-list').append(content);
 }
 
