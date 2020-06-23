@@ -97,5 +97,18 @@ def delete():
     return good_json_response("success")
 
 
+@blueprint.route('/uploadPost', methods=['POST'])
+@jwt_required
+def uploadPost():
+    image_filename = request.files['file'].filename
+    image = request.files['file'].read()
+
+    if image is not 0:
+        uploads_id = save_file(image, filename=image_filename)
+
+    if uploads_id is not False:
+        users.update({'uploads_id' : uploads_id}, username=username)
+
+
 __all__ = ('blueprint')
 
