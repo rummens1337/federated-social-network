@@ -14,4 +14,5 @@ SECRET_KEY = 'super-secret'
 EMAIL_ADDRESS = "therealfednet@gmail.com"
 EMAIL_PASSWORD = "fednetbest1"
 EMAIL_SECRET = "So-super-Secret-Icant!2BelieveiIt"
-EMAIL_SALT = "saltyyyfednet"
+EMAIL_REGISTER_SALT = "saltyyyfednet"
+EMAIL_FORGOTPASS_SALT = "saltyyyfednetEVENMORESALTYYY"
