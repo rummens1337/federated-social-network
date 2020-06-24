@@ -22,7 +22,6 @@ function loadProfile(u) {
     var url = (username == null || username == "") ?
       '/api/user/address' :
       '/api/user/address?username=' + username;
-console.log(u + '0')
     requestJSON('GET', url, null, getProfile, function(req) {
       alertError(req.reason, 2000);
       location.href = "/";
@@ -31,9 +30,8 @@ console.log(u + '0')
 
 // Get the data of the profile
 function getProfile(req) {
-  console.log(req.data.username + '1')
     var dataServer = req.data.address;
-    var urlProfile = dataServer + '/api/user?username=' + username
+    var urlProfile = dataServer + '/api/user?username=' + req.data.username
     requestJSON('GET', urlProfile, null, profile, function(req) {
         alertError(req.reason, 2000);
         location.href = "/";
@@ -41,7 +39,6 @@ function getProfile(req) {
 }
 
 function profile(req) {
-  console.log(req.data.username + '2')
   // alert(req.data.username);
     // document.getElementById('image_url').src = req.data.image_url;
     document.getElementById('image_url_' + req.data.username).innerHTML = '<img src="' + req.data.image_url + '" alt="" class="media-object img-circle">';
