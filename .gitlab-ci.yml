@@ -3,18 +3,87 @@ image: "python:3.7"
 # Do before script
 before_script:
   - python --version
-  - pip install -r requirements.txt
+  - pip install -r docker/flask/requirements.txt pylint
 
 # Different stages
 stages:
   - Static Analysis
+  - Test
 
-# Linting
+#
+# Static analysis
+#
 flake8:
+  allow_failure: true
   stage: Static Analysis
   script:
-  - flake8 --max-line-length=120 bild/*.py
-  tags:
-    - flake8somethnig
-  only:
-    - tags
+  - flake8 --max-line-length=120 app/*.py
+
+pylint:
+  stage: Static Analysis
+  allow_failure: true
+  script:
+  - pylint -d C0301 app/*.py
+
+#
+# Test
+#
+pytest:
+  stage: Test
+  script:
+  - pwd
+  - ls -l
+  - export PYTHONPATH="$PYTHONPATH:."
+  - python -c "import sys;print(sys.path)"
+  - pytest
+
+
+# ###########
+# ########### DO NOT REMOVE!!
+# ###########
+# ########### Fully functional docker setup, but need to find a way to perform tests.
+
+# image: docker:19.03.11
+# variables:
+#   # When using dind service, we need to instruct docker, to talk with
+#   # the daemon started inside of the service. The daemon is available
+#   # with a network connection instead of the default
+#   # /var/run/docker.sock socket. Docker 19.03 does this automatically
+#   # by setting the DOCKER_HOST in
+#   # https://github.com/docker-library/docker/blob/d45051476babc297257df490d22cbd806f1b11e4/19.03/docker-entrypoint.sh#L23-L29
+#   #
+#   # The 'docker' hostname is the alias of the service container as described at
+#   # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services.
+#   #
+#   # Note that if you're using GitLab Runner 12.7 or earlier with the Kubernetes executor and Kubernetes 1.6 or earlier,
+#   # the variable must be set to tcp://localhost:2376 because of how the
+#   # Kubernetes executor connects services to the job container
+#   # DOCKER_HOST: tcp://localhost:2376
+#   #
+#   # Specify to Docker where to create the certificates, Docker will
+#   # create them automatically on boot, and will create
+#   # `/certs/client` that will be shared between the service and job
+#   # container, thanks to volume mount from config.toml
+#   DOCKER_TLS_CERTDIR: "/certs"
+
+# services:
+#   - docker:19.03.11-dind
+
+# before_script:
+#   - docker info
+#   - apk update
+#   - apk upgrade
+#   - apk add --no-cache docker-compose
+#   - apk add make
+#   - make run
+
+  
+
+# build:
+#   stage: build
+#   script:
+#     - ls
+
+
+# after_script:
+#   - make stop

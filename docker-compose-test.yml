@@ -2,20 +2,20 @@ version: '3'
 
 services:
 
-#Starts the mysql server
+#Starts the mysql server    
   mysql:
     # TO be implemented later
     build: ./docker/mysql/8.0
     restart: always
-    container_name: mysql_${FLASK_SERVER_TYPE}_${DATA_NUMBER}
+    container_name: mysql_${FLASK_SERVER_TYPE}
     environment:
       MYSQL_DATABASE: 'db'
       # So you don't have to use root, but you can if you like
-      MYSQL_USER: 'user'
+      MYSQL_USER: '${MYSQL_DATABASE_USER}'
       # You can use whatever password you like
-      MYSQL_PASSWORD: 'password'
+      MYSQL_PASSWORD: '${MYSQL_DATABASE_PASSWORD}'
       # Password for root access
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: '${MYSQL_DATABASE_PASSWORD}'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - '${MYSQL_PORT}:3306'
@@ -31,7 +31,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_${FLASK_SERVER_TYPE}_${DATA_NUMBER}
+    container_name: phpmyadmin_${FLASK_SERVER_TYPE}
     restart: always
     # Gives the phpmyadmin container access to the mysql container
     links:
@@ -46,3 +46,4 @@ services:
       - ${PHPMYADMIN_PORT}:80
     volumes:
       - /sessions
+
