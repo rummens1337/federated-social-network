@@ -56,7 +56,7 @@
                     <li class="nav-item" id='navlogout'><a class="nav-link" href="/logout">Log out</a></li>
                 </ul>
             </div>
-            <div class="button-side" id="nav-btn" onclick="myFunction(this); toggleNav()">
+            <div class="button-side" id="nav-btn" onclick="transFunction(this); toggleNav()">
                 <div id="b1" class="bar1"></div>
                 <div id="b2" class="bar2"></div>
                 <div id="b3" class="bar3"></div>
@@ -70,9 +70,8 @@
                         <img src="../static/images/LogoBackOpaque.png" style="max-height:85px; padding-top:10px;">
                     </a>
                     <div class="dropdown">
-                          <input autocomplete="off" class="form-control" type="text" placeholder="Search.." id="search_input" onclick="myFunction();" onkeyup="filterContent();">
+                          <input autocomplete="off" class="form-control" type="text" placeholder="Search.." id="search_input" onclick="showSearch();" onkeyup="search_func();">
                         <div id="search_dropdown" class="dropdown-content rounded">
-                            <a href="#about">test</a>
                         </div>
                     </div>
                     <!-- <button class="btn btn-custom my-2 my-sm-0 search-btn" type="submit">Search</button> -->

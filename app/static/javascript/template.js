@@ -28,7 +28,7 @@ function close() {
 
 }
 
-function myFunction(x) {
+function transFunction(x) {
   	x.classList.toggle("change");
 }
 

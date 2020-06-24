@@ -1,48 +1,49 @@
-// function search_func() {
-//     $("form[name='search-form']").validate({
-//       rules: {
-//         search_input: "required",
-//       },
+function search_func() {
+  var input_data = $('input[id=search_input]');
+  var data = '?username=' + input_data.val();
 
-//       submitHandler: function(form) {
-//         var input_data = $('input[id=search_input]');
-//         var data = 'username=' + input_data.val();
-//         var username = 'test'
+  function userFound(req) {
+    var search_resp = document.getElementById('search_dropdown')
+    search_resp.textContent = '';
+    users = req.data.users
 
-//         function userFound(XMLHttpRequest, textStatus, errorThrown) {
-//           alert("User found in database!")
-//         }
+    for(var i = 0; i < users.length; i++) {
 
-//         function noUser(req) {
-//           alert("Failed to find user.")
-//         }
+      var link = document.createElement('a');
+      var username = users[i];
+      var user_url = '/profile/' + username;
 
-//         function search(req) {
-//           dataServer = req.data.address;
-//           requestJSON('POST', dataServer + '/api/search/search', $(form).serialize(), userFound, noUser);
-//         }
+      link.innerHTML += username;
+      link.href = user_url;
 
-//         centralServer = "http://192.168.1.250:5000/"
-//         requestJSON('GET', centralServer + 'api/user/address?username=' + username, null, search, noUser);
-//       }
-//         // $.ajax({
-//         //   // Frontend/backend variabelen komen nog niet overeen
-//         //   data : data,
-//         //   type : 'POST',
-//         //   url : '/api/user/register',
-//         //   error : function(data) {
-//         //     alert("Something went wrong.")
-//         //   }
-//         // })
-//     });
-// }
+      search_resp.appendChild(link);
+    }
 
-function myFunction() {
+  }
+
+  function noUser(req) {
+    alertError(req.reason, 2000)
+  }
+
+  requestJSON('GET', '/api/user/search' + data, null, userFound, noUser);
+}
+
+$(document).click(function(e) {
+
+  if ($("#search_dropdown").is(":visible") && !$(e.target).is('#search_input')) {
+    document.getElementById("search_dropdown").classList.toggle("show");
+  }
+});
+
+
+function showSearch() {
   $(".dropdown-content").css({
     'min-width': ($(".dropdown").width() + 'px')
   });
 
-  document.getElementById("search_dropdown").classList.toggle("show");
+  if ($('#search_dropdown').is(":hidden")){
+    document.getElementById("search_dropdown").classList.toggle("show");
+  }
 }
 
 function filterContent() {

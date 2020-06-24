@@ -5,17 +5,9 @@
 {% endblock %}
 
 {% block content %}
+<div>
     <ul id='friend-list'>
-    <h1> users:</h1>
-    {% for friend in friend_list %}
-        <a href={{ friend.profile.profile_url }}>
-        <li class='friend selected'>
-        <img src= {{ friend.photo.photo_url }} >
-        <div class='name'>
-            {{ friend.name.username }}
-        </div>
-        </li>
-        </a>
-    {% endfor %}
+        <h1> Users:</h1>
     </ul>
+</div>
 {% endblock %}
