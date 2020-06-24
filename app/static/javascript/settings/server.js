@@ -12,8 +12,8 @@ function setNoDataAddress() {
     document.getElementById('dataserveraddress').classList.add("w3-hide");
 }
 
-function updateDataServer() {
-    $("form[name='editdataserver']").validate({
+function migrateData() {
+    $("form[name='migratedata']").validate({
         rules: {
             select_server: {
                 "required": true
@@ -21,49 +21,23 @@ function updateDataServer() {
         },
   
         submitHandler: function(form) {
-          function editDataServer() {
+          function exportDataServer() {
             if (form.select_server.value == currentDataServer) {
                 alertError("This data server is already registered to your account.", 2000);
             }
             else {
                 serverForm = {new_address:form.select_server.value};
-                requestJSON("POST", "/api/user/edit", serverForm, editSucces, editFailed);
+                requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, migrationFailed);
             }
-          }
-  
-          function editSucces() {
-            if(!alertError('Your data server has been succesfully updated!', 2000)){
-                requestJSON('GET', centralServer + '/api/user/address', null, setDataAddress, setNoDataAddress);
-            }
-          }
-  
-          function editFailed(response) {
-            console.log(response)
-            alertError(response.reason, 2000);
-          }
-          
-          editDataServer();
-        }
-    });
-}
-
-function exportData() {
-    $("form[name='exportdata']").validate({
-        rules: {
-        },
-  
-        submitHandler: function(form) {
-          function exportDataServer() {
-            requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, migrationFailed);
           }
 
           function importSucces(res) {
+            setDataAddress({data:{address:form.select_server.value, name:form.select_server.textContent}});
             alertError("Importing success, your new server will appear on the top of this page. Filename: " + res.data.filename, 5000)
           }
   
           function exportSucces(res) {
             alertError("Exporting data, please do not leave this page until this process has finished!", 5000);
-            console.log(res)
             var blob = new Blob([res], {type: "application/zip"});
 
             // Use this to download file to browser (maybe option).
@@ -73,7 +47,8 @@ function exportData() {
             var newServer = currentDataServer;
 
             var data = new FormData()
-            data.append('file', blob, "import.zip")
+            data.append('new_address', form.select_server.value);
+            data.append('file', blob, "import.zip");
 
             requestJSONFile("POST", newServer + "/api/user/import", data, importSucces, migrationFailed);
           }

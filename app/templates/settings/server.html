@@ -18,13 +18,12 @@
             <p>The data server registration for your account:</p>
             <p id="dataservername"></p>
             <p id="dataserveraddress"></p>
-            <p>When your profile moved to a different data server, you have to register your profile to this new data server on the FedNet central server. To do this, select your new data server below.</p>
-            <p class="w3-hide">You can migrate your data to a new data server. To do this, choose your new data server below. If the migration was succesful, your new data server will show above after you refresh this page.</p>
-            <form name="editdataserver">
+            <p>When you want to move your data to a different data server, you have to migrate your profile to this new data server and register this on the FedNet central server. To do this, select your new data server below and press migrate.</p>
+            <form name="migratedata">
                 <div class="form-group">
                     <select id="select_server" name="select_server" class="form-control form-control-settings"></select>
                 </div>
-                <button type="submit" class="btn-primary btn-block" onclick="updateDataServer();">Submit</button>
+                <button type="submit" class="btn-primary btn-block" onclick="migrateData();">Migrate</button>
             </form>
         </li>
     </ul>
@@ -47,58 +46,5 @@
             </form>
         </li>
     </ul>
-    <div class="title">
-        <h2 class="font-header-settings">Export data</h2>
-    </div>
-    <ul class="style1">
-        <li>
-            <p>Use this button to export all data from your FedNet account.</p>
-            <form name="exportdata" action="" method="GET">
-                <button type="submit" class="btn-primary btn-block" onclick="exportData();">Export data</button>
-            </form>
-        </li>
-    </ul>
-    <div class="w3-hide">
-        <div class="title">
-            <h2 class="font-header-settings">Personal server</h2>
-        </div>
-        <ul class="style1">
-            <li>
-                <p><b>Hosted accounts:</b></p>
-                <p>coennusse <button class="btn-danger"> Delete</button></p>
-                <p><b>Requests:</b></p>
-                <p>Jan <button class="btn-primary"> Accept</button> <button class="btn-danger"> Decline</button></p>
-            </li>
-            <div class="row">
-                <div class="col-xl-2" id="header">
-                    <div id="menu">
-                        <ul>
-                            <h2 class='settings'> <a href="../settings"> Settings</a></h2>
-                            <li><a href="profile" accesskey="1" title="">Profile</a></li>
-                            <li><a href="privacy" accesskey="2" title="">Privacy</a></li>
-                            <li class="current_page_item"><a href="server" accesskey="3" title="">Server</a></li>
-                            <li><a href="../password" accesskey="4" title="">Password</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        <h2>Active hosts</h2>
-        <ul class="style1">
-            <li>
-                <p>coennusse <button class="btn-danger"> Delete</button></p>
-                <p>Jan <button class="btn-danger"> Delete</button></p>
-            </li>
-        </ul>
-        <div class="title">
-            <h2>Available hosts</h2>
-        </div>
-        <ul class="style1">
-            <li>
-                <p>Jan <button class="btn-primary"> Request to host</button></p>
-                <p>Jan <button class="btn-danger"> Pull back request</button></p>
-
-            </li>
-        </ul>
-    </div>
 </div>
 {% endblock %}
