@@ -87,6 +87,16 @@
                     </div>
                 </div>
             </div>
+
+            <div id="not-friends">
+                <div class="w3-container w3-card  w3-margin-bottom" style="background-color:#DFF8EB;">
+                    <!-- Main title -->
+                    <h2 class="w3-text-grey w3-padding-16">
+                        Not friends yet
+                    </h2>
+                </div>
+            </div>
+
             <!-- TODO username != logged in user -->
             {% if username is defined %}
                 <button id="add_friend" type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button>

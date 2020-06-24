@@ -43,6 +43,8 @@ function profile(req) {
         document.getElementById('bio').innerHTML = req.data.bio;
         document.getElementById('status').innerHTML = req.data.relationship_status;
         document.getElementById('number').innerHTML = req.data.phone_number;
+
+        $('#not-friends').remove()
     } else {
         document.getElementById('name').innerHTML = req.data.username;
         document.getElementById('image_url').src = req.data.image_url;
