@@ -3,6 +3,7 @@ config.py
 config.ini
 /logs/
 /data/
+/scripts/
 
 *~
 *.pyc

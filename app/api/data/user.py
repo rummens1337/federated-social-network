@@ -12,7 +12,7 @@ from passlib.hash import sha256_crypt
 from app.api import jwt_required_custom
 
 
-from app.migrate import export
+from app.migrate import export_zip, import_zip
 
 blueprint = Blueprint('data_user', __name__)
 
@@ -567,35 +567,25 @@ def editLanguage():
 
 @blueprint.route('/export')
 @jwt_required_custom
-def export_zip():
+def export_zip_():
     username = get_jwt_identity()
     if users.exists(username=username):
-        return send_file(export(username), mimetype='application/zip', as_attachment=True,
+        return send_file(export_zip(username), mimetype='application/zip', as_attachment=True,
                         attachment_filename='export.zip')
     else:
         return bad_json_response("User does not exist in database.")
 
 
-@blueprint.route('/import', methods=['POST'])
+@blueprint.route('/import')#, methods=['POST'])
 @jwt_required_custom
-def import_zip():
+def import_zip_():
     username = get_jwt_identity()
 
-    if users.exists(username=username):
-        #get file
-        if 'file' in request.files:
-            file_filename = request.files['file'].filename
-            file = request.files['file'].read()
-            if file is not 0:
-                # import file
-
-                # file is the file to be imported
-                # import(username, file)
-
-                return good_json_response({'filename': file_filename})
-        else:
-            return bad_json_response("File not received.")
-    else:
-        return bad_json_response("User does not exist in database.")
+    if 'file' in request.files:
+        file = request.files['file'].read()
+        if file is not 0:
+            import_zip(file, username=username)
+            return good_json_response()
+    return bad_json_response("File not received.")
 
 __all__ = ('blueprint')
