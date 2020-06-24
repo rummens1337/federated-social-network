@@ -27,7 +27,7 @@ function migrateData() {
             }
             else {
                 // Step 1: Export data from old server.
-                alertError("Exporting data from old server.", 5000);
+                alertError("Step 1/4: Exporting data from old server. Please leave this page open until this process has finished.", 5000);
                 requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, migrationFailed);
             }
           }
@@ -45,7 +45,7 @@ function migrateData() {
             data.append('file', blob, "import.zip");
 
             console.log("Export success.");
-            alertError("Exporting success, importing data to new server.", 5000)
+            alertError("Step 2/4: Importing data to new server. Please leave this page open until this process has finished.", 5000)
             requestJSONFile("POST", form.select_server.value + "/api/user/import", data, importSucces, migrationFailed);
           }
 
@@ -59,7 +59,7 @@ function migrateData() {
             // Step 3 Update address in central server.
             serverForm = {new_address:form.select_server.value};
             console.log("Imported " + res.data.filename + "on new server.");
-            alertError("Import file success, editing central server registration for your account.", 5000);
+            alertError("Step 3/4: Editing central server registration for your account. Please leave this page open until this process has finished.", 5000);
             requestJSON("POST", "/api/user/edit", serverForm, editSuccess, editFailed);
           }
 
@@ -72,7 +72,7 @@ function migrateData() {
           function editSuccess(res) {
             // Step 4: Delete data from old server.
             console.log("Editing entry in central server success.")
-            alertError("Editing success, deleting data from old data server.", 5000);
+            alertError("Step 4/4: Deleting data from old data server. Please leave this page open until this process has finished.", 5000);
             requestJSON("POST", currentDataServer + "/api/user/delete", null, deleteFromOldServerSuccess, deleteFailed);
           }
 
