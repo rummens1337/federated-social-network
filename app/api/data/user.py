@@ -563,28 +563,8 @@ def editLanguage():
     return good_json_response('success')
 
 
-@blueprint.route('/export', methods=['GET'])
-@jwt_required_custom
-def export_data():
-    username = get_jwt_identity()
-
-    title = request.form['title']
-    skill_level = request.form['skill_level']
-
-    languages.insert(username=username, title=title, skill_level=skill_level)
-
-    return good_json_response("success")
-
-
-@blueprint.route('/import', methods=['POST'])
-@jwt_required_custom
-def import_data():
-    username = get_jwt_identity()
-
-    #
-    # call import funtion with zip
-
 @blueprint.route('/export')
+@jwt_required_custom
 def export_zip():
     username = get_jwt_identity()
     return send_file(export(username), mimetype='application/zip', as_attachment=True,

@@ -27,7 +27,6 @@ function migrateData() {
             //}
             //else {
                 // Step 1: Export data from old server.
-                serverForm = {new_address:form.select_server.value};
                 alertError("Exporting data from old server.", 5000);
                 requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, migrationFailed);
             //}
