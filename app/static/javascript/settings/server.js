@@ -22,15 +22,14 @@ function migrateData() {
   
         submitHandler: function(form) {
           function exportDataServer() {
-              // Needs to be uncommented !!!!
-            //if (form.select_server.value == currentDataServer) {
-            //    alertError("This data server is already registered to your account.", 2000);
-            //}
-            //else {
+            if (form.select_server.value == currentDataServer) {
+                alertError("This data server is already registered to your account.", 2000);
+            }
+            else {
                 // Step 1: Export data from old server.
                 alertError("Exporting data from old server.", 5000);
                 requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, migrationFailed);
-            //}
+            }
           }
 
           function exportSucces(res) {
@@ -86,7 +85,7 @@ function migrateData() {
   
           function migrationFailed(response) {
             console.log(response)
-            alertError("A problem occurred during the migration process. You can still use FedNet using your old data server!", 10000);
+            alertError("A problem occurred during the migration process. You can still use FedNet using your old data server! Reason: " + response.reason, 10000);
           }
           
           exportDataServer();
