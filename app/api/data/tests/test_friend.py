@@ -16,7 +16,7 @@ def test_delete():
     pass
 
 def f():
-    return 3
+    return 4
 
 def test_function():
     assert f() == 4
