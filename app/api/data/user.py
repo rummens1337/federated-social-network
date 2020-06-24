@@ -576,7 +576,7 @@ def export_zip_():
         return bad_json_response("User does not exist in database.")
 
 
-@blueprint.route('/import')#, methods=['POST'])
+@blueprint.route('/import', methods=['POST'])
 @jwt_required_custom
 def import_zip_():
     username = get_jwt_identity()
