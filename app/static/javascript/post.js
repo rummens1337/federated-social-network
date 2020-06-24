@@ -103,21 +103,15 @@ function loadComments(postid) {
   function showcomments(req) {
 
     for (var i = 0; i < req.data.comments.length; i++) {
-      // console.log(req.data.comments[i].username)
       loadComment(postid, req.data.comments[i]);
     }
-
-
-    // return comments;
   }
 
   function commentsFailure(req) {
     alertError(req.reason, 2000);
   }
-  // console.log(toLoad);
 
   requestJSON("GET", "/api/user/address", null, getComments, null)
-  // return toLoad;
 }
 
 function loadComment(postid, comment) {
@@ -154,6 +148,7 @@ function loadComment(postid, comment) {
                       </div>
                    </div>
                 </div>`;
+
   comment_list = document.getElementById(postid);
   comment_list.innerHTML += style+content;
 }
