@@ -4,6 +4,7 @@ function showFriends(req) {
     for (i=0; i < req.data.friends.length; i++) {
         var friend = req.data.friends[i];
         show(friend);
+        loadProfile(friend.username)
     }
   }
   else {
@@ -12,27 +13,56 @@ function showFriends(req) {
   }
 }
 
+// Get the address of the profile
+function loadProfile(u) {
+    username = u;
+    var url = (username == null || username == "") ?
+      '/api/user/address' :
+      '/api/user/address?username=' + username;
+
+    requestJSON('GET', url, null, getProfile, function(req) {
+      alertError(req.reason, 2000);
+      location.href = "/";
+    });
+}
+
+// Get the data of the profile
+function getProfile(req) {
+    var dataServer = req.data.address;
+    if (username == null || username == "") {
+      var urlProfile = dataServer + '/api/user'
+    }
+    else {
+      var urlProfile = dataServer + '/api/user?username=' + username
+    }
+
+    requestJSON('GET', urlProfile, null, profile, function(req) {
+        alertError(req.reason, 2000);
+        location.href = "/";
+    });
+}
+
+function profile(req) {
+    // document.getElementById('image_url').src = req.data.image_url;
+    // document.getElementById('image_url').src = '<img src="https://www.searchresult.nl/wp-content/uploads/2015/09/Nieuwe-favicon-Google.png" alt="" class="media-object img-circle">';
+    document.getElementById('full_name' + req.data.username).innerHTML = req.data.firstname + ' ' + req.data.lastname;
+
+}
+
 // This function adds a friend in the div 'friend'
 function show(friend) {
-  // var content = '<a href="/profile/'+ friend.username + '"> \
-  //   <li class="friend selected"><img src="/static/images/default.jpg"><div class="name">' +
-  //   friend.username + '</div></li></a>';
   var content = `<div class="p-10 bg-white">
                    <div class="media media-xs overflow-visible">
-                      <a class="media-left" href="javascript:;"> <img src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
+                      <a class="media-left" id="image_url" href="javascript:;"> <img src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
                       <div class="media-body valign-middle" onclick="location.href='/profile/`+friend.username+`';" style="cursor: pointer;">
-                        <b class="text-dark">` + friend.username + `</b><br>
+                        <b id="full_name` + friend.username + `" class="text-dark"></b><br>
                         <b class="text-inverse">` + friend.username + `</b>
                       </div>
                       <div class="media-body valign-middle text-right overflow-visible">
                          <div class="btn-group dropdown">
-                            <a href="javascript:;" class="btn btn-default">Friends</a> <a href="javascript:;" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-expanded="false"></a>
+                            <a href="javascript:;" class="btn btn-default">Options</a> <a href="javascript:;" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-expanded="false"></a>
                             <ul class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(101px, 34px, 0px);">
                                <li><a href="javascript:deleteFriend('` + friend.username +`');;">Delete</a></li>
-                               <li><a href="javascript:;">Action 2</a></li>
-                               <li><a href="javascript:;">Action 3</a></li>
-                               <li class="divider"></li>
-                               <li><a href="javascript:;">Action 4</a></li>
                             </ul>
                          </div>
                       </div>
@@ -47,10 +77,10 @@ function deleteFriend(friend) {
             // Friend is deleted
             location.reload();
         }, function(req) {
-            alertError('hello there', 2000);
+            alertError(req.reason, 2000);
         });
     }, function(req) {
-        alertError('general kenobi', 2000);
+        alertError(req.reason, 2000);
     });
 }
 
