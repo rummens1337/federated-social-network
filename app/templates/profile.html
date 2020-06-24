@@ -29,7 +29,7 @@
                 <div class="w3-container p-3" style="background-color:#DFF8EB;">
                     <h2 id='name'></h2>
                     <!-- Stats div is used for profile.js!!! -->
-                    <div id = "stats"> 
+                    <div id = "stats">
                         <br>
                         <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
                         <p id='study'></p>
@@ -65,9 +65,8 @@
         <div class="w3-twothird">
         <!-- First right box -->
             <!-- #TODO add right fa fa icons -->
-            <div class="w3-container w3-card  w3-margin-bottom" style="background-color:#DFF8EB;">
-
-                <div id="about">
+            <div id="about">
+                <div class="w3-container w3-card  w3-margin-bottom" style="background-color:#DFF8EB;">
                     <!-- Main title -->
                     <h2 class="w3-text-grey w3-padding-16">
                         <i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>About me
@@ -87,11 +86,11 @@
                         </ul>
                     </div>
                 </div>
-                <!-- TODO username != logged in user -->
-                {% if username is defined %}
-                    <button id="add_friend" type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button>
-                {% endif %}
             </div>
+            <!-- TODO username != logged in user -->
+            {% if username is defined %}
+                <button id="add_friend" type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button>
+            {% endif %}
 
             <!-- Scrollbox style #TODO maybe put in css or template? -->
             <style>

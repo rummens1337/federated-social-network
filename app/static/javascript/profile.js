@@ -45,6 +45,8 @@ function profile(req) {
         document.getElementById('number').innerHTML = req.data.phone_number;
     } else {
         document.getElementById('name').innerHTML = req.data.username;
+        document.getElementById('image_url').src = req.data.image_url;
+
         $("#stats").remove();
         $("#about").remove();
         $("#posts").remove();
