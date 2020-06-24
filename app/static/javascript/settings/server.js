@@ -22,6 +22,7 @@ function migrateData() {
   
         submitHandler: function(form) {
           function exportDataServer() {
+              // Needs to be uncommented !!!!
             //if (form.select_server.value == currentDataServer) {
             //    alertError("This data server is already registered to your account.", 2000);
             //}
@@ -44,35 +45,41 @@ function migrateData() {
             data.append('new_address', form.select_server.value);
             data.append('file', blob, "import.zip");
 
+            console.log("Export success.");
             alertError("Exporting success, importing data to new server.", 5000)
             requestJSONFile("POST", form.select_server.value + "/api/user/import", data, importSucces, migrationFailed);
           }
 
           function editFailed(res) {
             // Step 3 failed.
+            console.log("Edit central server failed.")
             alertError("Migration failed in step 3: the central server registration failed to update, please contact support! Error message: " + res.reason, 20000);
           }
 
-          function deleteFailed(res) {
-            // Step 3 failed.
-            alertError("Migration success! But your data could not be deleted from your old data server. Please contact the owner of your old data server! Error message: " + res.reason, 20000);
-          }
-
           function importSucces(res) {
-            // Step 3 update address in central server and delete data from old server.
+            // Step 3 Update address in central server.
             serverForm = {new_address:form.select_server.value};
-            alertError("Import success, editing central server registration for your account.", 5000)
+            console.log("Imported " + res.data.filename + "on new server.");
+            alertError("Import file success, editing central server registration for your account.", 5000);
             requestJSON("POST", "/api/user/edit", serverForm, editSuccess, editFailed);
           }
 
+          function deleteFailed(res) {
+            // Step 4 failed.
+            console.log("Delete failed");
+            alertError("Migration success! But your data could not be deleted from your old data server. Please contact the owner of your old data server! However, you can use FedNet on the new data server. Error message: " + res.reason, 20000);
+          }
+
           function editSuccess(res) {
-            // Step 4: delete data from old server.
-            alertError("Editing success, deleting data from old data server.", 5000)
+            // Step 4: Delete data from old server.
+            console.log("Editing entry in central server success.")
+            alertError("Editing success, deleting data from old data server.", 5000);
             requestJSON("POST", currentDataServer + "/api/user/delete", null, deleteFromOldServerSuccess, deleteFailed);
           }
 
           function deleteFromOldServerSuccess(res) {
             // Step 5: Set info on settings page.
+            console.log("Delete success. Migrate completed.")
             setDataAddress({data:{address:form.select_server.value, name:form.select_server.textContent}});
             alertError("Migration success! Your new server will appear on the top of this page.", 10000)
           }

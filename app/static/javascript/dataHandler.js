@@ -64,7 +64,10 @@ function requestJSONMigrationFile(type, url, data=null, success=null, error=null
         contentType: false,
         data: data,
         crossDomain: true,
-        success: success,
+        success: function(req) {
+            if (req.hasOwnProperty("success") && req.success == false) error(req);
+            else success(req);
+        },
         error: error
     });
 };

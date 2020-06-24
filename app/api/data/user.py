@@ -279,7 +279,7 @@ def deleteupload():
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
-    username = request.form['username']
+    username = get_jwt_identity()
 
     uploads_id = users.export('uploads_id', username=username)
 
@@ -300,7 +300,6 @@ def delete():
 @jwt_required_custom
 def edit():
     username = get_jwt_identity()
-    # username = request.form['username']
 
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
@@ -567,8 +566,11 @@ def editLanguage():
 @jwt_required_custom
 def export_zip():
     username = get_jwt_identity()
-    return send_file(export(username), mimetype='application/zip', as_attachment=True,
-                     attachment_filename='export.zip')
+    if users.exists(username=username):
+        return send_file(export(username), mimetype='application/zip', as_attachment=True,
+                        attachment_filename='export.zip')
+    else:
+        return bad_json_response("User does not exist in database.")
 
 
 @blueprint.route('/import', methods=['POST'])
@@ -576,16 +578,21 @@ def export_zip():
 def import_zip():
     username = get_jwt_identity()
 
-    #get file
-    if 'file' in request.files:
-        file_filename = request.files['file'].filename
-        file = request.files['file'].read()
-        if file is not 0:
-            # import file
+    if users.exists(username=username):
+        #get file
+        if 'file' in request.files:
+            file_filename = request.files['file'].filename
+            file = request.files['file'].read()
+            if file is not 0:
+                # import file
 
-            # file is the file to be imported
-            # import(username, file)
+                # file is the file to be imported
+                # import(username, file)
 
-            return good_json_response({'filename': file_filename})
+                return good_json_response({'filename': file_filename})
+        else:
+            return bad_json_response("File not received.")
+    else:
+        return bad_json_response("User does not exist in database.")
 
 __all__ = ('blueprint')
