@@ -29,8 +29,6 @@ function create_post() {
   });
 }
 
-
-// Creates a new post, posts to db via post.py addComment
 function create_comment() {
   $("form[name='createcomment']").validate({
     rules: {
@@ -66,20 +64,21 @@ function showPost(postdata, timeline=false) {
         <p class="w3-text-grey">` + postdata.body + `</p>
         <a onclick="showComment(` + postdata.post_id + `)"> show comments</a>`;
         comments = `<div style="display:none;" class="comments"  id='comments` + postdata.post_id + `'>
-                      <form name="createcomment">
+                 <form name="createcomment">
                       <div class="input-group">
 
-                          <textarea name="comment" id="comment" class="form-control" placeholder="Leave a comment below!" style="resize: none;"></textarea>
-                          <textarea name="post_id" id="post_id" class="form-control" placeholder="Leave a id!" style="resize: none;"></textarea>
-                          <span class="input-group-addon">
+                            <textarea name="comment" id="comment" class="form-control" placeholder="Leave a comment below!" style="resize: none;"></textarea>
+                            <input name="post_id" id="post_id" type="hidden" value= ` + postdata.post_id + `>
+
+                            <span class="input-group-addon">
                               <a href="#"><i class="fa fa-edit"></i></a>
                           </span>
                       </div>
-                      <button class="submit" type="submit" onclick="create_comment();" >Comment</button>
-                      <ul class="comments-list">
-                      ` + loadComments(postdata.post_id) +`
-                      </ul>
+                              <button class="submit" type="submit" onclick="create_comment();" >Comment</button>
                 </form>
+                      <ul class="comments-list">
+                        ` + loadComments(postdata.post_id) +`
+                      </ul>
                     </div>`
         content = content + comments + `<hr>`;
 
@@ -96,36 +95,14 @@ function showComment(postid) {
   }
 }
 
-function showComments(req, timeline=false) {
-  if (req.data.postid.length > 0) {
-    for (i=0; i < req.data.postid.length; i++) {
-        var comment = req.data.postid[i];
-        showComment(postid);
-    }
-  }
-  else {
-    $('#posts_div').append('<p class="w3-text-grey">There are no posts on this profile &#128532.</p>\
-                            <img src="/static/images/no-posts.jpg" width=100% alt="Y no posts bruh Q_Q">');
-  }
-}
-
 function loadComments(postid) {
-  var dataServer = req.data.address;
-  var url = (postid == null || postid == "") ?
-    dataServer + '/api/user/posts' :
-    dataServer + '/api/user/posts?postid=' + postid;
-  requestJSON('GET', url, null, showComment, function(req) {
-    alertError(req.reason, 2000)
-  });
-
-
-  // comment = {
-  //           'id': 1,
-  //           'comment': 'helo there',
-  //           'username': 'bas',
-  //           'creation_date': 'nu',
-  //           'last_edit_date': 'toen'
-  //       };
+  comment = {
+            'id': 5,
+            'comment': 'hello there',
+            'username': 'bas',
+            'creation_date': 'nu',
+            'last_edit_date': 'toen'
+        };
   return loadComment(postid, comment);
 }
 
