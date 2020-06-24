@@ -1,10 +1,12 @@
 import os
+
 from flask import Flask, jsonify, request
-from app.database import init_mysql
-from app.log import init_logger
 from flask_cors import CORS
+
 from app.api import init_authentication
 from app.api import register_central, register_data
+from app.database import init_mysql
+from app.log import init_logger
 from app.type import get_server_type, ServerType
 
 init_logger()
@@ -13,15 +15,16 @@ app.config.from_object('config')
 init_mysql(app)
 CORS(app)
 
+
 def check_servertype():
-    """Check the server that is supposed to be ran, change values accordingly."""
+    """Check the server that is supposed to be ran, change values with that."""
     app.config['MYSQL_DATABASE_CHARSET'] = 'utf8mb4'
     app.config['JWT_ALGORITHM'] = 'RS256'
 
     if get_server_type() == ServerType.CENTRAL:
         from app.api.central.main import blueprint as main_routes
         app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-        app.config['JWT_COOKIE_CSRF_PROTECT'] = False  
+        app.config['JWT_COOKIE_CSRF_PROTECT'] = False
         register_central(app)
 
     elif get_server_type() == ServerType.DATA:

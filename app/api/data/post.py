@@ -1,17 +1,14 @@
 from flask import Blueprint, request
-
 from flask_jwt_extended import get_jwt_identity
-from app.api.utils import good_json_response, bad_json_response
-from app.database import users
 
-from app.database import posts, comments
 from app.api import jwt_required_custom
-
+from app.api.utils import good_json_response, bad_json_response
+from app.database import users, posts, comments
 
 blueprint = Blueprint('data_post', __name__)
 
-# TODO COMMENTS
 
+# TODO COMMENTS
 @blueprint.route('/', strict_slashes=False)
 @jwt_required_custom
 def post():
@@ -26,12 +23,13 @@ def post():
     if not post_db:
         return bad_json_response('post not found')
 
-    post_db = posts.export('body', 'title', 'username', 'uploads_id' , 'creation_date', 'last_edit_date', id=post_id)[0]
+    post_db = posts.export('body', 'title', 'username', 'uploads_id' ,
+                           'creation_date', 'last_edit_date', id=post_id)[0]
 
     # Get image
     up_id = post_db[3]
     # default is null?
-    # imageurl = "../static/images/default.jpg"
+    # imageurl = '../static/images/default.jpg'
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
         imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
@@ -79,6 +77,7 @@ def create():
         'url': url
     })
 
+
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
@@ -104,9 +103,9 @@ def delete():
         return bad_json_response('Not your post')
 
     # Delete post
-    posts.delete(id = post_id)
+    posts.delete(id=post_id)
 
-    return good_json_response("success")
+    return good_json_response('success')
 
 
 # @blueprint.route('/uploadPost', methods=['POST'])
@@ -132,18 +131,18 @@ def getComments():
 
     if post_id is None or post_id == '':
         return bad_json_response(
-                "Bad request: Missing or invalid parameter 'post_id'."
-                )
+            "Bad request: Missing or invalid parameter 'post_id'."
+        )
 
     if not posts.exists(id=post_id):
-        return bad_json_response("Post id does not exist.")
+        return bad_json_response('Post id does not exist.')
 
-    comment_details = comments.export(
-            'id', 'comment', 'username', 'creation_date',
-            'last_edit_date', post_id=post_id
-            )
+    comment_details = comments.export('id', 'comment', 'username',
+                                      'creation_date', 'last_edit_date',
+                                      post_id=post_id)
 
-    comments_array = [{
+    comments_array = [
+        {
             'id': item[0],
             'comment': item[1],
             'username': item[2],
@@ -182,7 +181,7 @@ def editComment():
     id = request.form['id']
     comment = request.form['comment']
 
-    comments.update({'comment':comment}, id=id)
+    comments.update({'comment': comment}, id=id)
 
     return good_json_response('success')
 
@@ -194,8 +193,7 @@ def deleteComment():
 
     comments.delete(id=id)
 
-    return good_json_response("success")
+    return good_json_response('success')
 
-
-__all__ = ('blueprint')
+__all__ = ('blueprint',)
 

@@ -19,5 +19,5 @@ def file_main():
         'url': '/file/{}/{}'.format(file_id, filename)
     })
 
-__all__ = ('file_main')
+__all__ = ('blueprint',)
 

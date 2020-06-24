@@ -20,6 +20,7 @@ The following example shows how and when these can and should be used.
     >>> logging.criticial('Critical problem which might cause serious issues.')
     >>> logging.exception('Impossible to run the program due to this error.')
 """
+
 import atexit
 import logging
 import lzma

@@ -26,6 +26,7 @@ interact directly with the database.
 >>> with cursor() as cur:
 >>>     cur.execute('my execution')
 """
+
 import contextlib
 import itertools
 import os
@@ -196,7 +197,10 @@ class TableLoader:
                     if len(kwargs) > 0 else
                     ''
                 ) +
-                ' ORDER BY {} {}'.format(order.lower(), order_direction.lower()) +
+                ' ORDER BY {} {}'.format(
+                    order.lower(),
+                    order_direction.lower()
+                ) +
                 (
                     ' LIMIT ' + str(limit)
                     if limit is not None else
@@ -351,7 +355,6 @@ class TableLoader:
 
 
 def init_mysql(app):
-    # globally set mysql variable
     globals()['mysql'] = MySQL(app)
     if get_server_type() == ServerType.CENTRAL:
         sql_file = CENTRAL_SQL
@@ -365,7 +368,10 @@ def init_mysql(app):
                     continue
                 q += ';'
                 table = re.search(r'^[^\(]+?([a-zA-Z0-9]+)\s*\(', q).group(1)
-                primary_key = re.search(r'([a-zA-Z0-9]+)\s+[^\s]+\s*PRIMARY\s*KEY', q).group(1)
+                primary_key = re.search(
+                    r'([a-zA-Z0-9]+)\s+[^\s]+\s*PRIMARY\s*KEY',
+                    q
+                ).group(1)
                 print('Creating table {} with primary key {}.'
                       .format(table, primary_key), flush=True)
                 cur.execute(q)
@@ -375,3 +381,4 @@ def init_mysql(app):
 def test_db():
     with cursor() as cur:
         cur.execute("INSERT INTO test VALUES (1)")
+
