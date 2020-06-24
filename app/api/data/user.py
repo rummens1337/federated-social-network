@@ -12,7 +12,7 @@ from passlib.hash import sha256_crypt
 from app.api import jwt_required_custom
 
 
-from app.migrate import export
+from app.migrate import export_zip, import_zip
 
 blueprint = Blueprint('data_user', __name__)
 
@@ -303,7 +303,6 @@ def delete():
 @jwt_required_custom
 def edit():
     username = get_jwt_identity()
-    # username = request.form['username']
 
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
@@ -566,31 +565,27 @@ def editLanguage():
     return good_json_response('success')
 
 
-@blueprint.route('/export', methods=['GET'])
-@jwt_required_custom
-def export_data():
-    username = get_jwt_identity()
-
-    title = request.form['title']
-    skill_level = request.form['skill_level']
-
-    languages.insert(username=username, title=title, skill_level=skill_level)
-
-    return good_json_response("success")
-
-
-@blueprint.route('/import', methods=['POST'])
-@jwt_required_custom
-def import_data():
-    username = get_jwt_identity()
-
-    #
-    # call import funtion with zip
-
 @blueprint.route('/export')
-def export_zip():
+@jwt_required_custom
+def export_zip_():
     username = get_jwt_identity()
-    return send_file(export(username), mimetype='application/zip', as_attachment=True,
-                     attachment_filename='export.zip')
+    if users.exists(username=username):
+        return send_file(export_zip(username), mimetype='application/zip', as_attachment=True,
+                        attachment_filename='export.zip')
+    else:
+        return bad_json_response("User does not exist in database.")
+
+
+@blueprint.route('/import')#, methods=['POST'])
+@jwt_required_custom
+def import_zip_():
+    username = get_jwt_identity()
+
+    if 'file' in request.files:
+        file = request.files['file'].read()
+        if file is not 0:
+            import_zip(file, username=username)
+            return good_json_response()
+    return bad_json_response("File not received.")
 
 __all__ = ('blueprint')
