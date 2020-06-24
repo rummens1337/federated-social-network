@@ -161,11 +161,11 @@ def getComments():
 @blueprint.route('/addComment', methods=['POST'])
 @jwt_required_custom
 def addComment():
-    # username = get_jwt_identity()
+    username = get_jwt_identity()
     # username = request.form['username']
 
     # need to somehow give post_id with it (in html? hidden)
-    post_id = request.form['post_id']
+    post_id = int(request.form['post_id'])
     comment = request.form['comment']
 
     comments.insert(comment=comment, post_id=post_id, username=username)
