@@ -287,11 +287,14 @@ def delete():
         users.delete(username=username)
         # I dont think we want to delete this upload?
         # Upload might be shared by 2 users?
-        uploads.delete(uploads_id=uploads_id)
-        posts.delete(username=username)
-        friends.delete(username=username)
+        if uploads.exists(uploads_id=uploads_id):
+            uploads.delete(uploads_id=uploads_id)
+        if posts.exists(username=username):
+            posts.delete(username=username)
+        if friends.exists(username=username):
+            friends.delete(username=username)
 
-        return good_json_response("success")
+        return good_json_response()
     else:
         return bad_json_response("Username is not registered.")
 
