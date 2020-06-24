@@ -279,19 +279,22 @@ def deleteupload():
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
-    username = request.form['username']
+    username = get_jwt_identity()
 
     uploads_id = users.export('uploads_id', username=username)
 
     if users.exists(username=username):
         users.delete(username=username)
-        # I dont think we want to delete this upload?
-        # Upload might be shared by 2 users?
-        uploads.delete(uploads_id=uploads_id)
-        posts.delete(username=username)
-        friends.delete(username=username)
+        
+        # Add all tables belonging to a user.
+        if uploads.exists(id=uploads_id):
+            uploads.delete(id=uploads_id)
+        if posts.exists(username=username):
+            posts.delete(username=username)
+        if friends.exists(username=username):
+            friends.delete(username=username)
 
-        return good_json_response("success")
+        return good_json_response()
     else:
         return bad_json_response("Username is not registered.")
 

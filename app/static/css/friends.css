@@ -143,3 +143,7 @@ body.flat-black {
     display: table-cell;
     vertical-align: top;
 }
+
+#reject {
+  color: yellow;
+}

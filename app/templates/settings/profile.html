@@ -26,7 +26,7 @@
         <form enctype="multipart/form-data" name="settings">
             <li>
                 <p><b> Profile picture</b></p>
-                <img class="img-settings" name="profilePicture" id='image_url' style="width:100%" >
+                <img class="img-settings" name="profilePicture" id='image_url' style="width:30%" >
                 <input id="image_url" type="file" name="file" accept="image/*" onchange="show_preview(event)">
             </li>
             <li>
@@ -61,6 +61,10 @@
                 <button type="submit" class="btn-primary btn-block" onclick="saveProfile()">Update</button>
             </div>
         </form>
+        <br>
+        <div>
+            <button class="btn-primary btn-block w3-red w3-border-red" onclick="deleteProfile()">Delete profile</button>
+        </div>
     </ul>
 </div>
 {% endblock %}
