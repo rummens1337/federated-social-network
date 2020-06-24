@@ -48,7 +48,7 @@ function profile(req) {
 // This function adds a friend in the div 'friend'
 function show(friend) {
   var content = `<div class="p-10 bg-white">
-                   <div class="media media-xs overflow-visible">
+                   <div class="media media-xs overflow-visible" id="friend_container">
                       <a class="media-left" id="image_url_` + friend.username + `" href="javascript:;">  </a>
                       <div class="media-body valign-middle" onclick="location.href='/profile/`+friend.username+`';" style="cursor: pointer;">
                         <b id="full_name_` + friend.username + `" class="text-dark">USERNAME</b><br>

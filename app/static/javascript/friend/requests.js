@@ -5,7 +5,7 @@ function showRequests(req) {
     if (req.data.friends.length > 0) {
         for (i=0; i < req.data.friends.length; i++) {
             var friend = req.data.friends[i];
-            show(friend);
+            show_request(friend);
         }
     }
     else {
@@ -25,26 +25,26 @@ function accept(id, accept) {
 }
 
 // This function adds a friend in the div 'friend'
-function show(friend) {
+function show_request(friend) {
     var content = friend.username +
         '<button onclick="accept('+friend.id+', 1)">accept</button> \
         <button onclick="accept('+friend.id+', 0)">decline</button><br>';
     var content = `<div class="p-10 bg-white">
-                     <div class="media media-xs overflow-visible">
+                     <div class="media media-xs overflow-visible" id="friend_container">
                         <a class="media-left" id="image_url_` + friend.username + `" href="javascript:;">  </a>
                         <div class="media-body valign-middle" onclick="location.href='/profile/`+friend.username+`';" style="cursor: pointer;">
                           <b id="full_name_` + friend.username + `" class="text-dark">`+friend.username+`</b><br>
                         </div>
                         <div style="padding-right: 20px; class="media-body valign-middle text-right overflow-visible">
-                        <i onclick="accept(` + friend.id + `, 0)" class="fa fa-times fa-2x mb-3 text-danger aria-hidden="true""></i>
-                        <i onclick="accept(` + friend.id + `, 1)" class="fa fa-check fa-2x mb-3 text-success aria-hidden="true""></i>
+                        <i onclick="accept(` + friend.id + `, 0)" class="fa fa-times fa-2x mb-3 aria-hidden="true"" id="reject"></i>
+                        <i onclick="accept(` + friend.id + `, 1)" class="fa fa-check fa-2x mb-3 text-success aria-hidden="true"" id="accept"></i>
                         </div>
                      </div>
                   </div>`;
     $('#request-list').append(content);
 }
 
-function setDataAddress(req) {
+function setDataAddress_requests(req) {
     dataServer = req.data.address;
     requestJSON('GET', dataServer + '/api/friend/requests', null, showRequests, function(req) {
         alertError(req.reason, 2000);
@@ -52,7 +52,7 @@ function setDataAddress(req) {
 }
 
 $(document).ready(function() {
-    requestJSON('GET', '/api/user/address', null, setDataAddress, function(req) {
+    requestJSON('GET', '/api/user/address', null, setDataAddress_requests, function(req) {
         alertError(req.reason, 2000);
     });
 });

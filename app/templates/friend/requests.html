@@ -3,6 +3,25 @@
 {% block head %}
     <!-- <link type="text/css"  rel="stylesheet" href="../static/css/friends.css"/> -->
     <script type="text/javascript" src="../static/javascript/friend/requests.js"></script>
+    <style>
+      #reject {
+        color: red;
+        -webkit-filter: brightness(100%);
+      }
+
+    #reject:hover {
+      -webkit-filter: brightness(70%);
+    }
+
+    #accept {
+      color: green;
+      -webkit-filter: brightness(100%);
+    }
+
+  #accept:hover {
+    -webkit-filter: brightness(70%);
+  }
+    </style>
 {{ super() }}
 {% endblock %}
 
