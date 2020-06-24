@@ -117,7 +117,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="registerServerId">Enter username to confirm account.</h5>
+                <h5 class="modal-title" id="registerServerId">Enter username to reset password.</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -130,7 +130,7 @@
                         <input type='text' class="form-control" name="username" placeholder="Enter username" value=""></input>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn-success btn mx-auto" onclick="forgotPassword();">Send mail to change password</button>
+                        <button type="submit" class="btn-success btn mx-auto" onclick="forgotPassword();">Send e-mail</button>
                     </div>
                 </form>
                 <p class="text-center"> <a data-toggle="modal" data-target="#recoverUsername" data-whatever="@getbootstrap" id="forgotusername" onclick="loadServersForgot();"> Forgot username?</a> </p>
@@ -145,7 +145,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="registerServerId">Enter your dataserver and email to confirm account.</h5>
+                <h5 class="modal-title" id="registerServerId">Enter your dataserver and email to request username.</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -155,7 +155,7 @@
                 <form name="recoverUsername">
                     <div class="form-group">
                         <label> Data server </label>
-                        <span class="w3-tooltip">&#9432; <p class="w3-text tooltip2 w3-tag w3-round-xlarge w3-margin-bottom">Your data on FedNet is stored on external servers, that's why you have to select a server where your data will be stored.</p></span>
+                        <span class="w3-tooltip">&#9432; <p class="w3-text tooltip2 w3-tag w3-round-xlarge w3-margin-bottom">The e-mail provided must be linked to the username, and this username must exist on the given server. Don't know your server? Please contact support.</p></span>
                         <select id="select_server2" name="server" class="form-control"></select>
                     </div>
                     <div class="form-group">
@@ -163,7 +163,7 @@
                         <input type='email' class="form-control" name="email" placeholder="Enter email adress" value=""></input>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn-success btn mx-auto" onclick="forgotUsername();">Send mail to change password</button>
+                        <button type="submit" class="btn-success btn mx-auto" onclick="forgotUsername();">Send e-mail</button>
                     </div>
                 </form>
                 <br>
