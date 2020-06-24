@@ -592,7 +592,7 @@ def export_zip():
 
 
 @blueprint.route('/import', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def import_zip():
     username = get_jwt_identity()
 
