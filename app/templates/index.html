@@ -35,53 +35,28 @@
                 <!-- #TODO add right content for profile. -->
                 <div class="w3-container p-3" style="background-color:#DFF8EB;">
                     <h2 id='name'></h2>
-
                     <br>
-                    <p id='bio'></p>
                     <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
                     <p id='study'></p>
                     <i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
                     <p id='location'></p>
-                    <!-- <p><i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>Broken</p>
-                    <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p> -->
+                    <i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                    <p id='status'></p>
+                    <i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                    <p id='number'></p>
                     <a href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
-                    <!-- <hr>
+                    <hr>
 
-                    <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+                    <li id='skills-list'>
+                        <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+                    </li>
 
-                    <p>Adobe Photoshop</p>
-                    <div class="w3-light-grey w3-round-xlarge w3-small" style="color:#52B77C;">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:90%">90%</div>
-                    </div>
-                    <p>Photography</p>
-                    <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:80%">
-                        <div class="w3-center w3-text-white">80%</div>
-                        </div>
-                    </div>
-                    <p>Illustrator</p>
-                    <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:75%">75%</div>
-                    </div>
-                    <p>Media</p>
-                    <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
-                    </div>
                     <br>
 
-                    <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
-                    <p>English</p>
-                    <div class="w3-light-grey w3-round-xlarge">
-                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:100%"></div>
-                    </div>
-                    <p>Spanish</p>
-                    <div class="w3-light-grey w3-round-xlarge">
-                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:55%"></div>
-                    </div>
-                    <p>German</p>
-                    <div class="w3-light-grey w3-round-xlarge">
-                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:25%"></div>
-                    </div> -->
+                    <li id='languages-list'>
+                        <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
+                    </li>
+
                     <br>
                 </div>
             </div>
@@ -112,7 +87,7 @@
                                         tonesStyle: "bullet"
                                     });
                                 })
-                                </script>
+                            </script>
                         </div>
                         <div class="form-group">
                             <div class="text-center" >
@@ -126,23 +101,6 @@
                 </div>
             </div>
 
-            <!-- Scrollbox style #TODO maybe put in css or template? -->
-            <!-- <style>
-                .header {
-                padding: 10px 16px;
-                background: #555;
-                color: #f1f1f1;
-                }
-                /* Page content */
-                .content {
-                  padding: 16px;
-                }
-                /* The sticky class is added to the header with JS when it reaches its scroll position */
-                .sticky {
-                  position: sticky;
-                  top: 0;
-                }
-            </style> -->
 
             <!-- Header for posts -->
             <div class="header sticky" id="myHeader" style="background-color:#DFF8EB;">
@@ -153,23 +111,6 @@
             <div id="posts_div" class="w3-container"  style="background-color:#DFF8EB;">
             </div>
 
-            <!-- Scrollscript -->
-            <!-- <script>
-                // When the user scrolls the page, execute myFunction
-                window.onscroll = function() {myFunction()};
-                // Get the header
-                var header = document.getElementById("myHeader");
-                // Get the offset position of the navbar
-                var sticky = header.offsetTop;
-                // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
-                function myFunction() {
-                    if (window.pageYOffset > sticky) {
-                        header.classList.add("sticky");
-                    } else {
-                        header.classList.remove("sticky");
-                    }
-                }
-            </script> -->
 
         <!-- End Right Column -->
         </div>
@@ -180,17 +121,5 @@
 <!-- End Page Container -->
 </div>
 
-<!-- <footer class="w3-container w3-center w3-margin-top" style="background-color:#011638;">
-  <p style="color:#52B77C;">Find me on social media.</p>
-  <i class="fa fa-facebook-official w3-hover-opacity" style="color:#52B77C;"></i>
-  <i class="fa fa-instagram w3-hover-opacity"style="color:#52B77C;"></i>
-  <i class="fa fa-snapchat w3-hover-opacity"style="color:#52B77C;"></i>
-  <i class="fa fa-pinterest-p w3-hover-opacity"style="color:#52B77C;"></i>
-  <i class="fa fa-twitter w3-hover-opacity"style="color:#52B77C;"></i>
-  <i class="fa fa-linkedin w3-hover-opacity"style="color:#52B77C;"></i>
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-</footer> -->
-
-<!-- </body> -->
 
 {% endblock %}

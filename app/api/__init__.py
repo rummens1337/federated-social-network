@@ -4,11 +4,13 @@ def register_data(app):
     from app.api.data.friend import blueprint as data_friend
     from app.api.data.file import blueprint as data_file
     from app.api.data.mail import blueprint as data_mail
+    from app.api.data.server import blueprint as data_server
     app.register_blueprint(data_user, url_prefix='/api/user')
     app.register_blueprint(data_post, url_prefix='/api/post')
     app.register_blueprint(data_friend, url_prefix='/api/friend')
     app.register_blueprint(data_file, url_prefix='/api/file')
     app.register_blueprint(data_mail, url_prefix='/api/mail')
+    app.register_blueprint(data_server, url_prefix='/api/server')
 
 
 def register_central(app):
@@ -55,3 +57,56 @@ def auth_username():
         return username
     except Exception:
         return None
+
+def jwt_required_custom(fn):
+    """
+    A decorator to protect a Flask endpoint.
+    If you decorate an endpoint with this, it will ensure that the requester
+    has a valid and fresh access token before allowing the endpoint to be
+    called.
+    See also: :func:`~flask_jwt_extended.jwt_required`
+    """
+    from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+    from app.utils import get_central_ip
+    from flask import request, current_app, Flask, render_template
+    from app.type import get_server_type, ServerType
+    import logging
+    import json
+    import jwt
+    import base64
+    import requests
+ 
+    def wrapper(*args, **kwargs):
+        try:
+            # decode token (base64)
+            header = None
+            if get_server_type() == ServerType.CENTRAL:
+                header = request.cookies['access_token_cookie']
+            else:
+                header = request.headers['authorization']
+
+            # Get the identity and save as username
+            parts = header.split(".")
+            decoded = base64.b64decode(parts[1] + "=============").decode("utf-8")
+            username = json.loads(decoded)['identity']
+
+            # Get the correct pub key
+            if get_server_type() == ServerType.CENTRAL:
+                # Get the pubkey using own API call
+                from app.api.central.server import get_pub_key
+                pub = get_pub_key(username)
+            else:
+                # Get the pubkey by call to the central server
+                pub = requests.get(get_central_ip() + '/api/server/pub_key?username='+username).json()['data']
+        
+            current_app.config['JWT_PUBLIC_KEY'] = pub
+        except:
+            # Show login on exception
+            return render_template("login.html")
+        
+        # Let the JWT extended library check the token
+        verify_jwt_in_request()
+        return fn(*args, **kwargs)
+
+    wrapper.__name__ = fn.__name__
+    return wrapper

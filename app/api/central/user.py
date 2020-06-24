@@ -1,9 +1,11 @@
 from flask import Blueprint, request, Flask, render_template, request
-from flask_jwt_extended import jwt_required, create_access_token,get_jwt_identity,verify_jwt_in_request_optional
+from flask_jwt_extended import create_access_token,get_jwt_identity,verify_jwt_in_request_optional
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
 from app.database import servers
 from app.api import auth_username
+from app.utils import ping
+from app.api import jwt_required_custom
 
 blueprint = Blueprint('central_user', __name__)
 
@@ -39,7 +41,7 @@ def createtestusers():
 def search():
     username = request.args.get('username')
     # TODO: add 'like' function
-    userlist = users.export('username', username=username)
+    userlist = users.export('username', username=username, like_prefix=True, like_suffix=True)
     
     if userlist is None or userlist == "":
         return bad_json_response("No users found")
@@ -99,16 +101,20 @@ def register():
 
     server_id = servers.export_one('id', address=address)
 
-    if not users.exists(username=username):
-        users.insert(username=username, server_id=server_id)
+    # Check if server is live.
+    if ping(address):
+        if not users.exists(username=username):
+            users.insert(username=username, server_id=server_id)
+        else:
+            return bad_json_response("Username is already taken. Try again :)")
     else:
-        return bad_json_response("Username is already taken. Try again :)")
+        return bad_json_response("This data server is not available. Please contact the server owner.")
 
     return good_json_response("success")
 
 
 @blueprint.route('/delete', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def delete():
     # username = request.form['username']
     username = get_jwt_identity()
@@ -121,7 +127,7 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def edit():
     # username = request.args.get('username')
     username = get_jwt_identity()

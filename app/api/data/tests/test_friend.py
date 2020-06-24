@@ -15,5 +15,11 @@ def test_register():
 def test_delete():
     pass
 
-# __all__ = ('blueprint')
+def f():
+    return 3
+
+def test_function():
+    assert f() == 4
+
+__all__ = ('blueprint')
 

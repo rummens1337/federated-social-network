@@ -1,19 +1,24 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, send_file
 import requests
 
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users, friends, uploads, posts
 from app.database import skills, languages, hobbies
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity
 from app.upload import get_file, save_file
 from app.api import auth_username
 from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 from passlib.hash import sha256_crypt
+from app.api import jwt_required_custom
+
+
+from app.migrate import export
+
 blueprint = Blueprint('data_user', __name__)
 
 
 @blueprint.route('/', strict_slashes=False)
-@jwt_required
+@jwt_required_custom
 def user():
     username = request.args.get('username')
 
@@ -26,7 +31,7 @@ def user():
     user_details = users.export(
         'username', 'firstname', 'lastname', 'uploads_id',
         'location', 'study', 'bio', 'creation_date',
-        'last_edit_date',
+        'last_edit_date', 'relationship_status', 'phone_number',
         username=username
     )
 
@@ -63,7 +68,10 @@ def user():
         'study': user_details[0][5],
         'bio': user_details[0][6],
         'creation_date': str(user_details[0][7]),
-        'last_edit_date': str(user_details[0][8])
+        'last_edit_date': str(user_details[0][8]),
+        'relationship_status': user_details[0][9],
+        'phone_number': user_details[0][10]
+
     }
 
     return good_json_response({**basic_info, **sensitive_info})
@@ -125,7 +133,7 @@ def registered():
 
 
 @blueprint.route('/posts', methods=['GET'])
-@jwt_required
+@jwt_required_custom
 def user_posts():
     username = request.args.get('username')
 
@@ -150,13 +158,15 @@ def user_posts():
 
 def get_posts(username):
     # Get all posts of a user.
-    user_posts = posts.export('title', 'body', 'creation_date', username=username)
+    user_posts = posts.export('id', 'title', 'body', 'creation_date', username=username)
 
     # Transfrom to array including dictionaries
     posts_array = [{
-            'title' : item[0],
-            'body' : item[1],
-            'creation_date' : str(item[2])
+            'post_id' : item[0],
+            'title' : item[1],
+            'body' : item[2],
+            'creation_date' : str(item[3]),
+            'username'  : username
         }
         for item in user_posts
     ]
@@ -165,7 +175,7 @@ def get_posts(username):
 
 
 @blueprint.route('/timeline', methods=['GET'])
-@jwt_required
+@jwt_required_custom
 def timeline():
     from app.api.data.friend import get_friends
 
@@ -175,30 +185,30 @@ def timeline():
         return bad_json_response('user not found')
 
     # Get the user's own posts
-    posts_array = []
-    posts = get_posts(username)
-    if len(posts) != 0:
-        posts_array.append({
-            'username'  : username,
-            'posts'     : posts
-        })
+    posts_array = get_posts(username)
 
     # Get the user's friends
     friends = get_friends(username)
+    
     for i in range(0, len(friends)):
-        friend = friends[i]['username']
-        friend_address = get_user_ip(friend)
-        # Get the posts of the friend
-        response = requests.get(friend_address + '/api/user/posts?username='+friend, headers=request.headers).json()
-        if response['success'] == True:
-            posts = response['data']['posts']
-            if len(posts) != 0:
-                posts_array.append({
-                    'username'  : friend,
-                    'posts'     : posts
-                })
+        try:
+            friend = friends[i]['username']
+            friend_address = get_user_ip(friend)
+            # Get the posts of the friend
+            response = requests.get(friend_address + '/api/user/posts?username='+friend, headers=request.headers).json()
+            if response['success'] == True:
+                posts = response['data']['posts']
+                posts_array = posts_array + posts
+        except:
+            continue
 
-    return good_json_response(posts_array)
+    import datetime
+    posts_array = sorted(posts_array, key=lambda k:
+        datetime.datetime.strptime(k['creation_date'], "%Y-%m-%d %H:%M:%S"), reverse=True)
+
+    return good_json_response({
+        'posts': posts_array
+    })
 
 
 @blueprint.route('/login', methods=['POST'])
@@ -267,7 +277,7 @@ def deleteupload():
 
 
 @blueprint.route('/delete', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def delete():
     username = request.form['username']
 
@@ -287,7 +297,7 @@ def delete():
 
 
 @blueprint.route('/edit', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def edit():
     username = get_jwt_identity()
     # username = request.form['username']
@@ -295,9 +305,11 @@ def edit():
     if 'new_firstname' in request.form:
         new_firstname = request.form['new_firstname']
         users.update({'firstname':new_firstname}, username=username)
+
     if 'new_lastname' in request.form:
         new_lastname = request.form['new_lastname']
         users.update({'lastname':new_lastname}, username=username)
+
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
@@ -306,23 +318,35 @@ def edit():
 
             if uploads_id is not False:
                 users.update({'uploads_id' : uploads_id}, username=username)
+
     if 'new_location' in request.form:
         new_location = request.form['new_location']
         users.update({'location':new_location}, username=username)
+
     if 'new_study' in request.form:
         new_study = request.form['new_study']
         users.update({'study':new_study}, username=username)
+
     if 'new_bio' in request.form:
         new_bio = request.form['new_bio']
         users.update({'bio':new_bio}, username=username)
+
     if 'new_password' in request.form:
         new_password = sha256_crypt.encrypt(request.form['new_password'])
         users.update({'password':new_password}, username=username)
 
+    if 'new_relationship_status' in request.form:
+        new_relationship_status = request.form['new_relationship_status']
+        users.update({'relationship_status':new_relationship_status}, username=username)
+
+    if 'new_phone_number' in request.form:
+        new_phone_number = request.form['new_phone_number']
+        users.update({'phone_number':new_phone_number}, username=username)
+
     return good_json_response("success")
 
 @blueprint.route('/password', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def password():
     username = get_jwt_identity()
     password = request.form['oldPassword']
@@ -343,10 +367,30 @@ def password():
     return good_json_response("Succes")
 
 
+def forgotpassword():
+    username = request.form['username']
+    password = request.form['password']
+
+    if password is None:
+        return bad_json_response("Bad request: Missing parameter 'password'.")
+
+    newPassword = sha256_crypt.encrypt(request.form['password'])
+
+    users.update({'password':newPassword}, username=username)
+
+    return good_json_response("Succes")
+
+
 @blueprint.route('/hobby')
-@jwt_required
+@jwt_required_custom
 def hobby():
-    username = get_jwt_identity()
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
+
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     hobbies_details = hobbies.export('id', 'title', username=username)
 
@@ -361,8 +405,9 @@ def hobby():
         'hobbies': hobbies_array
     })
 
+
 @blueprint.route('/addHobby', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addHobby():
     username = get_jwt_identity()
     # username = request.form['username']
@@ -373,8 +418,9 @@ def addHobby():
 
     return good_json_response("success")
 
+
 @blueprint.route('/deleteHobby', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def deleteHobby():
     username = get_jwt_identity()
 
@@ -384,10 +430,17 @@ def deleteHobby():
 
     return good_json_response("success")
 
+
 @blueprint.route('/skill')
-@jwt_required
+@jwt_required_custom
 def skill():
-    username = get_jwt_identity()
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
+
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
 
     skill_details = skills.export(
             'id', 'title', 'skill_level' ,username=username
@@ -405,8 +458,9 @@ def skill():
         'skills': skill_array
     })
 
+
 @blueprint.route('/addSkill', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addSkill():
     username = get_jwt_identity()
 
@@ -417,12 +471,44 @@ def addSkill():
 
     return good_json_response("success")
 
-@blueprint.route('/language')
-@jwt_required
-def language():
+
+@blueprint.route('/editSkill', methods=['POST'])
+@jwt_required_custom
+def editSkill():
+    # username = get_jwt_identity()
+
+    id = request.form['id']
+    skill_level = request.form['skill_level']
+
+    skills.update({'skill_level':skill_level}, id=id)
+
+    return good_json_response('success')
+
+
+@blueprint.route('/deleteSkill', methods=['POST'])
+@jwt_required_custom
+def deleteSkill():
     username = get_jwt_identity()
 
-    language_details = skills.export(
+    id = request.form['id']
+
+    skills.delete(id=id)
+
+    return good_json_response("success")
+
+
+@blueprint.route('/language')
+@jwt_required_custom
+def language():
+    username = request.args.get('username')
+
+    if username is None or username == '':
+        username = auth_username()
+
+    if username is None:
+        return bad_json_response("Bad request: Missing parameter 'username'.")
+
+    language_details = languages.export(
             'id', 'title', 'skill_level' ,username=username
             )
 
@@ -440,7 +526,7 @@ def language():
 
 
 @blueprint.route('/addLanguage', methods=['POST'])
-@jwt_required
+@jwt_required_custom
 def addLanguage():
     username = get_jwt_identity()
 
@@ -450,5 +536,58 @@ def addLanguage():
     languages.insert(username=username, title=title, skill_level=skill_level)
 
     return good_json_response("success")
+
+
+@blueprint.route('/deleteLanguage', methods=['POST'])
+@jwt_required_custom
+def deleteLanguage():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+
+    languages.delete(id=id)
+
+    return good_json_response("success")
+
+
+@blueprint.route('/editLanguage', methods=['POST'])
+@jwt_required_custom
+def editLanguage():
+    username = get_jwt_identity()
+
+    id = request.form['id']
+    skill_level = request.form['skill_level']
+
+    languages.update({'skill_level':skill_level}, id=id)
+
+    return good_json_response('success')
+
+
+@blueprint.route('/export', methods=['GET'])
+@jwt_required_custom
+def export_data():
+    username = get_jwt_identity()
+
+    title = request.form['title']
+    skill_level = request.form['skill_level']
+
+    languages.insert(username=username, title=title, skill_level=skill_level)
+
+    return good_json_response("success")
+
+
+@blueprint.route('/import', methods=['POST'])
+@jwt_required_custom
+def import_data():
+    username = get_jwt_identity()
+
+    #
+    # call import funtion with zip
+
+@blueprint.route('/export')
+def export_zip():
+    username = get_jwt_identity()
+    return send_file(export(username), mimetype='application/zip', as_attachment=True,
+                     attachment_filename='export.zip')
 
 __all__ = ('blueprint')

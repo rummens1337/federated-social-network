@@ -3,7 +3,7 @@ var centralServer = window.location.origin;
 function saveProfile() {
     $("form[name='settings']").validate({
         rules: {
-            new_name: 'required'
+            new_name: 'required',
         },
 
         submitHandler: function(form) {
@@ -29,6 +29,8 @@ function setUserSettings(req) {
     document.getElementById('lastname').value = req.data.lastname;
     document.getElementById('study').value = req.data.study;
     document.getElementById('bio').value = req.data.bio;
+    document.getElementById('status').value = req.data.relationship_status;
+    document.getElementById('phone_number').value = req.data.phone_number;
 }
 
 function setDataAddress(req) {

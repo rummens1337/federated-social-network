@@ -30,8 +30,12 @@ function sign_up() {
       }
 
       function signupSucces() {
-        requestJSON("POST", form.select_server.value + "/api/mail/token", $(form).serialize())
-        window.location = "/?message=registered";
+        requestJSON("POST", form.select_server.value + "/api/mail/token", $(form).serialize(), mail_sent);
+      }
+
+      function mail_sent() {
+        toggle_modal("registerUser");
+        alertError("Registered account, please check your email to verify it!", 4000);
       }
 
       function signupFailed(response) {
@@ -51,11 +55,9 @@ function loadServers() {
   function populateServerSelect(req) {
     var select = document.getElementById('select_server')
     var data = req.data.servers;
-    console.log(req);
 
     for(i in data) {
       var server_option = document.createElement("option");
-      console.log(i)
       server_option.value = data[i][1]
       server_option.textContent = data[i][0]
 

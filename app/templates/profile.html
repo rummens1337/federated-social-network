@@ -5,6 +5,7 @@
     <script type="text/javascript" src="../static/javascript/profile.js"></script>
     <script type="text/javascript" src="../static/javascript/post.js"></script>
 
+
     <script>$(document).ready( function() { loadProfile("{{ username }}"); }); </script>
     <script>$(document).ready( function() { loadUserPosts("{{ username }}", "posts"); }); </script>
     {{ super() }}
@@ -17,62 +18,42 @@
     <!-- The Grid -->
     <div class="w3-row-padding">
 
-        <!-- Left Column -->
-        <div class="w3-third">
+         <!-- Left Column -->
+         <div class="w3-third" style="max-width:300px;">
 
             <div class="w3-white w3-text-grey w3-card-4">
                 <div class="w3-display-container">
-                    <img id="image_url" src="../static/images/default.jpg" style="width:100%" alt="Avatar">
-                        <div class="w3-display-bottomleft w3-container w3-text-teal">
-                            <h2 id="name"></h2>
-                        </div>
+                    <img id='image_url' style="width:100%">
                 </div>
                 <!-- #TODO add right content for profile. -->
-                <div id="stats" class="w3-container" style="background-color:#DFF8EB;">
-                    <br>
-                    <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Designer</p>
-                    <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
-                    <p><i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>Broken</p>
-                    <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>
-                    <a href="/settings"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
-                    <hr>
+                <div class="w3-container p-3" style="background-color:#DFF8EB;">
+                    <h2 id='name'></h2>
+                    <!-- Stats div is used for profile.js!!! -->
+                    <div id = "stats"> 
+                        <br>
+                        <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <p id='study'></p>
+                        <i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <p id='location'></p>
+                        <i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <p id='status'></p>
+                        <i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <p id='number'></p>
+                        <a href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
+                        <hr>
 
-                    <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+                        <li id='skills-list'>
+                            <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+                        </li>
 
-                    <p>Adobe Photoshop</p>
-                    <div class="w3-light-grey w3-round-xlarge w3-small" style="color:#52B77C;">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:90%">90%</div>
-                    </div>
-                    <p>Photography</p>
-                    <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:80%">
-                        <div class="w3-center w3-text-white">80%</div>
-                        </div>
-                    </div>
-                    <p>Illustrator</p>
-                    <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:75%">75%</div>
-                    </div>
-                    <p>Media</p>
-                    <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
-                    </div>
-                    <br>
+                        <br>
 
-                    <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
-                    <p>English</p>
-                    <div class="w3-light-grey w3-round-xlarge">
-                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:100%"></div>
+                        <li id='languages-list'>
+                            <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
+                        </li>
+
+                        <br>
                     </div>
-                    <p>Spanish</p>
-                    <div class="w3-light-grey w3-round-xlarge">
-                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:55%"></div>
-                    </div>
-                    <p>German</p>
-                    <div class="w3-light-grey w3-round-xlarge">
-                        <div class="w3-round-xlarge w3-teal" style="height:24px;width:25%"></div>
-                    </div>
-                    <br>
                 </div>
             </div>
             <br>
@@ -85,44 +66,27 @@
         <!-- First right box -->
             <!-- #TODO add right fa fa icons -->
             <div class="w3-container w3-card  w3-margin-bottom" style="background-color:#DFF8EB;">
-                
+
                 <div id="about">
                     <!-- Main title -->
                     <h2 class="w3-text-grey w3-padding-16">
                         <i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>About me
                     </h2>
-                    <div class="w3-container"  style="background-color:#DFF8EB;">
+                    <div class="w 3-container"  style="background-color:#DFF8EB;">
                         <!-- Sub title -->
-                        <h5 class="w3-opacity w3-text-teal"><b>Hobbies, interest</b></h5>
-                        <!-- Content box title -->
-                        <h6 class="w3-text-teal">
-                            <i class="fa fa-circle fa-fw w3-margin-right"></i>Combing dogs
-                        </h6>
+                        <h5 class="w3-opacity w3-text-teal"><b>Bio</b></h5>
                         <!-- Content -->
-                        <p class="w3-text-grey">Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
+                        <p id='bio' class="w3-text-grey"></p>
                         <hr>
                     </div>
 
                     <div class="w3-container"  style="background-color:#DFF8EB;">
                         <!-- Sub title -->
-                        <h5 class="w3-opacity w3-text-teal"><b>You can always wake me up for</b></h5>
-                        <!-- Content box title -->
-                        <h6 class="w3-text-teal"><i class="fa fa-circle fa-fw w3-margin-right"></i>A frozen banana</h6>
-                        <!-- Content -->
-                        <p class="w3-text-grey">Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
-                        <hr>
-                    </div>
-
-                    <div class="w3-container"  style="background-color:#DFF8EB;">
-                        <!-- Sub title -->
-                        <h5 class="w3-opacity w3-text-teal"><b>Never contact me if</b></h5>
-                        <!-- Content box title -->
-                        <h6 class="w3-text-teal"><i class="fa fa-circle fa-fw w3-margin-right"></i>Your name's Jeff</h6>
-                        <!-- Content -->
-                        <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>
+                        <h5 class="w3-opacity w3-text-teal"><b>Hobbies</b></h5>
+                        <ul id='hobbies-list'>
+                        </ul>
                     </div>
                 </div>
-
                 <!-- TODO username != logged in user -->
                 {% if username is defined %}
                     <button id="add_friend" type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button>
@@ -154,8 +118,6 @@
                     <h2 class="w3-text-grey w3-padding-16"style="background-color:#DFF8EB;"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Posts</h2>
                 </div>
 
-
-                
                 <!-- Posts #TODO timestamps, content, postee -->
                 <div id="posts_div" class="w3-container"  style="background-color:#DFF8EB;">
                 </div>
