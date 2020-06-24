@@ -29,6 +29,34 @@ function create_post() {
   });
 }
 
+
+// Creates a new post, posts to db via post.py addComment
+function create_comment() {
+  $("form[name='createcomment']").validate({
+    rules: {
+      body: 'required'
+    },
+
+    submitHandler: function(form) {
+      function creationSucces(req) {
+        window.location.reload();
+      }
+
+      function creationFailed(response, XMLHttpRequest, textStatus, errorThrown) {
+        alertError(response.reason, 2000);
+      }
+
+      function create(req) {
+        dataServer = req.data.address;
+        requestJSON('POST', dataServer + '/api/post/addComment', $(form).serialize(), creationSucces, creationFailed);
+      }
+
+      // Central server needs to be set globally.
+      requestJSON('GET', location.origin + '/api/user/address', null, create, null);
+    }
+  });
+}
+
 // This function adds a post in the div 'posts_div'
 function showPost(postdata, timeline=false) {
     var user = timeline ? postdata.username : null;
@@ -38,15 +66,20 @@ function showPost(postdata, timeline=false) {
         <p class="w3-text-grey">` + postdata.body + `</p>
         <a onclick="showComment(` + postdata.post_id + `)"> show comments</a>`;
         comments = `<div style="display:none;" class="comments"  id='comments` + postdata.post_id + `'>
+                      <form name="createcomment">
                       <div class="input-group">
-                          <input class="form-control" placeholder="Add a comment" type="text">
+
+                          <textarea name="comment" id="comment" class="form-control" placeholder="Leave a comment below!" style="resize: none;"></textarea>
+                          <textarea name="post_id" id="post_id" class="form-control" placeholder="Leave a id!" style="resize: none;"></textarea>
                           <span class="input-group-addon">
                               <a href="#"><i class="fa fa-edit"></i></a>
                           </span>
                       </div>
+                      <button class="submit" type="submit" onclick="create_comment();" >Comment</button>
                       <ul class="comments-list">
-                        ` + loadComments(postdata.post_id) +`
+                      ` + loadComments(postdata.post_id) +`
                       </ul>
+                </form>
                     </div>`
         content = content + comments + `<hr>`;
 
