@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     email_confirmed int(1) NOT NULL DEFAULT 0,
     password VARCHAR(1000) NOT NULL,
     uploads_id INTEGER DEFAULT NULL,
+    FOREIGN KEY (uploads_id) REFERENCES uploads(id),
     location VARCHAR(1000) DEFAULT '-',
     study VARCHAR(1000) DEFAULT '-',
     bio VARCHAR(1000) DEFAULT '-',
@@ -21,6 +22,7 @@ CREATE TABLE IF NOT EXISTS posts (
     title VARCHAR(1000) DEFAULT NULL,
     username VARCHAR(255) NOT NULL,
     uploads_id INTEGER DEFAULT NULL,
+    FOREIGN KEY (uploads_id) REFERENCES uploads(id),
     FOREIGN KEY (username) REFERENCES users(username),
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_edit_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
