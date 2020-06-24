@@ -68,7 +68,7 @@ function showPost(postdata, timeline=false) {
                       <div class="input-group">
 
                             <textarea name="comment" id="comment" class="form-control" placeholder="Leave a comment below!" style="resize: none;"></textarea>
-                            <input name="post_id" id="post_id" type="hidden" value= ` + postdata.post_id + `"></textarea>
+                            <input name="post_id" id="post_id" type="hidden" value= ` + postdata.post_id + `></textarea>
 
                             <span class="input-group-addon">
                               <a href="#"><i class="fa fa-edit"></i></a>
