@@ -18,8 +18,6 @@ def check_servertype():
     app.config['MYSQL_DATABASE_CHARSET'] = 'utf8mb4'
     app.config['JWT_ALGORITHM'] = 'RS256'
 
-    app.config['JWT_PUBLIC_KEY'] = """FILL IN"""
-
     if get_server_type() == ServerType.CENTRAL:
         from app.api.central.main import blueprint as main_routes
         app.config['JWT_TOKEN_LOCATION'] = ['cookies']
