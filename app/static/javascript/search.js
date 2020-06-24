@@ -11,7 +11,7 @@ function search_func() {
 
       var link = document.createElement('a');
       var username = users[i];
-      var user_url = window.location + 'profile/' + username;
+      var user_url = '/profile/' + username;
 
       link.innerHTML += username;
       link.href = user_url;
