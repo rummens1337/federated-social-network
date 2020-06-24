@@ -297,7 +297,7 @@ def delete():
 
     # Check if friendship exists
     if not friends.exists(username=username, friend=friend) and \
-            friends.exists(username=friend, friend=username):
+            not friends.exists(username=friend, friend=username):
         return bad_json_response('friendship does not exist')
 
     # Get the friend's data server address and check if friend exists
