@@ -63,14 +63,36 @@ function showComment(postid) {
   }
 }
 
+function showComments(req, timeline=false) {
+  if (req.data.postid.length > 0) {
+    for (i=0; i < req.data.postid.length; i++) {
+        var comment = req.data.postid[i];
+        showComment(postid);
+    }
+  }
+  else {
+    $('#posts_div').append('<p class="w3-text-grey">There are no posts on this profile &#128532.</p>\
+                            <img src="/static/images/no-posts.jpg" width=100% alt="Y no posts bruh Q_Q">');
+  }
+}
+
 function loadComments(postid) {
-  comment = {
-            'id': 1,
-            'comment': 'helo there',
-            'username': 'bas',
-            'creation_date': 'nu',
-            'last_edit_date': 'toen'
-        };
+  var dataServer = req.data.address;
+  var url = (postid == null || postid == "") ?
+    dataServer + '/api/user/posts' :
+    dataServer + '/api/user/posts?postid=' + postid;
+  requestJSON('GET', url, null, showComment, function(req) {
+    alertError(req.reason, 2000)
+  });
+
+
+  // comment = {
+  //           'id': 1,
+  //           'comment': 'helo there',
+  //           'username': 'bas',
+  //           'creation_date': 'nu',
+  //           'last_edit_date': 'toen'
+  //       };
   return loadComment(postid, comment);
 }
 
