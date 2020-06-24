@@ -14,7 +14,7 @@ EXPORT_FORMAT = typing.Dict[str, typing.Union[str, int]]
 EXPORT_FORMAT_MULTI = typing.Tuple[EXPORT_FORMAT]
 
 if get_server_type() == ServerType.DATA:
-    from app.database import users, posts, friends, uploads
+    from app.database import users, posts, comments, friends, uploads, hobbies, skills, languages
 
 
 def _store_in_zip(tablename: str, data: EXPORT_FORMAT_MULTI, f: typing.BinaryIO,
@@ -65,6 +65,10 @@ def export(username: str) -> typing.BinaryIO:
                       file_data=get_file(data[0]['id'], output='fp')[1])
     _store_in_zip('friends', friends.export(username=username, as_dict=True), f)
     _store_in_zip('posts', posts.export(username=username, as_dict=True), f)
+    _store_in_zip('comments', comments.export(username=username, as_dict=True), f)
+    _store_in_zip('hobbies', hobbies.export(username=username, as_dict=True), f)
+    _store_in_zip('skills', skills.export(username=username, as_dict=True), f)
+    _store_in_zip('languages', languages.export(username=username, as_dict=True), f)
     f.close()
     return open(f.filename, 'rb')
 
