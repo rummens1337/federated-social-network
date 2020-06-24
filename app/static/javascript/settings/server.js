@@ -22,41 +22,65 @@ function migrateData() {
   
         submitHandler: function(form) {
           function exportDataServer() {
-            if (form.select_server.value == currentDataServer) {
-                alertError("This data server is already registered to your account.", 2000);
-            }
-            else {
+            //if (form.select_server.value == currentDataServer) {
+            //    alertError("This data server is already registered to your account.", 2000);
+            //}
+            //else {
+                // Step 1: Export data from old server.
                 serverForm = {new_address:form.select_server.value};
+                alertError("Exporting data from old server.", 5000)
                 requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, migrationFailed);
-            }
+            //}
           }
 
-          function importSucces(res) {
-            setDataAddress({data:{address:form.select_server.value, name:form.select_server.textContent}});
-            alertError("Importing success, your new server will appear on the top of this page. Filename: " + res.data.filename, 5000)
-          }
-  
           function exportSucces(res) {
-            alertError("Exporting data, please do not leave this page until this process has finished!", 5000);
             var blob = new Blob([res], {type: "application/zip"});
 
             if (form.save_data_zip.checked == true) {
                 saveAs(blob, "export.zip")
             }
 
-            // To set to user chosen new server.
-            var newServer = currentDataServer;
-
+            // Step 2: Import data in new server.
             var data = new FormData()
             data.append('new_address', form.select_server.value);
             data.append('file', blob, "import.zip");
 
-            requestJSONFile("POST", newServer + "/api/user/import", data, importSucces, migrationFailed);
+            alertError("Exporting success, importing data to new server.", 5000)
+            requestJSONFile("POST", form.select_server.value + "/api/user/import", data, importSucces, migrationFailed);
+          }
+
+          function editFailed(res) {
+            // Step 3 failed.
+            alertError("Migration failed in step 3: the central server registration failed to update, please contact support! Error message: " + res.reason, 20000);
+          }
+
+          function deleteFailed(res) {
+            // Step 3 failed.
+            alertError("Migration success! But your data could not be deleted from your old data server. Please contact the owner of your old data server! Error message: " + res.reason, 20000);
+          }
+
+          function importSucces(res) {
+            // Step 3 update address in central server and delete data from old server.
+            serverForm = {new_address:form.select_server.value};
+            alertError("Import success, editing central server registration for your account.", 5000)
+            requestJSON("POST", "/api/user/edit", serverForm, editSuccess, editFailed);
+          }
+
+          function editSuccess(res) {
+            // Step 4: delete data from old server.
+            alertError("Editing success, deleting data from old data server.", 5000)
+            requestJSON("POST", currentDataServer + "/api/user/delete", null, deleteFromOldServerSuccess, deleteFailed);
+          }
+
+          function deleteFromOldServerSuccess(res) {
+            // Step 5: Set info on settings page.
+            setDataAddress({data:{address:form.select_server.value, name:form.select_server.textContent}});
+            alertError("Migration success! Your new server will appear on the top of this page.", 10000)
           }
   
           function migrationFailed(response) {
             console.log(response)
-            alertError(response.reason, 2000);
+            alertError("A problem occurred during the migration process. You can still use FedNet using your old data server!", 10000);
           }
           
           exportDataServer();
