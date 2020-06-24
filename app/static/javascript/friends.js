@@ -4,7 +4,10 @@ function showFriends(req) {
     for (i=0; i < req.data.friends.length; i++) {
         var friend = req.data.friends[i];
         show(friend);
-        loadProfile(friend.username)
+        // alert(friend);
+        // console.log(friend);
+
+        loadProfile(friend.username);
     }
   }
   else {
@@ -19,7 +22,7 @@ function loadProfile(u) {
     var url = (username == null || username == "") ?
       '/api/user/address' :
       '/api/user/address?username=' + username;
-
+console.log(u + '0')
     requestJSON('GET', url, null, getProfile, function(req) {
       alertError(req.reason, 2000);
       location.href = "/";
@@ -28,14 +31,9 @@ function loadProfile(u) {
 
 // Get the data of the profile
 function getProfile(req) {
+  console.log(req.data.username + '1')
     var dataServer = req.data.address;
-    if (username == null || username == "") {
-      var urlProfile = dataServer + '/api/user'
-    }
-    else {
-      var urlProfile = dataServer + '/api/user?username=' + username
-    }
-
+    var urlProfile = dataServer + '/api/user?username=' + username
     requestJSON('GET', urlProfile, null, profile, function(req) {
         alertError(req.reason, 2000);
         location.href = "/";
@@ -43,32 +41,34 @@ function getProfile(req) {
 }
 
 function profile(req) {
+  console.log(req.data.username + '2')
+  // alert(req.data.username);
     // document.getElementById('image_url').src = req.data.image_url;
-    // document.getElementById('image_url').src = '<img src="https://www.searchresult.nl/wp-content/uploads/2015/09/Nieuwe-favicon-Google.png" alt="" class="media-object img-circle">';
-    document.getElementById('full_name' + req.data.username).innerHTML = req.data.firstname + ' ' + req.data.lastname;
-
+    document.getElementById('image_url_' + req.data.username).innerHTML = '<img src="' + req.data.image_url + '" alt="" class="media-object img-circle">';
+    document.getElementById('full_name_' + req.data.username).innerHTML = req.data.firstname + ' ' + req.data.lastname;
 }
 
 // This function adds a friend in the div 'friend'
 function show(friend) {
   var content = `<div class="p-10 bg-white">
                    <div class="media media-xs overflow-visible">
-                      <a class="media-left" id="image_url" href="javascript:;"> <img src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
+                      <a class="media-left" id="image_url_` + friend.username + `" href="javascript:;">  </a>
                       <div class="media-body valign-middle" onclick="location.href='/profile/`+friend.username+`';" style="cursor: pointer;">
-                        <b id="full_name` + friend.username + `" class="text-dark"></b><br>
+                        <b id="full_name_` + friend.username + `" class="text-dark">USERNAME</b><br>
                         <b class="text-inverse">` + friend.username + `</b>
                       </div>
                       <div class="media-body valign-middle text-right overflow-visible">
                          <div class="btn-group dropdown">
                             <a href="javascript:;" class="btn btn-default">Options</a> <a href="javascript:;" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-expanded="false"></a>
                             <ul class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(101px, 34px, 0px);">
-                               <li><a href="javascript:deleteFriend('` + friend.username +`');;">Delete</a></li>
+                               <li><a href="javascript:deleteFriend('` + friend.username +`');;">Unfriend</a></li>
                             </ul>
                          </div>
                       </div>
                    </div>
                 </div>`;
   $('#friend-list').append(content);
+  // loadProfile(friend.username);
 }
 
 function deleteFriend(friend) {
