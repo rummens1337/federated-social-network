@@ -40,8 +40,9 @@ function migrateData() {
             alertError("Exporting data, please do not leave this page until this process has finished!", 5000);
             var blob = new Blob([res], {type: "application/zip"});
 
-            // Use this to download file to browser (maybe option).
-            // saveAs(blob, "export.zip")
+            if (form.save_data_zip.checked == true) {
+                saveAs(blob, "export.zip")
+            }
 
             // To set to user chosen new server.
             var newServer = currentDataServer;
