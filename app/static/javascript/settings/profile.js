@@ -39,6 +39,7 @@ function deleteProfile() {
     function deleteDataSuccess(){
         console.log("Profile deleted from data server");
         alertError("Your profile has been deleted.");
+        Cookies.delete('access_token_cookie');
         location.href = "/";
     }
 
