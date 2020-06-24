@@ -101,4 +101,10 @@ def personalInfo():
 def changePassword():
     return render_template('changePassword.html')
 
+@blueprint.route('/search')
+@jwt_required_custom
+def search_result():
+    return render_template('search.html')
+
+
 __all__ = ('blueprint')
