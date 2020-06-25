@@ -61,9 +61,14 @@ function create_comment(id) {
 // This function adds a post in the div 'posts_div'
 function showPost(postdata, timeline=false) {
     var user = timeline ? postdata.username : null;
-    var content = `<img id="image_image_post_` + postdata.id + `" src="/static/images/default.jpg" alt="" class="media-object img-circle"> 
+    var content = `<div class="media media-xs overflow-visible">
+                    <a class="media-left" href="javascript:;"> <img id="image_post_` + postdata.post_id + `" src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
+
+
                    <h5 style="color:black;">
+                   <div class="media-body valign-middle" style="cursor: pointer;">
                    <b>`+ ((user != null) ? ('@' + user + '</b><br>') : "") + postdata.title + `</b></h5>
+        </div></div>
         <h6 class="w3-text-black"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
         <p class="w3-text-grey">` + postdata.body + `</p>`;
 
