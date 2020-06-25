@@ -68,7 +68,7 @@ function showPost(postdata, timeline=false) {
 
 
     if (postdata.image_url != '' && postdata.image_url != null) {
-      var image = `<img style="width:30%" src=` + postdata.image_url +
+      var image = `<img style="width:80%" src=` + postdata.image_url +
                   `><p><a onclick="showComment(` + postdata.post_id + `)"> show comments</a><p>`;
     } else {
       var image = `<a onclick="showComment(` + postdata.post_id + `)"> show comments</a>`;
