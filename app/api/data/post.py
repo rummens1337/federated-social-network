@@ -30,10 +30,11 @@ def post():
 
     # Get image
     up_id = post_db[3]
-    imageurl = ''
+
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
         imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
+
 
     return good_json_response({
         'post_id': post_id,

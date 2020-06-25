@@ -172,7 +172,9 @@ def get_posts(username):
 
     # Get image
     up_id = user_posts[0][4]
-    imageurl = ''
+    imageurl = '../static/images/default.jpg'
+
+
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
         imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
