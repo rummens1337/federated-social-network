@@ -111,7 +111,6 @@ function loadComments(postid) {
   }
 
   function showcomments(req) {
-
     for (var i = 0; i < req.data.comments.length; i++) {
       loadComment(postid, req.data.comments[i]);
     }
@@ -125,6 +124,11 @@ function loadComments(postid) {
 }
 
 function loadComment(postid, comment) {
+  function getProfilePic(req) {
+    document.getElementById('image_' + comment.id).src = req.data.image_url;
+  }
+
+
   var style = `<style>
                 .media.media-xs .media-object {
                     width: 64px;
@@ -142,7 +146,7 @@ function loadComment(postid, comment) {
               </style>`
   var content = `<div class="p-10 bg-white">
                    <div class="media media-xs overflow-visible">
-                      <a class="media-left" href="javascript:;"> <img src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
+                      <a class="media-left" href="javascript:;"> <img id="image_` + comment.id + `" src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
                       <div class="media-body valign-middle" style="cursor: pointer;">
                         <b class="text-dark" onclick="location.href='../profile/` + comment.username + `';">` + comment.username + `</b><br>
                         <b class="text-inverse">` + comment.comment + `</b>
@@ -161,6 +165,8 @@ function loadComment(postid, comment) {
 
   comment_list = document.getElementById(postid);
   comment_list.innerHTML += style+content;
+
+  requestJSON("GET", dataServer + "/api/user?username=" + comment.username, null, getProfilePic, null)
 }
 
 // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
