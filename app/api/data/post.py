@@ -6,6 +6,7 @@ from app.api.utils import good_json_response, bad_json_response
 from app.database import users, posts, comments, uploads
 from app.upload import get_file, save_file
 from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
+from app.api.data.user import get_profile_image
 
 blueprint = Blueprint('data_post', __name__)
 
@@ -117,17 +118,6 @@ def delete():
     posts.delete(id=post_id)
 
     return good_json_response('success')
-
-
-def get_profile_image(username):
-    up_id = users.export_one('uploads_id', username=username)
-
-    imageurl = '../static/images/default.jpg'
-    if uploads.exists(id=up_id):
-        filename = uploads.export_one('filename', id=up_id)
-        imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
-
-    return imageurl
 
 
 @blueprint.route('/comments', strict_slashes=False)
