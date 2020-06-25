@@ -37,20 +37,19 @@
         <style>
             .fakeimg {
               height: 200px;
-              background: #bbb;
+              background: rgb(195, 195, 195);
             }
         </style>
         {% block head %}
         {% endblock %}
     </head>
     <body>
-        <div class="page-wrapper" style="background-color:#ffffff;">
+        <div class="page-wrapper" style="background-color:#dbdbdb;">
             <div id="mySidenav" class="sidenav">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item active"><a class="nav-link" href="/index">Home</a></li>
                     <li class="nav-item" id='navme'><a class="nav-link" href="/profile">Me</a></li>
                     <li class="nav-item" id='navfriends'><a class="nav-link" href="/friends">Friends</a></li>
-                    <!-- <li class="nav-item" id='navfriendrequests'><a class="nav-link" href="/friend/requests">Friend requests</a></li> -->
                     <li class="nav-item" id='navsettings'><a class="nav-link" href="/settings/profile">Settings</a></li>
                     <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
                     <li class="nav-item" id='navlogout'><a class="nav-link" href="/logout">Log out</a></li>
@@ -82,7 +81,7 @@
             {% endblock %}
 
             </div>
-        <footer id='jumbotron' class="jumbotron text-align">FedNet - The federated social network</footer>
+        <footer id='jumbotron' class="jumbotron text-align" style="color:#009688;">FedNet - The federated social network</footer>
         </div>
           <!-- end page wrapper -->
     </body>

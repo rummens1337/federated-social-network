@@ -61,20 +61,20 @@ function create_comment() {
 // This function adds a post in the div 'posts_div'
 function showPost(postdata, timeline=false) {
     var user = timeline ? postdata.username : null;
-    var content = `<h5 style="color:#52B77C;">
+    var content = `<h5 style="color:black;">
                     <b>`+ ((user != null) ? ('@' + user + '</b><br>') : "") + postdata.title + `</b></h5>
-        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
+        <h6 class="w3-text-black"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
         <p class="w3-text-grey">` + postdata.body + `</p>`;
 
 
     if (postdata.image_url != '' && postdata.image_url != null) {
       var image = `<img style="width:80%" src=` + postdata.image_url +
-                  `><p><a onclick="showComment(` + postdata.post_id + `)"> show comments</a><p>`;
+                  `><br><p><a onclick="showComment(` + postdata.post_id + `)"> show comments</a><p>`;
     } else {
-      var image = `<a onclick="showComment(` + postdata.post_id + `)"> show comments</a>`;
+      var image = `<br><p><a onclick="showComment(` + postdata.post_id + `)"> show comments</a><p>`;
     }
 
-        comments = `<div style="display:none;" class="comments"  id='comments` + postdata.post_id + `'>
+        comments = `<div style="display:none;" class="comments" id='comments` + postdata.post_id + `'>
                  <form name="createcomment">
                       <div class="input-group">
                             <textarea name="comment" id="comment" class="form-control" placeholder="Leave a comment below!" style="resize: none;"></textarea>
@@ -111,7 +111,6 @@ function loadComments(postid) {
   }
 
   function showcomments(req) {
-
     for (var i = 0; i < req.data.comments.length; i++) {
       loadComment(postid, req.data.comments[i]);
     }
@@ -125,6 +124,11 @@ function loadComments(postid) {
 }
 
 function loadComment(postid, comment) {
+  function getProfilePic(req) {
+    document.getElementById('image_' + comment.id).src = req.data.image_url;
+  }
+
+
   var style = `<style>
                 .media.media-xs .media-object {
                     width: 64px;
@@ -142,7 +146,7 @@ function loadComment(postid, comment) {
               </style>`
   var content = `<div class="p-10 bg-white">
                    <div class="media media-xs overflow-visible">
-                      <a class="media-left" href="javascript:;"> <img src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
+                      <a class="media-left" href="javascript:;"> <img id="image_` + comment.id + `" src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
                       <div class="media-body valign-middle" style="cursor: pointer;">
                         <b class="text-dark" onclick="location.href='../profile/` + comment.username + `';">` + comment.username + `</b><br>
                         <b class="text-inverse">` + comment.comment + `</b>
@@ -161,6 +165,8 @@ function loadComment(postid, comment) {
 
   comment_list = document.getElementById(postid);
   comment_list.innerHTML += style+content;
+
+  requestJSON("GET", dataServer + "/api/user?username=" + comment.username, null, getProfilePic, null)
 }
 
 // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
@@ -172,7 +178,7 @@ function showPostsArray(req, timeline=false) {
     }
   }
   else {
-    $('#posts_div').append('<p class="w3-text-grey">There are no posts on this profile &#128532.</p>\
+    $('#posts_div').append('<p class="w3-text-black">There are no posts on this profile &#128532.</p>\
                             <img src="/static/images/no-posts.jpg" width=100% alt="Y no posts bruh Q_Q">');
   }
 }

@@ -46,7 +46,6 @@ def post():
         'last_edit_date': str(post_db[5])
     })
 
-
 @blueprint.route('/create', methods=['POST'])
 @jwt_required_custom
 def create():
