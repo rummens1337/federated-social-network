@@ -8,6 +8,14 @@ a:active {
   color:#52B77C;
 }
 
+h1, h2, h3 {
+  color: black
+}
+
+p {
+  color: black
+}
+
 #posts {
   background-color: #52B77C;
 }
@@ -71,9 +79,9 @@ a:active {
 }
 
 .submit {
-  background-color: #F5F5F5;
+  background-color: rgb(226, 226, 226);
   color: #0b132b;
-  border: 1px solid #52B77C;
+  border: 3px solid rgb(232, 236, 234);
   border-radius: 3px;
   width: 30%;
   padding: 12px 20px;
@@ -92,7 +100,7 @@ a:active {
 }
 
 .submit:hover {
-  border: 1px solid #DFF8EB;
+  border: 3px solid #DFF8EB;
   box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
   outline-color: rgba(255, 255, 255, 0);
   outline-offset: 15px;
