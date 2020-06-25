@@ -135,11 +135,6 @@ def get_comments():
                                       'creation_date', 'last_edit_date',
                                       post_id=post_id)
 
-    user = users.export_one('uploads_id', username=comment_details[2])
-
-    filename = uploads.export_one('filename', id=up_id)
-    imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
-
     comments_array = [
         {
             'id': item[0],
