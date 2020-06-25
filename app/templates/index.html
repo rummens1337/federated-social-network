@@ -91,15 +91,16 @@
                                 function show_preview(event) {
                                     var reader = new FileReader();
                                     reader.onload = function() {
-                                    var output = document.getElementById('image_url');
+                                    var output = document.getElementById('post_image_url');
                                     output.src = reader.result;
                                     }
                                     reader.readAsDataURL(event.target.files[0]);
                                 }
                             </script>
-
-                        <input id="post_image_url" type="file" name="file" accept="image/*" onchange="show_preview(event)">
-                        <img class="img-settings" id='post_image_url' style="width:30%" >
+                            <br>
+                            <p> Add a picture to your post (optional)</p>
+                            <img class="img-settings" id='post_image_url' style="width:30%" >
+                            <input id="post_image_url" type="file" name="file" accept="image/*" src='' onchange="show_preview(event)">
 
                         </div>
                         <div class="form-group">
