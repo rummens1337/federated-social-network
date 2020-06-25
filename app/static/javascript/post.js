@@ -112,7 +112,7 @@ function loadComments(postid) {
 
   function showcomments(req) {
     for (var i = 0; i < req.data.comments.length; i++) {
-      loadComment(postid, req.data.comments[i], req);
+      loadComment(postid, req.data.comments[i]);
     }
   }
 
@@ -123,9 +123,9 @@ function loadComments(postid) {
   requestJSON("GET", "/api/user/address", null, getComments, null)
 }
 
-function loadComment(postid, comment, req) {
-  function getProfilePic(req) {
-    document.getElementById('image_' + comment.id).src = req.data.image_url;
+function loadComment(postid, comment) {
+  function getProfilePic() {
+    document.getElementById('image_' + comment.id).src = comment.profile_image;
   }
 
 
@@ -167,7 +167,7 @@ function loadComment(postid, comment, req) {
   comment_list.innerHTML += style+content;
 
   // requestJSON("GET", dataServer + "/api/user?username=" + comment.username, null, getProfilePic, null)
-  getProfilePic(req)
+  getProfilePic()
 }
 
 // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
