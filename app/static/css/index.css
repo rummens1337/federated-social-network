@@ -5,7 +5,7 @@
 	/*width: 100%;*/
 }
 a:active {
-  color:#52B77C;
+  color:#009688;
 }
 
 h1, h2, h3 {
@@ -17,7 +17,7 @@ p {
 }
 
 #posts {
-  background-color: #52B77C;
+  background-color: #009688;
 }
 .tab {
   float: left;
@@ -60,7 +60,7 @@ p {
 
 .post-input {
   color: #0b132b;
-  border: 3px solid #52B77C;
+  border: 3px solid #009688;
   border-radius: 5px;
   width: 80%;
   padding: 12px 20px;
