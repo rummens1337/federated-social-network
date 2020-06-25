@@ -11,4 +11,3 @@ def test_function_false():
 # This would be the test.
 def test_function_true():
     assert f() == 3
-

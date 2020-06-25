@@ -52,7 +52,7 @@ def user():
     # Basic information visible if not friends
     basic_info = {
         'username': user_details[0][0],
-        'friend' : friend_status,
+        'friend': friend_status,
         'image_url': imageurl
     }
 
@@ -92,20 +92,20 @@ def is_friend(username):
                                             username=get_jwt_identity(),
                                             friend=username)
         if int(friend_details[0]) == 1:
-            return 1 # accepted = 1
+            return 1  # accepted = 1
         if int(friend_details[1]) == 1:
-            return 2 # pending
-        return 3 # acceptable
+            return 2  # pending
+        return 3  # acceptable
 
     if friends.exists(username=username, friend=get_jwt_identity()):
         friend_details = friends.export_one('accepted', 'sender',
                                             username=username,
                                             friend=get_jwt_identity())
         if int(friend_details[0]) == 1:
-            return 1 # accepted = 1
+            return 1  # accepted = 1
         if int(friend_details[1]) == 1:
-            return 3 # acceptable
-        return 2 # pending
+            return 3  # acceptable
+        return 2  # pending
 
 
 @blueprint.route('/all')
@@ -127,7 +127,7 @@ def registered():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    if not users.exists(username = username):
+    if not users.exists(username=username):
         return bad_json_response('Username not found (in data server)')
 
     # for testing purposes; Enter your own IP address instead of ipaddress
@@ -158,7 +158,7 @@ def user_posts():
 
     # Send no data in case the users are not friends
     if username != get_jwt_identity() and is_friend(username) != 1:
-        return good_json_response({'posts' : {}})
+        return good_json_response({'posts': {}})
 
     return good_json_response({
         'posts': get_posts(username)
@@ -182,7 +182,7 @@ def get_posts(username):
         for item in user_posts
     ]
 
-    return  posts_array
+    return posts_array
 
 
 @blueprint.route('/timeline', methods=['GET'])
@@ -213,10 +213,10 @@ def timeline():
                 },
                 headers=request.headers
             ).json()
-            if response['success'] == True:
+            if response['success']:
                 posts = response['data']['posts']
                 posts_array = posts_array + posts
-        except:
+        except BaseException:
             continue
 
     posts_array = sorted(
@@ -263,7 +263,7 @@ def login():
     access_token = create_access_token(identity=username)
 
     return good_json_response({
-        'token' : access_token
+        'token': access_token
     })
 
 
@@ -621,5 +621,5 @@ def import_zip_():
             return good_json_response()
     return bad_json_response('File not received.')
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)

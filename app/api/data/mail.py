@@ -60,7 +60,8 @@ def send_verification_mail():
         # Know the Content-Type of the image
         maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
 
-        # Attach it to the email. The cid='0' is linked to the cid in the html, which loads it.
+        # Attach it to the email. The cid='0' is linked to the cid in the html,
+        # which loads it.
         msg.get_payload()[0].add_related(img.read(), maintype=maintype,
                                          subtype=subtype, cid='0')
 
@@ -90,7 +91,9 @@ def confirm_email(token):
 
             # Redirect the user to the login page, trigger
             # 'registration complete' process.
-            return redirect(get_central_ip() + '?message=registration_complete')
+            return redirect(
+                get_central_ip() +
+                '?message=registration_complete')
         else:
             return bad_json_response('No user with the email ' + email
                                      + ' exists.')
@@ -120,7 +123,7 @@ def forgotpass():
     if not firstname or not lastname or not username:
         return bad_json_response('Error retrieving the user.')
 
-    #stuur mail met new ww link
+    # stuur mail met new ww link
     # Construct message object with receipient and sender
     msg = EmailMessage()
     msg['Subject'] = 'FedNet - Change your password.'
@@ -135,7 +138,7 @@ def forgotpass():
                          salt=current_app.config['EMAIL_FORGOTPASS_SALT'])
 
     # Create link with token and username so central knows how to handle it.
-    parameters = '?username=' + username + '&token=' +token
+    parameters = '?username=' + username + '&token=' + token
     link = get_central_ip() + '/forgotPassword' + parameters
 
     # Load the HTML template for the email, and embed the information needed.
@@ -151,7 +154,8 @@ def forgotpass():
         # Know the Content-Type of the image
         maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
 
-        # Attach it to the email. The cid='0' is linked to the cid in the html, which loads it.
+        # Attach it to the email. The cid='0' is linked to the cid in the html,
+        # which loads it.
         msg.get_payload()[0].add_related(img.read(), maintype=maintype,
                                          subtype=subtype, cid='0')
 
@@ -185,7 +189,7 @@ def confirm_forgotpass():
 
         # Encrypt password for storage in database.
         password = sha256_crypt.encrypt(request.form['password'])
-        users.update({'password':password}, email=email)
+        users.update({'password': password}, email=email)
 
         return good_json_response('Change password succesfull')
     except SignatureExpired:
@@ -232,7 +236,8 @@ def forgot_username():
         # Know the Content-Type of the image
         maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
 
-        # Attach it to the email. The cid='0' is linked to the cid in the html, which loads it.
+        # Attach it to the email. The cid='0' is linked to the cid in the html,
+        # which loads it.
         msg.get_payload()[0].add_related(img.read(), maintype=maintype,
                                          subtype=subtype, cid='0')
     # Connect to the mailserver from google and send the e-mail.
@@ -243,5 +248,5 @@ def forgot_username():
 
     return good_json_response(('Email was sent to ' + email + '.'))
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)

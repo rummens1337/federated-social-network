@@ -33,9 +33,12 @@ LOG_FILE_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 LOG_STREAM_FORMAT = '%(levelname)s - %(message)s'
 
 
-def init_logger(file_handler: bool=True, stream_handler: bool=True,
-                file_level: int=logging.DEBUG, stream_level: int=logging.DEBUG,
-                compress_file: bool=True):
+def init_logger(
+        file_handler: bool = True,
+        stream_handler: bool = True,
+        file_level: int = logging.DEBUG,
+        stream_level: int = logging.DEBUG,
+        compress_file: bool = True):
     logger = logging.getLogger()
     logger.setLevel(logging.NOTSET)
     atexit.register(stop_logger)
@@ -50,8 +53,8 @@ def init_logger(file_handler: bool=True, stream_handler: bool=True,
         logger.debug('Streaming log to stdout.')
 
 
-def init_file_handler(compress: bool=True,
-                      level: int=logging.DEBUG) -> logging.FileHandler:
+def init_file_handler(compress: bool = True,
+                      level: int = logging.DEBUG) -> logging.FileHandler:
     if not os.path.isdir(LOG_PATH_BASE):
         os.makedirs(LOG_PATH_BASE)
     filepath = os.path.join(LOG_PATH_BASE, str(int(time.time())) + '.log')
@@ -63,7 +66,7 @@ def init_file_handler(compress: bool=True,
     return handler
 
 
-def init_stream_handler(level: int=logging.INFO) -> logging.StreamHandler:
+def init_stream_handler(level: int = logging.INFO) -> logging.StreamHandler:
     handler = logging.StreamHandler()
     handler.setLevel(level)
     handler.setFormatter(logging.Formatter(LOG_STREAM_FORMAT))
@@ -75,11 +78,11 @@ def stop_logger():
     logging.shutdown()
 
 
-def compress_log(filepath: str, delete: bool=True):
+def compress_log(filepath: str, delete: bool = True):
     with open(filepath, 'rb+') as f, lzma.open(filepath + '.xz', 'wb') as fz:
         fz.write(mmap.mmap(f.fileno(), 0))
     if delete:
         os.remove(filepath)
 
-__all__ = ('init_logger')
 
+__all__ = ('init_logger')

@@ -120,7 +120,7 @@ def jwt_required_custom(fn):
                 ).json()['data']
 
             current_app.config['JWT_PUBLIC_KEY'] = pub
-        except:
+        except BaseException:
             # Show login on exception
             return render_template('login.html')
 

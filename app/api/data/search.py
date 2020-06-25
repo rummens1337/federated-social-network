@@ -20,5 +20,5 @@ def search():
 
     return good_json_response('success')
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)
