@@ -82,8 +82,8 @@ def create():
                     username=username, body=body, title=title,
                     uploads_id=uploads_id
                     )
-    else:
-        posts.insert(username=username, body=body, title=title)
+        else:
+            posts.insert(username=username, body=body, title=title)
 
     return good_json_response('success')
 
@@ -118,25 +118,9 @@ def delete():
     return good_json_response('success')
 
 
-# @blueprint.route('/uploadPost', methods=['POST'])
+@blueprint.route('/get_comments')
 # @jwt_required
-# def uploadPost():
-#     username = get_jwt_identity()
-#     # username = request.form['username']
-
-#     image_filename = request.files['file'].filename
-#     image = request.files['file'].read()
-
-#     if image is not 0:
-#         uploads_id = save_file(image, filename=image_filename)
-
-#     if uploads_id is not False:
-#         posts.update({'uploads_id' : uploads_id}, username=username)
-
-
-@blueprint.route('/getComments')
-# @jwt_required
-def getComments():
+def get_comments():
     post_id = request.args.get('post_id')
 
     if post_id is None or post_id == '':
@@ -167,9 +151,9 @@ def getComments():
     })
 
 
-@blueprint.route('/addComment', methods=['POST'])
+@blueprint.route('/add_comment', methods=['POST'])
 @jwt_required_custom
-def addComment():
+def add_comment():
     username = get_jwt_identity()
     # username = request.form['username']
 
@@ -182,9 +166,9 @@ def addComment():
     return good_json_response('success')
 
 
-@blueprint.route('/editComment', methods=['POST'])
-# @jwt_required
-def editComment():
+@blueprint.route('/edit_comment', methods=['POST'])
+@jwt_required_custom
+def edit_comment():
     # username = get_jwt_identity()
     # username = request.form['username']
 
@@ -196,9 +180,9 @@ def editComment():
     return good_json_response('success')
 
 
-@blueprint.route('/deleteComment', methods=['POST'])
-# @jwt_required
-def deleteComment():
+@blueprint.route('/delete_comment', methods=['POST'])
+@jwt_required_custom
+def delete_comment():
     id = request.form['id']
 
     comments.delete(id=id)
