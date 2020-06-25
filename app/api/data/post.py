@@ -28,8 +28,7 @@ def post():
 
     # Get image
     up_id = post_db[3]
-    # default is null?
-    # imageurl = '../static/images/default.jpg'
+    imageurl = ''
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
         imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
@@ -51,13 +50,15 @@ def create():
     username = get_jwt_identity()
     title = request.form['title']
     body = request.form['body']
+    # username = request.form['username']
+
 
     # TODO fail if user is not registered
     # TODO user should be authenticated
 
     # TODO get URL of post
     # dummy:
-    url = '/api/post/XX'
+    # url = '/api/post/XX'
 
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
@@ -73,9 +74,17 @@ def create():
     # Insert post
     posts.insert(username=username, body=body, title=title)
 
-    return good_json_response({
-        'url': url
-    })
+    if 'file' in request.files:
+        image_filename = request.files['file'].filename
+        image = request.files['file'].read()
+
+        if image is not 0:
+            uploads_id = save_file(image, filename=image_filename)
+
+            if uploads_id is not False:
+                posts.update({'uploads_id' : uploads_id}, username=username)
+
+    return good_json_response('success')
 
 
 @blueprint.route('/delete', methods=['POST'])
