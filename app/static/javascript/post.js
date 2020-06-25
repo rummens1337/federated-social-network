@@ -20,7 +20,10 @@ function create_post() {
 
       function create(req) {
         dataServer = req.data.address;
-        requestJSON('POST', dataServer + '/api/post/create', $(form).serialize(), creationSucces, creationFailed);
+
+        var data = new FormData(form)
+
+        requestJSONFile('POST', dataServer + '/api/post/create', data, creationSucces, creationFailed);
       }
 
       // Central server needs to be set globally.
