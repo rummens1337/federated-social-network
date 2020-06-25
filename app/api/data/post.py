@@ -118,8 +118,8 @@ def delete():
     return good_json_response('success')
 
 
-@blueprint.route('/getComments')
-# @jwt_required
+@blueprint.route('/comments', strict_slashes=False)
+@jwt_required_custom
 def get_comments():
     post_id = request.args.get('post_id')
 
@@ -134,6 +134,11 @@ def get_comments():
     comment_details = comments.export('id', 'comment', 'username',
                                       'creation_date', 'last_edit_date',
                                       post_id=post_id)
+
+    user = users.export_one('uploads_id', username=comment_details[2])
+
+    filename = uploads.export_one('filename', id=up_id)
+    imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
 
     comments_array = [
         {
@@ -151,7 +156,7 @@ def get_comments():
     })
 
 
-@blueprint.route('/addComment', methods=['POST'])
+@blueprint.route('/comments/add', methods=['POST'])
 @jwt_required_custom
 def add_comment():
     username = get_jwt_identity()
@@ -166,7 +171,7 @@ def add_comment():
     return good_json_response('success')
 
 
-@blueprint.route('/editComment', methods=['POST'])
+@blueprint.route('/comments/edit', methods=['POST'])
 @jwt_required_custom
 def edit_comment():
     # username = get_jwt_identity()
@@ -180,7 +185,7 @@ def edit_comment():
     return good_json_response('success')
 
 
-@blueprint.route('/deleteComment', methods=['POST'])
+@blueprint.route('/comments/delete', methods=['POST'])
 @jwt_required_custom
 def delete_comment():
     id = request.form['id']

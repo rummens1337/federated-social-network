@@ -49,7 +49,7 @@ function create_comment() {
 
       function create(req) {
         dataServer = req.data.address;
-        requestJSON('POST', dataServer + '/api/post/addComment', $(form).serialize(), creationSucces, creationFailed);
+        requestJSON('POST', dataServer + '/api/post/comments/add', $(form).serialize(), creationSucces, creationFailed);
       }
 
       // Central server needs to be set globally.
@@ -107,12 +107,12 @@ function showComment(postid) {
 
 function loadComments(postid) {
   function getComments(req) {
-    requestJSON("GET", req.data.address + "/api/post/getComments", {"post_id": postid}, showcomments, commentsFailure);
+    requestJSON("GET", req.data.address + "/api/post/comments", {"post_id": postid}, showcomments, commentsFailure);
   }
 
   function showcomments(req) {
     for (var i = 0; i < req.data.comments.length; i++) {
-      loadComment(postid, req.data.comments[i]);
+      loadComment(postid, req.data.comments[i], req);
     }
   }
 
@@ -123,7 +123,7 @@ function loadComments(postid) {
   requestJSON("GET", "/api/user/address", null, getComments, null)
 }
 
-function loadComment(postid, comment) {
+function loadComment(postid, comment, req) {
   function getProfilePic(req) {
     document.getElementById('image_' + comment.id).src = req.data.image_url;
   }
@@ -166,7 +166,8 @@ function loadComment(postid, comment) {
   comment_list = document.getElementById(postid);
   comment_list.innerHTML += style+content;
 
-  requestJSON("GET", dataServer + "/api/user?username=" + comment.username, null, getProfilePic, null)
+  // requestJSON("GET", dataServer + "/api/user?username=" + comment.username, null, getProfilePic, null)
+  getProfilePic(req)
 }
 
 // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
