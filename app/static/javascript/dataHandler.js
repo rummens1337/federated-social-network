@@ -9,7 +9,7 @@
 // - type: the request type to use ('GET'/'POST').
 // - url: the url to do the request to.
 // - func: the function to apply the JSON data to.
-function requestJSON(type, url, data=null, success=null, error=null) {
+function requestJSON(type, url, data=null, success=null, error=empty()) {
     var token = Cookies.get('access_token_cookie');
     var headers = {};
     if (token != null) headers = { 'Authorization' : 'Bearer ' + token };
@@ -29,7 +29,7 @@ function requestJSON(type, url, data=null, success=null, error=null) {
 };
 
 
-function requestJSONFile(type, url, data=null, success=null, error=null) {
+function requestJSONFile(type, url, data=null, success=null, error=empty()) {
     var token = Cookies.get('access_token_cookie');
     var headers = {};
     if (token != null) headers = { 'Authorization' : 'Bearer ' + token };
@@ -51,7 +51,7 @@ function requestJSONFile(type, url, data=null, success=null, error=null) {
 };
 
 
-function requestJSONMigrationFile(type, url, data=null, success=null, error=null) {
+function requestJSONMigrationFile(type, url, data=null, success=null, error=empty()) {
     var token = Cookies.get('access_token_cookie');
     var headers = {};
     if (token != null) headers = { 'Authorization' : 'Bearer ' + token };
@@ -72,6 +72,9 @@ function requestJSONMigrationFile(type, url, data=null, success=null, error=null
     });
 };
 
+function empty() {
+    // use as default paramter
+}
 
 /*
  * Shows an error message on screen.
