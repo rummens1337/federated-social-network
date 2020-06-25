@@ -76,18 +76,18 @@ function showPost(postdata, timeline=false) {
                       </div>
                               <button class="submit" type="submit" onclick="create_comment();" >Comment</button>
                 </form>
-                      <ul class="comments-list">
-                        ` + loadComments(postdata.post_id) +`
+                      <ul class="comments-list" id=` + postdata.post_id + `>
                       </ul>
                     </div>`
         content = content + comments + `<hr>`;
 
     $('#posts_div').append(content);
+
+    loadComments(postdata.post_id);
 }
 
 function showComment(postid) {
-  var id = 'comments2';
-  var x = document.getElementById(id);
+  var x = document.getElementById("comments" + postid);
   if (x.style.display === "none") {
     x.style.display = "block";
   } else {
@@ -96,14 +96,22 @@ function showComment(postid) {
 }
 
 function loadComments(postid) {
-  comment = {
-            'id': 5,
-            'comment': 'hello there',
-            'username': 'bas',
-            'creation_date': 'nu',
-            'last_edit_date': 'toen'
-        };
-  return loadComment(postid, comment);
+  function getComments(req) {
+    requestJSON("GET", req.data.address + "/api/post/getComments", {"post_id": postid}, showcomments, commentsFailure);
+  }
+
+  function showcomments(req) {
+
+    for (var i = 0; i < req.data.comments.length; i++) {
+      loadComment(postid, req.data.comments[i]);
+    }
+  }
+
+  function commentsFailure(req) {
+    alertError(req.reason, 2000);
+  }
+
+  requestJSON("GET", "/api/user/address", null, getComments, null)
 }
 
 function loadComment(postid, comment) {
@@ -140,7 +148,9 @@ function loadComment(postid, comment) {
                       </div>
                    </div>
                 </div>`;
-  return style + content;
+
+  comment_list = document.getElementById(postid);
+  comment_list.innerHTML += style+content;
 }
 
 // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
