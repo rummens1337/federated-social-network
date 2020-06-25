@@ -15,6 +15,11 @@
         <label> skill_level</label>
         <input type='int' class="form-control form-control-settings" name="skill_level" /> </input>
     </li> -->
+    <li>
+        <p><b> upload</b></p>
+        <img class="img-settings" name="profilePicture" id='image_url' style="width:30%" >
+        <input id="image_url" type="file" name="file" accept="image/*" onchange="show_preview(event)">
+    </li>
     <div>
         <button type="submit" class="btn-primary btn-block" onclick="saveProfile()">Update</button>
     </div>
