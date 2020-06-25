@@ -53,6 +53,10 @@ def init_authentication(app):
     def my_revoked_token_loader_callback(expired_token):
         return render_template(template, error='authentication')
 
+    @jwt.invalid_token_loader
+    def my_invalid_token_loader_callback(expired_token):
+        return render_template(template, error="authentication")
+
 
 def auth_username():
     from flask_jwt_extended import verify_jwt_in_request_optional, \
