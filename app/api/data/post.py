@@ -74,7 +74,8 @@ def create():
         return bad_json_response('User not found.')
 
     # Insert post
-    posts.insert(username=username, body=body, title=title)
+    # posts.insert(username=username, body=body, title=title)
+    # post_id = posts.export('id', )
 
     if 'file' in request.files:
         image_filename = request.files['file'].filename
@@ -84,7 +85,13 @@ def create():
             uploads_id = save_file(image, filename=image_filename)
 
             if uploads_id is not False:
-                posts.update({'uploads_id' : uploads_id}, username=username)
+                posts.insert(
+                    username=username, body=body, title=title,
+                    uploads_id=uploads_id
+                    )
+    else:
+        posts.insert(username=username, body=body, title=title)
+                # posts.insert(uploads_id=uploads_id , username=username)
 
     return good_json_response('success')
 
