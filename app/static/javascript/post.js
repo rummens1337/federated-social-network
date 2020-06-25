@@ -32,8 +32,8 @@ function create_post() {
   });
 }
 
-function create_comment() {
-  $("form[name='createcomment']").validate({
+function create_comment(id) {
+  $(`form[name='createcomment` + id + `']`).validate({
     rules: {
       body: 'required'
     },
@@ -75,16 +75,16 @@ function showPost(postdata, timeline=false) {
     }
 
         comments = `<div style="display:none;" class="comments" id='comments` + postdata.post_id + `'>
-                 <form name="createcomment">
+                 <form name="createcomment` + postdata.post_id + `">
                       <div class="input-group">
                             <textarea name="comment" id="comment" class="form-control" placeholder="Leave a comment below!" style="resize: none;"></textarea>
-                            <input name="post_id" id="post_id" type="hidden" value= ` + postdata.post_id + `>
+                            <input name="post_id" id="post_id" type="hidden" value="` + postdata.post_id + `">
 
                             <span class="input-group-addon">
                               <a href="#"><i class="fa fa-edit"></i></a>
                           </span>
                       </div>
-                              <button class="submit" type="submit" onclick="create_comment();" >Comment</button>
+                              <button class="submit" type="submit" onclick="create_comment(` + postdata.post_id + `);" >Comment</button>
                 </form>
                       <ul class="comments-list" id=` + postdata.post_id + `>
                       </ul>
@@ -128,22 +128,6 @@ function loadComment(postid, comment, req) {
     document.getElementById('image_' + comment.id).src = req.data.image_url;
   }
 
-
-  var style = `<style>
-                .media.media-xs .media-object {
-                    width: 64px;
-                }
-                .m-b-2 {
-                    margin-bottom: 2px!important;
-                }
-                .media>.media-left, .media>.pull-left {
-                    padding-right: 15px;
-                }
-                .media-body, .media-left, .media-right {
-                    display: table-cell;
-                    vertical-align: top;
-                }
-              </style>`
   var content = `<div class="p-10 bg-white">
                    <div class="media media-xs overflow-visible">
                       <a class="media-left" href="javascript:;"> <img id="image_` + comment.id + `" src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
@@ -154,17 +138,13 @@ function loadComment(postid, comment, req) {
                       <div class="media-body valign-middle text-right overflow-visible">
                          <div class="btn-group dropdown">
                             <a href="javascript:;" class="btn btn-default">Options</a> <a href="javascript:;" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-expanded="false"></a>
-                            <ul class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(101px, 34px, 0px);">
-                               <li><a href="javascript:;">Delete</a></li>
-                               <li><a href="javascript:;">Edit</a></li>
-                            </ul>
                          </div>
                       </div>
                    </div>
                 </div>`;
 
   comment_list = document.getElementById(postid);
-  comment_list.innerHTML += style+content;
+  comment_list.innerHTML += content;
 
   // requestJSON("GET", dataServer + "/api/user?username=" + comment.username, null, getProfilePic, null)
   getProfilePic(req)
