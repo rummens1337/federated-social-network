@@ -3,7 +3,7 @@ from flask_jwt_extended import get_jwt_identity
 
 from app.api import jwt_required_custom
 from app.api.utils import good_json_response, bad_json_response
-from app.database import users, posts, comments
+from app.database import users, posts, comments, uploads
 from app.upload import get_file, save_file
 from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 
