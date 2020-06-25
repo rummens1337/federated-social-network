@@ -3,6 +3,10 @@
     white-space: nowrap!important
 }
 
+h1, h2 {
+    color: black
+}
+
 .profile-content {
     padding: 25px;
     border-radius: 4px
