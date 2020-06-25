@@ -115,7 +115,7 @@ def request_insert():
     # Return a good json reponse, because the friend can be on
     # the same data server.
     if friends.exists(username=username, friend=friend) \
-        or friends.exists(username=friend, friend=username):
+            or friends.exists(username=friend, friend=username):
         return good_json_response('friendship already exists')
 
     # Get the friend's data server address and check if friend exists
@@ -209,7 +209,7 @@ def add():
 
     # check if friendship already exists
     if friends.exists(username=username, friend=friend) \
-        or friends.exists(username=friend, friend=username):
+            or friends.exists(username=friend, friend=username):
         return bad_json_response('friendship already exists')
 
     # Get the friend's data server address and check if friend exists
@@ -233,10 +233,10 @@ def add():
             data=data,
             headers=request.headers
         ).json()
-        if response['success'] == True:
+        if response['success']:
             return good_json_response('Friend request sent')
 
-    except:
+    except BaseException:
         friends.delete(username=username, friend=friend)
         return bad_json_response('Error while inserting')
 
@@ -292,9 +292,9 @@ def accept():
                 data=data,
                 headers=request.headers
             ).json()
-            if response['success'] != True:
+            if not response['success']:
                 return bad_json_response(response['reason'])
-        except:
+        except BaseException:
             return bad_json_response('Friend error2')
 
     # Update friendship  in the data server's own database
@@ -316,7 +316,7 @@ def delete():
 
     # Check if friendship exists
     if not friends.exists(username=username, friend=friend) \
-        and not friends.exists(username=friend, friend=username):
+            and not friends.exists(username=friend, friend=username):
         return bad_json_response('friendship does not exist')
 
     # Get the friend's data server address and check if friend exists
@@ -337,9 +337,9 @@ def delete():
                 data=data,
                 headers=request.headers
             ).json()
-            if response['success'] != True:
+            if not response['success']:
                 return bad_json_response('Error while deleting1')
-        except:
+        except BaseException:
             return bad_json_response('Error while deleting2')
 
     # Delete in this database
@@ -348,5 +348,4 @@ def delete():
 
     return good_json_response('Friend deleted')
 
-#__all__ = ('blueprint',) TODO \n
-
+# __all__ = ('blueprint',) TODO \n

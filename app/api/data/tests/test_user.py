@@ -7,12 +7,12 @@
 
 # blueprint.route('/')
 def test_user():
-	pass
+    pass
 
 
 # blueprint.route('/posts')
 def test_posts():
-	pass
+    pass
 
 
 # blueprint.route('/details')
@@ -35,4 +35,3 @@ def test_edit():
     pass
 
 # __all__ = ('blueprint')
-

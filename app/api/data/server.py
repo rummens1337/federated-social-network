@@ -1,5 +1,5 @@
 from flask import Blueprint, request, Flask, render_template, request
-from flask_jwt_extended import create_access_token,get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity
 
 from app.api.utils import good_json_response, bad_json_response
 from app.utils import get_own_ip
@@ -19,5 +19,5 @@ def get_key():
             'Error retrieving the public key of server: ' + get_own_ip()
         )
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)

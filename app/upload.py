@@ -9,9 +9,9 @@ BASE_UPLOADS_DIR = os.path.join('data', 'uploads')
 
 
 def save_file_data(filedata: typing.Union[typing.BinaryIO, bytes],
-                   filename: typing.Optional[str]=None,
-                   extension: typing.Optional[str]=None,
-                   sha256: bool=False) -> str:
+                   filename: typing.Optional[str] = None,
+                   extension: typing.Optional[str] = None,
+                   sha256: bool = False) -> str:
     """Save a file.
 
     Saves a file using a file pointer or a bytes string. The filename is
@@ -56,13 +56,13 @@ def save_file_data(filedata: typing.Union[typing.BinaryIO, bytes],
     if sha256:
         digest = hashlib.sha256()
     with open(result, 'wb') as f:
-        if type(filedata) is bytes:
+        if isinstance(filedata, bytes):
             f.write(filedata)
             if sha256:
                 digest.update(filedata)
         else:
             while True:
-                buf = filedata.read(100*1024)
+                buf = filedata.read(100 * 1024)
                 if sha256:
                     digest.update(buf)
                 if buf is None:
@@ -77,20 +77,20 @@ def verify_file(filepath: str, sha256: str):
     digest = hashlib.sha256()
     with open(filepath, 'rb') as f:
         while True:
-            buf = f.read(100*1024)
+            buf = f.read(100 * 1024)
             if buf is None:
                 break
             digest.update(buf)
     return digest.hexdigest() == sha256
 
+
 if get_server_type() == ServerType.DATA:
     from app.database import uploads
 
-
     def save_file(filedata: typing.Union[typing.BinaryIO, bytes],
-                  filename: typing.Optional[str]=None,
-                  extension: typing.Optional[str]=None,
-                  type: str='REPLACE_ME') -> int:
+                  filename: typing.Optional[str] = None,
+                  extension: typing.Optional[str] = None,
+                  type: str = 'REPLACE_ME') -> int:
         """Save a file and register in database `uploads` table.
 
         Example:
@@ -113,11 +113,14 @@ if get_server_type() == ServerType.DATA:
         if os.path.getsize(filepath) == 0:
             return False
 
-        return uploads.insert(filename=filename, location=filepath, type=type,
-                              filesize=os.path.getsize(filepath), sha256=digest)
+        return uploads.insert(
+            filename=filename,
+            location=filepath,
+            type=type,
+            filesize=os.path.getsize(filepath),
+            sha256=digest)
 
-
-    def get_file(id: int, output: str='bytes', verify: bool=False):
+    def get_file(id: int, output: str = 'bytes', verify: bool = False):
         """Get a file from the database and saved location.
 
         Retrieves a file using a query to the database and opening, and possibly
@@ -139,7 +142,7 @@ if get_server_type() == ServerType.DATA:
         """
         find = uploads.export('filename', 'location', 'sha256', id=id)
         if len(find) == 0:
-            raise ValueError('Uploaded data not found.' )
+            raise ValueError('Uploaded data not found.')
         if len(find) > 1:
             raise ValueError('Multiple candidates for uploaded data found.')
         filename, location, sha256 = find[0]
@@ -153,4 +156,3 @@ if get_server_type() == ServerType.DATA:
         if output in ('filepointer', 'fp'):
             return (filename, f)
         raise ValueError('Invalid value for argument \'output\'.')
-

@@ -128,5 +128,5 @@ def changePassword():
 def search_result():
     return render_template('search.html')
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)

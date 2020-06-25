@@ -2,7 +2,7 @@ import argparse
 import os
 
 
-def main(server: str=None, port: int=None):
+def main(server: str = None, port: int = None):
     """
     Sets the servertype based on environmental variables provided in the run command.
     These variables define the flow of the entire application.
@@ -19,6 +19,7 @@ def main(server: str=None, port: int=None):
     from app import app as application
     application.run(host='0.0.0.0', port=port)
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--server', type=str,
@@ -28,4 +29,3 @@ if __name__ == '__main__':
                         help='Port to use. Default is 5000.')
     args = parser.parse_args()
     main(args.server, args.port)
-
