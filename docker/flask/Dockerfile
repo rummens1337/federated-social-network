@@ -36,14 +36,12 @@ RUN pip3 install -r /var/www/flask/app/requirements.txt
 COPY ./run.py /var/www/flask/run.py
 COPY config.py /var/www/flask/config.py
 
-COPY ./docker/key.sh /var/www/flask/key.sh
+COPY ./jwtRS256.key /var/www/flask/jwtRS256.key
+COPY ./jwtRS256.key.pub /var/www/flask/jwtRS256.key.pub
 
 EXPOSE 80
 
 WORKDIR /var/www/flask
-
-RUN chmod +x key.sh
-RUN ./key.sh
 
 ARG FLASK_SERVER_TYPE
 ARG FLASK_PORT

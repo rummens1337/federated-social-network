@@ -4,6 +4,8 @@ config.ini
 /logs/
 /data/
 /scripts/
+jwtRS256.key
+jwtRS256.key.pub
 
 *~
 *.pyc

@@ -35,12 +35,14 @@ COPY ./docker/apache/apache-flask.wsgi /var/www/apache-flask/apache-flask.wsgi
 
 COPY ./run.py /var/www/apache-flask/run.py
 COPY ./config.py /var/www/apache-flask/config.py
+COPY ./jwtRS256.key /var/www/apache-flask/jwtRS256.key
+COPY ./jwtRS256.key.pub /var/www/apache-flask/jwtRS256.key.pub
 COPY ./app/ /var/www/apache-flask/app/
 RUN chown -R www-data:www-data /var/www/apache-flask/
 RUN chmod -R 755 /var/www/apache-flask/ 
 # 775 for upload folders!!
 
-COPY ./docker/key.sh /var/www/apache/key.sh
+# COPY ./docker/key.sh /var/www/apache-flask/key.sh
 
 RUN a2dissite 000-default.conf
 RUN a2ensite apache-flask.conf
@@ -53,9 +55,6 @@ ENV FLASK_APP app
 EXPOSE 80
 
 WORKDIR /var/www/apache-flask/
-
-RUN chmod +x key.sh
-RUN ./key.sh
 
 RUN pip3 install flask-jwt-extended\[asymmetric_crypto\]
 

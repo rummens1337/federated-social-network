@@ -7,6 +7,8 @@ FLASK_SERVER_TYPE = $(type)
 FLASK_PORT = $(port)
 DATA_NUMBER = $(number)
 
+$(shell bash key.sh)
+
 # Set the default flask server type to central
 ifeq ($(FLASK_SERVER_TYPE),)
 FLASK_SERVER_TYPE = central
