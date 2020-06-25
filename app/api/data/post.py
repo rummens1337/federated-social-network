@@ -46,7 +46,6 @@ def post():
         'last_edit_date': str(post_db[5])
     })
 
-
 @blueprint.route('/create', methods=['POST'])
 @jwt_required_custom
 def create():
@@ -83,8 +82,8 @@ def create():
                     username=username, body=body, title=title,
                     uploads_id=uploads_id
                     )
-            else:
-                posts.insert(username=username, body=body, title=title)
+    else:
+        posts.insert(username=username, body=body, title=title)
 
     return good_json_response('success')
 
