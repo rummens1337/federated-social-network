@@ -183,7 +183,7 @@ def get_posts(username):
             'post_id': item[0],
             'title': item[1],
             'body': item[2],
-            'uploads_id': item[4],
+            'image_url': imageurl,
             'creation_date': str(item[3]),
             'username': username
         }
