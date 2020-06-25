@@ -55,6 +55,15 @@ ul.style1 li {
     border-top: 1px solid black;
 }
 
+.img-settings {
+  border: 1px solid #364958;
+  border-radius: 5px;
+  margin: 8px 0;
+  margin-right: auto;
+  display: block;
+}
+
+
 /*********************************************************************************/
 /* Menu                                                                          */
 /*********************************************************************************/
