@@ -3,6 +3,7 @@ import os
 import random
 import string
 import typing
+import flask
 
 from flask import current_app, request
 import requests
@@ -50,4 +51,3 @@ def get_user_ip(username):
         return response.json()['data']['address']
     except:
         return False
-
