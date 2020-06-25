@@ -71,9 +71,9 @@ a:active {
 }
 
 .submit {
-  background-color: #DFF8EB;
+  background-color: #F5F5F5;
   color: #0b132b;
-  border: 3px solid #52B77C;
+  border: 1px solid #52B77C;
   border-radius: 3px;
   width: 30%;
   padding: 12px 20px;
@@ -92,7 +92,7 @@ a:active {
 }
 
 .submit:hover {
-  border: 3px solid #DFF8EB;
+  border: 1px solid #DFF8EB;
   box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
   outline-color: rgba(255, 255, 255, 0);
   outline-offset: 15px;
