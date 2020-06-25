@@ -42,16 +42,22 @@
                         <a href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
                         <hr>
 
-                        <li id='skills-list'>
+                        <li style="list-style:none;"  id='skills-list'>
                             <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
                         </li>
 
                         <br>
 
-                        <li id='languages-list'>
+                        <li style="list-style:none;"  id='languages-list'>
                             <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
                         </li>
 
+                        <br>
+
+                        <li style="list-style:none;" id='hobbies-list'>
+                            <p class="w3-large w3-text-theme"><b><i class="fa fa-home fa-fw w3-margin-right w3-text-teal"></i>Hobbies</b></p>
+                        </li>
+                        </li>
                         <br>
                     </div>
                 </div>
@@ -81,18 +87,10 @@
 
                     <div class="w3-container"  style="background-color:#DFF8EB;">
                         <!-- Sub title -->
-                        <h5 class="w3-opacity w3-text-teal"><b>Hobbies</b></h5>
-                        <ul id='hobbies-list'>
-                        </ul>
                     </div>
                 </div>
             </div>
 
-                <!-- TODO username != logged in user -->
-                {% if username is defined %}
-                    <!-- <button id="add_friend" type="submit" class="btn-primary btn-block" onclick='addFriend("{{ username }}")'>Add friend</button> -->
-                    <button id="add_friend" type="submit" class="btn-success btn mx-auto" onclick='addFriend("{{ username }}")'>Add friend</button>
-                {% endif %}
             <div id="not-friends">
                 <div class="w3-container w3-card  w3-margin-bottom" style="background-color:#DFF8EB;">
                     <!-- Main title -->
@@ -100,7 +98,6 @@
                         Not friends yet
                     </h2>
                 </div>
-
             </div>
 
             <!-- TODO username != logged in user -->
