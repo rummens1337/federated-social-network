@@ -168,7 +168,14 @@ def user_posts():
 def get_posts(username):
     # Get all posts of a user.
     user_posts = posts.export('id', 'title', 'body', 'creation_date',
-                              username=username)
+                              'uploads_id', username=username)
+
+    # Get image
+    up_id = user_posts[4]
+    imageurl = ''
+    if uploads.exists(id=up_id):
+        filename = uploads.export_one('filename', id=up_id)
+        imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
 
     # Transfrom to array including dictionaries
     posts_array = [
