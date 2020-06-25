@@ -58,10 +58,6 @@ def create():
     # TODO fail if user is not registered
     # TODO user should be authenticated
 
-    # TODO get URL of post
-    # dummy:
-    # url = '/api/post/XX'
-
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
     if title is None:
@@ -74,9 +70,6 @@ def create():
         return bad_json_response('User not found.')
 
     # Insert post
-    # posts.insert(username=username, body=body, title=title)
-    # post_id = posts.export('id', )
-
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
@@ -91,7 +84,6 @@ def create():
                     )
     else:
         posts.insert(username=username, body=body, title=title)
-                # posts.insert(uploads_id=uploads_id , username=username)
 
     return good_json_response('success')
 
