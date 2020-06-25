@@ -68,7 +68,7 @@ body {
 
 .button-side {
   position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
+  z-index: 102; /* Stay on top */
   cursor: pointer;
   position: absolute;
   top: 27px;
