@@ -315,3 +315,23 @@ body {
   color: #CDCDCD;
   text-shadow: 1px 1px 2px #427388;
 }
+
+.header-posts {
+  width: 100%;
+  z-index: 100 !important;
+}
+
+
+.media.media-xs .media-object {
+  width: 64px;
+}
+.m-b-2 {
+  margin-bottom: 2px!important;
+}
+.media>.media-left, .media>.pull-left {
+  padding-right: 15px;
+}
+.media-body, .media-left, .media-right {
+  display: table-cell;
+  vertical-align: top;
+}
