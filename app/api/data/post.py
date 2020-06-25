@@ -41,6 +41,7 @@ def post():
         'body': post_db[0],
         'title': post_db[1],
         'username': post_db[2],
+        'profile_image' : get_profile_image(post_db[2]),
         'image_url': imageurl,
         'creation_date': str(post_db[4]),
         'last_edit_date': str(post_db[5])
@@ -118,6 +119,17 @@ def delete():
     return good_json_response('success')
 
 
+def get_profile_image(username):
+    up_id = users.export_one('uploads_id', username=username)
+
+    imageurl = '../static/images/default.jpg'
+    if uploads.exists(id=up_id):
+        filename = uploads.export_one('filename', id=up_id)
+        imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
+
+    return imageurl
+
+
 @blueprint.route('/comments', strict_slashes=False)
 @jwt_required_custom
 def get_comments():
@@ -140,6 +152,7 @@ def get_comments():
             'id': item[0],
             'comment': item[1],
             'username': item[2],
+            'profile_image' : get_profile_image(item[2]),
             'creation_date': str(item[3]),
             'last_edit_date': str(item[4])
         }
