@@ -35,7 +35,7 @@
 /* List Styles                                                                   */
 /*********************************************************************************/
 
-ul.style1 {
+.style1 {
     margin: 0 auto;
     padding: 0;
     width: 80%;
@@ -43,8 +43,8 @@ ul.style1 {
     list-style: none;
     text-align: left;
     color: black;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
-    background-color: #DFF8EB;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.50), 0 2px 10px 0 rgba(0,0,0,0.50);
+    background-color: #8DA7B9;
     border-radius: 5px;
     padding: 3%;
 }
@@ -62,6 +62,7 @@ ul.style1 li {
   margin-right: auto;
   display: block;
 }
+
 
 
 /*********************************************************************************/
@@ -87,8 +88,9 @@ ul.style1 li {
 }
 
 #menu .current_page_item a {
-    background: #68617e;
+    background: #364958;
     color: rgba(255,255,255,1);
+    border-radius: 5px;
 }
 
 #menu a {
