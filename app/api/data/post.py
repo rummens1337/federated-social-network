@@ -118,7 +118,7 @@ def delete():
     return good_json_response('success')
 
 
-@blueprint.route('/get_comments')
+@blueprint.route('/getComments')
 # @jwt_required
 def get_comments():
     post_id = request.args.get('post_id')
@@ -151,7 +151,7 @@ def get_comments():
     })
 
 
-@blueprint.route('/add_comment', methods=['POST'])
+@blueprint.route('/addComment', methods=['POST'])
 @jwt_required_custom
 def add_comment():
     username = get_jwt_identity()
@@ -166,7 +166,7 @@ def add_comment():
     return good_json_response('success')
 
 
-@blueprint.route('/edit_comment', methods=['POST'])
+@blueprint.route('/editComment', methods=['POST'])
 @jwt_required_custom
 def edit_comment():
     # username = get_jwt_identity()
@@ -180,7 +180,7 @@ def edit_comment():
     return good_json_response('success')
 
 
-@blueprint.route('/delete_comment', methods=['POST'])
+@blueprint.route('/deleteComment', methods=['POST'])
 @jwt_required_custom
 def delete_comment():
     id = request.form['id']
