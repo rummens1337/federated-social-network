@@ -97,6 +97,7 @@ Add additional notes about how to deploy this on a live system...
 * auke#7657 Auke Schuringa @11023465
 * flix123#5242 Felix Hoekstra @11330600
 * rummens#3150 Michel Rummens @13108093
+* robop#7467 Tim Laamers @11320850
 
 ## License
 
