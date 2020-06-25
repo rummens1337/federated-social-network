@@ -1,5 +1,5 @@
 from flask import Blueprint, request, Flask, render_template, request
-from flask_jwt_extended import create_access_token,get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity
 
 from app.api.utils import good_json_response, bad_json_response
 from app.database import users
@@ -50,10 +50,11 @@ def register():
     pub_key = ping(address)
     if pub_key:
         if not servers.exists(address=address):
-            result = servers.insert(name=name, address=address, pub_key=pub_key)
+            result = servers.insert(
+                name=name, address=address, pub_key=pub_key)
             return good_json_response({
                 'server_id': result,
-                'pub_key':pub_key
+                'pub_key': pub_key
             })
         else:
             name = servers.export_one('name', address=address)
@@ -71,5 +72,5 @@ def register():
             '" did not respond. Is the installation correct?'
         )
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)

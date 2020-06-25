@@ -20,9 +20,13 @@ if get_server_type() == ServerType.DATA:
         hobbies, skills, languages
 
 
-def _store_in_zip(tablename: str, data: EXPORT_FORMAT_MULTI, f: typing.BinaryIO,
-                  primary: str='id', file_data: typing.BinaryIO=None):
-    if type(f) is not zipfile.ZipFile:
+def _store_in_zip(
+        tablename: str,
+        data: EXPORT_FORMAT_MULTI,
+        f: typing.BinaryIO,
+        primary: str = 'id',
+        file_data: typing.BinaryIO = None):
+    if not isinstance(f, zipfile.ZipFile):
         if f.tell() > 0:
             raise ValueError('Bad file format.')
         f = zipfile.ZipFile(f)
@@ -35,7 +39,7 @@ def _store_in_zip(tablename: str, data: EXPORT_FORMAT_MULTI, f: typing.BinaryIO,
         if filename in f.namelist():
             raise KeyError('Filename already in zip.')
         for key in d.keys():
-            if type(d[key]) is datetime.datetime:
+            if isinstance(d[key], datetime.datetime):
                 d[key] = d[key].isoformat()
         f.writestr(filename, bytes(json.dumps(d), 'utf8'))
 
@@ -45,23 +49,23 @@ def _import_data(tablename: str, data: EXPORT_FORMAT):
         raise KeyError('Table does not exist.')
     table = globals()[tablename]
     for key in data.keys():
-        if type(data[key]) is not str:
+        if not isinstance(data[key], str):
             continue
         r = re.search(r'^date\(([^\)]+)\)$', data[key])
         if not r:
             continue
         try:
             data[key] = datetime.datetime.fromisoformat(data[key])
-        except:
+        except BaseException:
             continue
     return table.insert(**data)
 
 
 def import_zip(f: typing.Union[bytes, typing.BinaryIO],
-               username: typing.Optional[str]=None):
-    if type(f) is bytes:
+               username: typing.Optional[str] = None):
+    if isinstance(f, bytes):
         f = io.BytesIO(f)
-    if type(f) is not zipfile.ZipFile:
+    if not isinstance(f, zipfile.ZipFile):
         f = zipfile.ZipFile(f)
     checked = False
     filenames = sorted(
@@ -91,7 +95,7 @@ def import_zip(f: typing.Union[bytes, typing.BinaryIO],
             checked = True
         tablename = filename.rsplit('/', 2)[-2]
         if tablename == 'comments' \
-            and not posts.exists(id=data['post_id'], username=username):
+                and not posts.exists(id=data['post_id'], username=username):
             continue
         if tablename in ('users', 'posts') and data['uploads_id'] is not None:
             data['uploads_id'] = upload_ids[data['uploads_id']]
@@ -123,15 +127,20 @@ def export_zip(username: str) -> typing.BinaryIO:
     _store_in_zip('posts', posts.export(username=username, as_dict=True), f)
     _store_in_zip('comments', comments.export(username=username, as_dict=True),
                   f)
-    _store_in_zip('hobbies', hobbies.export(username=username, as_dict=True), f)
+    _store_in_zip(
+        'hobbies',
+        hobbies.export(
+            username=username,
+            as_dict=True),
+        f)
     _store_in_zip('skills', skills.export(username=username, as_dict=True), f)
     _store_in_zip('languages',
                   languages.export(username=username, as_dict=True), f)
     f.close()
     return open(f.filename, 'rb')
 
+
 if get_server_type == ServerType.CENTRAL:
     __all__ = ()
 else:
     __all__ = ('export_zip', 'import_zip')
-

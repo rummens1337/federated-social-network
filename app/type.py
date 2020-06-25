@@ -26,4 +26,3 @@ def get_server_type() -> str:
     if 'FLASK_SERVER_TYPE' not in os.environ:
         raise KeyError('FLASK_SERVER_TYPE not set.')
     return ServerType[os.environ['FLASK_SERVER_TYPE'].upper()]
-

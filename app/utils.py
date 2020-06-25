@@ -14,7 +14,7 @@ def percent_type(d: typing.Union[str, int]) -> str:
     return '%s'
 
 
-def random_string(length: int=8) -> str:
+def random_string(length: int = 8) -> str:
     return ''.join(random.choices(string.hexdigits, k=length))
 
 
@@ -24,7 +24,7 @@ def ping(host):
         if pub_key is None or pub_key is "":
             return False
         return pub_key
-    except:
+    except BaseException:
         return False
 
 
@@ -49,5 +49,5 @@ def get_user_ip(username):
 
     try:
         return response.json()['data']['address']
-    except:
+    except BaseException:
         return False

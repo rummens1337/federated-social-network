@@ -18,4 +18,3 @@ def test_delete():
     pass
 
 # __all__ = ('blueprint')
-

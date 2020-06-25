@@ -20,7 +20,7 @@ def bad_json_response(reason: str) -> str:
 
 
 @response_wrapper
-def good_json_response(data: dict=None) -> str:
+def good_json_response(data: dict = None) -> str:
     response = {
         'success': True
     }
@@ -28,5 +28,5 @@ def good_json_response(data: dict=None) -> str:
         response['data'] = data
     return response
 
-__all__ = ('bad_json_response', 'good_json_response')
 
+__all__ = ('bad_json_response', 'good_json_response')

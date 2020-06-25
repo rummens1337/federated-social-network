@@ -56,7 +56,7 @@ def cursor():
         con.close()
 
 
-def where(data: dict, equal: str='=', delimiter: str=' AND ') -> str:
+def where(data: dict, equal: str = '=', delimiter: str = ' AND ') -> str:
     return delimiter.join(
         '{} {} %s'.format(d, equal)
         for d in data.keys()
@@ -67,6 +67,7 @@ class TableLoader:
     """
 
     """
+
     def __init__(self, table: str, primary_key: str):
         self._table = table
         self._primary_key = primary_key
@@ -110,9 +111,16 @@ class TableLoader:
             return result[0]
         return None
 
-    def export(self, *args, order: str=None, order_direction: str='desc',
-               limit: int=None, as_dict: bool=False, like_prefix: bool=False,
-               like_suffix: bool=False, **kwargs):
+    def export(
+            self,
+            *args,
+            order: str = None,
+            order_direction: str = 'desc',
+            limit: int = None,
+            as_dict: bool = False,
+            like_prefix: bool = False,
+            like_suffix: bool = False,
+            **kwargs):
         """Export one or more entries from the table.
 
         Note:
@@ -258,7 +266,7 @@ class TableLoader:
         with cursor() as cur:
             r = cur.execute(
                 'INSERT INTO {}({})'
-                    .format(self._table, ','.join(kwargs.keys())) +
+                .format(self._table, ','.join(kwargs.keys())) +
                 ' VALUES ({})'.format(','.join([
                     percent_type(d) for d in kwargs.values()
                 ])),
@@ -332,7 +340,6 @@ class TableLoader:
         with cursor() as cur:
             return len(self.export(self._primary_key, limit=1, **kwargs)) != 0
 
-
     def delete(self, **kwargs):
         """Delete a row from the table in the database.
 
@@ -381,4 +388,3 @@ def init_mysql(app):
 def test_db():
     with cursor() as cur:
         cur.execute("INSERT INTO test VALUES (1)")
-

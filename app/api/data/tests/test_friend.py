@@ -25,5 +25,5 @@ def f():
 def test_function():
     assert f() == 4
 
-__all__ = ('blueprint')
 
+__all__ = ('blueprint')

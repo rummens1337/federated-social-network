@@ -23,7 +23,7 @@ def post():
     if not post_db:
         return bad_json_response('post not found')
 
-    post_db = posts.export('body', 'title', 'username', 'uploads_id' ,
+    post_db = posts.export('body', 'title', 'username', 'uploads_id',
                            'creation_date', 'last_edit_date', id=post_id)[0]
 
     # Get image
@@ -195,5 +195,5 @@ def deleteComment():
 
     return good_json_response('success')
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)

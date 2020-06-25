@@ -37,6 +37,7 @@ def check_servertype():
     # 4 hours
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 14400
 
+
 # Check servertype.
 check_servertype()
 init_authentication(app)

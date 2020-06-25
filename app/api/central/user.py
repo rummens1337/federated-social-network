@@ -111,7 +111,8 @@ def register():
         if not users.exists(username=username):
             users.insert(username=username, server_id=server_id)
         else:
-            return bad_json_response('Username is already taken. Try again :).')
+            return bad_json_response(
+                'Username is already taken. Try again :).')
     else:
         return bad_json_response(
             'This data server is not available. '
@@ -162,5 +163,5 @@ def edit():
             'No user found with the username ' + username + '.'
         )
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)

@@ -12,7 +12,7 @@ blueprint = Blueprint('main', __name__)
 
 @blueprint.route('/test')
 def test():
-    #route for testing POST
+    # route for testing POST
     return render_template('testform.html')
 
 
@@ -34,5 +34,5 @@ def file(file_id: int, filename: str):
     return send_file(get_file(file_id, output='fp')[1],
                      mimetype=mimetypes.guess_type(filename)[0])
 
-__all__ = ('blueprint',)
 
+__all__ = ('blueprint',)
