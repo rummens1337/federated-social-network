@@ -20,7 +20,10 @@ function create_post() {
 
       function create(req) {
         dataServer = req.data.address;
-        requestJSON('POST', dataServer + '/api/post/create', $(form).serialize(), creationSucces, creationFailed);
+
+        var data = new FormData(form)
+
+        requestJSONFile('POST', dataServer + '/api/post/create', data, creationSucces, creationFailed);
       }
 
       // Central server needs to be set globally.
@@ -61,12 +64,19 @@ function showPost(postdata, timeline=false) {
     var content = `<h5 style="color:#52B77C;">
                     <b>`+ ((user != null) ? ('@' + user + '</b><br>') : "") + postdata.title + `</b></h5>
         <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
-        <p class="w3-text-grey">` + postdata.body + `</p>
-        <a onclick="showComment(` + postdata.post_id + `)"> show comments</a>`;
+        <p class="w3-text-grey">` + postdata.body + `</p>`;
+
+
+    if (postdata.image_url != '' && postdata.image_url != null) {
+      var image = `<img style="width:80%" src=` + postdata.image_url +
+                  `><p><a onclick="showComment(` + postdata.post_id + `)"> show comments</a><p>`;
+    } else {
+      var image = `<a onclick="showComment(` + postdata.post_id + `)"> show comments</a>`;
+    }
+
         comments = `<div style="display:none;" class="comments"  id='comments` + postdata.post_id + `'>
                  <form name="createcomment">
                       <div class="input-group">
-
                             <textarea name="comment" id="comment" class="form-control" placeholder="Leave a comment below!" style="resize: none;"></textarea>
                             <input name="post_id" id="post_id" type="hidden" value= ` + postdata.post_id + `>
 
@@ -79,7 +89,7 @@ function showPost(postdata, timeline=false) {
                       <ul class="comments-list" id=` + postdata.post_id + `>
                       </ul>
                     </div>`
-        content = content + comments + `<hr>`;
+        content = content + image + comments + `<hr>`;
 
     $('#posts_div').append(content);
 

@@ -35,7 +35,6 @@ function setUserSettings(req) {
 }
 
 function deleteProfile() {
-
     function deleteDataSuccess(){
         console.log("Profile deleted from data server");
         alertError("Your profile has been deleted.");
