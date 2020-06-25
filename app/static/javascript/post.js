@@ -86,8 +86,7 @@ function showPost(postdata, timeline=false) {
 }
 
 function showComment(postid) {
-  var id = 'comments2';
-  var x = document.getElementById(id);
+  var x = document.getElementById("comments" + postid);
   if (x.style.display === "none") {
     x.style.display = "block";
   } else {
