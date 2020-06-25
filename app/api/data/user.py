@@ -171,7 +171,7 @@ def get_posts(username):
                               'uploads_id', username=username)
 
     # Get image
-    up_id = user_posts[4]
+    up_id = user_posts[0][4]
     imageurl = ''
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
