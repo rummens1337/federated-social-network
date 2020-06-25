@@ -76,6 +76,17 @@ def user():
     return good_json_response({**basic_info, **sensitive_info})
 
 
+def get_profile_image(username):
+    up_id = users.export_one('uploads_id', username=username)
+
+    imageurl = '../static/images/default.jpg'
+    if uploads.exists(id=up_id):
+        filename = uploads.export_one('filename', id=up_id)
+        imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
+
+    return imageurl
+
+
 def is_friend(username):
     """Return the status of the friendship.
 
@@ -186,6 +197,7 @@ def get_posts(username):
             'title': item[1],
             'body': item[2],
             'image_url': imageurl,
+            'profile_image' : get_profile_image(username),
             'creation_date': str(item[3]),
             'username': username
         })

@@ -61,7 +61,7 @@ function create_comment(id) {
 // This function adds a post in the div 'posts_div'
 function showPost(postdata, timeline=false) {
     var user = timeline ? postdata.username : null;
-    var content = `<img id="image_image_post_` + postdata.id + `" src="/static/images/default.jpg" alt="" class="media-object img-circle"> 
+    var content = `<img src="`+postdata.profile_image+`" alt="" class="media-object img-circle"> 
                    <h5 style="color:black;">
                    <b>`+ ((user != null) ? ('@' + user + '</b><br>') : "") + postdata.title + `</b></h5>
         <h6 class="w3-text-black"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
@@ -95,10 +95,6 @@ function showPost(postdata, timeline=false) {
     $('#posts_div').append(content);
 
     loadComments(postdata.post_id);
-
-    if (postdata.profile_image != null) {
-      document.getElementById('image_image_post_' + postdata.id).src = postdata.profile_image;
-    }
 }
 
 function showComment(postid) {
@@ -131,7 +127,7 @@ function loadComments(postid) {
 function loadComment(postid, comment) {
   var content = `<div class="p-10 bg-white">
                    <div class="media media-xs overflow-visible">
-                      <a class="media-left" href="javascript:;"> <img id="image_comment_` + comment.id + `" src="/static/images/default.jpg" alt="" class="media-object img-circle"> </a>
+                      <a class="media-left" href="javascript:;"> <img id="image_comment_` + comment.id + `" src="`+comment.profile_image+`" alt="" class="media-object img-circle"> </a>
                       <div class="media-body valign-middle" style="cursor: pointer;">
                         <b class="text-dark" onclick="location.href='../profile/` + comment.username + `';">` + comment.username + `</b><br>
                         <b class="text-inverse">` + comment.comment + `</b>
@@ -147,9 +143,6 @@ function loadComment(postid, comment) {
   comment_list = document.getElementById(postid);
   comment_list.innerHTML += content;
 
-  if (comment.profile_image != null) {
-    document.getElementById('image_comment_' + comment.id).src = comment.profile_image;
-  }
 }
 
 // Call this function when requesting an array of posts, not implemented in backend yet but would greatly help.
