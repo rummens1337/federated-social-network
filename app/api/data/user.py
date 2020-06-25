@@ -323,14 +323,6 @@ def delete():
         # Everything that belongs to user is deleted automatically.
         users.delete(username=username)
 
-        # Add all tables belonging to a user.
-        #if uploads.exists(id=uploads_id):
-        #    uploads.delete(id=uploads_id)
-        #if posts.exists(username=username):
-        #    posts.delete(username=username)
-        #if friends.exists(username=username):
-        #    friends.delete(username=username)
-
         return good_json_response()
     else:
         return bad_json_response('Username is not registered.')
