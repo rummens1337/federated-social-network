@@ -3,7 +3,9 @@ from flask_jwt_extended import get_jwt_identity
 
 from app.api import jwt_required_custom
 from app.api.utils import good_json_response, bad_json_response
-from app.database import users, posts, comments
+from app.database import users, posts, comments, uploads
+from app.upload import get_file, save_file
+from app.utils import ping, get_central_ip, get_own_ip, get_user_ip
 
 blueprint = Blueprint('data_post', __name__)
 
@@ -28,11 +30,11 @@ def post():
 
     # Get image
     up_id = post_db[3]
-    # default is null?
-    # imageurl = '../static/images/default.jpg'
+
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
         imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
+
 
     return good_json_response({
         'post_id': post_id,
@@ -51,13 +53,11 @@ def create():
     username = get_jwt_identity()
     title = request.form['title']
     body = request.form['body']
+    # username = request.form['username']
+
 
     # TODO fail if user is not registered
     # TODO user should be authenticated
-
-    # TODO get URL of post
-    # dummy:
-    url = '/api/post/XX'
 
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
@@ -71,11 +71,22 @@ def create():
         return bad_json_response('User not found.')
 
     # Insert post
-    posts.insert(username=username, body=body, title=title)
+    if 'file' in request.files:
+        image_filename = request.files['file'].filename
+        image = request.files['file'].read()
 
-    return good_json_response({
-        'url': url
-    })
+        if image is not 0:
+            uploads_id = save_file(image, filename=image_filename)
+
+            if uploads_id is not False:
+                posts.insert(
+                    username=username, body=body, title=title,
+                    uploads_id=uploads_id
+                    )
+            else:
+                posts.insert(username=username, body=body, title=title)
+
+    return good_json_response('success')
 
 
 @blueprint.route('/delete', methods=['POST'])
@@ -108,25 +119,9 @@ def delete():
     return good_json_response('success')
 
 
-# @blueprint.route('/uploadPost', methods=['POST'])
-# @jwt_required
-# def uploadPost():
-#     username = get_jwt_identity()
-#     # username = request.form['username']
-
-#     image_filename = request.files['file'].filename
-#     image = request.files['file'].read()
-
-#     if image is not 0:
-#         uploads_id = save_file(image, filename=image_filename)
-
-#     if uploads_id is not False:
-#         posts.update({'uploads_id' : uploads_id}, username=username)
-
-
 @blueprint.route('/getComments')
 # @jwt_required
-def getComments():
+def get_comments():
     post_id = request.args.get('post_id')
 
     if post_id is None or post_id == '':
@@ -159,7 +154,7 @@ def getComments():
 
 @blueprint.route('/addComment', methods=['POST'])
 @jwt_required_custom
-def addComment():
+def add_comment():
     username = get_jwt_identity()
     # username = request.form['username']
 
@@ -173,8 +168,8 @@ def addComment():
 
 
 @blueprint.route('/editComment', methods=['POST'])
-# @jwt_required
-def editComment():
+@jwt_required_custom
+def edit_comment():
     # username = get_jwt_identity()
     # username = request.form['username']
 
@@ -187,8 +182,8 @@ def editComment():
 
 
 @blueprint.route('/deleteComment', methods=['POST'])
-# @jwt_required
-def deleteComment():
+@jwt_required_custom
+def delete_comment():
     id = request.form['id']
 
     comments.delete(id=id)
