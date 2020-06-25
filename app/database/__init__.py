@@ -26,6 +26,7 @@ interact directly with the database.
 >>> with cursor() as cur:
 >>>     cur.execute('my execution')
 """
+
 import contextlib
 import itertools
 import os
@@ -55,10 +56,10 @@ def cursor():
         con.close()
 
 
-def where(data: dict, delimiter: str=' AND ') -> str:
+def where(data: dict, equal: str='=', delimiter: str=' AND ') -> str:
     return delimiter.join(
-        '{} = {}'.format(d[0], percent_type(d[1]))
-        for d in data.items()
+        '{} {} %s'.format(d, equal)
+        for d in data.keys()
     )
 
 
@@ -104,10 +105,14 @@ class TableLoader:
             The one returned value from the table.
         """
         kwargs['limit'] = 1
-        return self.export(*args, **kwargs)[0]
+        result = self.export(*args, **kwargs)
+        if len(result) != 0:
+            return result[0]
+        return None
 
     def export(self, *args, order: str=None, order_direction: str='desc',
-               limit: int=None, **kwargs):
+               limit: int=None, as_dict: bool=False, like_prefix: bool=False,
+               like_suffix: bool=False, **kwargs):
         """Export one or more entries from the table.
 
         Note:
@@ -171,27 +176,56 @@ class TableLoader:
             limit (int): The number of results to return.
             kwargs: The keys (str) and values (str, int) the rows should match.
         """
+        if len(args) == 0:
+            args = ('*',)
         order = order or self._primary_key
         with cursor() as cur:
             cur.execute(
                 'SELECT ' + ','.join(args) +
                 ' FROM ' + self._table +
                 (
-                    ' WHERE ' + where(kwargs)
+                    (
+                        ' WHERE ' + where(
+                            kwargs,
+                            equal=(
+                                '='
+                                if not (like_prefix or like_suffix) else
+                                'LIKE'
+                            )
+                        )
+                    )
                     if len(kwargs) > 0 else
                     ''
                 ) +
-                ' ORDER BY {} {}'.format(order.lower(), order_direction.lower()) +
+                ' ORDER BY {} {}'.format(
+                    order.lower(),
+                    order_direction.lower()
+                ) +
                 (
                     ' LIMIT ' + str(limit)
                     if limit is not None else
                     ''
                 ),
-                tuple(kwargs.values())
+                tuple(
+                    (
+                        ('%' if like_prefix else '') +
+                        value +
+                        ('%' if like_suffix else '')
+                    )
+                    if type(value) is str else
+                    value
+                    for value in kwargs.values()
+                )
             )
+            result = cur.fetchall()
+            if as_dict:
+                description = tuple(d[0] for d in cur.description)
+                return tuple(
+                    dict(zip(description, d)) for d in result
+                )
             return tuple(
                 d if len(d) > 1 else d[0]
-                for d in cur.fetchall()
+                for d in result
             )
 
     def insert(self, lastrowid=True, **kwargs):
@@ -265,7 +299,7 @@ class TableLoader:
         with cursor() as cur:
             return cur.execute(
                 'UPDATE ' + self._table +
-                ' SET ' + where(update, ', ') +
+                ' SET ' + where(update, delimiter=', ') +
                 ' WHERE ' + where(kwargs),
                 tuple(itertools.chain(update.values(), kwargs.values()))
             )
@@ -321,7 +355,6 @@ class TableLoader:
 
 
 def init_mysql(app):
-    # globally set mysql variable
     globals()['mysql'] = MySQL(app)
     if get_server_type() == ServerType.CENTRAL:
         sql_file = CENTRAL_SQL
@@ -335,7 +368,10 @@ def init_mysql(app):
                     continue
                 q += ';'
                 table = re.search(r'^[^\(]+?([a-zA-Z0-9]+)\s*\(', q).group(1)
-                primary_key = re.search(r'([a-zA-Z0-9]+)\s+[^\s]+\s*PRIMARY\s*KEY', q).group(1)
+                primary_key = re.search(
+                    r'([a-zA-Z0-9]+)\s+[^\s]+\s*PRIMARY\s*KEY',
+                    q
+                ).group(1)
                 print('Creating table {} with primary key {}.'
                       .format(table, primary_key), flush=True)
                 cur.execute(q)
@@ -345,3 +381,4 @@ def init_mysql(app):
 def test_db():
     with cursor() as cur:
         cur.execute("INSERT INTO test VALUES (1)")
+

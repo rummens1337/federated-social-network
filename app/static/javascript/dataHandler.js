@@ -51,6 +51,28 @@ function requestJSONFile(type, url, data=null, success=null, error=null) {
 };
 
 
+function requestJSONMigrationFile(type, url, data=null, success=null, error=null) {
+    var token = Cookies.get('access_token_cookie');
+    var headers = {};
+    if (token != null) headers = { 'Authorization' : 'Bearer ' + token };
+
+    $.ajax({
+        headers: headers,
+        type: type,
+        url: url,
+        processData: false,
+        contentType: false,
+        data: data,
+        crossDomain: true,
+        success: function(req) {
+            if (req.hasOwnProperty("success") && req.success == false) error(req);
+            else success(req);
+        },
+        error: error
+    });
+};
+
+
 /*
  * Shows an error message on screen.
  * Error   : type string, message to be shown.
@@ -59,6 +81,10 @@ function requestJSONFile(type, url, data=null, success=null, error=null) {
 */
 function alertError(error, ms, div_id=null) {
     var dialog = document.createElement("div");
+
+    if (error == undefined) {
+        error = "Error in handling your request.";
+    }
 
     dialog.innerHTML = error;
     dialog.setAttribute("class", "alert");

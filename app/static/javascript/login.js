@@ -22,7 +22,12 @@ function validateAccount() {
         var username = $("#username").val();
 
         function loginFailed(req) {
-          alertError(req.reason, 2000);
+          if (req.reason != undefined) {
+            alertError(req.reason, 2000);
+          }
+          else {
+            alertError("Something went wrong connecting to your data server. Please contact the server owner.", 4000)
+          }
         }
 
         function verifyLogin(req) {

@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev\
     python3-pip \
     vim \
+    ssh-client \
  && apt-get clean \
  && apt-get autoremove \
  && rm -rf /var/lib/apt/lists/*
@@ -34,11 +35,15 @@ RUN pip3 install -r /var/www/flask/app/requirements.txt
 
 COPY ./run.py /var/www/flask/run.py
 COPY config.py /var/www/flask/config.py
-# COPY $HOST/app /var/www/apache-flask/app/
+
+COPY ./docker/key.sh /var/www/flask/key.sh
 
 EXPOSE 80
 
 WORKDIR /var/www/flask
+
+RUN chmod +x key.sh
+RUN ./key.sh
 
 ARG FLASK_SERVER_TYPE
 ARG FLASK_PORT
@@ -49,6 +54,8 @@ ENV FLASK_ENV development
 ENV WAIT_VERSION 2.7.2
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
 RUN chmod +x /wait
+
+RUN pip3 install flask-jwt-extended\[asymmetric_crypto\]
 
 CMD python3 run.py
 # CMD ["python3", "run.py", "-s", $TYPE, "-p", $PORT]

@@ -16,7 +16,8 @@ function register_server() {
         }
 
         function registerCentralSucces() {
-          window.location = "/?message=registered_server";
+          toggle_modal("registerServer");
+          alertError("Your server has been successfully registered!", 2000);
         }
 
         function registerCentralFailed(response) {

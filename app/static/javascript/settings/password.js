@@ -6,8 +6,8 @@ function changePassword() {
             oldPassword: "required",
             newPassword: "required",
             confirmPassword: {
-                required: true
-                // equalTo: '#newPassword'
+                required: true,
+                equalTo: "#newPassword"
             }
         },
 

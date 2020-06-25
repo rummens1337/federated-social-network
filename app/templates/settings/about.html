@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn-primary btn mx-auto" onclick="addHobby();">Add hobby</button>
+                        <button type="submit" class="btn-block btn mx-auto" onclick="addHobby();">Add hobby</button>
                     </div>
                 </form>
             </div>
@@ -49,16 +49,16 @@
                 <form name="skill">
                     <div class="form-group">
                         <label> Skill </label>
-                        <input id='skill' type='text' name="new_skill" /> </input>
+                        <input id='skill' type='text' name="title"> </input>
                     </div>
 
                     <div class="form-group">
                         <label> Skill level </label>
-                        <input type="range" min="1" max="100" value="50" class="slider" name='level'>
+                        <input type="range" min="1" max="100" value="50" class="slider" name='skill_level'>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn-primary btn mx-auto" onclick="addSkill();">Add skill</button>
+                        <button type="submit" class="btn-block btn mx-auto" onclick="addSkill();">Add skill</button>
                     </div>
                 </form>
             </div>
@@ -81,7 +81,7 @@
                 <form name="language">
                     <div class="form-group">
                         <label> Language </label>
-                        <select name="new_language" name="language" class="form-control" data-placeholder="Choose a Language...">
+                        <select name="title" class="form-control" data-placeholder="Choose a Language...">
                             <option value="Afrikaans">Afrikaans</option>
                             <option value="Albanian">Albanian</option>
                             <option value="Arabic">Arabic</option>
@@ -159,11 +159,11 @@
 
                     <div class="form-group">
                         <label> Language level </label>
-                        <input type="range" min="1" max="100" value="50" class="slider" name='level'>
+                        <input type="range" min="1" max="100" value="50" class="slider" name='skill_level'>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn-primary btn mx-auto" onclick="addLanguage();">Add language</button>
+                        <button type="submit" class="btn-block btn mx-auto" onclick="addLanguage();">Add language</button>
                     </div>
                 </form>
             </div>
@@ -181,17 +181,17 @@
         <li id='hobbies-list'>
             <p><b> Hobbies</b></p>
         </li>
-        <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addHobby" data-whatever="@getbootstrap">Add hobby</button>
+        <button type="button" class="btn-block" data-toggle="modal" data-target="#addHobby" style="margin-bottom: 30px;" data-whatever="@getbootstrap">Add hobby</button>
 
         <li id='skills-list'>
             <p><b>Skills</b></p>
         </li>
-        <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addSkill" data-whatever="@getbootstrap">Add skill</button>
+        <button type="button" style="margin-bottom: 30px;" class="btn-block" data-toggle="modal" data-target="#addSkill" data-whatever="@getbootstrap">Add skill</button>
 
         <li id='languages-list'>
             <p><b>Languages</b></p>
         </li>
-        <button type="button" class="btn-primary btn-block" data-toggle="modal" data-target="#addLanguage" data-whatever="@getbootstrap">Add language</button>
+        <button type="button" class="btn-block" data-toggle="modal" data-target="#addLanguage" data-whatever="@getbootstrap">Add language</button>
     </ul>
 </div>
 {% endblock %}

@@ -1,39 +1,49 @@
 function search_func() {
-    $("form[name='search-form']").validate({
-      rules: {
-        search_input: "required",
-      },
+  var input_data = $('input[id=search_input]');
+  var data = '?username=' + input_data.val();
 
-      submitHandler: function(form) {
-        var input_data = $('input[id=search_input]');
-        var data = '?username=' + input_data.val();
+  function userFound(req) {
+    var search_resp = document.getElementById('search_dropdown')
+    search_resp.textContent = '';
+    users = req.data.users
 
-        function userFound(req) {
-          users = req.data.users
-          // TODO: populate the searchfield
-          alertError(req.data.users, 2000)
-        }
+    for(var i = 0; i < users.length; i++) {
 
-        function noUser(req) {
-          alertError(req.reason, 2000)
-        }
+      var link = document.createElement('a');
+      var username = users[i];
+      var user_url = '/profile/' + username;
 
-        // function search(req) {
-        //   dataServer = req.data.address;
-        //   requestJSON('GET', dataServer + '/api/search/search', $(form).serialize(), userFound, noUser);
-        // }
+      link.innerHTML += username;
+      link.href = user_url;
 
-        requestJSON('GET', '/api/user/search' + data, null, userFound, noUser);
-      }
-    });
+      search_resp.appendChild(link);
+    }
+
+  }
+
+  function noUser(req) {
+    alertError(req.reason, 2000)
+  }
+
+  requestJSON('GET', '/api/user/search' + data, null, userFound, noUser);
 }
 
-function myFunction() {
+$(document).click(function(e) {
+
+  if ($("#search_dropdown").is(":visible") && !$(e.target).is('#search_input')) {
+    document.getElementById("search_dropdown").classList.toggle("show");
+  }
+});
+
+
+function showSearch() {
   $(".dropdown-content").css({
     'min-width': ($(".dropdown").width() + 'px')
   });
 
-  document.getElementById("search_dropdown").classList.toggle("show");
+  if ($('#search_dropdown').is(":hidden")){
+    document.getElementById("search_dropdown").classList.toggle("show");
+  }
 }
 
 function filterContent() {

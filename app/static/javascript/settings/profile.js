@@ -1,9 +1,10 @@
 var centralServer = window.location.origin;
+var dataServer;
 
 function saveProfile() {
     $("form[name='settings']").validate({
         rules: {
-            new_name: 'required'
+            new_name: 'required',
         },
 
         submitHandler: function(form) {
@@ -29,6 +30,35 @@ function setUserSettings(req) {
     document.getElementById('lastname').value = req.data.lastname;
     document.getElementById('study').value = req.data.study;
     document.getElementById('bio').value = req.data.bio;
+    document.getElementById('status').value = req.data.relationship_status;
+    document.getElementById('phone_number').value = req.data.phone_number;
+}
+
+function deleteProfile() {
+
+    function deleteDataSuccess(){
+        console.log("Profile deleted from data server");
+        alertError("Your profile has been deleted.");
+        Cookies.delete('access_token_cookie');
+        location.href = "/";
+    }
+
+    function deleteDataFail() {
+        alertError("Your profile is deleted from the central server and is now unreachable. However it is not possible to delete it from your data server. Please contact the owner of your data server.", 20000);
+    }
+
+    function deleteCentralSuccess() {
+        console.log("Profile deleted from central server.");
+        requestJSON("POST", dataServer + "/api/user/delete", null, deleteDataSuccess, deleteDataFail);
+    }
+
+    function deleteCentralFail() {
+        alertError("Your profile could not be deleted, please try again later.", 5000);
+    }
+
+    if (confirm("Are you sure you want to delete your entire FedNet profile?")) {
+        requestJSON("POST", "/api/user/delete", null, deleteCentralSuccess, deleteCentralFail);
+    }
 }
 
 function setDataAddress(req) {
