@@ -5,7 +5,7 @@ MYSQL_DATABASE_DB = 'db'
 MYSQL_DATABASE_HOST = 'mysql'
 
 # IP
-CENTRAL_IP = "http://95.217.178.90"
+CENTRAL_IP = "http://95.217.213.171"
 
 # EMAIL
 EMAIL_ADDRESS = "therealfednet@gmail.com"
