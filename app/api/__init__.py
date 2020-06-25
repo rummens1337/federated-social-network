@@ -125,7 +125,10 @@ def jwt_required_custom(fn):
             return render_template('login.html')
 
         # Let the JWT extended library check the token
-        verify_jwt_in_request()
+        try:
+            verify_jwt_in_request()
+        except:
+            return render_template('logout.html')
         return fn(*args, **kwargs)
 
     wrapper.__name__ = fn.__name__
