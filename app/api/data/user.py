@@ -221,6 +221,9 @@ def get_posts(username):
     """Extract all the posts of a certain username from the
     posts table database.
 
+    Args:
+        username (string): The involved user.
+
     Returns:
         JSON response with all data from the posts table
     """
