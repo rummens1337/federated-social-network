@@ -51,8 +51,8 @@ function migrateData() {
 
           function editFailed(res) {
             // Step 3 failed.
-            console.log("Edit central server failed.")
-            alertError("Migration failed in step 3: the central server registration failed to update, please contact support! Error message: " + res.reason, 20000);
+            console.log("Edit central server failed." + res.reason);
+            alertError("Migration failed in step 3: the central server registration failed to update, please contact support!", 20000);
           }
 
           function importSucces(res) {
@@ -65,8 +65,8 @@ function migrateData() {
 
           function deleteFailed(res) {
             // Step 4 failed.
-            console.log("Delete failed");
-            alertError("Migration success! But your data could not be deleted from your old data server. Please contact the owner of your old data server! However, you can use FedNet on the new data server. Error message: " + res.reason, 20000);
+            console.log("Delete failed" + res.reason);
+            alertError("Migration success! But your data could not be deleted from your old data server. Please contact the owner of your old data server! However, you can use FedNet on the new data server." , 20000);
           }
 
           function editSuccess(res) {
@@ -85,7 +85,7 @@ function migrateData() {
   
           function migrationFailed(response) {
             console.log(response)
-            alertError("A problem occurred during the migration process. You can still use FedNet using your old data server! Reason: " + response.reason, 10000);
+            alertError("A problem occurred during the migration process. You can still use FedNet using your old data server!", 10000);
           }
           
           exportDataServer();
