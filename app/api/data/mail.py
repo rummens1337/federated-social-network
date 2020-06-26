@@ -24,6 +24,11 @@ blueprint = Blueprint('data_mail', __name__)
 
 @blueprint.route('/token', methods=['POST'])
 def send_verification_mail():
+    """Handles the sending of verification email.
+
+    Returns:
+        JSON response based on succes/failure.
+    """
     # Check if parameter email is set.
     send_to = request.form['email']
     if not send_to:
@@ -81,6 +86,13 @@ def send_verification_mail():
 
 @blueprint.route('/confirm_email/<token>')
 def confirm_email(token):
+    """Checks if the email verification is successful.
+
+    If succesful email_confirmed is set to 1 and user is now able to login.
+
+    Returns:
+        JSON responde based on succes/failure.
+    """
     try:
         # Create the secret key based on our little secret :)
         secret = URLSafeTimedSerializer(current_app.config['EMAIL_SECRET'])
@@ -113,6 +125,11 @@ def confirm_email(token):
 
 @blueprint.route('/forgotpass', methods=['POST'])
 def forgotpass():
+    """Handles forgotten password, sends email to recover.
+
+    Returns:
+        JSON response based on succes/failure.
+    """
     username = request.form['username']
 
     if not username:
@@ -174,6 +191,11 @@ def forgotpass():
 
 @blueprint.route('/confirm_forgotpass', methods=['POST'])
 def confirm_forgotpass():
+    """Handles password resetting via email.
+
+    Returns:
+        JSON reponse based on succes/failure.
+    """
     try:
         token = request.form['token']
         password = request.form['password']
@@ -208,6 +230,11 @@ def confirm_forgotpass():
 
 @blueprint.route('/forgot_username', methods=['POST'])
 def forgot_username():
+    """Sends email to reset username.
+
+    Returns:
+        JSON reponse based on succes/failure.
+    """
     email = request.form['email']
 
     if not email:
