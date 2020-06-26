@@ -42,7 +42,8 @@ function deleteProfile() {
         location.href = "/";
     }
 
-    function deleteDataFail() {
+    function deleteDataFail(res) {
+        console.log("Delete data error: ", res.reason);
         alertError("Your profile is deleted from the central server and is now unreachable. However it is not possible to delete it from your data server. Please contact the owner of your data server.", 20000);
     }
 
