@@ -716,6 +716,12 @@ def edit_language():
 @blueprint.route('/export')
 @jwt_required_custom
 def export_zip_():
+    """Export all the data of a certain user as a zip.
+
+    Returns:
+        If the user exists, the user details will be exported.
+    """
+
     username = get_jwt_identity()
 
     if users.exists(username=username):
@@ -728,6 +734,12 @@ def export_zip_():
 @blueprint.route('/import', methods=['POST'])
 @jwt_required_custom
 def import_zip_():
+    """Export all the data of a certain user as a zip.
+
+    Returns:
+        Success JSON response in case the import was successful.
+        Else the bad JSON response will be returned with an error message.
+    """
     username = get_jwt_identity()
 
     if 'file' in request.files:
