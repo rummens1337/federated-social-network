@@ -1,3 +1,4 @@
+// Gets users from the central database based on what is typed in the search bar.
 function search_func() {
   var input_data = $('input[id=search_input]');
   var data = '?username=' + input_data.val();
@@ -28,6 +29,7 @@ function search_func() {
   requestJSON('GET', '/api/user/search' + data, null, userFound, noUser);
 }
 
+// Hides dropdown for search bar on click outside search bar.
 $(document).click(function(e) {
 
   if ($("#search_dropdown").is(":visible") && !$(e.target).is('#search_input')) {
@@ -35,7 +37,7 @@ $(document).click(function(e) {
   }
 });
 
-
+// Shows search bar if it's not already showing.
 function showSearch() {
   $(".dropdown-content").css({
     'min-width': ($(".dropdown").width() + 'px')

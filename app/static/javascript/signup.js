@@ -1,3 +1,5 @@
+// Validates the signup form and registers a user on the central and
+// data server (selected by user).
 function sign_up() {
   $("form[name='signup']").validate({
     rules: {
@@ -49,6 +51,7 @@ function sign_up() {
   });
 }
 
+// Gets all servers from the central database and adds them to a select div.
 function loadServers() {
   document.getElementById("select_server").innerHTML = "";
   requestJSON("GET", "/api/server", null, populateServerSelect, requestError);

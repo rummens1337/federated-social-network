@@ -143,35 +143,36 @@ function showLanguage(language) {
 
 // Get the data of the profile
 function getProfile(req) {
-    var dataServer = req.data.address;
-    if (username == null || username == "") {
-      var urlProfile = dataServer + '/api/user'
-      var urlSkills = dataServer + '/api/user/skill'
-      var urlLanguages = dataServer + '/api/user/language'
-      var urlHobbies = dataServer + '/api/user/hobby'
-    }
-    else {
-      var urlProfile = dataServer + '/api/user?username=' + username
-      var urlSkills = dataServer + '/api/user/skill?username=' + username
-      var urlLanguages = dataServer + '/api/user/language?username=' + username
-      var urlHobbies = dataServer + '/api/user/hobby?username=' + username
-    }
+  var dataServer = req.data.address;
 
-    requestJSON('GET', urlProfile, null, profile, function(req) {
-        alertError(req.reason, 2000);
-        location.href = "/";
-    });
-    requestJSON('GET', urlSkills, null, showSkills, function(req) {
-        alertError(req.reason, 2000);
-        location.href = "/";
-    });
-    requestJSON('GET', urlLanguages, null, showLanguages, function(req) {
-          alertError(req.reason, 2000);
+  if (username == null || username == "") {
+    var urlProfile = dataServer + '/api/user'
+    var urlSkills = dataServer + '/api/user/skill'
+    var urlLanguages = dataServer + '/api/user/language'
+    var urlHobbies = dataServer + '/api/user/hobby'
+  }
+  else {
+    var urlProfile = dataServer + '/api/user?username=' + username
+    var urlSkills = dataServer + '/api/user/skill?username=' + username
+    var urlLanguages = dataServer + '/api/user/language?username=' + username
+    var urlHobbies = dataServer + '/api/user/hobby?username=' + username
+  }
 
-      location.href = "/";
-    });
-    requestJSON('GET', urlHobbies, null, showHobbies, function(req) {
-      alertError(req.reason, 2000);
+  requestJSON('GET', urlProfile, null, profile, function(req) {
+    alertError(req.reason, 2000);
+    location.href = "/";
+  });
+  requestJSON('GET', urlSkills, null, showSkills, function(req) {
+    alertError(req.reason, 2000);
+    location.href = "/";
+  });
+  requestJSON('GET', urlLanguages, null, showLanguages, function(req) {
+    alertError(req.reason, 2000);
+
+    location.href = "/";
+  });
+  requestJSON('GET', urlHobbies, null, showHobbies, function(req) {
+    alertError(req.reason, 2000);
 
   location.href = "/";
 });
@@ -187,16 +188,16 @@ function editFailed(response) {
 
 // Get the address of the profile
 function loadProfile(u) {
-    username = u;
-    setup();
-    var url = (username == null || username == "") ?
-      '/api/user/address' :
-      '/api/user/address?username=' + username;
+  username = u;
+  setup();
+  var url = (username == null || username == "") ?
+    '/api/user/address' :
+    '/api/user/address?username=' + username;
 
-    requestJSON('GET', url, null, getProfile, function(req) {
-      alertError(req.reason, 2000);
-      location.href = "/";
-    });
+  requestJSON('GET', url, null, getProfile, function(req) {
+    alertError(req.reason, 2000);
+    location.href = "/";
+  });
 }
 
 // Setup the profile page

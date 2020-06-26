@@ -102,6 +102,7 @@ function showPost(postdata, timeline=false) {
     loadComments(postdata.post_id);
 }
 
+// Shows the comments div for a post.
 function showComment(postid) {
   var x = document.getElementById("comments" + postid);
   if (x.style.display === "none") {
@@ -111,6 +112,7 @@ function showComment(postid) {
   }
 }
 
+// Gets comments for a post with postid and calls functions to add those to the html.
 function loadComments(postid) {
   function getComments(req) {
     requestJSON("GET", req.data.address + "/api/post/comments", {"post_id": postid}, showcomments, commentsFailure);
@@ -129,6 +131,7 @@ function loadComments(postid) {
   requestJSON("GET", "/api/user/address", null, getComments, null)
 }
 
+// Adds a comment to a post with the corresponding postid.
 function loadComment(postid, comment) {
   var content = `<div class="p-10 bg-white">
                    <div class="media media-xs overflow-visible">
@@ -164,11 +167,14 @@ function showPostsArray(req, timeline=false) {
   }
 }
 
+
+// Load user posts.
 function loadPosts(req) {
   var dataServer = req.data.address;
   var url = (username == null || username == "") ?
     dataServer + '/api/user/posts' :
     dataServer + '/api/user/posts?username=' + username;
+
   requestJSON('GET', url, null, showPostsArray, function(req) {
     alertError(req.reason, 2000)
   });
@@ -178,6 +184,7 @@ function loadPosts(req) {
 function loadTimeline(req) {
   var dataServer = req.data.address;
   var url = dataServer + '/api/user/timeline';
+
   requestJSON('GET', url, null, function(req) {
     showPostsArray(req, true);
   }, function(req) {
