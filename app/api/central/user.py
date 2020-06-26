@@ -125,7 +125,6 @@ def register():
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
-    # username = request.form['username']
     username = get_jwt_identity()
 
     if users.exists(username=username):
