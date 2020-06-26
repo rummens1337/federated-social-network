@@ -48,7 +48,7 @@ function deleteProfile() {
 
     function deleteCentralSuccess() {
         console.log("Profile deleted from central server.");
-        requestJSON("POST", dataServer + "/api/user/delete", null, deleteDataSuccess(), deleteDataFail());
+        requestJSON("POST", dataServer + "/api/user/delete", null, deleteDataSuccess, deleteDataSuccess);
     }
 
     function deleteCentralFail() {
