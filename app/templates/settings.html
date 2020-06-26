@@ -2,35 +2,35 @@
 
 {% block title %}Settings{% endblock %}
 {% block head %}
-    <link href="../static/css/settings.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../static/css/settings.css" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 {{ super() }}
 {% block content %}
 <div class="row">
-    <div class="col-xl-2" id="header">
-        <div id="menu">
-            <ul class="list-unstyled">
-                <h2 class='settings'> <a href="/settings"> Settings</a></h2>
-                <li class="{% if active_item == 'profile' %}current_page_item{% endif %}">
-                    <a href="/settings/profile" accesskey="1" title="">Profile</a>
-                </li>
-                <li class="{% if active_item == 'privacy' %}current_page_item{% endif %}">
-                    <a href="/settings/privacy" accesskey="2" title="">Privacy</a>
-                </li>
-                <li class="{% if active_item == 'server' %}current_page_item{% endif %}">
-                    <a href="/settings/server" accesskey="3" title="">Server</a>
-                </li>
-                <li class="{% if active_item == 'password' %}current_page_item{% endif %}">
-                    <a href="/settings/password" accesskey="4" title="">Password</a>
-                </li>
-                <li class="{% if active_item == 'info' %}current_page_item{% endif %}">
-                    <a href="/settings/about" accesskey="4" title="">Extra info</a>
-                </li>
-            </ul>
-        </div>
+  <div class="col-xl-2" id="header">
+    <div id="menu">
+      <ul class="list-unstyled">
+        <h2 class='settings'> <a href="/settings"> Settings</a></h2>
+        <li class="{% if active_item == 'profile' %}current_page_item{% endif %}">
+          <a href="/settings/profile" accesskey="1" title="">Profile</a>
+        </li>
+        <li class="{% if active_item == 'privacy' %}current_page_item{% endif %}">
+          <a href="/settings/privacy" accesskey="2" title="">Privacy</a>
+        </li>
+        <li class="{% if active_item == 'server' %}current_page_item{% endif %}">
+          <a href="/settings/server" accesskey="3" title="">Server</a>
+        </li>
+        <li class="{% if active_item == 'password' %}current_page_item{% endif %}">
+          <a href="/settings/password" accesskey="4" title="">Password</a>
+        </li>
+        <li class="{% if active_item == 'info' %}current_page_item{% endif %}">
+          <a href="/settings/about" accesskey="4" title="">Extra info</a>
+        </li>
+      </ul>
     </div>
-    {% block content_settings %}
-    {% endblock %}
+  </div>
+  {% block content_settings %}
+  {% endblock %}
 
 </div>
 {% endblock %}
