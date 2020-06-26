@@ -1,3 +1,8 @@
+"""
+This file contains api routes corresponding to searching 
+on a data server.
+"""
+
 from flask import Blueprint, request
 
 from app.api.utils import good_json_response, bad_json_response

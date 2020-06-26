@@ -1,3 +1,7 @@
+"""
+This file contains api routes corresponding to a user in the central server.
+"""
+
 from flask import Blueprint, request, Flask, render_template, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, \
     verify_jwt_in_request_optional

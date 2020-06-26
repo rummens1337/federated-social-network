@@ -1,3 +1,8 @@
+"""
+This file contains api routes corresponding to server information
+on a data server.
+"""
+
 from flask import Blueprint, request, Flask, render_template, request
 from flask_jwt_extended import create_access_token, get_jwt_identity
 

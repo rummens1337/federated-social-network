@@ -1,3 +1,8 @@
+"""
+This file contains api routes corresponding to a user
+on a data server.
+"""
+
 import datetime
 
 from flask import Blueprint, request, send_file
