@@ -10,12 +10,6 @@ from app.upload import get_file
 blueprint = Blueprint('main', __name__)
 
 
-@blueprint.route('/test')
-def test():
-    # route for testing POST
-    return render_template('testform.html')
-
-
 @blueprint.route('/')
 @blueprint.route('/index')
 def index():

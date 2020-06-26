@@ -13,6 +13,11 @@ blueprint = Blueprint('central_user', __name__)
 
 @blueprint.route('/')
 def user():
+    """Get all usernames and their respective server ID's from the users table.
+
+    Returns:
+        JSON response containing all the usernames in the users table.
+    """
     usernames = users.export('username', 'server_id')
 
     if len(usernames) == 0:
@@ -21,7 +26,6 @@ def user():
     return good_json_response({
         'usernames': usernames
     })
-    # TODO error handling if query fails
 
 
 @blueprint.route('/createtestusers')
@@ -41,8 +45,18 @@ def createtestusers():
 
 @blueprint.route('/search')
 def search():
+    """Get usernames similar to the current letters typed into the search bar.
+
+    For this function, like_prefix and like_suffix were added to the arguments
+    of the export function.
+
+    Returns:
+        JSON response containing all the similar usernames.
+        If there are no usernames similar to the one you tried to search for,
+        a failed JSON response is returned.
+    """
     username = request.args.get('username')
-    # TODO: add 'like' function
+
     userlist = users.export('username', username=username, like_prefix=True,
                             like_suffix=True)
 
@@ -56,6 +70,16 @@ def search():
 
 @blueprint.route('/address')
 def address():
+    """Get the address of a certain user.
+
+    From the users and servers tables, necessary details are extracted from
+    entries containing the given username.
+
+    Returns:
+        JSON response containing the address details of a certain user.
+        If the user is not found or the server is non existant, a failed JSON
+        response is returned.
+    """
     username = request.args.get('username')
 
     # If username is not given, use the logged in username
@@ -83,7 +107,13 @@ def address():
 
 @blueprint.route('/registered')
 def registered():
-    # TODO check if they are connected to a server?
+    """Check if a certain user is registered in the users table.
+
+    Returns:
+        JSON response containing username of the certain user if the user is
+        indeed registered.
+        If the username is not found, a failed JSON response is returned.
+    """
     username = request.args.get('username')
 
     if username is None:
@@ -98,6 +128,17 @@ def registered():
 
 @blueprint.route('/register', methods=['POST'])
 def register():
+    """Register a user to the central server.
+
+    For this registration, the username and server address are requested in the
+    form. A check is performed to see if the server is live. Then the user is
+    inserted into the users table.
+
+    Returns:
+        Success JSON response if the operation is successful.
+        If the username is valid or the server is not live, a failed JSON
+        response is returned.
+    """
     username = request.form['username']
     address = request.form['server_address']
 
@@ -125,6 +166,15 @@ def register():
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
+    """Delete a certain user from the central server.
+
+    The entry with the certain users username is removed from the users table in
+    the database.
+
+    Returns:
+        Success JSON response if the operation is successful.
+        Else a failed JSON response is returned with the correct error message.
+    """
     username = get_jwt_identity()
 
     if users.exists(username=username):
@@ -137,7 +187,15 @@ def delete():
 @blueprint.route('/edit', methods=['POST'])
 @jwt_required_custom
 def edit():
-    # username = request.args.get('username')
+    """Edit a certain users details in the central server.
+
+    The entry with the certain users username is edited in the users table in
+    the database.
+
+    Returns:
+        Success JSON response if the operation is successful.
+        Else a failed JSON response is returned with the correct error message.
+    """
     username = get_jwt_identity()
 
     if users.exists(username=username):
