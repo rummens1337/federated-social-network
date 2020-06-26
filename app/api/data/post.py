@@ -11,12 +11,17 @@ from app.api.data.user import get_profile_image
 blueprint = Blueprint('data_post', __name__)
 
 
-# TODO COMMENTS
 @blueprint.route('/', strict_slashes=False)
 @jwt_required_custom
 def post():
-    # TODO user should be authenticated
+    """Get all the necessary details for a post.
 
+    The post ID is checked to see if the post actually exists. The same is done
+    with the upload ID.
+
+    Returns:
+        JSON response with the post details.
+    """
     post_id = request.args.get('post_id')
 
     if post_id is None:
@@ -51,14 +56,18 @@ def post():
 @blueprint.route('/create', methods=['POST'])
 @jwt_required_custom
 def create():
+    """Create a new post.
+
+    For a post to be created, details are submitted in the form. These details
+    are then inserted into the posts table in the database.
+
+    Returns:
+        Success JSON response if the operation succeeded.
+        Else a failed JSON response is returned with the correct error message.
+    """
     username = get_jwt_identity()
     title = request.form['title']
     body = request.form['body']
-    # username = request.form['username']
-
-
-    # TODO fail if user is not registered
-    # TODO user should be authenticated
 
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
@@ -93,6 +102,16 @@ def create():
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
+    """Delete a post.
+
+    For a post to be deleted, the post ID is requested in the form. The post
+    entry corresponding to the given post ID is then deleted from the posts
+    table.
+
+    Returns:
+        Success JSON response if the operation succeeded.
+        Else a failed JSON response is returned with the correct error message.
+    """
     username = get_jwt_identity()
     post_id = request.form['post_id']
 
@@ -123,6 +142,17 @@ def delete():
 @blueprint.route('/comments', strict_slashes=False)
 @jwt_required_custom
 def get_comments():
+    """Get all comments from a certain post.
+
+    To retrieve all comments on a certain post, the post ID is requested in the
+    form. All the comment entries in the comments table corresponding to the
+    given post ID are then retrieved.
+
+    Returns:
+        JSON response containing a list with all the comments if the operation
+        succeeded.
+        Else a failed JSON response is returned with the correct error message.
+    """
     post_id = request.args.get('post_id')
 
     if post_id is None or post_id == '':
@@ -157,10 +187,17 @@ def get_comments():
 @blueprint.route('/comments/add', methods=['POST'])
 @jwt_required_custom
 def add_comment():
-    username = get_jwt_identity()
-    # username = request.form['username']
+    """Add a comment to a certain post.
 
-    # need to somehow give post_id with it (in html? hidden)
+    To add a comment on a certain post, the post ID is requested in the form.
+    The comment details are inserted in the comments table with the post_id
+    equal to the requested post ID.
+
+    Returns:
+        Success JSON response if the operation succeeded.
+    """
+    username = get_jwt_identity()
+
     post_id = int(request.form['post_id'])
     comment = request.form['comment']
 
@@ -172,9 +209,15 @@ def add_comment():
 @blueprint.route('/comments/edit', methods=['POST'])
 @jwt_required_custom
 def edit_comment():
-    # username = get_jwt_identity()
-    # username = request.form['username']
+    """Edit an existing comment on a certain post.
 
+    To edit a comment on a certain post, the post ID is requested in the form.
+    The comment details are updated in the comments table with the post_id
+    equal to the requested post ID.
+
+    Returns:
+        Success JSON response if the operation succeeded.
+    """
     id = request.form['id']
     comment = request.form['comment']
 
@@ -186,6 +229,15 @@ def edit_comment():
 @blueprint.route('/comments/delete', methods=['POST'])
 @jwt_required_custom
 def delete_comment():
+    """Delete an existing comment on a certain post.
+
+    To delete a comment on a certain post, the post ID is requested in the form.
+    The comment details corresponding to the given post ID are then deleted from
+    the comments table in the database.
+
+    Returns:
+        Success JSON response if the operation succeeded.
+    """
     id = request.form['id']
 
     comments.delete(id=id)
