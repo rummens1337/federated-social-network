@@ -12,6 +12,12 @@ blueprint = Blueprint('data_file', __name__)
 
 @blueprint.route('/', strict_slashes=False)
 def file_main():
+    """Function that handles getting a file.
+
+    Returns:
+        A bad JSON response if file is not found.
+        A good JSON response if file is found successfully
+    """
     file_id = request.args.get('id')
 
     if not uploads.exists(id=file_id):
