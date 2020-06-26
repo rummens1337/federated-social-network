@@ -48,14 +48,15 @@ make run debug=1
 ```
 
 ## Built With
-
+...
 
 <!--* [Maven](https://maven.apache.org/) - Dependency Management-->
 <!--* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds-->
 <!--* [Flask](https://palletsprojects.com/p/flask/) - Used for web-based application framework-->
 <!--* [MySQL](https://www.mysql.com/) - Database management-->
-<!--* []() - -->
-```
+
+
+
 ## Contributing
 
 ...
