@@ -28,21 +28,6 @@ def user():
     })
 
 
-@blueprint.route('/createtestusers')
-def createtestusers():
-    # This function is used for testing.
-    # Insert users in central database with default address.
-    usernames = ['nick', 'auke', 'testuser']
-    server = 1
-    for username in usernames:
-        if not users.exists(username=username):
-            users.insert(username=username, server_id=server)
-        else:
-            return bad_json_response('Username already exists.')
-    return good_json_response('success')
-    # TODO error handling if query fails
-
-
 @blueprint.route('/search')
 def search():
     """Get usernames similar to the current letters typed into the search bar.
