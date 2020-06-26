@@ -37,8 +37,7 @@ function setUserSettings(req) {
 function deleteProfile() {
     function deleteDataSuccess(){
         console.log("Profile deleted from data server");
-        alertError("Your profile has been deleted.");
-        Cookies.delete('access_token_cookie');
+        alertError("Your profile has been deleted.", 5000);
         location.href = "/";
     }
 
@@ -49,7 +48,7 @@ function deleteProfile() {
 
     function deleteCentralSuccess() {
         console.log("Profile deleted from central server.");
-        requestJSON("POST", dataServer + "/api/user/delete", null, deleteDataSuccess, deleteDataFail);
+        requestJSON("POST", dataServer + "/api/user/delete", null, deleteDataSuccess(), deleteDataFail());
     }
 
     function deleteCentralFail() {
