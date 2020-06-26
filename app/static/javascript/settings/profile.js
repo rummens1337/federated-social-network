@@ -1,5 +1,5 @@
 var centralServer = window.location.origin;
-var dataServer;
+var dataServer = "";
 
 function saveProfile() {
     $("form[name='settings']").validate({
