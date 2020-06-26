@@ -1,3 +1,8 @@
+"""
+This file contains api routes corresponding to a friend relations
+on a data server.
+"""
+
 from urllib.parse import urlparse
 
 from flask import Blueprint, request

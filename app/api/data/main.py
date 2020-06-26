@@ -1,3 +1,7 @@
+"""
+This file contains all URL routes for data servers.
+"""
+
 import mimetypes
 
 from flask import render_template, flash, redirect, session, url_for, request, \

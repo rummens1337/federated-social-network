@@ -1,3 +1,8 @@
+"""
+This file contains api routes corresponding to mail
+on a data server.
+"""
+
 from email.message import EmailMessage
 from email.utils import make_msgid
 import email

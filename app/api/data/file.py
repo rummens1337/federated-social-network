@@ -1,3 +1,7 @@
+"""
+This file contains a file handler for the data server.
+"""
+
 from flask import Blueprint, request
 
 from app.api.utils import good_json_response, bad_json_response
