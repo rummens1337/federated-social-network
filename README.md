@@ -48,7 +48,7 @@ make run debug=1
 ```
 
 ## Built With
-...
+```
 ?
 
 <!--* [Maven](https://maven.apache.org/) - Dependency Management-->
@@ -56,7 +56,7 @@ make run debug=1
 <!--* [Flask](https://palletsprojects.com/p/flask/) - Used for web-based application framework-->
 <!--* [MySQL](https://www.mysql.com/) - Database management-->
 <!--* []() - -->
-
+```
 ## Contributing
 
 ...
