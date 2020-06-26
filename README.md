@@ -30,45 +30,22 @@ Make sure you are using Ubuntu 18.04 or higher to get the newest version of dock
 
 ## Optional arguments
 ```
-make run type=central
 make run type=data
 make run port=XXXX
 
-```
-
-
-## Running the tests
-
-<!--Explain how to run the automated tests for this system-->
-...
-
-### Break down into end to end tests
-
-<!--Explain what these tests test and why-->
-...
-
-<!--```-->
-<!--Give an example-->
-<!--```-->
-
-### And coding style tests
-
-<!--Explain what these tests test and why-->
-...
-
-<!--```-->
-<!--Give an example-->
-<!--```-->
 
 ## Deployment
 
 Production:
 
 ```
-make run-prod
+make run
 ```
 
-Add additional notes about how to deploy this on a live system...
+Development:
+```
+make run debug=1
+```
 
 ## Built With
 ...
@@ -76,6 +53,9 @@ Add additional notes about how to deploy this on a live system...
 <!--* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used-->
 <!--* [Maven](https://maven.apache.org/) - Dependency Management-->
 <!--* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds-->
+<!--* []() - -->
+<!--* []() - -->
+<!--* []() - -->
 
 ## Contributing
 
