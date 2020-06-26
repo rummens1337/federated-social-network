@@ -67,7 +67,7 @@ function showPost(postdata, timeline=false) {
 
                    <h5 style="color:black;">
                    <div class="media-body valign-middle" style="cursor: pointer;">
-                   <b>`+ ((user != null) ? ('@' + user + '</b><br>') : "") + postdata.title + `</b></h5>
+                   <b><a href="http://95.217.213.171/profile/` + postdata.username + `">`+ ((user != null) ? ('@' + user + '</b><br>') : "") + "</a>" + postdata.title + `</b></h5>
         </div></div>
         <h6 class="w3-text-black"><i class="fa fa-calendar fa-fw w3-margin-right"></i>` + postdata.creation_date + `</h6>
         <p class="w3-text-grey">` + postdata.body + `</p>`;
