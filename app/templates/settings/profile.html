@@ -4,67 +4,67 @@
 {% block head %}
 <script type="text/javascript" src="../static/javascript/settings/profile.js"></script>
 <script>
-    function show_preview(event) {
-        var reader = new FileReader();
-        reader.onload = function() {
-        var output = document.getElementById('image_url');
-        output.src = reader.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
+  function show_preview(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var output = document.getElementById('image_url');
+      output.src = reader.result;
     }
+    reader.readAsDataURL(event.target.files[0]);
+  }
 </script>
 {{ super() }}
 {% endblock %}
 
 {% block content_settings %}
 <div id="main" class="col-xl-8">
-    <div class="title">
-        <h2 class="font-header-settings">Personal info</h2>
-    </div>
+  <div class="title">
+    <h2 class="font-header-settings">Personal info</h2>
+  </div>
 
-    <ul class="style1">
-        <form enctype="multipart/form-data" name="settings">
-            <li>
-                <p><b> Profile picture</b></p>
-                <img class="img-settings" name="profilePicture" id='image_url' style="width:30%" >
-                <input id="image_url" type="file" name="file" accept="image/*" onchange="show_preview(event)">
-            </li>
-            <li>
-                <p><b>Bio</b></p>
-                <textarea id='bio' class="form-control form-control-settings" name="new_bio" rows="7"></textarea>
-            </li>
-            <li>
-                <p><b>Study</b></p>
-                <input id='study' type='text' class="form-control form-control-settings" name="new_study"> </input>
-            </li>
-            <li>
-                <label> Firstname</label>
-                <input id='firstname' type='text' class="form-control form-control-settings" name="new_firstname" /> </input>
-            </li>
-            <li>
-                <label> Lastname</label>
-                <input id='lastname' type='text' class="form-control form-control-settings" name="new_lastname" /> </input>
-            </li>
-            <li>
-                <label> Location</label>
-                <input id='location' type='text' class="form-control form-control-settings" name="new_location"> </input>
-            </li>
-            <li>
-                <label> Relationship status</label>
-                <input id='status' type='text' class="form-control form-control-settings" name="new_relationship_status"> </input>
-            </li>
-            <li>
-                <label> Phone number</label>
-                <input id='phone_number' type='text' class="form-control form-control-settings" name="new_phone_number"> </input>
-            </li>
-            <div>
-                <button type="submit" class="btn-primary btn-block" onclick="saveProfile()">Update</button>
-            </div>
-        </form>
-        <br>
-        <div>
-            <button class="btn-primary btn-block w3-red w3-border-red" onclick="deleteProfile()">Delete profile</button>
-        </div>
-    </ul>
+  <ul class="style1">
+    <form enctype="multipart/form-data" name="settings">
+      <li>
+        <p><b> Profile picture</b></p>
+        <img class="img-settings" name="profilePicture" id='image_url' style="width:30%">
+        <input id="image_url" type="file" name="file" accept="image/*" onchange="show_preview(event)">
+      </li>
+      <li>
+        <p><b>Bio</b></p>
+        <textarea id='bio' class="form-control form-control-settings" name="new_bio" rows="7"></textarea>
+      </li>
+      <li>
+        <p><b>Study</b></p>
+        <input id='study' type='text' class="form-control form-control-settings" name="new_study"> </input>
+      </li>
+      <li>
+        <label> Firstname</label>
+        <input id='firstname' type='text' class="form-control form-control-settings" name="new_firstname" /> </input>
+      </li>
+      <li>
+        <label> Lastname</label>
+        <input id='lastname' type='text' class="form-control form-control-settings" name="new_lastname" /> </input>
+      </li>
+      <li>
+        <label> Location</label>
+        <input id='location' type='text' class="form-control form-control-settings" name="new_location"> </input>
+      </li>
+      <li>
+        <label> Relationship status</label>
+        <input id='status' type='text' class="form-control form-control-settings" name="new_relationship_status"> </input>
+      </li>
+      <li>
+        <label> Phone number</label>
+        <input id='phone_number' type='text' class="form-control form-control-settings" name="new_phone_number"> </input>
+      </li>
+      <div>
+        <button type="submit" class="btn-primary btn-block" onclick="saveProfile()">Update</button>
+      </div>
+    </form>
+    <br>
+    <div>
+      <button class="btn-primary btn-block w3-red w3-border-red" onclick="deleteProfile()">Delete profile</button>
+    </div>
+  </ul>
 </div>
 {% endblock %}
