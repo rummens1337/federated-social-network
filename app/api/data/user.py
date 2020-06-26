@@ -27,6 +27,7 @@ def user():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
+    # Export used details of the user.
     user_details = users.export(
         'username', 'firstname', 'lastname', 'uploads_id',
         'location', 'study', 'bio', 'creation_date',
@@ -79,6 +80,7 @@ def user():
 def get_profile_image(username):
     up_id = users.export_one('uploads_id', username=username)
 
+    # Get image url
     imageurl = '../static/images/default.jpg'
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
@@ -141,7 +143,7 @@ def registered():
     if not users.exists(username=username):
         return bad_json_response('Username not found (in data server)')
 
-    # for testing purposes; Enter your own IP address instead of ipaddress
+    # This request checks if the given username is registered.
     r = requests.get(
         get_central_ip() + '/api/user/registered',
         params={
@@ -268,9 +270,11 @@ def login():
 
     password_db = users.export('password', username=username)[0]
 
+    # Verify the given password.
     if not sha256_crypt.verify(password, password_db):
         return bad_json_response('Password is incorrect.')
 
+    # Check if the account has been verified through e-mail.
     email_confirmed = users.export_one('email_confirmed', username=username)
     if not email_confirmed:
         return bad_json_response(
@@ -328,6 +332,7 @@ def deleteupload():
 @jwt_required_custom
 def delete():
     username = get_jwt_identity()
+
     if users.exists(username=username):
         # Everything that belongs to user is deleted automatically.
         users.delete(username=username)
@@ -435,6 +440,7 @@ def hobby():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
+    # Extract all the needed data from the hobbies table in the database
     hobbies_details = hobbies.export('id', 'title', username=username)
 
     hobbies_array = [
@@ -454,7 +460,6 @@ def hobby():
 @jwt_required_custom
 def add_hobby():
     username = get_jwt_identity()
-    # username = request.form['username']
 
     title = request.form['title']
 
@@ -486,6 +491,7 @@ def skill():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
+    # Extract all the needed data from the skills table in the database
     skill_details = skills.export('id', 'title', 'skill_level',
                                   username=username)
 
@@ -519,8 +525,6 @@ def add_skill():
 @blueprint.route('/editSkill', methods=['POST'])
 @jwt_required_custom
 def edit_skill():
-    # username = get_jwt_identity()
-
     id = request.form['id']
     skill_level = request.form['skill_level']
 
@@ -533,7 +537,6 @@ def edit_skill():
 @jwt_required_custom
 def delete_skill():
     username = get_jwt_identity()
-
     id = request.form['id']
 
     skills.delete(id=id)
@@ -552,6 +555,7 @@ def language():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
+    # Extract all the needed data from the language table in the database
     language_details = languages.export('id', 'title', 'skill_level',
                                         username=username)
 
@@ -598,7 +602,6 @@ def delete_language():
 @jwt_required_custom
 def edit_language():
     username = get_jwt_identity()
-
     id = request.form['id']
     skill_level = request.form['skill_level']
 
@@ -611,6 +614,7 @@ def edit_language():
 @jwt_required_custom
 def export_zip_():
     username = get_jwt_identity()
+    
     if users.exists(username=username):
         return send_file(export_zip(username), mimetype='application/zip',
                          as_attachment=True, attachment_filename='export.zip')
