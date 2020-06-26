@@ -32,7 +32,7 @@ Make sure you are using Ubuntu 18.04 or higher to get the newest version of dock
 ```
 make run type=data
 make run port=XXXX
-
+```
 
 ## Deployment
 
@@ -50,12 +50,12 @@ make run debug=1
 ## Built With
 ...
 
-<!--* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used-->
 <!--* [Maven](https://maven.apache.org/) - Dependency Management-->
 <!--* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds-->
-<!--* []() - -->
-<!--* []() - -->
-<!--* []() - -->
+<!--* [Flask](https://palletsprojects.com/p/flask/) - Used for web-based application framework-->
+<!--* [MySQL](https://www.mysql.com/) - Database management-->
+
+
 
 ## Contributing
 
