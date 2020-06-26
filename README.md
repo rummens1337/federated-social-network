@@ -32,7 +32,7 @@ Make sure you are using Ubuntu 18.04 or higher to get the newest version of dock
 ```
 make run type=data
 make run port=XXXX
-
+```
 
 ## Deployment
 
