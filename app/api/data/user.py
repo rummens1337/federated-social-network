@@ -19,6 +19,13 @@ blueprint = Blueprint('data_user', __name__)
 @blueprint.route('/', strict_slashes=False)
 @jwt_required_custom
 def user():
+    """Get user details depending on friendship.
+
+    If you are friends, sensitive data will be shown aswell.
+
+    Returns:
+        JSON reponse with the basic and sensitive user details.
+    """
     username = request.args.get('username')
 
     if username is None or username == '':
@@ -78,6 +85,11 @@ def user():
 
 
 def get_profile_image(username):
+    """Get the profile picture url.
+
+    Returns:
+        The image url.
+    """
     up_id = users.export_one('uploads_id', username=username)
 
     # Get image url
@@ -123,6 +135,11 @@ def is_friend(username):
 
 @blueprint.route('/all')
 def users_all():
+    """Get all usernames in the users table.
+
+    Returns:
+        JSON reponse that contains all the usernames in the users table.
+    """
     usernames = users.export('username')
 
     if len(usernames) == 0:
@@ -135,6 +152,12 @@ def users_all():
 
 @blueprint.route('/registered')
 def registered():
+    """Look up if the given username is a registered username in FedNet.
+
+    Returns:
+        JSON reponse that succeeds if the username is registered and
+        fails if the user is not registered.
+    """
     username = request.args.get('username')
 
     if username is None:
@@ -157,6 +180,15 @@ def registered():
 @blueprint.route('/posts', methods=['GET'])
 @jwt_required_custom
 def user_posts():
+    """Retrieve all posts from a certain username.
+
+    Checks are in place to check if the user is indeed a member of FedNet.
+    This function uses the get_posts function below to actually retrieve the
+    posts.
+
+    Returns:
+        JSON response that contains all posts of a certain user.
+    """
     username = request.args.get('username')
 
     if username is None or username == '':
@@ -179,6 +211,12 @@ def user_posts():
 
 
 def get_posts(username):
+    """Extract all the posts of a certain username from the
+    posts table database.
+
+    Returns:
+        JSON response with all data from the posts table
+    """
     # Get all posts of a user.
     user_posts = posts.export('id', 'title', 'body', 'creation_date',
                               'uploads_id', username=username)
@@ -209,6 +247,18 @@ def get_posts(username):
 @blueprint.route('/timeline', methods=['GET'])
 @jwt_required_custom
 def timeline():
+    """This function handles the timeline, making sure you only see posts from
+    the correct people.
+
+    If you are friends with a certain user, that users posts will be shown in
+    your timeline.
+
+    Imported:
+        get_friends function from api/data/friend.py
+
+    Returns:
+        JSON reponse that contains all the posts that are shown in the timeline.
+    """
     from app.api.data.friend import get_friends
 
     username = get_jwt_identity()
@@ -254,6 +304,14 @@ def timeline():
 
 @blueprint.route('/login', methods=['POST'])
 def login():
+    """Function that handles the login.
+
+    An access token is created. A check is in place to verify the encrypted
+    password and to check if the user is verified through e-mail.
+
+    Returns:
+        A success JSON reponse that contains the access token.
+    """
     username = request.form['username']
     password = request.form['password']
 
@@ -292,7 +350,10 @@ def login():
 
 @blueprint.route('/register', methods=['POST'])
 def register():
-    """Registers a user to this data server."""
+    """Registers a user to this data server.
+
+    All the given information is stored in the users table in the database.
+    """
     # Exit early.
     if users.exists(username=request.form['username']):
         return bad_json_response('Username is already taken. Try again :)')
@@ -316,6 +377,11 @@ def register():
 
 @blueprint.route('/deleteupload')
 def deleteupload():
+    """Deletes an upload.
+
+    An uploads_id is given and that entry is then removed from the uploads table
+    in the database.
+    """
     uploads_id = request.args.get('uploads_id')
 
     if not uploads.exists(uploads_id=uploads_id):
@@ -331,6 +397,10 @@ def deleteupload():
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
+    """Delete a user from FedNet.
+
+    The users details in the users table are deleted.
+    """
     username = get_jwt_identity()
 
     if users.exists(username=username):
@@ -345,6 +415,11 @@ def delete():
 @blueprint.route('/edit', methods=['POST'])
 @jwt_required_custom
 def edit():
+    """Edit all your personal information and profile picture.
+
+    All the correct tables are updated accordingly after an edit has been
+    submitted.
+    """
     username = get_jwt_identity()
 
     if 'new_firstname' in request.form:
@@ -395,6 +470,11 @@ def edit():
 @blueprint.route('/password', methods=['POST'])
 @jwt_required_custom
 def password():
+    """Upon entering the old password, a new password can be set.
+
+    The old password is verified and the new password is encrypted and updated
+    in the database.
+    """
     username = get_jwt_identity()
     password = request.form['oldPassword']
 
@@ -432,6 +512,11 @@ def forgotpassword():
 @blueprint.route('/hobby')
 @jwt_required_custom
 def hobby():
+    """Get all hobby details from a certain user.
+
+    Returns:
+        JSON reponse with the hobby details from the hobbies table.
+    """
     username = request.args.get('username')
 
     if username is None or username == '':
@@ -459,6 +544,7 @@ def hobby():
 @blueprint.route('/addHobby', methods=['POST'])
 @jwt_required_custom
 def add_hobby():
+    """Add a hobby to the hobbies table for a certain user. """
     username = get_jwt_identity()
 
     title = request.form['title']
@@ -471,6 +557,7 @@ def add_hobby():
 @blueprint.route('/deleteHobby', methods=['POST'])
 @jwt_required_custom
 def delete_hobby():
+    """Delete a hobby entry from the hobbies table for a certain user. """
     username = get_jwt_identity()
 
     id = request.form['id']
@@ -483,6 +570,11 @@ def delete_hobby():
 @blueprint.route('/skill')
 @jwt_required_custom
 def skill():
+    """Get all skill details from a certain user.
+
+    Returns:
+        JSON reponse with the skill details from the skills table.
+    """
     username = request.args.get('username')
 
     if username is None or username == '':
@@ -512,6 +604,7 @@ def skill():
 @blueprint.route('/addSkill', methods=['POST'])
 @jwt_required_custom
 def add_skill():
+    """Add a skill to the skills table for a certain user. """
     username = get_jwt_identity()
 
     title = request.form['title']
@@ -525,6 +618,7 @@ def add_skill():
 @blueprint.route('/editSkill', methods=['POST'])
 @jwt_required_custom
 def edit_skill():
+    """Edit a skill entry in the skills table for a certain user. """
     id = request.form['id']
     skill_level = request.form['skill_level']
 
@@ -536,6 +630,7 @@ def edit_skill():
 @blueprint.route('/deleteSkill', methods=['POST'])
 @jwt_required_custom
 def delete_skill():
+    """Delete a skill entry from the skills table for a certain user. """
     username = get_jwt_identity()
     id = request.form['id']
 
@@ -547,6 +642,11 @@ def delete_skill():
 @blueprint.route('/language')
 @jwt_required_custom
 def language():
+    """Get all language details from a certain user.
+
+    Returns:
+        JSON reponse with the language details from the languages table.
+    """
     username = request.args.get('username')
 
     if username is None or username == '':
@@ -576,6 +676,7 @@ def language():
 @blueprint.route('/addLanguage', methods=['POST'])
 @jwt_required_custom
 def add_language():
+    """Add a language to the languages table for a certain user. """
     username = get_jwt_identity()
 
     title = request.form['title']
@@ -589,6 +690,7 @@ def add_language():
 @blueprint.route('/deleteLanguage', methods=['POST'])
 @jwt_required_custom
 def delete_language():
+    """Delete a language entry from the languages table for a certain user. """
     username = get_jwt_identity()
 
     id = request.form['id']
@@ -601,6 +703,7 @@ def delete_language():
 @blueprint.route('/editLanguage', methods=['POST'])
 @jwt_required_custom
 def edit_language():
+    """Edit a language entry in the languages table for a certain user. """
     username = get_jwt_identity()
     id = request.form['id']
     skill_level = request.form['skill_level']
@@ -614,7 +717,7 @@ def edit_language():
 @jwt_required_custom
 def export_zip_():
     username = get_jwt_identity()
-    
+
     if users.exists(username=username):
         return send_file(export_zip(username), mimetype='application/zip',
                          as_attachment=True, attachment_filename='export.zip')
