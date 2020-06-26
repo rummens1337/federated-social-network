@@ -328,9 +328,6 @@ def deleteupload():
 @jwt_required_custom
 def delete():
     username = get_jwt_identity()
-
-    uploads_id = users.export('uploads_id', username=username)
-
     if users.exists(username=username):
         # Everything that belongs to user is deleted automatically.
         users.delete(username=username)
