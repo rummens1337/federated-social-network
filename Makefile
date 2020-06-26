@@ -6,6 +6,7 @@
 FLASK_SERVER_TYPE = $(type)
 FLASK_PORT = $(port)
 DATA_NUMBER = $(number)
+FLASK_DEBUG = $(debug)
 
 $(shell bash key.sh)
 
@@ -16,6 +17,10 @@ endif
 
 ifeq ($(DATA_NUMBER),)
 DATA_NUMBER = 1
+endif
+
+ifeq ($(FLASK_DEBUG),)
+FLASK_DEBUG = 0
 endif
 
 # Set the default flask port to 5000 if central server
@@ -59,18 +64,16 @@ endif
 export MYSQL_PORT
 export PHPMYADMIN_PORT
 
+export FLASK_DEBUG
+
 ###########################################################################################################
 # Commands
 ###########################################################################################################
 
 # Starts all docker containers as described in the docker-compose.yml file
 run:
-	docker-compose -f docker-compose.dev.yml -f docker-compose.yml up --remove-orphans --build
+	docker-compose -f docker-compose.yml up --remove-orphans --build
 	pytest
-
-# Starts all docker containers as described in the docker-compose.yml file as production
-run-prod:
-	docker-compose -f docker-compose.prod.yml -f docker-compose.yml up --remove-orphans --build
 
 # If a container is built, it won't rebuild the container.
 # It also doesn't rebuild any new versions dependencies.

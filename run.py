@@ -1,6 +1,8 @@
 import argparse
 import os
 
+from waitress import serve
+
 
 def main(server: str = None, port: int = None):
     """
@@ -17,7 +19,11 @@ def main(server: str = None, port: int = None):
     if 'FLASK_PORT' in os.environ:
         port = os.environ['FLASK_PORT']
     from app import app as application
-    application.run(host='0.0.0.0', port=port)
+
+    if application.debug:
+        application.run(host='0.0.0.0', port=port)
+    else:
+        serve(application, host='0.0.0.0', port=port)
 
 
 if __name__ == '__main__':
