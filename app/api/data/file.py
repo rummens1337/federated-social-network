@@ -16,7 +16,7 @@ def file_main():
 
     Returns:
         A bad JSON response if file is not found.
-        A good JSON response if file is found successfully
+        A good JSON response with file URL if file is found successfully
     """
     file_id = request.args.get('id')
 
