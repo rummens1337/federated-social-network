@@ -87,6 +87,9 @@ def user():
 def get_profile_image(username):
     """Get the profile picture url.
 
+    Args:
+        username (string): The involved user.
+
     Returns:
         The image url.
     """
@@ -105,12 +108,16 @@ def is_friend(username):
     """Return the status of the friendship.
 
     Looks up what the status of the frienship is between the logged in user and
-    the given argument username:
+    the given argument username.
 
-    # 0: no friendship
-    # 1: friends
-    # 2: friendship request is sent, waiting for response..
-    # 2: friendship request received, sender is waiting for reply
+    Args:
+        username (string): The involved user.
+
+    Returns:
+        # 0: no friendship
+        # 1: friends
+        # 2: friendship request is sent, waiting for response..
+        # 2: friendship request received, sender is waiting for reply
     """
     if friends.exists(username=get_jwt_identity(), friend=username):
         friend_details = friends.export_one('accepted', 'sender',
