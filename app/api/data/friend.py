@@ -295,7 +295,7 @@ def accept():
         if request_db[3] == 1 or request_db[0] != username:
             return bad_json_response(
                 'User sent the request him/herself or not authenticated'
-            )based on succes of
+            )
 
         data = {
             'username': friend,
