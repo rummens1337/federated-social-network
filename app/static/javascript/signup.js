@@ -43,6 +43,7 @@ function sign_up() {
       }
 
       // First register the user on central to check availability of the username and IP address.
+      $("#btnSubmit").attr("disabled", true);
       registerCentral();
     }
   });
