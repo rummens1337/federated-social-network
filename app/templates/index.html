@@ -1,140 +1,117 @@
 {% extends "template.html" %}
 {% block title %}Home{% endblock %}
 {% block head %}
-<!-- Send the username to the post script using the loadPosts funtction -->
-<script type="text/javascript" src="../static/javascript/post.js"></script>
-<script type="text/javascript" src="../static/javascript/index.js"></script>
-<link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
-<script type="text/javascript" src="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js"></script>
-<link rel="stylesheet" href="../static/css/index.css">
-
-<script>
-  $(document).ready(function() {
-    loadUserPosts(null, "timeline");
-  });
-</script>
-{{ super() }}
-
+  <!-- Send the username to the post script using the loadPosts funtction -->
+  <script type="text/javascript" src="../static/javascript/post.js"></script>
+  <script type="text/javascript" src="../static/javascript/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
+  <script type="text/javascript" src="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js"></script>
+  <link rel="stylesheet" href="../static/css/index.css">
+  <script>
+    $(document).ready( function() {
+      loadUserPosts(null, "timeline");
+    });
+  </script>
+  {{ super() }}
 {% endblock %}
 {% block content %}
-
-<!--  -->
-
 <!-- Page Container -->
-<div class="w3-content w3-margin-top" style="max-width:1900px;">
-
-  <!-- The Grid -->
-  <div class="w3-row-padding">
-
-    <!-- Left Column -->
-    <div class="w3-third" style="max-width:300px;">
-
-      <div class="w3-white w3-text-black w3-card-4">
-        <div class="w3-display-container">
-          <img id='image_url' style="width:100%">
-        </div>
-        <!-- #TODO add right content for profile. -->
-        <div class="w3-container p-3" style="background-color:rgb(255, 255, 255);">
-          <h2 id='name'></h2>
-          <br>
-          <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
-          <p color=black id='study'></p>
-          <i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
-          <p id='location'></p>
-          <i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>
-          <p id='status'></p>
-          <i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
-          <p id='number'></p>
-          <a class="w3-text-teal" href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
-          <hr>
-
-          <div id='skills-list'>
-            <p class="w3-large w3-text-teal"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+  <div class="w3-content w3-margin-top" style="max-width:1900px;">
+    <!-- The Grid -->
+    <div class="w3-row-padding">
+      <!-- Left Column -->
+      <div class="w3-third" style="max-width:300px;">
+        <div class="w3-white w3-text-black w3-card-4">
+          <div class="w3-display-container">
+            <img id='image_url' style="width:100%">
           </div>
-
-          <br>
-
-          <div id='languages-list'>
-            <p class="w3-large w3-text-teal"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
-          </div>
-
-          <br>
-        </div>
-      </div>
-      <br>
-
-      <!-- End Left Column -->
-    </div>
-
-    <!-- Right Column -->
-    <div class="w3-twothird">
-      <!-- First right box -->
-      <!-- #TODO add right fa fa icons -->
-      <div class="w3-container w3-card  w3-margin-bottom" style="background-color:rgb(255, 255, 255);;">
-
-        <!-- Main title -->
-        <h2 class="w3-text-black w3-padding-16"><i class="fa fa-envelope fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Post something</h2>
-        <div class="w3-container" style="background-color:rgb(255, 255, 255)">
-          <form name="createpost">
-            <div class="form-group">
-              <textarea type="text" name="title" class="form-control" placeholder="Title" rows="1" style="resize: none;"></textarea>
+          <!-- #TODO add right content for profile. -->
+          <div class="w3-container p-3" style="background-color:rgb(255, 255, 255);">
+            <h2 id='name'></h2>
+            <br>
+            <i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
+            <p color=black id='study'></p>
+            <i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
+            <p id='location'></p>
+            <i class="fa fa-heart fa-fw w3-margin-right w3-large w3-text-teal"></i>
+            <p id='status'></p>
+            <i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
+            <p id='number'></p>
+            <a class="w3-text-teal" href="/settings/profile"><i class="fa fa-cog fa-fw w3-margin-right w3-large w3-text-teal"></i>Change info</a>
+            <hr>
+            <div id='skills-list'>
+              <p class="w3-large w3-text-teal"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
             </div>
-            <div class="form-group">
-              <textarea name="body" id="posttext" class="form-control" placeholder="What are you thinking about?" rows="2" style="resize: none;"></textarea>
-              <script>
-                $(document).ready(function() {
-                  $("#posttext").emojioneArea({
-                    pickerPosition: "bottom",
-                    tonesStyle: "bullet"
-                  });
-                })
+            <br>
+            <div id='languages-list'>
+              <p class="w3-large w3-text-teal"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
+            </div>
+            <br>
+          </div>
+        </div>
+        <br>
+      <!-- End Left Column -->
+      </div>
 
-                function show_preview(event) {
-                  var reader = new FileReader();
-                  reader.onload = function() {
+      <!-- Right Column -->
+      <div class="w3-twothird">
+      <!-- First right box -->
+        <div class="w3-container w3-card  w3-margin-bottom" style="background-color:rgb(255, 255, 255);;">
+          <!-- Main title -->
+          <h2 class="w3-text-black w3-padding-16"><i class="fa fa-envelope fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Post something</h2>
+          <div class="w3-container"  style="background-color:rgb(255, 255, 255)">
+            <form name="createpost">
+              <div class="form-group">
+                <textarea type="text" name="title" class="form-control" placeholder="Title" rows="1" style="resize: none;"></textarea>
+              </div>
+              <div class="form-group">
+                <textarea name="body" id="posttext" class="form-control" placeholder="What are you thinking about?" rows="2" style="resize: none;"></textarea>
+                <script>
+                  $(document).ready(function() {
+                    $("#posttext").emojioneArea({
+                      pickerPosition: "bottom",
+                      tonesStyle: "bullet"
+                    });
+                  })
+                  function show_preview(event) {
+                    var reader = new FileReader();
+                    reader.onload = function() {
                     var output = document.getElementById('post_image_url');
                     output.src = reader.result;
+                    }
+                    reader.readAsDataURL(event.target.files[0]);
                   }
-                  reader.readAsDataURL(event.target.files[0]);
-                }
-              </script>
-              <br>
-              <p> Add a picture to your post (optional)</p>
-              <img class="img-settings" id='post_image_url' src='' style="width:30%">
-              <p><input id="post_image_url" type="file" accept="image/*" name="file" onchange="show_preview(event)"></p>
-            </div>
-            <div class="form-group">
-              <div class="text-center">
+                </script>
                 <br>
-                <button class="submit" type="submit" onclick="create_post();">Post</button>
-                <!-- <button class="btn btn-primary mb1 bg-olive">Button</button -->
+                <p>Add a picture to your post (optional)</p>
+                <img class="img-settings" id='post_image_url' src='' style="width:30%" >
+                <p>
+                  <input id="post_image_url" type="file" accept="image/*" name="file" onchange="show_preview(event)">
+                </p>
               </div>
-            </div>
-          </form>
-
+              <div class="form-group">
+                <div class="text-center" >
+                  <br>
+                  <button class="submit" type="submit" onclick="create_post();" >Post</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-
-      <div class="w3-container w3-card  w3-margin-bottom" style="background-color:rgb(255, 255, 255);;">
-        <!-- Header for posts -->
-        <div class="header-posts sticky" id="myHeader" style="background-color:rgb(255, 255, 255);">
-          <h2 class="w3-text-black w3-padding-16" style="background-color: rgb(255, 255, 255);"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Posts</h2>
+        <div class="w3-container w3-card  w3-margin-bottom" style="background-color:rgb(255, 255, 255);;">
+          <!-- Header for posts -->
+          <div class="header-posts sticky" id="myHeader" style="background-color:rgb(255, 255, 255);">
+            <h2 class="w3-text-black w3-padding-16"style="background-color:rgb(255, 255, 255);">
+              <i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Posts
+            </h2>
+          </div>
+          <div id="posts_div" class="w3-container"  style="background-color:rgb(255, 255, 255);">
+          </div>
         </div>
-
-        <!-- Posts #TODO timestamps, content, postee -->
-        <div id="posts_div" class="w3-container" style="background-color:rgb(255, 255, 255);">
-        </div>
-      </div>
-
-
       <!-- End Right Column -->
-    </div>
-
+      </div>
     <!-- End Grid -->
-  </div>
-
+    </div>
   <!-- End Page Container -->
-</div>
-
-
+  </div>
 {% endblock %}
