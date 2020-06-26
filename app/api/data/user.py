@@ -337,7 +337,7 @@ def delete():
         # Everything that belongs to user is deleted automatically.
         users.delete(username=username)
 
-        return good_json_response()
+        return good_json_response({'user': username})
     else:
         return bad_json_response('Username is not registered.')
 
