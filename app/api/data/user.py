@@ -82,7 +82,7 @@ def get_profile_image(username):
     imageurl = '../static/images/default.jpg'
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
-        imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
+        imageurl = get_user_ip(username) + 'file/{}/{}'.format(up_id, filename)
 
     return imageurl
 
