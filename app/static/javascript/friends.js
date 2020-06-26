@@ -48,21 +48,21 @@ function profile(req) {
 // This function adds a friend in the div 'friend'
 function show(friend) {
   var content = `<div class="p-10 bg-white">
-                   <div class="media media-xs overflow-visible" id="friend_container">
-                      <a class="media-left" id="image_url_` + friend.username + `" href="javascript:;">  </a>
-                      <div class="media-body valign-middle" onclick="location.href='/profile/`+friend.username+`';" style="cursor: pointer;">
-                        <b id="full_name_` + friend.username + `" class="text-dark">USERNAME</b><br>
-                        <b class="text-inverse">` + friend.username + `</b>
+                  <div class="media media-xs overflow-visible" id="friend_container">
+                    <a class="media-left" id="image_url_` + friend.username + `" href="javascript:;"> </a>
+                    <div class="media-body valign-middle" onclick="location.href='/profile/`+friend.username+`';" style="cursor: pointer;">
+                      <b id="full_name_` + friend.username + `" class="text-dark">USERNAME</b><br>
+                      <b class="text-inverse">` + friend.username + `</b>
+                    </div>
+                    <div class="media-body valign-middle text-right overflow-visible">
+                      <div class="btn-group dropdown">
+                        <a href="javascript:;" class="btn btn-default">Options</a> <a href="javascript:;" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-expanded="false"></a>
+                        <ul class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(101px, 34px, 0px);">
+                          <li><a href="javascript:deleteFriend('` + friend.username +`');;">Unfriend</a></li>
+                        </ul>
                       </div>
-                      <div class="media-body valign-middle text-right overflow-visible">
-                         <div class="btn-group dropdown">
-                            <a href="javascript:;" class="btn btn-default">Options</a> <a href="javascript:;" data-toggle="dropdown" class="btn btn-default dropdown-toggle" aria-expanded="false"></a>
-                            <ul class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(101px, 34px, 0px);">
-                               <li><a href="javascript:deleteFriend('` + friend.username +`');;">Unfriend</a></li>
-                            </ul>
-                         </div>
-                      </div>
-                   </div>
+                    </div>
+                  </div>
                 </div>`;
   $('#friend-list').append(content);
   // loadProfile(friend.username);
