@@ -132,7 +132,7 @@ def request_insert():
 @blueprint.route('/request/accept', methods=['POST'])
 @jwt_required_custom
 def request_accept():
-    """
+    """Handles friend request on accept.
 
     Note:
         Don't use directly with the frontend. Use /add in send functions
@@ -174,6 +174,11 @@ def request_accept():
 @blueprint.route('/request/delete', methods=['POST'])
 @jwt_required_custom
 def request_delete():
+    """Handles friend request on delete.
+
+    Returns:
+        JSON reponse with status of the request.
+    """
     username = request.form['username']
     friend = request.form['friend']
 
@@ -248,6 +253,15 @@ def add():
 @blueprint.route('/accept', methods=['POST'])
 @jwt_required_custom
 def accept():
+    """Handles friend request on accept.
+
+    Note:
+        Don't use directly with the frontend. Use /add in send functions
+        instead.
+
+    Returns:
+        JSON reponse with status of the request.
+    """
     username = get_jwt_identity()
     request_id = request.form['id']
     accept = request.form['accept']
@@ -275,13 +289,13 @@ def accept():
         if username != friend or request_db[3] != 1:
             return bad_json_response('Friend undefined error')
     else:
-        # Check if not the sender and the username is allowed to
+        # Check if not the sender and if the username is allowed to
         # accept the current request. If so, send the request to
         # the other data server.
         if request_db[3] == 1 or request_db[0] != username:
             return bad_json_response(
                 'User sent the request him/herself or not authenticated'
-            )
+            )based on succes of
 
         data = {
             'username': friend,
@@ -311,6 +325,11 @@ def accept():
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
+    """Handles friend request on delete.
+
+    Returns:
+        JSON reponse with status of the request.
+    """
     username = get_jwt_identity()
     friend = request.form['friend']
 
