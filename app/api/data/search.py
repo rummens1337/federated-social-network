@@ -13,6 +13,11 @@ blueprint = Blueprint('data_post', __name__)
 
 @blueprint.route('/', methods=['POST'])
 def search():
+    """Searches for existing usernames.
+
+    Returns:
+        JSON reponse based on failure/succes.
+    """
     input_data = request.form['search_input']
 
     if users.exists(username=username):
@@ -24,3 +29,4 @@ def search():
 
 
 __all__ = ('blueprint',)
+
