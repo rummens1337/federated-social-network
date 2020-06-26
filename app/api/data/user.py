@@ -734,7 +734,7 @@ def export_zip_():
 @blueprint.route('/import', methods=['POST'])
 @jwt_required_custom
 def import_zip_():
-    """Export all the data of a certain user as a zip.
+    """Import all the data of a certain user.
 
     Returns:
         Success JSON response in case the import was successful.
