@@ -12,6 +12,20 @@ function setNoDataAddress() {
     document.getElementById('dataserveraddress').classList.add("w3-hide");
 }
 
+function exportData() {
+    function exportSucces(res) {
+        var blob = new Blob([res], {type: "application/zip"});
+        saveAs(blob, "export.zip");
+    }
+
+    function exportFail() {
+        alertError("Exporting is not possible at this moment. Please try again at another time.", 10000);
+    }
+
+    alertError("Exporting data from server. Please leave this page open until this process has finished.", 5000);
+    requestJSONMigrationFile("GET", currentDataServer + "/api/user/export", null, exportSucces, exportFail);
+}
+
 function migrateData() {
     $("form[name='migratedata']").validate({
         rules: {
@@ -36,7 +50,7 @@ function migrateData() {
             var blob = new Blob([res], {type: "application/zip"});
 
             if (form.save_data_zip.checked == true) {
-                saveAs(blob, "export.zip")
+                saveAs(blob, "export.zip");
             }
 
             // Step 2: Import data in new server.

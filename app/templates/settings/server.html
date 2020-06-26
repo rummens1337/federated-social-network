@@ -19,11 +19,19 @@
             <p>The data server registration for your account:</p>
             <p id="dataservername"></p>
             <p id="dataserveraddress"></p>
+        </li>
+    </ul>
+    <div class="title">
+        <h2 class="font-header-settings">Migrate account</h2>
+    </div>
+    <ul class="style1">
+        <li>        
             <p>When you want to move your data to a different data server, you have to migrate your profile to this new data server and register this on the FedNet central server. To do this, select your new data server below and press migrate.</p>
             <form name="migratedata">
                 <div class="form-group">
                     <select id="select_server" name="select_server" class="form-control form-control-settings"></select>
-                    <input type="checkbox" checked id="save_data_zip" name="save_data_zip">First backup data to this computer.</input>
+                    <br>
+                    <input type="checkbox" checked id="save_data_zip" name="save_data_zip"> Recommended: first backup data to this computer in case migration fails.</input>
                 </div>
                 <button type="submit" class="btn-primary btn-block" onclick="migrateData();">Migrate</button>
             </form>
@@ -46,6 +54,15 @@
                 </div>
                 <button type="submit" class="btn-block btn-block" onclick="register_server();">Register Server</button>
             </form>
+        </li>
+    </ul>
+    <div class="title">
+        <h2 class="font-header-settings">Export data</h2>
+    </div>
+    <ul class="style1">
+        <li>
+            <p>Use this button to export all data in your FedNet account.</p>
+            <button class="btn-block btn-block" onclick="exportData();">Export</button>
         </li>
     </ul>
 </div>
