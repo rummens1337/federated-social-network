@@ -55,9 +55,9 @@ def send_verification_mail():
     html = html.replace('USERNAME_HERE', user[0] + ' ' + user[1])
     msg.add_alternative(html, subtype='html')
 
-    # Add image to the contents of the email
+    # Add image to the contents of the email.
     with open('app/static/images/LogoBackOpaque.png', 'rb') as img:
-        # Know the Content-Type of the image
+        # Know the Content-Type of the image.
         maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
 
         # Attach it to the email. The cid='0' is linked to the cid in the html,
@@ -108,7 +108,6 @@ def confirm_email(token):
 
 @blueprint.route('/forgotpass', methods=['POST'])
 def forgotpass():
-    # Check if
     username = request.form['username']
 
     if not username:
@@ -149,9 +148,9 @@ def forgotpass():
     html = html.replace('NAME_HERE', firstname + ' ' + lastname)
     msg.add_alternative(html, subtype='html')
 
-    # Add image to the contents of the email
+    # Add image to the contents of the email.
     with open('app/static/images/LogoBackOpaque.png', 'rb') as img:
-        # Know the Content-Type of the image
+        # Know the Content-Type of the image.
         maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
 
         # Attach it to the email. The cid='0' is linked to the cid in the html,
@@ -219,7 +218,7 @@ def forgot_username():
             'No user with this e-mail exists on this server: ' + get_own_ip()
         )
 
-    # Construct message object with receipient and sender
+    # Construct message object with receipient and sender.
     msg = EmailMessage()
     msg['Subject'] = 'FedNet - Your username is ' + username
     msg['From'] = current_app.config['EMAIL_ADDRESS']
@@ -231,7 +230,7 @@ def forgot_username():
     html = html.replace('USERNAME_HERE', username)
     msg.add_alternative(html, subtype='html')
 
-    # Add image to the contents of the email
+    # Add image to the contents of the email.
     with open('app/static/images/LogoBackOpaque.png', 'rb') as img:
         # Know the Content-Type of the image
         maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')

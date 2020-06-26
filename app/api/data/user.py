@@ -45,19 +45,19 @@ def user():
     if not user_details:
         return bad_json_response('User not found')
 
-    # Check what the status of the friendship is between the users
+    # Check what the status of the friendship is between the users.
     friend_status = is_friend(username)
     if username == get_jwt_identity():
         friend_status = 1
 
-    # Get image
+    # Get image.
     up_id = user_details[0][3]
     imageurl = '../static/images/default.jpg'
     if friend_status == 1 and uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
         imageurl = get_own_ip() + 'file/{}/{}'.format(up_id, filename)
 
-    # Basic information visible if not friends
+    # Basic information visible if not friends.
     basic_info = {
         'username': user_details[0][0],
         'friend': friend_status,
@@ -67,7 +67,7 @@ def user():
     if friend_status != 1:
         return good_json_response(basic_info)
 
-    # All information visible if friends
+    # All information visible if friends.
     sensitive_info = {
         'firstname': user_details[0][1],
         'lastname': user_details[0][2],
@@ -95,7 +95,7 @@ def get_profile_image(username):
     """
     up_id = users.export_one('uploads_id', username=username)
 
-    # Get image url
+    # Get image url.
     imageurl = '../static/images/default.jpg'
     if uploads.exists(id=up_id):
         filename = uploads.export_one('filename', id=up_id)
@@ -204,11 +204,11 @@ def user_posts():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    # Check if user id exists
+    # Check if user id exists.
     if not users.exists(username=username):
         return bad_json_response('User not found.')
 
-    # Send no data in case the users are not friends
+    # Send no data in case the users are not friends.
     if username != get_jwt_identity() and is_friend(username) != 1:
         return good_json_response({'posts': {}})
 
@@ -231,7 +231,7 @@ def get_posts(username):
     user_posts = posts.export('id', 'title', 'body', 'creation_date',
                               'uploads_id', username=username)
 
-    # Transfrom to array including dictionaries
+    # Transfrom to array including dictionaries.
     posts_array = []
 
     for item in user_posts:
@@ -272,21 +272,21 @@ def timeline():
     from app.api.data.friend import get_friends
 
     username = get_jwt_identity()
-    # Check if user exists
+    # Check if user exists.
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    # Get the user's own posts
+    # Get the user's own posts.
     posts_array = get_posts(username)
 
-    # Get the user's friends
+    # Get the user's friends.
     friends = get_friends(username)
 
     for i in range(len(friends)):
         try:
             friend = friends[i]['username']
             friend_address = get_user_ip(friend)
-            # Get the posts of the friend
+            # Get the posts of the friend.
             response = requests.get(
                 friend_address + '/api/user/posts',
                 params={
@@ -350,7 +350,7 @@ def login():
             'Please check your email.'
         )
 
-    # Login success
+    # Login success.
     access_token = create_access_token(identity=username)
 
     return good_json_response({
@@ -504,7 +504,6 @@ def password():
     return good_json_response('Succes')
 
 
-# TODO no flask?
 def forgotpassword():
     username = request.form['username']
     password = request.form['password']
@@ -535,7 +534,7 @@ def hobby():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    # Extract all the needed data from the hobbies table in the database
+    # Extract all the needed data from the hobbies table in the database.
     hobbies_details = hobbies.export('id', 'title', username=username)
 
     hobbies_array = [
@@ -593,7 +592,7 @@ def skill():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    # Extract all the needed data from the skills table in the database
+    # Extract all the needed data from the skills table in the database.
     skill_details = skills.export('id', 'title', 'skill_level',
                                   username=username)
 
@@ -665,7 +664,7 @@ def language():
     if username is None:
         return bad_json_response("Bad request: Missing parameter 'username'.")
 
-    # Extract all the needed data from the language table in the database
+    # Extract all the needed data from the language table in the database.
     language_details = languages.export('id', 'title', 'skill_level',
                                         username=username)
 

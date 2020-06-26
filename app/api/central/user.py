@@ -67,7 +67,7 @@ def address():
     """
     username = request.args.get('username')
 
-    # If username is not given, use the logged in username
+    # If username is not given, use the logged in username.
     if username is None or username == '':
         username = auth_username()
 
@@ -132,7 +132,6 @@ def register():
 
     server_id = servers.export_one('id', address=address)
 
-    # Check if server is live.
     if ping(address):
         if not users.exists(username=username):
             users.insert(username=username, server_id=server_id)
@@ -186,7 +185,6 @@ def edit():
     if users.exists(username=username):
         if 'new_address' in request.form:
             new_address = request.form['new_address']
-            #new_address = request.args.get('new_address')
             if 'new_address' != '':
                 if servers.exists(address=new_address):
                     new_id = servers.export_one('id', address=new_address)

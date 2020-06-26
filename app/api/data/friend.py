@@ -21,7 +21,7 @@ def all_friends():
         All the friends of a user.
     """
     username = get_jwt_identity()
-    # Check if user exists
+
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
@@ -67,7 +67,7 @@ def requests_open():
         All the friend requests pending of a user.
     """
     username = get_jwt_identity()
-    # Check if user exists
+
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
@@ -75,8 +75,6 @@ def requests_open():
                                  username=username, accepted=0, sender=0)
     friendships2 = friends.export('username', 'accepted', 'sender', 'id',
                                   friend=username, accepted=0, sender=1)
-
-    # TODO: request all other avalible user data from the friends
 
     friends_array = [
         {
@@ -107,7 +105,6 @@ def request_insert():
     username = request.form['username']
     friend = request.form['friend']
 
-    # check if user id exists
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
@@ -152,15 +149,15 @@ def request_accept():
     request_db = friends.export_one('accepted', 'sender', username=username,
                                     friend=friend)
 
-    # Check if already accepted
+    # Check if already accepted.
     if int(request_db[0]) == 1:
         return bad_json_response('Request already accepted')
 
-    # Only accept if it was the sender
+    # Only accept if it was the sender.
     if int(request_db[1]) != 1:
         return bad_json_response('User sent the request him/herself')
 
-    # Update friendship
+    # Update friendship.
     if int(accept) == 1:
         friends.update({'accepted': 1}, username=username, friend=friend)
     else:
@@ -207,21 +204,21 @@ def add():
     if not users.exists(username=username):
         return bad_json_response('user not found')
 
-    # check if friendship already exists
+    # Check if friendship already exists.
     if friends.exists(username=username, friend=friend) \
             or friends.exists(username=friend, friend=username):
         return bad_json_response('friendship already exists')
 
-    # Get the friend's data server address and check if friend exists
+    # Get the friend's data server address and check if friend exists.
     friend_address = get_user_ip(friend)
     if not friend_address:
         return bad_json_response('user not found in central database')
 
-    # Add the friend in current dataserver's database
+    # Add the friend in current dataserver's database.
     if not friends.insert(username=username, friend=friend, sender=1):
         return bad_json_response('error adding friend1')
 
-    # register friend in other database
+    # Register friend in other database.
     data = {
         'username': friend,
         'friend': username
@@ -250,21 +247,21 @@ def accept():
     request_id = request.form['id']
     accept = request.form['accept']
 
-    # Check if friendship exists
+    # Check if friendship exists.
     if not friends.exists(id=request_id):
         return bad_json_response('friendship not found')
 
-    # Send other user that it is accepted
-    # can only accept if logged in user is the friend (request reciever)
+    # Send other user that it is accepted.
+    # Can only accept if logged in user is the friend (request reciever).
     request_db = friends.export_one('username', 'friend', 'accepted', 'sender',
                                     id=request_id)
     friend = request_db[1]
 
-    # Check if already accepted
+    # Check if already accepted.
     if int(request_db[2]) == 1:
         return bad_json_response('Request already accepted')
 
-    # Get the friend's data server address and check if friend exists
+    # Get the friend's data server address and check if friend exists.
     friend_address = get_user_ip(friend)
     if not friend_address:
         return bad_json_response('user not found in central database')
@@ -297,7 +294,7 @@ def accept():
         except BaseException:
             return bad_json_response('Friend error2')
 
-    # Update friendship  in the data server's own database
+    # Update friendship in the data server's own database.
     if int(accept) == 1:
         friends.update({'accepted': 1}, id=request_id)
     else:
@@ -309,22 +306,20 @@ def accept():
 @blueprint.route('/delete', methods=['POST'])
 @jwt_required_custom
 def delete():
-    # TODO needs more testing
-    # initial test works
     username = get_jwt_identity()
     friend = request.form['friend']
 
-    # Check if friendship exists
+    # Check if friendship exists.
     if not friends.exists(username=username, friend=friend) \
             and not friends.exists(username=friend, friend=username):
         return bad_json_response('friendship does not exist')
 
-    # Get the friend's data server address and check if friend exists
+    # Get the friend's data server address and check if friend exists.
     friend_address = get_user_ip(friend)
     if not friend_address:
         return bad_json_response('user not found in central database')
 
-    # Delete friendship in other data server
+    # Delete friendship in other data server.
     if urlparse(get_own_ip()).netloc != urlparse(friend_address).netloc:
 
         data = {
@@ -342,10 +337,8 @@ def delete():
         except BaseException:
             return bad_json_response('Error while deleting2')
 
-    # Delete in this database
+    # Delete in this database.
     friends.delete(username=username, friend=friend)
     friends.delete(username=friend, friend=username)
 
     return good_json_response('Friend deleted')
-
-# __all__ = ('blueprint',) TODO \n

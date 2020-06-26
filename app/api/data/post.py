@@ -34,7 +34,7 @@ def post():
     post_db = posts.export('body', 'title', 'username', 'uploads_id',
                            'creation_date', 'last_edit_date', id=post_id)[0]
 
-    # Get image
+    # Get image.
     up_id = post_db[3]
 
     if uploads.exists(id=up_id):
@@ -76,11 +76,10 @@ def create():
     if body is None:
         return bad_json_response("Bad request: Missing parameter 'body'.")
 
-    # check if user id exists
     if not users.exists(username=username):
         return bad_json_response('User not found.')
 
-    # Insert post
+    # Insert post.
     if 'file' in request.files:
         image_filename = request.files['file'].filename
         image = request.files['file'].read()
@@ -120,20 +119,18 @@ def delete():
     if post_id is None:
         return bad_json_response("Bad request: Missing parameter 'post_id'.")
 
-    # check if user id exists
     if not users.exists(username=username):
         return bad_json_response('User not found')
 
-    # check if post id exists
     if not posts.exists(id=post_id):
         return bad_json_response('Post not found')
 
-    # Check if the user is the post owner
+    # Check if the user is the post owner.
     post_username = posts.export_one('username', id=post_id)
     if post_username != username:
         return bad_json_response('Not your post')
 
-    # Delete post
+    # Delete post.
     posts.delete(id=post_id)
 
     return good_json_response('success')

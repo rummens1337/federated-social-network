@@ -25,7 +25,7 @@ def register_central(app):
 def init_authentication(app):
     # Using the expired_token_loader decorator, we will now call
     # this function whenever an expired but otherwise valid access
-    # token attempts to access an endpoint
+    # token attempts to access an endpoint.
     from flask import render_template
     from flask_jwt_extended import JWTManager, jwt_required
 
@@ -92,26 +92,26 @@ def jwt_required_custom(fn):
 
     def wrapper(*args, **kwargs):
         try:
-            # decode token (base64)
+            # Decode token (base64).
             header = None
             if get_server_type() == ServerType.CENTRAL:
                 header = request.cookies['access_token_cookie']
             else:
                 header = request.headers['authorization']
 
-            # Get the identity and save as username
+            # Get the identity and save as username.
             parts = header.split('.')
             decoded = base64.b64decode(parts[1] + '=============') \
                 .decode('utf-8')
             username = json.loads(decoded)['identity']
 
-            # Get the correct pub key
+            # Get the correct pub key.
             if get_server_type() == ServerType.CENTRAL:
-                # Get the pubkey using own API call
+                # Get the pubkey using own API call.
                 from app.api.central.server import get_pub_key
                 pub = get_pub_key(username)
             else:
-                # Get the pubkey by call to the central server
+                # Get the pubkey by call to the central server.
                 pub = requests.get(
                     get_central_ip() + '/api/server/pub_key',
                     params={
@@ -121,10 +121,10 @@ def jwt_required_custom(fn):
 
             current_app.config['JWT_PUBLIC_KEY'] = pub
         except BaseException:
-            # Show login on exception
+            # Show login on exception.
             return render_template('login.html')
 
-        # Let the JWT extended library check the token
+        # Let the JWT extended library check the token.
         try:
             verify_jwt_in_request()
         except:

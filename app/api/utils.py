@@ -13,6 +13,9 @@ def response_wrapper(func):
 
 @response_wrapper
 def bad_json_response(reason: str) -> str:
+    """ Returns a negative response wrapper to
+        send to a user when a function fails.
+    """
     return {
         'success': False,
         'reason': reason
@@ -21,6 +24,9 @@ def bad_json_response(reason: str) -> str:
 
 @response_wrapper
 def good_json_response(data: dict = None) -> str:
+    """ Returns a positive response wrapper to
+        send to a user when a function succeeds.
+    """
     response = {
         'success': True
     }

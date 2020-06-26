@@ -19,7 +19,6 @@ def get_servers():
     """
     result = servers.export('name', 'address', 'id')
 
-    # Returns empty array if no servers found.
     return good_json_response({
         'servers': result
     })
