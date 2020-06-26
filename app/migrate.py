@@ -25,14 +25,20 @@ def _store_in_zip(
         data: EXPORT_FORMAT_MULTI,
         f: typing.BinaryIO,
         primary: str = 'id',
-        file_data: typing.BinaryIO = None):
+        file_data: typing.BinaryIO = None
+    ):
     if not isinstance(f, zipfile.ZipFile):
         if f.tell() > 0:
             raise ValueError('Bad file format.')
         f = zipfile.ZipFile(f)
     result = []
     for d in data:
-        filename = os.path.join('export', tablename, d[primary])
+        print(tablename, d[primary], d, flush=True)
+        filename = os.path.join('export', tablename, str(d[primary]))
+        if 'uploads_id' in d and d['uploads_id'] is not None:
+            upload_data = uploads.export(id=d['uploads_id'], as_dict=True)
+            _store_in_zip('uploads', upload_data, f,
+                          file_data=get_file(d['uploads_id'], output='fp')[1])
         if file_data is not None:
             f.writestr(filename, file_data.read())
         filename += '.json'
@@ -111,17 +117,13 @@ def import_zip(f: typing.Union[bytes, typing.BinaryIO],
             post_ids[old_id] = new_id
 
 
-def export_zip(username: str) -> typing.BinaryIO:
+def export_zip(username: str) -> str:
     f = zipfile.ZipFile(
         tempfile.NamedTemporaryFile(suffix='.zip', delete=False),
         'w'
     )
     data = users.export(username=username, as_dict=True)
     _store_in_zip('users', data, f, primary='username')
-    if data[0]['uploads_id'] is not None:
-        data = uploads.export(id=data[0]['uploads_id'], as_dict=True)
-        _store_in_zip('uploads', data, f,
-                      file_data=get_file(data[0]['id'], output='fp')[1])
     _store_in_zip('friends', friends.export(username=username, as_dict=True),
                   f)
     _store_in_zip('posts', posts.export(username=username, as_dict=True), f)
