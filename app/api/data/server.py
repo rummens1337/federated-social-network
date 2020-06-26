@@ -14,6 +14,12 @@ blueprint = Blueprint('data_server', __name__)
 
 @blueprint.route('/pub_key')
 def get_key():
+    """Function for getting the public key.
+
+    Returns:
+        JSON reponse with either public key on success or error message on
+        failure.
+    """
     with open('jwtRS256.key.pub') as f:
         pub_key = f.read()
 
