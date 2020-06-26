@@ -1,34 +1,33 @@
 {% extends "template.html" %}
 {% block title %}Friend requests{% endblock %}
 {% block head %}
-<!-- <link type="text/css"  rel="stylesheet" href="../static/css/friends.css"/> -->
-<script type="text/javascript" src="../static/javascript/friend/requests.js"></script>
-<style>
-  #reject {
-    color: red;
-    -webkit-filter: brightness(100%);
-  }
+  <script type="text/javascript" src="../static/javascript/friend/requests.js"></script>
+  <style>
+    #reject {
+      color: red;
+      -webkit-filter: brightness(100%);
+    }
 
-  #reject:hover {
-    -webkit-filter: brightness(70%);
-  }
+    #reject:hover {
+      -webkit-filter: brightness(70%);
+    }
 
-  #accept {
-    color: green;
-    -webkit-filter: brightness(100%);
-  }
+    #accept {
+      color: green;
+      -webkit-filter: brightness(100%);
+    }
 
-  #accept:hover {
-    -webkit-filter: brightness(70%);
-  }
-</style>
-{{ super() }}
+    #accept:hover {
+      -webkit-filter: brightness(70%);
+    }
+  </style>
+  {{ super() }}
 {% endblock %}
 
 {% block content %}
-<div>
-  <ul id='request-list'>
-    <h1> Friend requests:</h1>
-  </ul>
-</div>
+  <div>
+    <ul id='request-list'>
+      <h1> Friend requests:</h1>
+    </ul>
+  </div>
 {% endblock %}
