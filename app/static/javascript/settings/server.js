@@ -51,7 +51,7 @@ function migrateData() {
 
           function editFailed(res) {
             // Step 3 failed.
-            console.log("Edit central server failed." + res.reason);
+            console.log("Edit central server failed. Reason: " + res.reason);
             alertError("Migration failed in step 3: the central server registration failed to update, please contact support!", 20000);
           }
 
@@ -65,7 +65,7 @@ function migrateData() {
 
           function deleteFailed(res) {
             // Step 4 failed.
-            console.log("Delete failed" + res.reason);
+            console.log("Delete failed. Reason: " + res.reason);
             alertError("Migration success! But your data could not be deleted from your old data server. Please contact the owner of your old data server! However, you can use FedNet on the new data server." , 20000);
           }
 
