@@ -18,12 +18,12 @@ function register_server() {
         function registerCentralSucces() {
           toggle_modal("registerServer");
           alertError("Your server has been successfully registered!", 2000);
+          $("#btnSubmitServer").attr("disabled", true);
         }
 
         function registerCentralFailed(response) {
           alertError(response.reason, 2000, "registerServer");
         }
-
         registerCentral();
       }
     });
